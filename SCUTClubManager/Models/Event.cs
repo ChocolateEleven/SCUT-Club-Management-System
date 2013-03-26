@@ -15,11 +15,11 @@ namespace SCUTClubManager.Models
         public string PosterUrl { get; set; }
         public string PlanUrl { get; set; }
         public string Status { get; set; }
-        public Club Club { get; set; }
-        public EventDescription Description { get; set; }
-        public IEnumerable<EventOrganizer> Organizers { get; set; }
-        public IEnumerable<SubEvent> SubEvents { get; set; }
-        public EventOrganizer ChiefEventOrganizer { get; set; }
-        public DateTime Date { get; set; }
+        public virtual Club Club { get; set; }
+        public virtual EventDescription Description { get; set; }
+        public virtual IEnumerable<EventOrganizer> Organizers { get; set; }
+        public virtual IEnumerable<SubEvent> SubEvents { get; set; }
+        public virtual EventOrganizer ChiefEventOrganizer { get; set; }
+        public virtual DateTime Date { get; set; }
     }
 }

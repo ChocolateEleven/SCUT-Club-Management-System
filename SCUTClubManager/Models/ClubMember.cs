@@ -13,9 +13,9 @@ namespace SCUTClubManager.Models
         public int BranchId { get; set; }
         public DateTime JoinDate { get; set; }
         public int ClubRoleId { get; set; }
-        public Student Student { get; set; }
-        public Club Club { get; set; }
-        public ClubRole ClubRole { get; set; }
-        public ClubBranch Branch { get; set; }
+        public virtual Student Student { get; set; }
+        public virtual Club Club { get; set; }
+        public virtual ClubRole ClubRole { get; set; }
+        public virtual ClubBranch Branch { get; set; }
     }
 }

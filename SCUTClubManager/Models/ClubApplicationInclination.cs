@@ -11,6 +11,6 @@ namespace SCUTClubManager.Models
         public int ApplicationId { get; set; }
         public int BranchId { get; set; }
         public int Order { get; set; }
-        public ClubBranch Branch { get; set; }
+        public virtual ClubBranch Branch { get; set; }
     }
 }

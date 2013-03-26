@@ -14,7 +14,7 @@ namespace SCUTClubManager.Models
         public DateTime OpenDate { get; set; }
         public DateTime CloseDate { get; set; }
         public bool IsMultiSelectable { get; set; }
-        public User Author { get; set; }
-        public IEnumerable<PollItem> Items { get; set; }
+        public virtual User Author { get; set; }
+        public virtual IEnumerable<PollItem> Items { get; set; }
     }
 }

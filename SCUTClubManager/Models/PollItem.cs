@@ -11,6 +11,6 @@ namespace SCUTClubManager.Models
         public int PollId { get; set; }
         public string Caption { get; set; }
         public int Count { get; set; }
-        public Poll Poll { get; set; }
+        public virtual Poll Poll { get; set; }
     }
 }

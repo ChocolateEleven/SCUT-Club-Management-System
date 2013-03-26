@@ -12,6 +12,6 @@ namespace SCUTClubManager.Models
         public DateTime Date { get; set; }
         public string ApplicantUserName { get; set; }
         public Decimal Quantity { get; set; }
-        public Student Applicant { get; set; }
+        public virtual Student Applicant { get; set; }
     }
 }

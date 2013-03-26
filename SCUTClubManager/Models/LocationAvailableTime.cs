@@ -11,7 +11,7 @@ namespace SCUTClubManager.Models
         public int LocatoinId { get; set; }
         public int TimeId { get; set; }
         public int WeekDayId { get; set; }
-        public Location Location { get; set; }
-        public Time Time { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Time Time { get; set; }
     }
 }

@@ -15,6 +15,6 @@ namespace SCUTClubManager.Models
         public string Instructor { get; set; }
         public string Address { get; set; }
         public string PosterUrl { get; set; }
-        public ClubInfoDetails Details { get; set; }
+        public virtual ClubInfoDetails Details { get; set; }
     }
 }

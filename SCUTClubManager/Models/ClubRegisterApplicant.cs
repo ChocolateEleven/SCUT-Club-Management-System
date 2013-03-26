@@ -10,7 +10,7 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
         public string ApplicantUserName { get; set; }
         public bool IsMainApplicant { get; set; }
-        public ClubRegisterApplicantDescription Description { get; set; }
+        public virtual ClubRegisterApplicantDescription Description { get; set; }
         public int ApplicationId { get; set; }
     }
 }

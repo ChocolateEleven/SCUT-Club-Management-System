@@ -9,7 +9,7 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public IEnumerable<Reply> Replies { get; set; }
-        public User Author { get; set; }
+        public virtual IEnumerable<Reply> Replies { get; set; }
+        public virtual User Author { get; set; }
     }
 }
