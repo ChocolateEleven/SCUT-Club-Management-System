@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SCUTClubManager.DAL;
 
 namespace SCUTClubManager
 {
@@ -40,6 +41,9 @@ namespace SCUTClubManager
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            // 最终发布前注释掉改行，改行会在每次程序启动时自动重新创建数据库。
+            Database.SetInitializer<SCUTClubContext>(new SCUTClubContextInitializer());
         }
     }
 }

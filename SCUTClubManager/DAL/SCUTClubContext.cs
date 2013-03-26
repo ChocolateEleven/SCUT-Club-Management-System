@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using SCUTClubManager.Models;
 
 namespace SCUTClubManager.DAL
@@ -53,5 +54,9 @@ namespace SCUTClubManager.DAL
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
 
+        protected override void OnModelCreating(DbModelBuilder model_builder)
+        {
+            model_builder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
     }
 }
