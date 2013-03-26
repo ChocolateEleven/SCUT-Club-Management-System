@@ -10,10 +10,10 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
         public int ClubId { get; set; }
         public string Status { get; set; }
-        public Club Club { get; set; }
-        public Student Applicatant { get; set; }
+        public virtual Club Club { get; set; }
+        public virtual Student Applicatant { get; set; }
         public string ApplicantUserName { get; set; }
         public DateTime Date { get; set; }
-        public ApplicationRejectReason RejectReason { get; set; }
+        public virtual ApplicationRejectReason RejectReason { get; set; }
     }
 }

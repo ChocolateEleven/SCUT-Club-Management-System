@@ -13,7 +13,7 @@ namespace SCUTClubManager.Models
         public string AuthorUserName { get; set; }
         public DateTime Date { get; set; }
         public int Number { get; set; }
-        public Thread Thread { get; set; }
-        public User Author { get; set; }
+        public virtual Thread Thread { get; set; }
+        public virtual User Author { get; set; }
     }
 }

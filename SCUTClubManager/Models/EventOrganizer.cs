@@ -9,7 +9,7 @@ namespace SCUTClubManager.Models
     {
         public int EventId { get; set; }
         public int Id { get; set; }
-        public Event Event { get; set; }
-        public Student Student { get; set; }
+        public virtual Event Event { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

@@ -7,10 +7,10 @@ namespace SCUTClubManager.Models
 {
     public class ClubRegisterApplication : Application
     {
-        public IEnumerable<ClubRegisterApplicant> Applicants { get; set; }
-        public IEnumerable<BranchModification> Branches { get; set; }
+        public virtual IEnumerable<ClubRegisterApplicant> Applicants { get; set; }
+        public virtual IEnumerable<BranchModification> Branches { get; set; }
         public int ClubInfoId { get; set; }
-        public ClubInfo Info { get; set; }
+        public virtual ClubInfo Info { get; set; }
         public string Material { get; set; }
     }
 }

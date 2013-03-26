@@ -16,12 +16,12 @@ namespace SCUTClubManager.Models
         public string Grade { get; set; }
         public string Degree { get; set; }
         public string PoliticalId { get; set; }
-        public User User { get; set; }
-        public ContactInfo ContactInfo { get; set; }
-        public IEnumerable<Application> Applications { get; set; }
-        public IEnumerable<ClubMember> MemberShips { get; set; }
-        public IEnumerable<Poll> Polls { get; set; }
-        public IEnumerable<Message> Messages { get; set; }
-        public IEnumerable<Event> Events { get; set; }
+        public virtual User User { get; set; }
+        public virtual ContactInfo ContactInfo { get; set; }
+        public virtual IEnumerable<Application> Applications { get; set; }
+        public virtual IEnumerable<ClubMember> MemberShips { get; set; }
+        public virtual IEnumerable<Poll> Polls { get; set; }
+        public virtual IEnumerable<Message> Messages { get; set; }
+        public virtual IEnumerable<Event> Events { get; set; }
     }
 }

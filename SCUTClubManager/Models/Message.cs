@@ -13,8 +13,8 @@ namespace SCUTClubManager.Models
         public string Title { get; set; }
         public bool ReadMark { get; set; }
         public DateTime Date { get; set; }
-        public User Sender { get; set; }
-        public User Receiver { get; set; }
-        public MessageContent Content { get; set; }
+        public virtual User Sender { get; set; }
+        public virtual User Receiver { get; set; }
+        public virtual MessageContent Content { get; set; }
     }
 }

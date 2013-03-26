@@ -12,11 +12,11 @@ namespace SCUTClubManager.Models
         public string Title { get; set; }
         public DateTime Date { get; set; }
         public int TimeId { get; set; }
-        public SubEventDescription Description { get; set; }
-        public Time Time { get; set; }
-        public Event Event { get; set; }
-        public IEnumerable<LocationApplication> LocationApplications { get; set; }
-        public IEnumerable<AssetApplication> AssetApplications { get; set; }
-        public FundApplication FundApplication { get; set; }
+        public virtual SubEventDescription Description { get; set; }
+        public virtual Time Time { get; set; }
+        public virtual Event Event { get; set; }
+        public virtual IEnumerable<LocationApplication> LocationApplications { get; set; }
+        public virtual IEnumerable<AssetApplication> AssetApplications { get; set; }
+        public virtual FundApplication FundApplication { get; set; }
     }
 }

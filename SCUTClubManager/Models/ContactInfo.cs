@@ -13,6 +13,6 @@ namespace SCUTClubManager.Models
         public string EMailAddress { get; set; }
         public string Visibility { get; set; }
         public string Room { get; set; }
-        public Student Student { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

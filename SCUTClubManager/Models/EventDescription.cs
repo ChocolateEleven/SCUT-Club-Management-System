@@ -9,6 +9,6 @@ namespace SCUTClubManager.Models
     {
         public int EventId { get; set; }
         public string Description { get; set; }
-        public Event Event { get; set; }
+        public virtual Event Event { get; set; }
     }
 }

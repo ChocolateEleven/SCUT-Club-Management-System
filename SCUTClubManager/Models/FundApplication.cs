@@ -9,6 +9,6 @@ namespace SCUTClubManager.Models
     {
         public int SubEventId { get; set; }
         public Decimal Quantity { get; set; }
-        public SubEvent SubEvent { get; set; }
+        public virtual SubEvent SubEvent { get; set; }
     }
 }

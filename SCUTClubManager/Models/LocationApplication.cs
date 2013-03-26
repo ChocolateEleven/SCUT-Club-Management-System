@@ -10,8 +10,8 @@ namespace SCUTClubManager.Models
         public int LocationId { get; set; }
         public int TimeId { get; set; }
         public int SubEventId { get; set; }
-        public Location Location { get; set; }
-        public Time Time { get; set; }
-        public SubEvent SubEvent { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Time Time { get; set; }
+        public virtual SubEvent SubEvent { get; set; }
     }
 }

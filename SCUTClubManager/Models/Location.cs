@@ -9,6 +9,6 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<LocationAvailableTime> AvailableTimes { get; set; }
+        public virtual IEnumerable<LocationAvailableTime> AvailableTimes { get; set; }
     }
 }
