@@ -27,7 +27,7 @@ namespace SCUTClubManager.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class LogOnModel
+    public class LogInModel
     {
         [Required]
         [Display(Name = "User name")]
