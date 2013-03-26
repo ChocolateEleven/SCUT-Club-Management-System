@@ -591,7 +591,9 @@ namespace SCUTClubManager.DAL
             }
         }
 
-
-
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
     }
 }

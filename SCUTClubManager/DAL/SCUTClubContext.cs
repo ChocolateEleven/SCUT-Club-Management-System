@@ -54,9 +54,9 @@ namespace SCUTClubManager.DAL
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder model_builder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            model_builder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
 }
