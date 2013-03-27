@@ -30,7 +30,6 @@ namespace SCUTClubManager.DAL
         public DbSet<Message> Messages { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
-        public DbSet<Student> Students { get; set; }
         public DbSet<Thread> Threads { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<MessageContent> MessageContents { get; set; }
