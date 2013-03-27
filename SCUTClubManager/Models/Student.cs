@@ -48,10 +48,10 @@ namespace SCUTClubManager.Models
         public string PoliticalId { get; set; }
 
         public virtual ContactInfo ContactInfo { get; set; }
-        public virtual IEnumerable<Application> Applications { get; set; }
-        public virtual IEnumerable<ClubMember> MemberShips { get; set; }
-        public virtual IEnumerable<Poll> Polls { get; set; }
-        public virtual IEnumerable<Message> Messages { get; set; }
-        public virtual IEnumerable<Event> Events { get; set; }
+        public virtual ICollection<Application> Applications { get; set; }
+        public virtual ICollection<ClubMember> MemberShips { get; set; }
+        public virtual ICollection<Poll> Polls { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Event> Events { get; set; }
     }
 }

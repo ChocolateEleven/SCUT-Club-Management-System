@@ -13,6 +13,6 @@ namespace SCUTClubManager.Models
         public bool IsFlexible { get; set; }
         public virtual ClubRole Role { get; set; }
         public virtual ClubApplicationDetails Details { get; set; }
-        public virtual IEnumerable<ClubApplicationInclination> Inclinations { get; set; }
+        public virtual ICollection<ClubApplicationInclination> Inclinations { get; set; }
     }
 }

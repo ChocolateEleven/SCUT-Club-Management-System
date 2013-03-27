@@ -8,8 +8,8 @@ namespace SCUTClubManager.Models
 {
     public class ClubRegisterApplication : Application
     {
-        public virtual IEnumerable<ClubRegisterApplicant> Applicants { get; set; }
-        public virtual IEnumerable<BranchModification> Branches { get; set; }
+        public virtual ICollection<ClubRegisterApplicant> Applicants { get; set; }
+        public virtual ICollection<BranchModification> Branches { get; set; }
        
         [Required]
         public int ClubInfoId { get; set; }

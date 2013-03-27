@@ -15,6 +15,6 @@ namespace SCUTClubManager.Models
         [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]
         public string Name { get; set; }
 
-        public virtual IEnumerable<LocationAvailableTime> AvailableTimes { get; set; }
+        public virtual ICollection<LocationAvailableTime> AvailableTimes { get; set; }
     }
 }

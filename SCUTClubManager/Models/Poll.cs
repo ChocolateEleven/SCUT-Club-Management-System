@@ -8,8 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class Poll
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [MaxLength(50)]
@@ -17,7 +15,6 @@ namespace SCUTClubManager.Models
 
         [MaxLength(100)]
         public string Question { get; set; }
-
 
         [RegularExpression(@"^[a-z0-9A-Z]$",
       ErrorMessage = "用户名只能是数字和字母的组合")]
@@ -27,6 +24,6 @@ namespace SCUTClubManager.Models
         public DateTime CloseDate { get; set; }
         public bool IsMultiSelectable { get; set; }
         public virtual User Author { get; set; }
-        public virtual IEnumerable<PollItem> Items { get; set; }
+        public virtual ICollection<PollItem> Items { get; set; }
     }
 }

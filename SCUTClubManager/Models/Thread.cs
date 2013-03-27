@@ -18,7 +18,7 @@ namespace SCUTClubManager.Models
         [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]
         public string AuthorUserName { get; set; }
 
-        public virtual IEnumerable<Reply> Replies { get; set; }
+        public virtual ICollection<Reply> Replies { get; set; }
         public virtual User Author { get; set; }
     }
 }
