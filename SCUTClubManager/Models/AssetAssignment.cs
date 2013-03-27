@@ -14,9 +14,9 @@ namespace SCUTClubManager.Models
         public int ClubId { get; set; }
         public string ApplicantUserName { get; set; }
         public int Quantity { get; set; }
-        public Asset Asset { get; set; }
-        public Time Time { get; set; }
-        public Club Club { get; set; }
-        public Student Applicant { get; set; }
+        public virtual Asset Asset { get; set; }
+        public virtual Time Time { get; set; }
+        public virtual Club Club { get; set; }
+        public virtual Student Applicant { get; set; }
     }
 }

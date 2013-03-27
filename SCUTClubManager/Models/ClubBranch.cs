@@ -10,7 +10,7 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
         public int ClubId { get; set; }
         public string BranchName { get; set; }
-        public IEnumerable<ClubMember> Members { get; set; }
+        public virtual IEnumerable<ClubMember> Members { get; set; }
         public int MemberCount { get; set; }
         public int NewMemberCount { get; set; }
     }

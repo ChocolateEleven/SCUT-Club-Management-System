@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SCUTClubManager.Models
 {
-    public class FundApplication
+    public class FundApplication : Application
     {
         public int SubEventId { get; set; }
         public Decimal Quantity { get; set; }

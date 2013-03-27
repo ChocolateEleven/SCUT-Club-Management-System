@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SCUTClubManager.Models
 {
-    public class LocationApplication
+    public class LocationApplication : Application
     {
         public int LocationId { get; set; }
         public int TimeId { get; set; }

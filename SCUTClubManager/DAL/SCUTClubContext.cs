@@ -5,6 +5,7 @@ using System.Web;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.ComponentModel.DataAnnotations.Schema;
 using SCUTClubManager.Models;
 
 namespace SCUTClubManager.DAL
@@ -13,18 +14,14 @@ namespace SCUTClubManager.DAL
     {
         public DbSet<ClubInfoDetails> ClubInfoDetailses { get; set; }
         public DbSet<ClubInfo> ClubInfos { get; set; }
-        public DbSet<ClubInfoModificationApplication> ClubInfoModificationApplications { get; set; }
         public DbSet<BranchModification> BranchModifications { get; set; }
         public DbSet<ClubBranch> ClubBranches { get; set; }
         public DbSet<ClubApplicationInclination> ClubApplicationInclinations { get; set; }
-        public DbSet<ClubApplication> ClubApplications { get; set; }
         public DbSet<ClubApplicationDetails> ClubApplicationDetailses { get; set; }
         public DbSet<ClubRole> ClubRoles { get; set; }
-        public DbSet<ClubRegisterApplication> ClubRegisterApplications { get; set; }
         public DbSet<ClubRegisterApplicant> ClubRegisterApplicants { get; set; }
         public DbSet<ClubRegisterApplicantDescription> ClubRegisterApplicantDescriptions { get; set; }
         public DbSet<Application> Applications { get; set; }
-        public DbSet<ClubUnregisterApplication> ClubUnregisterApplications { get; set; }
         public DbSet<Club> Clubs { get; set; }
         public DbSet<FundDetails> FundDetailses { get; set; }
         public DbSet<ClubMember> ClubMembers { get; set; }
@@ -43,20 +40,65 @@ namespace SCUTClubManager.DAL
         public DbSet<LocationAssignment> LocationAssignments { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<LocationAvailableTime> LocationAvailableTimes { get; set; }
-        public DbSet<LocationApplication> LocationApplications { get; set; }
         public DbSet<Time> Times { get; set; }
         public DbSet<AssetAssignment> AssetAssignments { get; set; }
         public DbSet<Asset> Assets { get; set; }
-        public DbSet<AssetApplication> AssetApplications { get; set; }
         public DbSet<SubEvent> SubEvents { get; set; }
         public DbSet<SubEventDescription> SubEventDescriptions { get; set; }
-        public DbSet<FundApplication> FundApplications { get; set; }
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder model_builder)
         {
             model_builder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            // 继承处理。
+            // TPT
+            model_builder.Entity<Student>().ToTable("Student");
+
+            // TPC
+            model_builder.Entity<ClubUnregisterApplication>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("ClubUnregisterApplication");
+                });
+            model_builder.Entity<AssetApplication>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("AssetApplication");
+                });
+            model_builder.Entity<LocationApplication>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("LocationApplication");
+                });
+            model_builder.Entity<FundApplication>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("FundApplication");
+                });
+            model_builder.Entity<ClubApplication>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("ClubApplication");
+                });
+            model_builder.Entity<ClubInfoModificationApplication>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("ClubInfoModificationApplication");
+                });
+            model_builder.Entity<ClubRegisterApplication>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("ClubRegisterApplication");
+                });
+
+            model_builder.Entity<Application>()
+                .Property(p => p.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            // 表之间的关系。
+            model_builder
         }
     }
 }

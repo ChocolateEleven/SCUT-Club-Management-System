@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SCUTClubManager.Models
 {
-    public class Student
+    public class Student : User
     {
         public string LastName { get; set; }
         public string FirstName { get; set; }
