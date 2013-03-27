@@ -9,10 +9,8 @@ namespace SCUTClubManager.Models
     public class ClubMember
     {
         [Key]
-        [Required]
         public int Id { get; set; }
 
-        [Key]
         [Required]
         [RegularExpression(@"^[a-z0-9A-Z]$",
       ErrorMessage = "用户名只能是数字和字母的组合")]

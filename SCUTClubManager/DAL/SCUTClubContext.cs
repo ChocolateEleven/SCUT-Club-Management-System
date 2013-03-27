@@ -98,7 +98,8 @@ namespace SCUTClubManager.DAL
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // 表之间的关系。
-            model_builder
+            model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal(t => t.Student);
+            model_builder.Entity<EventDescription>().HasRequired(t => t.Event).WithRequiredPrincipal(t => t.Description);
         }
     }
 }

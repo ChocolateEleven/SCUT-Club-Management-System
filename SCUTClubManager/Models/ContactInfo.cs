@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
@@ -39,7 +40,7 @@ namespace SCUTClubManager.Models
         [MaxLength(20, ErrorMessage = "用户名的长度不能超过10个字符")]
         public string Room { get; set; }
 
-
+        [ForeignKey("UserName")]
         public virtual Student Student { get; set; }
     }
 }
