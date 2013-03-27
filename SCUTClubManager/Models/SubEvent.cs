@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class SubEvent
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -25,8 +24,8 @@ namespace SCUTClubManager.Models
         public virtual SubEventDescription Description { get; set; }
         public virtual Time Time { get; set; }
         public virtual Event Event { get; set; }
-        public virtual IEnumerable<LocationApplication> LocationApplications { get; set; }
-        public virtual IEnumerable<AssetApplication> AssetApplications { get; set; }
+        public virtual ICollection<LocationApplication> LocationApplications { get; set; }
+        public virtual ICollection<AssetApplication> AssetApplications { get; set; }
         public virtual FundApplication FundApplication { get; set; }
     }
 }

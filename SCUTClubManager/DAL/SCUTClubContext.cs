@@ -30,7 +30,6 @@ namespace SCUTClubManager.DAL
         public DbSet<Message> Messages { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
-        public DbSet<Student> Students { get; set; }
         public DbSet<Thread> Threads { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<MessageContent> MessageContents { get; set; }
@@ -47,6 +46,8 @@ namespace SCUTClubManager.DAL
         public DbSet<SubEventDescription> SubEventDescriptions { get; set; }
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
+
+        public SCUTClubContext() : base("DefaultConnection") { }
 
         protected override void OnModelCreating(DbModelBuilder model_builder)
         {
@@ -98,8 +99,16 @@ namespace SCUTClubManager.DAL
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // 表之间的关系。
+
+            model_builder.Entity<ClubInfo>().HasRequired(t => t.Details).WithRequiredPrincipal(t => t.Info);
             model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal(t => t.Student);
-            model_builder.Entity<EventDescription>().HasRequired(t => t.Event).WithRequiredPrincipal(t => t.Description);
+            model_builder.Entity<Application>().HasOptional(t => t.RejectReason).WithRequired(t => t.Application);
+            model_builder.Entity<SubEvent>().HasRequired(t => t.Description).WithRequiredPrincipal(t => t.SubEvent);
+            model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal(t => t.Event);
+            model_builder.Entity<SubEvent>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.SubEvent);
+            model_builder.Entity<ClubApplication>().HasRequired(t => t.Details).WithRequiredPrincipal(t => t.Application);
+            model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal(t => t.Message);
+
         }
     }
 }

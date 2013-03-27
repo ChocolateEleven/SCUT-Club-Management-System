@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
     public class LocationAssignment
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -31,6 +31,8 @@ namespace SCUTClubManager.Models
         public virtual Location Location { get; set; }
         public virtual Time Time { get; set; }
         public virtual Club Club { get; set; }
+
+        [ForeignKey("ApplicantName")]
         public virtual Student Applicant { get; set; }
     }
 }

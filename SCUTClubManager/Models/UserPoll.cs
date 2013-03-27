@@ -8,8 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class UserPoll
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [RegularExpression(@"^[a-z0-9A-Z]$",
@@ -18,6 +16,7 @@ namespace SCUTClubManager.Models
         public string UserName { get; set; }
 
         public int PollId { get; set; }
+
         public virtual User User { get; set; }
         public virtual Poll Poll { get; set; }
     }

@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class FundDetails
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -25,6 +24,8 @@ namespace SCUTClubManager.Models
 
         [Required]
         public Decimal Quantity { get; set; }
+
         public virtual Student Applicant { get; set; }
+        public virtual Club Club { get; set; }
     }
 }

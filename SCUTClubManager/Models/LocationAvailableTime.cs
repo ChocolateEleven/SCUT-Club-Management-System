@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class LocationAvailableTime
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -19,6 +18,7 @@ namespace SCUTClubManager.Models
 
         [Required]
         public int WeekDayId { get; set; }
+
         public virtual Location Location { get; set; }
         public virtual Time Time { get; set; }
     }

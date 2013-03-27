@@ -8,8 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class ClubRole
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [MaxLength(10)]

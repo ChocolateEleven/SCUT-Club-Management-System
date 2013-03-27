@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class ClubRegisterApplicantDescription
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -16,5 +15,7 @@ namespace SCUTClubManager.Models
 
         [MaxLength(300)]
         public string Description { get; set; }
+
+        public virtual ClubRegisterApplication Application { get; set; }
     }
 }

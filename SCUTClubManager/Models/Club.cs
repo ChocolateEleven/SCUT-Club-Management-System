@@ -8,23 +8,22 @@ namespace SCUTClubManager.Models
 {
     public class Club
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [Required]
         public int Level { get; set; }
         public Decimal Fund { get; set; }
         public DateTime FoundDate { get; set; }
-        public virtual IEnumerable<AssetAssignment> AssetAssignments { get; set; }
-        public virtual IEnumerable<LocationAssignment> LocationAssignments { get; set; }
-        public virtual IEnumerable<FundDetails> FundDetails { get; set; }
-        public virtual IEnumerable<Event> Events { get; set; }
-        public virtual IEnumerable<ClubMember> Members { get; set; }
-        public virtual IEnumerable<ClubBranch> Branches { get; set; }
+        public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
+        public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
+        public virtual ICollection<FundDetails> FundDetails { get; set; }
+        public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<ClubMember> Members { get; set; }
+        public virtual ICollection<ClubBranch> Branches { get; set; }
 
         [Required]
         public int ClubInfoId { get; set; }
+
         public virtual ClubInfo Info { get; set; }
     }
 }

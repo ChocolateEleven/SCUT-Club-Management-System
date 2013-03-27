@@ -9,9 +9,7 @@ namespace SCUTClubManager.Models
 {
     public class ContactInfo
     {
-
         [Key]
-        [Required]
         [RegularExpression(@"^[a-z0-9A-Z]$",
       ErrorMessage = "用户名只能是数字和字母的组合")]
         [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]

@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class Time
     {
-        [Key]
         public int Id { get; set; }
 
         [MaxLength(10)]

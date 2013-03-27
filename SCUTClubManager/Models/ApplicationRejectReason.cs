@@ -13,5 +13,7 @@ namespace SCUTClubManager.Models
 
         [MaxLength(200)]
         public string Reason { get; set; }
+
+        public virtual Application Application { get; set; }
     }
 }
