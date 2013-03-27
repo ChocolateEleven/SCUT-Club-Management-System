@@ -47,7 +47,7 @@ namespace SCUTClubManager.DAL
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
 
-        public SCUTClubContext() : base("DefaultConnection") { }
+        //public SCUTClubContext() : base("DefaultConnection") { }
 
         protected override void OnModelCreating(DbModelBuilder model_builder)
         {
@@ -107,6 +107,23 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<SubEvent>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.SubEvent);
             model_builder.Entity<ClubApplication>().HasRequired(t => t.Details).WithRequiredPrincipal(t => t.Application);
             model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal(t => t.Message);
+
+            ////////////////////////////////////////////////////////////////////////////////////////
+           //// model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal(t => t.Event);
+           // model_builder.Entity<Event>().HasMany(t => t.SubEvents).WithRequired(t => t.Event);
+           //// model_builder.Entity<Application>().HasOptional(t => t.RejectReason).WithRequired(t => t.Application);
+           // model_builder.Entity<LocationApplication>().HasRequired(t => t.Location);
+           // model_builder.Entity<Location>().HasMany(t => t.AvailableTimes).WithRequired(t => t.Location);
+            //model_builder.Entity<LocationAssignment>().HasRequired(t => t.Location);
+            //model_builder.Entity<LocationAvailableTime>().HasRequired(t => t.Time);
+            //model_builder.Entity<LocationAssignment>().HasRequired(t => t.Time);
+            //model_builder.Entity<AssetAssignment>().HasRequired(t => t.Time);
+            //model_builder.Entity<AssetAssignment>().HasRequired(t => t.Asset);
+            //model_builder.Entity<AssetApplication>().HasRequired(t => t.Asset);
+            model_builder.Entity<SubEvent>().HasMany(t => t.AssetApplications).WithOptional(t => t.SubEvent);
+            ////model_builder.Entity<SubEvent>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.SubEvent);
+            
+
         }
     }
 }

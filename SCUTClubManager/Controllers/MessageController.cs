@@ -26,7 +26,7 @@ namespace SCUTClubManager.Controllers
             var list = messages.ToList();
             
              
-            return View(m);
+            return View(messages.ToList());
         }
 
         //
