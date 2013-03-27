@@ -8,14 +8,11 @@ namespace SCUTClubManager.Models
 {
     public class Reply
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [Required]
         public int ThreadId { get; set; }
         public string Content { get; set; }
-
 
         [RegularExpression(@"^[a-z0-9A-Z]$",
       ErrorMessage = "用户名只能是数字和字母的组合")]

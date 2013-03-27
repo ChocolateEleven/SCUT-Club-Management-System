@@ -47,8 +47,6 @@ namespace SCUTClubManager.Models
         [MaxLength(1)]
         public string PoliticalId { get; set; }
 
-
-        public virtual User User { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual IEnumerable<Application> Applications { get; set; }
         public virtual IEnumerable<ClubMember> MemberShips { get; set; }

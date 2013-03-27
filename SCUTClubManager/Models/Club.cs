@@ -8,8 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class Club
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [Required]
@@ -25,6 +23,7 @@ namespace SCUTClubManager.Models
 
         [Required]
         public int ClubInfoId { get; set; }
+
         public virtual ClubInfo Info { get; set; }
     }
 }

@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class SubEvent
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]

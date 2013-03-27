@@ -8,8 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class PollItem
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
         public int PollId { get; set; }
 

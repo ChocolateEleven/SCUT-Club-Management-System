@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class ClubRegisterApplicant
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -23,5 +22,9 @@ namespace SCUTClubManager.Models
 
         [Required]
         public int ApplicationId { get; set; }
+
+        public virtual Student Applicant { get; set; }
+
+        public virtual ClubRegisterApplication Application { get; set; }
     }
 }

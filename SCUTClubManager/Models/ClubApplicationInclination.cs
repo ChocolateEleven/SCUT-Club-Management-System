@@ -8,7 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class ClubApplicationInclination
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -17,6 +16,8 @@ namespace SCUTClubManager.Models
         [Required]
         public int BranchId { get; set; }
         public int Order { get; set; }
+
         public virtual ClubBranch Branch { get; set; }
+        public virtual ClubApplication Application { get; set; }
     }
 }

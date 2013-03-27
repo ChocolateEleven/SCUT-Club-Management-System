@@ -8,9 +8,7 @@ namespace SCUTClubManager.Models
 {
     public class Asset
     {
-        [Key]
         public int Id { get; set; }
-
 
         [RegularExpression(@"^[a-z0-9A-Z]$",
       ErrorMessage = "用户名只能是数字和字母的组合")]

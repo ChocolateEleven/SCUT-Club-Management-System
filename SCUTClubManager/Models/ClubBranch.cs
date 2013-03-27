@@ -8,8 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class ClubBranch
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [Required]
@@ -19,6 +17,8 @@ namespace SCUTClubManager.Models
         public string BranchName { get; set; }
 
         public virtual IEnumerable<ClubMember> Members { get; set; }
+
+        public virtual Club Club { get; set; }
 
         [Required]
 

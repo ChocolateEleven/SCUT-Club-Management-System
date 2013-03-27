@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
     public class Event
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -36,6 +36,8 @@ namespace SCUTClubManager.Models
         public virtual EventDescription Description { get; set; }
         public virtual IEnumerable<EventOrganizer> Organizers { get; set; }
         public virtual IEnumerable<SubEvent> SubEvents { get; set; }
+
+        [ForeignKey("ChiefEventOrganizerId")]
         public virtual EventOrganizer ChiefEventOrganizer { get; set; }
         public virtual DateTime Date { get; set; }
     }

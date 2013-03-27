@@ -9,10 +9,11 @@ namespace SCUTClubManager.Models
     public class MessageContent
     {
         [Key]
-        [Required]
         public int MessageId { get; set; }
 
         [MaxLength(500)]
         public string Content { get; set; }
+
+        public virtual Message Message { get; set; }
     }
 }

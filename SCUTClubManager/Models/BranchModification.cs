@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
     public class BranchModification
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -23,6 +23,10 @@ namespace SCUTClubManager.Models
 
         [MaxLength(1)]
         public string Type { get; set; }
+
+        [ForeignKey("BranchId")]
         public virtual ClubBranch OrigBranch { get; set; }
+
+        public virtual Application Application { get; set; }
     }
 }

@@ -8,8 +8,6 @@ namespace SCUTClubManager.Models
 {
     public class UserPoll
     {
-        [Key]
-        [Required]
         public int Id { get; set; }
 
         [RegularExpression(@"^[a-z0-9A-Z]$",
@@ -17,6 +15,7 @@ namespace SCUTClubManager.Models
         [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]
         public string UserName { get; set; }
         public int PollId { get; set; }
+
         public virtual User User { get; set; }
         public virtual Poll Poll { get; set; }
     }

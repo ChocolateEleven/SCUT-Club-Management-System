@@ -14,7 +14,6 @@ namespace SCUTClubManager.Models
         [Required]
         public int ClubInfoId { get; set; }
 
-
         public virtual ClubInfo Info { get; set; }
 
         [MaxLength(256)]
