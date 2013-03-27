@@ -6,7 +6,7 @@ using SCUTClubManager.Models;
 
 namespace SCUTClubManager.DAL
 {
-    public class UnitOfWork
+    public class UnitOfWork : IDisposable
     {
         private SCUTClubContext context = new SCUTClubContext();
 
@@ -260,7 +260,7 @@ namespace SCUTClubManager.DAL
             get
             {
                 if (this.pollItems == null)
-                {
+                { 
                     this.pollItems = new Repository<PollItem>(context);
                 }
                 return pollItems;
@@ -594,6 +594,26 @@ namespace SCUTClubManager.DAL
         public void SaveChanges()
         {
             context.SaveChanges();
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
