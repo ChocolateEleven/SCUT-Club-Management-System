@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCUTClubManager.Models
 {
-    public class Student
+    public class Student : User
     {
         [Required]
         [RegularExpression(@"^\w$",ErrorMessage = "请输入正确的字符")]

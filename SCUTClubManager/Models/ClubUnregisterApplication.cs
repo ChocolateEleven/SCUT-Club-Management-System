@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCUTClubManager.Models
 {
-    public class ClubUnregisterApplication
+    public class ClubUnregisterApplication : Application
     {
         [MaxLength(400)]
         public string Reason { get; set; }

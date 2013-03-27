@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCUTClubManager.Models
 {
-    public class FundApplication
+    public class FundApplication : Application
     {
         public int SubEventId { get; set; }
 

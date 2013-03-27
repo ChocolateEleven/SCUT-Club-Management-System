@@ -23,6 +23,6 @@ namespace SCUTClubManager.Models
 
         [MaxLength(1)]
         public string Type { get; set; }
-        public ClubBranch OrigBranch { get; set; }
+        public virtual ClubBranch OrigBranch { get; set; }
     }
 }

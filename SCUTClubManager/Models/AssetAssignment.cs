@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,9 +31,10 @@ namespace SCUTClubManager.Models
 
         [Required]
         public int Quantity { get; set; }
-        public Asset Asset { get; set; }
-        public Time Time { get; set; }
-        public Club Club { get; set; }
-        public Student Applicant { get; set; }
+
+        public virtual Asset Asset { get; set; }
+        public virtual Time Time { get; set; }
+        public virtual Club Club { get; set; }
+        public virtual Student Applicant { get; set; }
     }
 }

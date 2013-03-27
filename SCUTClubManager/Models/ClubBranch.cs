@@ -17,9 +17,11 @@ namespace SCUTClubManager.Models
 
         [MaxLength(20)]
         public string BranchName { get; set; }
-        public IEnumerable<ClubMember> Members { get; set; }
+
+        public virtual IEnumerable<ClubMember> Members { get; set; }
 
         [Required]
+
         public int MemberCount { get; set; }
 
         [Required]

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCUTClubManager.Models
 {
-    public class LocationApplication
+    public class LocationApplication : Application
     {
         [Required]
         public int LocationId { get; set; }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCUTClubManager.Models
 {
-    public class AssetApplication
+    public class AssetApplication : Application
     {
         [Required]
         public int AssetId { get; set; }
@@ -17,8 +17,8 @@ namespace SCUTClubManager.Models
 
         [Required]
         public int Quantity { get; set; }
-        public Time Time { get; set; }
-        public SubEvent SubEvent { get; set; }
-        public Asset Asset { get; set; }
+        public virtual Time Time { get; set; }
+        public virtual SubEvent SubEvent { get; set; }
+        public virtual Asset Asset { get; set; }
     }
 }

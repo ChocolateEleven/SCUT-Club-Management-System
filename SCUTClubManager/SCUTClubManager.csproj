@@ -100,16 +100,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogic\QueryProcessor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\Repository.cs" />
     <Compile Include="DAL\SCUTClubContext.cs" />
+    <Compile Include="DAL\SCUTClubContextInitializer.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\View_Models\AccountModels.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\ApplicationRejectReason.cs" />
     <Compile Include="Models\Asset.cs" />
