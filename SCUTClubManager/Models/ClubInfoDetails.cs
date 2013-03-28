@@ -11,7 +11,5 @@ namespace SCUTClubManager.Models
         [Key]
         public int ClubInfoId { get; set; }
         public string Regulation { get; set; }
-
-        public virtual ClubInfo Info { get; set; }
     }
 }

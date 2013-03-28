@@ -367,18 +367,18 @@ namespace SCUTClubManager.DAL
 
 
 
-        private Repository<EventOrganizer> eventOrganizers;
-        public Repository<EventOrganizer> EventOrganizers
-        {
-            get
-            {
-                if (this.eventOrganizers == null)
-                {
-                    this.eventOrganizers = new Repository<EventOrganizer>(context);
-                }
-                return eventOrganizers;
-            }
-        }
+        //private Repository<EventOrganizer> eventOrganizers;
+        //public Repository<EventOrganizer> EventOrganizers
+        //{
+        //    get
+        //    {
+        //        if (this.eventOrganizers == null)
+        //        {
+        //            this.eventOrganizers = new Repository<EventOrganizer>(context);
+        //        }
+        //        return eventOrganizers;
+        //    }
+        //}
 
 
         private Repository<EventArgs> events;

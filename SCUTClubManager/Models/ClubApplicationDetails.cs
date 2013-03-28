@@ -13,7 +13,5 @@ namespace SCUTClubManager.Models
 
         [MaxLength(600)]
         public string Reason { get; set; }
-
-        public virtual ClubApplication Application { get; set; }
     }
 }

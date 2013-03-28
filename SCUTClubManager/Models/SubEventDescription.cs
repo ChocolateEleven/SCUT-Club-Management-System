@@ -13,7 +13,5 @@ namespace SCUTClubManager.Models
 
         [MaxLength(400)]
         public string Description { get; set; }
-
-        public virtual SubEvent SubEvent { get; set; }
     }
 }

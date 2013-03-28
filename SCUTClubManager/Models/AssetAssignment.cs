@@ -11,17 +11,10 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
 
         [Required]
-        public int AssetId { get; set; }
-
-        [Required]
         public DateTime Date { get; set; }
 
         [Required]
-        public int TimeId { get; set; }
-
-        [Required]
         public int ClubId { get; set; }
-
 
         [RegularExpression(@"^[a-z0-9A-Z]$",
       ErrorMessage = "用户名只能是数字和字母的组合")]
@@ -31,8 +24,8 @@ namespace SCUTClubManager.Models
         [Required]
         public int Quantity { get; set; }
 
-        public virtual Asset Asset { get; set; }
-        public virtual Time Time { get; set; }
+        public virtual ICollection<Asset> Asset { get; set; }
+        public virtual ICollection<Time> Time { get; set; }
         public virtual Club Club { get; set; }
         public virtual Student Applicant { get; set; }
     }

@@ -19,7 +19,7 @@ namespace SCUTClubManager.Models
         public int ClubId { get; set; }
 
         [Required]
-        public int ChiefEventOrganizerId { get; set; }
+        public string ChiefEventOrganizerId { get; set; }
 
         [Range(0,100)]
         public int Score { get; set; }
@@ -34,11 +34,11 @@ namespace SCUTClubManager.Models
         public string Status { get; set; }
         public virtual Club Club { get; set; }
         public virtual EventDescription Description { get; set; }
-        public virtual ICollection<EventOrganizer> Organizers { get; set; }
+        public virtual ICollection<Student> Organizers { get; set; }
         public virtual ICollection<SubEvent> SubEvents { get; set; }
 
         [ForeignKey("ChiefEventOrganizerId")]
-        public virtual EventOrganizer ChiefEventOrganizer { get; set; }
+        public virtual Student ChiefEventOrganizer { get; set; }
         public virtual DateTime Date { get; set; }
     }
 }

@@ -8,16 +8,10 @@ namespace SCUTClubManager.Models
 {
     public class LocationApplication : Application
     {
-        [Required]
-        public int LocationId { get; set; }
+        public int? SubEventId { get; set; }
 
-        [Required]
-        public int TimeId { get; set; }
-
-        public int SubEventId { get; set; }
-
-        public virtual Location Location { get; set; }
-        public virtual Time Time { get; set; }
+        public virtual ICollection<Location> Location { get; set; }
+        public virtual ICollection<Time> Time { get; set; }
         public virtual SubEvent SubEvent { get; set; }
     }
 }
