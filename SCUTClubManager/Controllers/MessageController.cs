@@ -20,13 +20,29 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Message/
 
-        public ViewResult Index()
+        public ViewResult Index(string userName = null)
         {
            // var messages = db.Messages.Include(m => m.Sender).Include(m => m.Receiver);
             var messages = unitOfWork.Messages;
-            var list = messages.ToList();
-            return View(list);
+
+            var receivers = unitOfWork.Users.ToList();
+
+            if (userName != null)
+            {
+                receivers = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == userName);
+            }
+            
+
+            ViewBag.receivers = new SelectList(receivers, "UserName", "UserName"); ;
+
+            return View(messages.ToList());
         }
+
+        //[HttpPost]
+        //public ActionResult Index(string receivers)
+        //{
+        //    return View();
+        //}
 
         //
         // GET: /Message/Details/5
@@ -48,10 +64,10 @@ namespace SCUTClubManager.Controllers
 
            // ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
 
-            string a = "";
-            var sender = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), includes: new string[] {"1", "2"});
+            var sender = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
             ViewBag.SenderId = new SelectList(sender, "UserName", "UserName");
-            var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), includes: new string[] { "1" });
+
+            var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == "000000001");
             ViewBag.ReceiverId = new SelectList(receiver, "UserName", "UserName");
             return View();
         } 

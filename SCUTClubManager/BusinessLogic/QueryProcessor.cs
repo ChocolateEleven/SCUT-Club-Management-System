@@ -23,7 +23,7 @@ namespace SCUTClubManager.BusinessLogic
          *  @param items_per_page 每页包含的项目数。
          *  @returns 完成做操后的集合。
          */
-        public static IEnumerable<T> Query<T>(IEnumerable<T> collection, Expression<Func<T, bool>>[] filters = null,
+        public static IEnumerable<T> Query<T>(IEnumerable<T> collection, Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> order_by = null, string[] includes = null, int? page_number = null, int? items_per_page = null)
             where T : class
         {
@@ -43,13 +43,12 @@ namespace SCUTClubManager.BusinessLogic
                     }
                 }
 
-                if (filters != null)
+                if (filter != null)
                 {
                     // 过滤（搜索）。
-                    foreach (var filter in filters)
-                    {
+
                         query = query.Where(filter);
-                    }
+
                 }
 
                 // 排序。

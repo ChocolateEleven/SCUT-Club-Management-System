@@ -4,11 +4,42 @@
     ViewBag.Title = "Index";
 }
 
+$function onChange(value) {
+    window.location.href = value;
+}
+
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<form action="Message">
+    <select onchange="this.form.submit()">
+        
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+        <option value="4">Four</option>
+    </select>
+</form>
+
+    <div class="editor-label">
+        收件人 <br /> @Html.ActionLink("选择","Index")
+        <form action="Message">
+            @Html.DropDownList("receivers",String.Empty)
+            <input type="submit" value="选择" />
+        </form>
+    </div>
+
+    <div class="editor-field">
+        @Html.DropDownList("receivers", null,
+        new { onChange = "submit()"})
+    </div>^
+
+
+
+
+
 <table>
     <tr>
         <th>
