@@ -25,6 +25,8 @@ ErrorMessage = "密码只能是数字和字母的组合")]
         [MaxLength(10)]
         public string Role { get; set; }
 
+        public virtual ICollection<Poll> Polls { get; set; }
+
         //public virtual ICollection<Message> SentMessages { get; set; }
         //public virtual ICollection<Message> ReceivedMessages { get; set; }
     }

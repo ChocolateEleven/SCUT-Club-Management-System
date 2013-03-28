@@ -19,7 +19,7 @@ namespace SCUTClubManager.Models
         [Required]
         public DateTime Date { get; set; }
 
-        public int? TimeId { get; set; }
+        public int TimeId { get; set; }
 
         public virtual SubEventDescription Description { get; set; }
         public virtual Time Time { get; set; }

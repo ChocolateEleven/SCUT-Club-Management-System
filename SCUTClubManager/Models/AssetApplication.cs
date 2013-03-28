@@ -9,11 +9,10 @@ namespace SCUTClubManager.Models
     public class AssetApplication : Application
     {
         public int? SubEventId { get; set; }
+        public int TimeId { get; set; }
 
-        [Required]
-        public int Quantity { get; set; }
-        public virtual ICollection<Time> Time { get; set; }
+        public virtual Time Time { get; set; }
         public virtual SubEvent SubEvent { get; set; }
-        public virtual ICollection<Asset> Asset { get; set; }
+        public virtual ICollection<ApplicatedAsset> ApplicatedAssets { get; set; }
     }
 }

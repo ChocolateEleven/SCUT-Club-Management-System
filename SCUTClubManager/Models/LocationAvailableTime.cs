@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
@@ -11,7 +12,7 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
 
         [Required]
-        public int LocatoinId { get; set; }
+        public int LocationId { get; set; }
 
         [Required]
         public int TimeId { get; set; }

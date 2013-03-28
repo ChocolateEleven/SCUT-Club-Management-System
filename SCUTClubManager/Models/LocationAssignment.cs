@@ -22,8 +22,10 @@ namespace SCUTClubManager.Models
         [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]
         public string ApplicantName { get; set; }
 
+        public int TimeId { get; set; }
+
         public virtual ICollection<Location> Location { get; set; }
-        public virtual ICollection<Time> Time { get; set; }
+        public virtual Time Time { get; set; }
         public virtual Club Club { get; set; }
 
         [ForeignKey("ApplicantName")]

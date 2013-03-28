@@ -40,7 +40,7 @@ namespace SCUTClubManager.DAL
         public DbSet<LocationAvailableTime> LocationAvailableTimes { get; set; }
         public DbSet<Time> Times { get; set; }
         public DbSet<AssetAssignment> AssetAssignments { get; set; }
-        public DbSet<Asset> Assets { get; set; }
+        public DbSet<AssetBase> Assets { get; set; }
         public DbSet<SubEvent> SubEvents { get; set; }
         public DbSet<SubEventDescription> SubEventDescriptions { get; set; }
         public DbSet<UserPoll> UserPolls { get; set; }
@@ -57,6 +57,7 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<Student>().ToTable("Student");
 
             // TPC
+            // Application
             model_builder.Entity<ClubUnregisterApplication>().Map(m =>
                 {
                     m.MapInheritedProperties();
@@ -97,28 +98,48 @@ namespace SCUTClubManager.DAL
                 .Property(p => p.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            // 表之间的关系。
-            //model_builder.Entity<ClubInfo>().HasRequired(t => t.Details).WithRequiredPrincipal(t => t.Info);
-            //model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal(t => t.Student);
-            model_builder.Entity<Application>().HasOptional(t => t.RejectReason).WithRequired();
-            //model_builder.Entity<SubEvent>().HasRequired(t => t.Description).WithRequiredPrincipal(t => t.SubEvent);
-            //model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal(t => t.Event);
-            model_builder.Entity<SubEvent>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.SubEvent);
-            //model_builder.Entity<ClubApplication>().HasRequired(t => t.Details).WithRequiredPrincipal(t => t.Application);
-            //model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal(t => t.Message);
-            //model_builder.Entity<Student>().HasMany(t => t.Applications).WithRequired(t => t.Applicatant);
-            //model_builder.Entity<Student>().HasMany(t => t.Events).WithMany().Map(
-            //    m =>
-            //    {
-            //        m.MapLeftKey("StudentId");
-            //        m.MapRightKey("EventId");
-            //        m.ToTable("EventOrganizer");
-            //    }
-            //);
+            // AssetBase
+            model_builder.Entity<Asset>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("Asset");
+            });
+            model_builder.Entity<ApplicatedAsset>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("ApplicatedAsset");
+            });
+            model_builder.Entity<AssignedAsset>().Map(m =>
+            {
+                m.MapInheritedProperties();
+                m.ToTable("AssignedAsset");
+            });
 
-            //model_builder.Entity<Message>().HasRequired(t => t.Sender).WithMany(t => t.SentMessages);
-            //model_builder.Entity<Message>().HasOptional(t => t.Receiver).WithMany(t => t.ReceivedMessages);
-            //model_builder.Entity<Application>().HasRequired(t => t.Club).WithMany(t => t.Applications);
+            model_builder.Entity<AssetBase>()
+                .Property(p => p.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            // 表之间的关系。
+            model_builder.Entity<ClubInfo>().HasRequired(t => t.Details).WithRequiredPrincipal();
+            model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal();
+            model_builder.Entity<Application>().HasOptional(t => t.RejectReason).WithRequired();
+            model_builder.Entity<SubEvent>().HasRequired(t => t.Description).WithRequiredPrincipal();
+            model_builder.Entity<SubEvent>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.SubEvent);
+            model_builder.Entity<ClubApplication>().HasRequired(t => t.Details).WithRequiredPrincipal();
+            model_builder.Entity<Student>().HasMany(t => t.Events).WithMany(t => t.Organizers).Map(
+                m =>
+                {
+                    m.MapLeftKey("StudentId");
+                    m.MapRightKey("EventId");
+                    m.ToTable("EventOrganizer");
+                }
+            );
+            model_builder.Entity<ClubRegisterApplication>().HasMany(t => t.Branches).WithRequired().HasForeignKey(t => t.ApplicationId);
+            model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithRequired().HasForeignKey(t => t.ApplicationId);
+            model_builder.Entity<ClubRegisterApplicant>().HasRequired(t => t.Description).WithRequiredPrincipal();
+            model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal();
+            model_builder.Entity<FundApplication>().HasOptional(t => t.SubEvent).WithOptionalDependent(t => t.FundApplication).Map(m => m.MapKey("SubEventId"));
+            model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal();
             model_builder.Conventions.Remove<OneToManyCascadeDeleteConvention>();   
         }
     }

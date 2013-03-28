@@ -16,5 +16,7 @@ namespace SCUTClubManager.Models
         public string Name { get; set; }
 
         public virtual ICollection<LocationAvailableTime> AvailableTimes { get; set; }
+        public virtual ICollection<LocationApplication> Applications { get; set; }
+        public virtual ICollection<LocationAssignment> Assignments { get; set; }
     }
 }
