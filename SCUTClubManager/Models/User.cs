@@ -9,14 +9,14 @@ namespace SCUTClubManager.Models
     public class User
     {
         [Key]
-        [RegularExpression(@"^[a-z0-9A-Z]$",
-      ErrorMessage = "用户名只能是数字和字母的组合")]
-        [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,20}$",
+      ErrorMessage = "用户名只能是数字和字母的组合，长度不能超过20个字符")]
+        [MaxLength(20)]
         public string UserName { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-z0-9A-Z]$",
-ErrorMessage = "密码只能是数字和字母的组合")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        ErrorMessage = "密码只能是数字和字母的组合")]
         [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
         public string Password { get; set; }
 

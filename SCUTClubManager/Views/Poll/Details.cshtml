@@ -1,0 +1,45 @@
+﻿@model SCUTClubManager.Models.Poll
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Poll</legend>
+
+    <div class="display-label">Title</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+
+    <div class="display-label">Question</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Question)
+    </div>
+
+    <div class="display-label">Author</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Author.Password)
+    </div>
+
+    <div class="display-label">OpenDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OpenDate)
+    </div>
+
+    <div class="display-label">CloseDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CloseDate)
+    </div>
+
+    <div class="display-label">IsMultiSelectable</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsMultiSelectable)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

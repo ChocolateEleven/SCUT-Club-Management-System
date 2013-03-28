@@ -140,6 +140,7 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal();
             model_builder.Entity<FundApplication>().HasOptional(t => t.SubEvent).WithOptionalDependent(t => t.FundApplication).Map(m => m.MapKey("SubEventId"));
             model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal();
+
             model_builder.Conventions.Remove<OneToManyCascadeDeleteConvention>();   
         }
     }

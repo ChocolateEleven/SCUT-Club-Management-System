@@ -17,9 +17,8 @@ namespace SCUTClubManager.Models
         [Required]
         public int ClubId { get; set; }
 
-        [RegularExpression(@"^[a-z0-9A-Z]$",
-      ErrorMessage = "用户名只能是数字和字母的组合")]
-        [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,20}$", ErrorMessage = "只能是数字和字母的组合，长度不能超过20个字符")]
+        [MaxLength(20)]
         public string ApplicantName { get; set; }
 
         public int TimeId { get; set; }

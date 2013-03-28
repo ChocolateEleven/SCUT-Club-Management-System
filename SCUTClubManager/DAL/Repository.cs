@@ -49,7 +49,7 @@ namespace SCUTClubManager.DAL
             context.Entry(instance).State = System.Data.EntityState.Modified;
         }
 
-        public T Find(int id)
+        public T Find(object id)
         {
             return table.Find(id);
         }
