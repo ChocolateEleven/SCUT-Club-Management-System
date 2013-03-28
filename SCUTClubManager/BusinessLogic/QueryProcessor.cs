@@ -35,15 +35,21 @@ namespace SCUTClubManager.BusinessLogic
                 IQueryable<T> query = db_set as IQueryable<T>;
 
                 // 包含。
-                foreach (var include in includes)
+                if (includes != null)
                 {
-                    query.Include(include);
+                    foreach (var include in includes)
+                    {
+                        query.Include(include);
+                    }
                 }
 
-                // 过滤（搜索）。
-                foreach (var filter in filters)
+                if (filters != null)
                 {
-                    query = query.Where(filter);
+                    // 过滤（搜索）。
+                    foreach (var filter in filters)
+                    {
+                        query = query.Where(filter);
+                    }
                 }
 
                 // 排序。

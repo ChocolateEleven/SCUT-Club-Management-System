@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
+using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -47,8 +48,13 @@ namespace SCUTClubManager.Controllers
             //ViewBag.SenderId = new SelectList(db.Users, "UserName", "Password");
             //ViewBag.ReceiverId = new SelectList(db.Users, "UserName", "Password");
 
-            ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password");
-            ViewBag.ReceiverId = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password");
+           // ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
+
+            string a = "";
+            var sender = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), includes: new string[] {"1", "2"});
+            ViewBag.SenderId = new SelectList(sender, "UserName", "UserName");
+            var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), includes: new string[] { "1" });
+            ViewBag.ReceiverId = new SelectList(receiver, "UserName", "UserName");
             return View();
         } 
 
@@ -62,13 +68,15 @@ namespace SCUTClubManager.Controllers
             {
                // db.Messages.Add(message);
                // db.SaveChanges();
+                message.Sender = unitOfWork.Users.Find(message.SenderId);
+                message.Receiver = unitOfWork.Users.Find(message.ReceiverId);
                 unitOfWork.Messages.Add(message);
                 unitOfWork.SaveChanges();
                 return RedirectToAction("Index");  
             }
 
-            ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", message.SenderId);
-            ViewBag.ReceiverId = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", message.ReceiverId);
+            ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName", message.SenderId);
+            ViewBag.ReceiverId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName", message.ReceiverId);
             return View(message);
         }
         

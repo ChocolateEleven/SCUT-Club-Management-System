@@ -31,7 +31,7 @@ namespace SCUTClubManager.Models
         //"s"表示社团内可见 "a"表示所有人可见
         public string Visibility { get; set; }
 
-        [RegularExpression(@"^[a-z0-9A-Z]{1,20}$",ErrorMessage = "只能是数字和字母的组合")]
+        [RegularExpression(@"^[a-z0-9A-Z-]{1,10}$",ErrorMessage = "只能是数字和字母的组合")]
         [MaxLength(10, ErrorMessage = "宿舍号的长度不能超过10个字符")]
         public string Room { get; set; }
     }
