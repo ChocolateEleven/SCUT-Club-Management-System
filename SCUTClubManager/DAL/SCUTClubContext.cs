@@ -46,7 +46,7 @@ namespace SCUTClubManager.DAL
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
 
-        //public SCUTClubContext() : base("DefaultConnection") { }
+        public SCUTClubContext() : base("DefaultConnection") { }
 
         protected override void OnModelCreating(DbModelBuilder model_builder)
         {
