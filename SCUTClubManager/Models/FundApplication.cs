@@ -8,7 +8,7 @@ namespace SCUTClubManager.Models
 {
     public class FundApplication : Application
     {
-        public int SubEventId { get; set; }
+        public int? SubEventId { get; set; }
 
         [Required]
         public Decimal Quantity { get; set; }

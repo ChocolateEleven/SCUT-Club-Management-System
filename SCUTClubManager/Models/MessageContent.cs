@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
@@ -13,7 +14,5 @@ namespace SCUTClubManager.Models
 
         [MaxLength(500)]
         public string Content { get; set; }
-
-        public virtual Message Message { get; set; }
     }
 }

@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\QueryProcessor.cs" />
+    <Compile Include="Controllers\Default1Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="DAL\IRepository.cs" />
@@ -135,7 +136,6 @@
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventDescription.cs" />
-    <Compile Include="Models\EventOrganizer.cs" />
     <Compile Include="Models\FundApplication.cs" />
     <Compile Include="Models\FundDetails.cs" />
     <Compile Include="Models\Location.cs" />
@@ -254,6 +254,11 @@
     <Content Include="Views\Message\Delete.cshtml" />
     <Content Include="Views\Message\Details.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
+    <Content Include="Views\Default1\Index.cshtml" />
+    <Content Include="Views\Default1\Details.cshtml" />
+    <Content Include="Views\Default1\Create.cshtml" />
+    <Content Include="Views\Default1\Edit.cshtml" />
+    <Content Include="Views\Default1\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

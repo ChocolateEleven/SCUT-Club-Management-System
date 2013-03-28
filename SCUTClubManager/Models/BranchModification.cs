@@ -12,7 +12,7 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
 
         [Required]
-        public int BranchId { get; set; }
+        public int? BranchId { get; set; }
 
         [Required]
         public int ApplicationId { get; set; }

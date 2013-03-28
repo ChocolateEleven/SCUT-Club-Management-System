@@ -20,6 +20,7 @@ namespace SCUTClubManager.Models
         public virtual ICollection<Event> Events { get; set; }
         public virtual ICollection<ClubMember> Members { get; set; }
         public virtual ICollection<ClubBranch> Branches { get; set; }
+        public virtual ICollection<Application> Applications { get; set; }
 
         [Required]
         public int ClubInfoId { get; set; }
