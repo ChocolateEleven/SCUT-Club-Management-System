@@ -261,6 +261,10 @@
     <Content Include="Views\Poll\Create.cshtml" />
     <Content Include="Views\Poll\Edit.cshtml" />
     <Content Include="Views\Poll\Delete.cshtml" />
+    <Content Include="Views\Message\Create.cshtml" />
+    <Content Include="Views\Message\Delete.cshtml" />
+    <Content Include="Views\Message\Details.cshtml" />
+    <Content Include="Views\Message\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
