@@ -112,6 +112,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApplicatedAsset.cs" />
+    <Compile Include="Models\AssetBase.cs" />
+    <Compile Include="Models\AssignedAsset.cs" />
+    <Compile Include="Models\BranchCreation.cs" />
+    <Compile Include="Models\BranchDeletion.cs" />
+    <Compile Include="Models\BranchUpdate.cs" />
     <Compile Include="Models\View_Models\AccountModels.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\ApplicationRejectReason.cs" />

@@ -21,8 +21,10 @@ namespace SCUTClubManager.Models
         [MaxLength(20)]
         public string ApplicantName { get; set; }
 
+        public int TimeId { get; set; }
+
         public virtual ICollection<Location> Location { get; set; }
-        public virtual ICollection<Time> Time { get; set; }
+        public virtual Time Time { get; set; }
         public virtual Club Club { get; set; }
 
         [ForeignKey("ApplicantName")]

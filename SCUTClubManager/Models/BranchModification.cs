@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
-    public class BranchModification
+    public abstract class BranchModification
     {
         public int Id { get; set; }
 
@@ -20,9 +20,6 @@ namespace SCUTClubManager.Models
         [MaxLength(20)]
         [Required]
         public string BranchName { get; set; }
-
-        [MaxLength(1)]
-        public string Type { get; set; }
 
         [ForeignKey("BranchId")]
         public virtual ClubBranch OrigBranch { get; set; }

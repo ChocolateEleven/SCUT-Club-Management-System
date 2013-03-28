@@ -16,15 +16,15 @@ namespace SCUTClubManager.Models
         [Required]
         public int ClubId { get; set; }
 
-        [RegularExpression(@"^[a-z0-9A-Z]{1,20}$", ErrorMessage = "只能是数字和字母的组合，长度不能超过20个字符")]
-        [MaxLength(20)]
+        public int TimeId { get; set; }
+
+        [RegularExpression(@"^[a-z0-9A-Z]$",
+      ErrorMessage = "用户名只能是数字和字母的组合")]
+        [MaxLength(20, ErrorMessage = "用户名的长度不能超过20个字符")]
         public string ApplicantUserName { get; set; }
 
-        [Required]
-        public int Quantity { get; set; }
-
-        public virtual ICollection<Asset> Asset { get; set; }
-        public virtual ICollection<Time> Time { get; set; }
+        public virtual ICollection<AssignedAsset> AssignedAssets { get; set; }
+        public virtual Time Time { get; set; }
         public virtual Club Club { get; set; }
         public virtual Student Applicant { get; set; }
     }
