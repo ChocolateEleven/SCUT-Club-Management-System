@@ -25,8 +25,6 @@ namespace SCUTClubManager.Controllers
            // var messages = db.Messages.Include(m => m.Sender).Include(m => m.Receiver);
             var messages = unitOfWork.Messages;
             var list = messages.ToList();
-
-
             return View(list);
         }
 

@@ -12,19 +12,19 @@
 <table>
     <tr>
         <th>
-            Sender
+            标题
         </th>
         <th>
-            Receiver
+            发件人
         </th>
         <th>
-            Title
+            收件人
         </th>
         <th>
-            ReadMark
+            已读
         </th>
         <th>
-            Date
+            日期
         </th>
         <th></th>
     </tr>
@@ -32,13 +32,13 @@
 @foreach (var item in Model) {  
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Sender.Password)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Receiver.Password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ReadMark)
@@ -47,9 +47,9 @@
             @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("编辑", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("查看", "Details", new { id=item.Id }) |
+            @Html.ActionLink("删除", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
