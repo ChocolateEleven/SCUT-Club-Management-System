@@ -262,11 +262,6 @@
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Message\Index.cshtml" />
-    <Content Include="Views\Message\Details.cshtml" />
-    <Content Include="Views\Message\Create.cshtml" />
-    <Content Include="Views\Message\Edit.cshtml" />
-    <Content Include="Views\Message\Delete.cshtml" />
     <Content Include="Views\Poll\Index.cshtml" />
     <Content Include="Views\Poll\Details.cshtml" />
     <Content Include="Views\Poll\Create.cshtml" />

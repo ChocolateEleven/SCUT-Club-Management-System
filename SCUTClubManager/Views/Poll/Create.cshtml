@@ -34,7 +34,7 @@
             @Html.LabelFor(model => model.AuthorUserName, "Author")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("AuthorUserName", String.Empty)
+            @Html.DropDownListFor(model => model.AuthorUserName, null)
             @Html.ValidationMessageFor(model => model.AuthorUserName)
         </div>
 

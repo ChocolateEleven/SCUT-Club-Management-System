@@ -20,16 +20,16 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Message/
 
-        public ViewResult Index(string userName = null)
+        public ViewResult Index(string user_name = null)
         {
            // var messages = db.Messages.Include(m => m.Sender).Include(m => m.Receiver);
             var messages = unitOfWork.Messages;
 
             var receivers = unitOfWork.Users.ToList();
 
-            if (userName != null)
+            if (user_name != null)
             {
-                receivers = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == userName);
+                receivers = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == user_name);
             }
             
 

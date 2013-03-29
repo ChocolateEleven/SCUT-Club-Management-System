@@ -60,12 +60,15 @@ namespace SCUTClubManager.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
         // TODO: 使用自定义的Membership和Authentication来验证用户。
+        [Authorize]
+        [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
             if (ModelState.IsValid)
