@@ -100,8 +100,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessLogic\AuthenticationProcessor.cs" />
-    <Compile Include="BusinessLogic\MembershipProcessor.cs" />
+    <Compile Include="BusinessLogic\ScmRoleProvider.cs" />
+    <Compile Include="BusinessLogic\ScmMembershipProvider.cs" />
     <Compile Include="BusinessLogic\QueryProcessor.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
@@ -120,6 +120,8 @@
     <Compile Include="Models\BranchCreation.cs" />
     <Compile Include="Models\BranchDeletion.cs" />
     <Compile Include="Models\BranchUpdate.cs" />
+    <Compile Include="Models\RoleBase.cs" />
+    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Models\View_Models\AccountModels.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\ApplicationRejectReason.cs" />

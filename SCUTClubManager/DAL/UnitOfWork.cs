@@ -129,6 +129,19 @@ namespace SCUTClubManager.DAL
             }
         }
 
+        private Repository<UserRole> userRoles;
+        public Repository<UserRole> UserRoles
+        {
+            get
+            {
+                if (this.userRoles == null)
+                {
+                    this.userRoles = new Repository<UserRole>(context);
+                }
+                return userRoles;
+            }
+        }
+
         private Repository<ClubRegisterApplication> clubRegisterApplications;
         public Repository<ClubRegisterApplication> ClubRegisterApplications
         {

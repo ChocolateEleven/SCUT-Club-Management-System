@@ -20,10 +20,9 @@ namespace SCUTClubManager.Models
         [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
         public string Password { get; set; }
 
-        [Required]
-        [RegularExpression(@"^[a-zA-Z]{1,10}$")]
-        [MaxLength(10)]
-        public string Role { get; set; }
+        public int RoleId { get; set; }
+
+        public virtual UserRole Role { get; set; }
 
         public virtual ICollection<Poll> Polls { get; set; }
 

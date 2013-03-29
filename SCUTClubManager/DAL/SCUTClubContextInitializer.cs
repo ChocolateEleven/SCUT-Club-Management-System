@@ -13,12 +13,18 @@ namespace SCUTClubManager.DAL
         {
             base.Seed(context);
 
+            UserRole role = new UserRole
+            {
+                Id = 1,
+                Name = "Student"
+            };
+
             var students = new List<Student>
             {
                 new Student { 
                     UserName = "000000001",
                     Password = "123456",
-                    Role = "student",
+                    RoleId = 1,
                     FirstName = "一",
                     LastName = "张",
                     Gender = "M",
@@ -41,7 +47,7 @@ namespace SCUTClubManager.DAL
                 new Student { 
                     UserName = "000000002",
                     Password = "123456",
-                    Role = "student",
+                    RoleId = 1,
                     FirstName = "二",
                     LastName = "张",
                     Gender = "M",
@@ -64,6 +70,7 @@ namespace SCUTClubManager.DAL
 
             };
 
+            context.RoleBases.Add(role);
             students.ForEach(s => context.Set<Student>().Add(s));
             context.SaveChanges();
         }

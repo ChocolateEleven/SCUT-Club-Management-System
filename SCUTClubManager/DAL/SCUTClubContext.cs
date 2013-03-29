@@ -18,7 +18,7 @@ namespace SCUTClubManager.DAL
         public DbSet<ClubBranch> ClubBranches { get; set; }
         public DbSet<ClubApplicationInclination> ClubApplicationInclinations { get; set; }
         public DbSet<ClubApplicationDetails> ClubApplicationDetailses { get; set; }
-        public DbSet<ClubRole> ClubRoles { get; set; }
+        public DbSet<RoleBase> RoleBases { get; set; }
         public DbSet<ClubRegisterApplicant> ClubRegisterApplicants { get; set; }
         public DbSet<ClubRegisterApplicantDescription> ClubRegisterApplicantDescriptions { get; set; }
         public DbSet<Application> Applications { get; set; }
@@ -114,6 +114,22 @@ namespace SCUTClubManager.DAL
                 m.MapInheritedProperties();
                 m.ToTable("AssignedAsset");
             });
+
+            model_builder.Entity<AssetBase>()
+                .Property(p => p.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+            
+            // RoleBase
+            model_builder.Entity<UserRole>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("UserRole");
+                });
+            model_builder.Entity<ClubRole>().Map(m =>
+                {
+                    m.MapInheritedProperties();
+                    m.ToTable("ClubRole");
+                });
 
             model_builder.Entity<AssetBase>()
                 .Property(p => p.Id)
