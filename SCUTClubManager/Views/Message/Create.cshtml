@@ -54,6 +54,10 @@
             @Html.ValidationMessageFor(model => model.Date)
         </div>
 
+        <div>
+            @Html.TextAreaFor(model => model.Content.Content, new {@cols="80" , @rows="4" })
+        </div>
+
         <p>
             <input type="submit" value="Create" />
         </p>

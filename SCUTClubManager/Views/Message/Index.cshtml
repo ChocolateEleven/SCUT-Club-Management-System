@@ -4,39 +4,9 @@
     ViewBag.Title = "Index";
 }
 
-$function onChange(value) {
-    window.location.href = value;
-}
-
-<h2>Index</h2>
-
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("写消息", "Create")
 </p>
-
-<form action="Message">
-    <select onchange="this.form.submit()">
-        
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-        <option value="4">Four</option>
-    </select>
-</form>
-
-    <div class="editor-label">
-        收件人 <br /> @Html.ActionLink("选择","Index")
-        <form action="Message">
-            @Html.DropDownList("receivers",String.Empty)
-            <input type="submit" value="选择" />
-        </form>
-    </div>
-
-    <div class="editor-field">
-        @Html.DropDownList("receivers", null,
-        new { onChange = "submit()"})
-    </div>^
-
-
 
 
 
@@ -63,13 +33,13 @@ $function onChange(value) {
 @foreach (var item in Model) {  
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+             @Html.ActionLink(item.Title,"Details", new { id=item.Id })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Sender.Password)
+            @HtmlHelperExtensions.GetFullName(item.Sender)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Receiver.Password)
+            @HtmlHelperExtensions.GetFullName(item.Receiver) 
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ReadMark)
@@ -86,3 +56,16 @@ $function onChange(value) {
 }
 
 </table>
+
+<hr />
+
+<h2>@ViewBag.userName 的消息 </h2>
+
+
+<div class="editor-label">
+    按收件人搜索
+    <form action="Message">
+         @Html.DropDownList("receivers",String.Empty)
+        <input type="submit" value="搜索" />
+    </form>
+</div>
