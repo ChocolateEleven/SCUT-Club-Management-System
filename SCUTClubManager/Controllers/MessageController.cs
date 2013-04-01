@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
@@ -19,21 +20,39 @@ namespace SCUTClubManager.Controllers
 
         //
         // GET: /Message/
-
-        public ViewResult Index(string user_name = null)
+       
+        public ViewResult Index(string receivers = null)
         {
            // var messages = db.Messages.Include(m => m.Sender).Include(m => m.Receiver);
-            var messages = unitOfWork.Messages;
+            var messages =unitOfWork.Messages.ToList();
 
-            var receivers = unitOfWork.Users.ToList();
 
-            if (user_name != null)
+            if (receivers != null)
             {
-                receivers = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == user_name);
-            }
-            
+                var user = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == receivers)
+                    .Single();
 
-            ViewBag.receivers = new SelectList(receivers, "UserName", "UserName"); ;
+                messages = QueryProcessor.Query<Message>(collection: messages, filter: t => t.Receiver.UserName == user.UserName);
+                
+                if (User.IsInRole("社联"))
+                {
+                }
+                else
+                {
+                    if (user is Student)
+                    {
+                        Student student = user as Student;
+                        ViewBag.userName = student.FullName;
+                    }
+                }
+            }
+            else
+            {
+                
+                ViewBag.userName = "";
+            }
+
+            ViewBag.receivers = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName"); ;
 
             return View(messages.ToList());
         }
@@ -67,7 +86,7 @@ namespace SCUTClubManager.Controllers
             var sender = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
             ViewBag.SenderId = new SelectList(sender, "UserName", "UserName");
 
-            var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == "000000001");
+            var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
             ViewBag.ReceiverId = new SelectList(receiver, "UserName", "UserName");
             return View();
         } 

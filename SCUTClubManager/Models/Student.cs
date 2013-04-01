@@ -49,6 +49,14 @@ namespace SCUTClubManager.Models
         //"q"表示群众 "d"表示共产党员 "y"表示预备党员 "t"表示共青团员 "o"表示其他党派
         public string PoliticalId { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return LastName  + FirstName;
+            }
+        }
+
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
         public virtual ICollection<ClubMember> MemberShips { get; set; }
