@@ -15,9 +15,9 @@ namespace SCUTClubManager.Models
         public string UserName { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
-        ErrorMessage = "密码只能是数字和字母的组合")]
-        [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
+        //[RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        //ErrorMessage = "密码只能是数字和字母的组合")]
+        [MaxLength(32, ErrorMessage = "密码的长度不能超过15个字符")]
         public string Password { get; set; }
 
         public int RoleId { get; set; }
