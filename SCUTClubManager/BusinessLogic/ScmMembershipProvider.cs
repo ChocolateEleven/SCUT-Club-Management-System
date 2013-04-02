@@ -13,6 +13,23 @@ namespace SCUTClubManager.BusinessLogic
     {
         private UnitOfWork context = new UnitOfWork();
 
+        /**
+         *  检查当前用户和给定用户是否为同一人。
+         *  @param user_name 要检查的用户。
+         *  @returns 检查结果，若用户未登录也返回false。
+         */
+        public static bool IsMe(string user_name)
+        {
+            var user_identity = HttpContext.Current.User.Identity;
+
+            if (user_identity.IsAuthenticated && user_identity.Name == user_name)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public override bool ValidateUser(string user_name, string password)
         {
             if (string.IsNullOrEmpty(password.Trim()) || string.IsNullOrEmpty(user_name.Trim()))
