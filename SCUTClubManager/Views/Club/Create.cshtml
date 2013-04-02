@@ -1,0 +1,57 @@
+﻿@model SCUTClubManager.Models.Club
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Club</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Level)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Level)
+            @Html.ValidationMessageFor(model => model.Level)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Fund)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Fund)
+            @Html.ValidationMessageFor(model => model.Fund)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FoundDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FoundDate)
+            @Html.ValidationMessageFor(model => model.FoundDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ClubInfoId, "Info")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ClubInfoId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ClubInfoId)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

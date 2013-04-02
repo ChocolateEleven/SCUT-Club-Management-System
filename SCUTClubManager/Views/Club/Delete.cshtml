@@ -1,0 +1,38 @@
+﻿@model SCUTClubManager.Models.Club
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Club</legend>
+
+    <div class="display-label">Level</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Level)
+    </div>
+
+    <div class="display-label">Fund</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fund)
+    </div>
+
+    <div class="display-label">FoundDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FoundDate)
+    </div>
+
+    <div class="display-label">Info</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Info.Name)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
