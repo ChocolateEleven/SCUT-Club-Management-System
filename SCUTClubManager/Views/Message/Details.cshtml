@@ -9,30 +9,33 @@
 <fieldset>
     <legend>Message</legend>
 
-    <div class="display-label">Sender</div>
+    <div class="display-label">发件人</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Sender.Password)
+        @Html.DisplayFor(model => model.Sender.UserName)
+        @HtmlHelperExtensions.GetFullName(ViewBag.sender as SCUTClubManager.Models.User)
     </div>
 
-    <div class="display-label">Receiver</div>
+    <div class="display-label">收件人</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Receiver.Password)
+        @Html.DisplayFor(model => model.Receiver.UserName)
+        @HtmlHelperExtensions.GetFullName(ViewBag.receiver as SCUTClubManager.Models.User)
     </div>
 
-    <div class="display-label">Title</div>
+    <div class="display-label">标题</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Title)
     </div>
 
-    <div class="display-label">ReadMark</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.ReadMark)
-    </div>
-
-    <div class="display-label">Date</div>
+    <div class="display-label">日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Date)
     </div>
+
+    <div class="display-label">内容</div>
+    <div class="display-field">
+        @Html.DisplayTextFor(model => model.Content.Content)
+    </div>
+
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |

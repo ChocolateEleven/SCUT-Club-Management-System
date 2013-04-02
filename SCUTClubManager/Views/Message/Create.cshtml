@@ -15,7 +15,7 @@
         <legend>Message</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SenderId, "Sender")
+            @Html.LabelFor(model => model.SenderId, "发件人")
         </div>
         <div class="editor-field">
             @Html.DropDownList("SenderId", String.Empty)
@@ -23,7 +23,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ReceiverId, "Receiver")
+            @Html.LabelFor(model => model.ReceiverId, "收件人")
         </div>
         <div class="editor-field">
             @Html.DropDownList("ReceiverId", String.Empty)
@@ -31,30 +31,17 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Title)
+            @Html.LabelFor(model => model.Title,"标题")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Title)
             @Html.ValidationMessageFor(model => model.Title)
         </div>
-
+        
         <div class="editor-label">
-            @Html.LabelFor(model => model.ReadMark)
+            @Html.LabelFor(model => model.Content.Content,"内容")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ReadMark)
-            @Html.ValidationMessageFor(model => model.ReadMark)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Date)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Date)
-            @Html.ValidationMessageFor(model => model.Date)
-        </div>
-
-        <div>
             @Html.TextAreaFor(model => model.Content.Content, new {@cols="80" , @rows="4" })
         </div>
 

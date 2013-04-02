@@ -52,7 +52,7 @@ namespace SCUTClubManager.Controllers
                 ViewBag.userName = "";
             }
 
-            ViewBag.receivers = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName"); ;
+            ViewBag.receivers = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName"); 
 
             return View(messages.ToList());
         }
@@ -70,6 +70,9 @@ namespace SCUTClubManager.Controllers
         {
             //Message message = db.Messages.Find(id);
             Message message = unitOfWork.Messages.Find(id);
+            message.ReadMark = true;
+            ViewBag.sender = message.Sender;
+            ViewBag.receiver = message.Receiver;
             return View(message);
         }
 
@@ -103,6 +106,8 @@ namespace SCUTClubManager.Controllers
                // db.SaveChanges();
                 message.Sender = unitOfWork.Users.Find(message.SenderId);
                 message.Receiver = unitOfWork.Users.Find(message.ReceiverId);
+                message.Date = DateTime.Now;
+                message.ReadMark = false;
                 unitOfWork.Messages.Add(message);
                 unitOfWork.SaveChanges();
                 return RedirectToAction("Index");  

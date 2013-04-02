@@ -12,13 +12,13 @@ namespace SCUTClubManager.HtmlHelpers
 
         public static string GetFullName(User user)
         {
-            if (user is Student)
+            if (!(user is Student))
             {
-                return (user as Student).FullName;
+                return "社联";
             }
             else
             {
-                return "社联";
+                return (user as Student).FullName;
             }
         }
 
