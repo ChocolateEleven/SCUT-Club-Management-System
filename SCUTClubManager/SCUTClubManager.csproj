@@ -104,6 +104,7 @@
     <Compile Include="BusinessLogic\ScmRoleProvider.cs" />
     <Compile Include="BusinessLogic\ScmMembershipProvider.cs" />
     <Compile Include="BusinessLogic\QueryProcessor.cs" />
+    <Compile Include="Controllers\ClubApplicationController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
@@ -281,7 +282,6 @@
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Club\List.cshtml" />
     <Content Include="Views\Club\Details.cshtml" />
-    <Content Include="Views\Club\Edit.cshtml" />
     <Content Include="Views\Club\Delete.cshtml" />
     <Content Include="Views\Club\Index.cshtml" />
   </ItemGroup>
