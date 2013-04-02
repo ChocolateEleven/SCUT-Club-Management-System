@@ -124,6 +124,7 @@
     <Compile Include="Models\BranchCreation.cs" />
     <Compile Include="Models\BranchDeletion.cs" />
     <Compile Include="Models\BranchUpdate.cs" />
+    <Compile Include="Models\ClubMajorInfo.cs" />
     <Compile Include="Models\RoleBase.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Models\View_Models\AccountModels.cs" />
@@ -138,8 +139,7 @@
     <Compile Include="Models\ClubApplicationDetails.cs" />
     <Compile Include="Models\ClubApplicationInclination.cs" />
     <Compile Include="Models\ClubBranch.cs" />
-    <Compile Include="Models\ClubInfo.cs" />
-    <Compile Include="Models\ClubInfoDetails.cs" />
+    <Compile Include="Models\ClubSubInfo.cs" />
     <Compile Include="Models\ClubInfoModificationApplication.cs" />
     <Compile Include="Models\ClubMember.cs" />
     <Compile Include="Models\ClubRegisterApplicant.cs" />
@@ -281,7 +281,6 @@
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Club\List.cshtml" />
     <Content Include="Views\Club\Details.cshtml" />
-    <Content Include="Views\Club\Create.cshtml" />
     <Content Include="Views\Club\Edit.cshtml" />
     <Content Include="Views\Club\Delete.cshtml" />
     <Content Include="Views\Club\Index.cshtml" />

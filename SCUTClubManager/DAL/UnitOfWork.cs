@@ -10,34 +10,6 @@ namespace SCUTClubManager.DAL
     {
         private SCUTClubContext context = new SCUTClubContext();
 
-
-        private Repository<ClubInfoDetails> clubInfoDetailses;
-        public Repository<ClubInfoDetails> ClubInfoDetailses
-        {
-            get
-            {
-                if (this.clubInfoDetailses == null)
-                {
-                    this.clubInfoDetailses = new Repository<ClubInfoDetails>(context);
-                }
-                return clubInfoDetailses;
-            }
-
-        }
-
-        private Repository<ClubInfo> clubInfos;
-        public Repository<ClubInfo> ClubInfos
-        {
-            get
-            {
-                if (this.clubInfos == null)
-                {
-                    this.clubInfos = new Repository<ClubInfo>(context);
-                }
-                return clubInfos;
-            }
-        }
-
         private Repository<ClubInfoModificationApplication> clubInfoModificationApplications;
         public Repository<ClubInfoModificationApplication> ClubInfoModificationApplications
         {

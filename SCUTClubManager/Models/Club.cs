@@ -14,6 +14,22 @@ namespace SCUTClubManager.Models
         public int Level { get; set; }
         public Decimal Fund { get; set; }
         public DateTime FoundDate { get; set; }
+
+        public int MemberCount
+        {
+            get
+            {
+                int count = 0;
+
+                foreach (var branch in Branches)
+                {
+                    count += branch.MemberCount;
+                }
+
+                return count;
+            }
+        }
+
         public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
         public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
         public virtual ICollection<FundDetails> FundDetails { get; set; }
@@ -23,8 +39,11 @@ namespace SCUTClubManager.Models
         public virtual ICollection<Application> Applications { get; set; }
 
         [Required]
-        public int ClubInfoId { get; set; }
+        public int ClubSubInfoId { get; set; }
+        [Required]
+        public int ClubMajorInfoId { get; set; }
 
-        public virtual ClubInfo Info { get; set; }
+        public virtual ClubMajorInfo MajorInfo { get; set; }
+        public virtual ClubSubInfo SubInfo { get; set; }
     }
 }

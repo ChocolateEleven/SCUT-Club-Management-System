@@ -9,9 +9,13 @@ namespace SCUTClubManager.Models
     public class ClubInfoModificationApplication : Application
     {
         public virtual ICollection<BranchModification> ModificationBranches { get; set; }
-        
+
         [Required]
-        public int ClubInfoId { get; set; }
-        public virtual ClubInfo Info { get; set; }
+        public int ClubSubInfoId { get; set; }
+        [Required]
+        public int ClubMajorInfoId { get; set; }
+
+        public virtual ClubMajorInfo MajorInfo { get; set; }
+        public virtual ClubSubInfo SubInfo { get; set; }
     }
 }
