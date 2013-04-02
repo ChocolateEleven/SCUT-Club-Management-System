@@ -8,14 +8,10 @@
         $("#enableRecruit").click(function () {
             var is_enabling_recruit = $(this).data('value');
 
-            if (is_enabling_recruit != '') {
-                $.post("/Club/EnableRecruit", { "is_enabling": is_enabling_recruit }, function (data) {
-                    $('#d1').text("Value From Controller: " + data.value);
-                    $('#d2').text("Value From View: " + $('#enableRecruit').data('value'));
-                    $("#enableRecruit").text(data.text);
-                    $('#enableRecruit').data('value', data.value);
-                });
-            }
+            $.post("/Club/EnableRecruit", { "is_enabling": is_enabling_recruit }, function (data) {
+                $("#enableRecruit").text(data.text);
+                $('#enableRecruit').data('value', data.value);
+            });
         });
     });
 </script>
@@ -24,7 +20,4 @@
 
 @Html.ActionLink("社团事务审批", "List", "ClubApplication", new { page_number = 1, pass_filter = "", search = "", search_option = "", type_filter = "" })
 @Html.ActionLink("社团列表", "List", new { page_number = 1, order = "", search = "", search_option = "" })
-<a href="#" id="enableRecruit" data-value="@ViewBag.EnableRecruitValue">@ViewBag.EnableRecruitText</a>
-<div id="d1">
-</div>
-<div id="d2"
+<a href="javascript: void(0)" id="enableRecruit" data-value="@ViewBag.EnableRecruitValue">@ViewBag.EnableRecruitText</a>
