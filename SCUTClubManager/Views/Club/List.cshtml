@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.Club>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "社团列表";
 }
 
-<h2>Index</h2>
+<h2>社团列表</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,16 +12,16 @@
 <table>
     <tr>
         <th>
-            Level
+            @Html.ActionLink("社团名", "List", new { page_number = 1, order = ViewBag.NameOrderOpt, search = ViewBag.Search });
         </th>
         <th>
-            Fund
+            @Html.ActionLink("社团等级", "List", new { page_number = 1, order = ViewBag.LevelOrderOpt, search = ViewBag.Search });
         </th>
         <th>
-            FoundDate
+            @Html.ActionLink("总人数", "List", new { page_number = 1, order = ViewBag.MemberCountOrderOpt, search = ViewBag.Search });
         </th>
         <th>
-            Info
+            @Html.ActionLink("成立日期", "List", new { page_number = 1, order = ViewBag.FoundDateOrderOpt, search = ViewBag.Search });
         </th>
         <th></th>
     </tr>
@@ -29,16 +29,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.MajorInfo.Name)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Level)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Fund)
+            @Html.DisplayFor(modelItem => item.MemberCount)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FoundDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Info.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
