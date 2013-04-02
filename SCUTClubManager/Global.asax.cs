@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SCUTClubManager.Helpers;
 using SCUTClubManager.DAL;
 
 namespace SCUTClubManager
@@ -34,6 +35,8 @@ namespace SCUTClubManager
 
         protected void Application_Start()
         {
+            ConfigurationManager.Initialize();
+
             AreaRegistration.RegisterAllAreas();
 
             // Use LocalDB for Entity Framework by default

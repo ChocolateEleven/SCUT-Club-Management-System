@@ -132,7 +132,10 @@ namespace SCUTClubManager.BusinessLogic
 
         public override MembershipUser GetUser(string user_name, bool user_is_online)
         {
-            MembershipUser user = new MembershipUser("ScmMembershipProvider", user_name
+            MembershipUser user = new MembershipUser(this.Name, user_name, user_name, null, null, 
+                null, true, false, DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now);
+
+            return user;
         }
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
