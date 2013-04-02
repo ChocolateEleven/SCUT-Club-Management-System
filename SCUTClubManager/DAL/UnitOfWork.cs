@@ -127,16 +127,16 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubRegisterApplicant> clubRegisterApplicant;
-        public Repository<ClubRegisterApplicant> ClubRegisterApplicant
+        private Repository<ClubRegisterApplicant> clubRegisterApplicants;
+        public Repository<ClubRegisterApplicant> ClubRegisterApplicants
         {
             get
             {
-                if (this.clubRegisterApplicant == null)
+                if (this.clubRegisterApplicants == null)
                 {
-                    this.clubRegisterApplicant = new Repository<ClubRegisterApplicant>(context);
+                    this.clubRegisterApplicants = new Repository<ClubRegisterApplicant>(context);
                 }
-                return clubRegisterApplicant;
+                return clubRegisterApplicants;
             }
         }
 
