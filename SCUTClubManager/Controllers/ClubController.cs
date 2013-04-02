@@ -51,7 +51,13 @@ namespace SCUTClubManager.Controllers
         {
             var clubs = db.Clubs;
             string[] includes = {"MajorInfo"};
+
             ViewBag.Search = search;
+            ViewBag.CurrentOrder = order;
+            ViewBag.NameOrderOpt = ViewBag.NameOrderOpt == "" ? "NameDesc" : "";
+            ViewBag.LevelOrderOpt = ViewBag.LevelOrderOpt == "Level" ? "LevelDesc" : "Level";
+            ViewBag.FoundDateOpt = ViewBag.FoundDateOpt == "FoundDate" ? "FoundDateDesc" : "FoundDate";
+            ViewBag.MemberCountOpt = ViewBag.MemberCountOpt == "MemberCount" ? "MemberCountDesc" : "MemberCount";
 
             Expression<Func<Club, bool>> filter = null;
             if (!String.IsNullOrWhiteSpace(search))
@@ -66,42 +72,34 @@ namespace SCUTClubManager.Controllers
                     {
                         // 名字降序
                         case "NameDesc":
-                            ViewBag.NameOrderOpt = "";
                             return s.OrderByDescending(a => a.MajorInfo.Name);
 
                         // 社团等级升序
                         case "Level":
-                            ViewBag.LevelOrderOpt = "LevelDesc";
                             return s.OrderBy(a => a.Level);
 
                         // 社团等级降序
                         case "LevelDesc":
-                            ViewBag.LevelOrderOpt = "Level";
                             return s.OrderByDescending(a => a.Level);
 
                         // 成立日期升序
                         case "FoundDate":
-                            ViewBag.FoundDateOpt = "FoundDateDesc";
                             return s.OrderBy(a => a.FoundDate);
 
                         // 成立日期降序
                         case "FoundDateDesc":
-                            ViewBag.FoundDateOpt = "FoundDate";
                             return s.OrderByDescending(a => a.FoundDate);
 
                         // 总人数升序
                         case "MemberCount":
-                            ViewBag.MemberCountOpt = "MemberCountDesc";
                             return s.OrderBy(a => a.MemberCount);
 
                         // 总人数降序
                         case "MemberCountDesc":
-                            ViewBag.MemberCountOpt = "MemberCount";
                             return s.OrderByDescending(a => a.MemberCount);
 
                         // 名字升序（默认）
                         default:
-                            ViewBag.NameOrderOpt = "NameDesc";
                             return s.OrderBy(a => a.MajorInfo.Name);
                     }
                 }, includes, page_number, 20);
