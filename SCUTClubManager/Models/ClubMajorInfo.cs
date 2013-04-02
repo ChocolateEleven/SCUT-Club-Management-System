@@ -6,10 +6,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCUTClubManager.Models
 {
-    public class ClubInfoDetails
+    public class ClubMajorInfo
     {
-        [Key]
-        public int ClubInfoId { get; set; }
-        public string Regulation { get; set; }
+        public int Id { get; set; }
+
+        [MaxLength(20)]
+        public string Name { get; set; }
+
+        public string Instructor { get; set; }
     }
 }

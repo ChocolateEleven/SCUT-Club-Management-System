@@ -44,7 +44,7 @@ namespace SCUTClubManager.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    ModelState.AddModelError("", "用户名或者密码错误。");
                 }
             }
 
@@ -89,7 +89,7 @@ namespace SCUTClubManager.Controllers
 
                 if (changePasswordSucceeded)
                 {
-                    return RedirectToAction("ChangePasswordSuccess");
+                    return View("ChangePasswordSuccess");
                 }
                 else
                 {

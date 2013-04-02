@@ -15,16 +15,29 @@ namespace SCUTClubManager.DAL
         {
             base.Seed(context);
 
-            UserRole role = new UserRole
+            List<UserRole> roles = new List<UserRole>
             {
-                Id = 1,
-                Name = "Student"
+                new UserRole
+                {
+                    Id = 1,
+                    Name = "学生"
+                },
+                new UserRole
+                {
+                    Id = 2,
+                    Name = "社联"
+                }
             };
-
-            bool a = false; a = Membership.Provider is BusinessLogic.ScmMembershipProvider;
 
             var students = new List<User>
             {
+                new User
+                {
+                    UserName = "Admin",
+                    Password = PasswordProcessor.ProcessWithMD5("Admin"),
+                    RoleId = 2
+                },
+
                 new Student { 
                     UserName = "000000001",
                     Password = PasswordProcessor.ProcessWithMD5("123456"),
@@ -136,6 +149,7 @@ namespace SCUTClubManager.DAL
                 }
             };
 
+<<<<<<< HEAD
             var polls = new List<Poll> 
             { 
                 new Poll{
@@ -246,7 +260,11 @@ namespace SCUTClubManager.DAL
             messages.ForEach(s => context.Messages.Add(s));
             context.RoleBases.Add(role);
 
+=======
+            roles.ForEach(s => context.RoleBases.Add(s));
+>>>>>>> fd550e70e1d649b2493ba13ab717ea4f7c89e800
             students.ForEach(s => context.Users.Add(s));
+            messages.ForEach(s => context.Messages.Add(s));
 
             context.SaveChanges();
         }

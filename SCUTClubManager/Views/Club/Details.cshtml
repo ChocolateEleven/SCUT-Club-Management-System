@@ -1,0 +1,35 @@
+﻿@model SCUTClubManager.Models.Club
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Club</legend>
+
+    <div class="display-label">Level</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Level)
+    </div>
+
+    <div class="display-label">Fund</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fund)
+    </div>
+
+    <div class="display-label">FoundDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FoundDate)
+    </div>
+
+    <div class="display-label">Info</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Info.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

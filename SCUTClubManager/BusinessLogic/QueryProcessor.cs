@@ -47,7 +47,7 @@ namespace SCUTClubManager.BusinessLogic
                 {
                     // 过滤（搜索）。
 
-                        query = query.Where(filter);
+                    query = query.Where(filter);
 
                 }
 

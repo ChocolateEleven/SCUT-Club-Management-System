@@ -1,3 +1,4 @@
+<<<<<<< HEAD:SCUTClubManager/HtmlHelpers/Helper.cs
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using SCUTClubManager.Models;
 
-namespace SCUTClubManager.HtmlHelpers
+namespace SCUTClubManager.Helpers
 {
     public static class HtmlHelperExtensions
     {
@@ -43,4 +44,3 @@ namespace SCUTClubManager.HtmlHelpers
 
 
     }
-}

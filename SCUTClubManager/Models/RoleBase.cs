@@ -11,7 +11,8 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z]{1,10}$")]
+        // TODO: 想办法允许中文字符。
+        //[RegularExpression(@"^[a-zA-Z]{1,10}$")]
         [MaxLength(10)]
         public string Name { get; set; }
     }
