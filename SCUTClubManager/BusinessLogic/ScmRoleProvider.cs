@@ -61,6 +61,37 @@ namespace SCUTClubManager.BusinessLogic
             return false;
         }
 
+        /**
+         *  查询当前用户在给定社团中的角色。
+         *  @param club_id 要查询的社团。
+         *  @returns 查询结果，若该用户不是给定社团的成员则为空。
+         */
+        public static ClubMember GetRoleInClub(int club_id)
+        {
+            var user_identity = HttpContext.Current.User.Identity;
+            UnitOfWork context = new UnitOfWork();
+
+            if (user_identity.IsAuthenticated)
+            {
+                User user = context.Users.Find(user_identity.Name);
+
+                // 只有学生才能成为社团成员。
+                if (user is Student)
+                {
+                    Student student = user as Student;
+                    foreach (var membership in student.MemberShips)
+                    {
+                        if (membership.ClubId == club_id)
+                        {
+                            return membership;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         // 以下为对用户全局权限的管理用。用于区分系统管理员和一般用户。
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
