@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Security.Policy;
 using SCUTClubManager.DAL;
 using SCUTClubManager.Models;
 using System.Web.Security;
@@ -17,7 +18,7 @@ namespace SCUTClubManager.BusinessLogic
             if (string.IsNullOrEmpty(password.Trim()) || string.IsNullOrEmpty(user_name.Trim()))
                 return false;
 
-            string hash = FormsAuthentication.HashPasswordForStoringInConfigFile(password.Trim(), "md5");
+            string hash = PasswordProcessor.ProcessWithMD5(password);
 
             return context.Users.ToList().Any(user => (user.UserName == user_name.Trim()) && (user.Password == hash));
         }
@@ -40,7 +41,7 @@ namespace SCUTClubManager.BusinessLogic
                 return false;
 
             User user = context.Users.Find(user_name);
-            string hash = FormsAuthentication.HashPasswordForStoringInConfigFile(new_password.Trim(), "md5");
+            string hash = PasswordProcessor.ProcessWithMD5(new_password);
 
             user.Password = hash;
 
@@ -57,25 +58,24 @@ namespace SCUTClubManager.BusinessLogic
 
             if (role != null && !users.ToList().Any(t => t.UserName == user_name))
             {
-                if (role.Name == "Student")
-                {
-                    user = new Student
-                    {
-                        UserName = user_name,
-                        Password = FormsAuthentication.HashPasswordForStoringInConfigFile(password.Trim(), "md5"),
-                        Role = role
-                    };
-                }
-                else
-                {
                 user = new User
-                    {
-                        UserName = user_name,
-                        Password = FormsAuthentication.HashPasswordForStoringInConfigFile(password.Trim(), "md5"),
-                        Role = role
-                    };
-                }
+                {
+                    UserName = user_name,
+                    Password = password,
+                    Role = role
+                };
 
+                AddUser(user);
+            }
+        }
+
+        public void AddUser(User user, bool save = true)
+        {
+            user.Password = PasswordProcessor.ProcessWithMD5(user.Password);
+            context.Users.Add(user);
+
+            if (save)
+            {
                 context.SaveChanges();
             }
         }
@@ -130,9 +130,9 @@ namespace SCUTClubManager.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public override MembershipUser GetUser(string username, bool userIsOnline)
+        public override MembershipUser GetUser(string user_name, bool user_is_online)
         {
-            throw new NotImplementedException();
+            MembershipUser user = new MembershipUser("ScmMembershipProvider", user_name
         }
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)

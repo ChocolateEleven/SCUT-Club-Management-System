@@ -12,56 +12,73 @@ namespace SCUTClubManager.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        ErrorMessage = "密码只能是数字和字母的组合")]
+        [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
+        [Display(Name = "当前密码")]
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        ErrorMessage = "密码只能是数字和字母的组合")]
+        [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(Name = "新密码")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [System.Web.Mvc.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        ErrorMessage = "密码只能是数字和字母的组合")]
+        [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
+        [Display(Name = "确认新密码")]
+        [System.Web.Mvc.Compare("NewPassword", ErrorMessage = "新密码和密码确认不一致")]
         public string ConfirmPassword { get; set; }
     }
 
     public class LogInModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "用户名")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,20}$",
+      ErrorMessage = "用户名只能是数字和字母的组合，长度不能超过20个字符")]
+        [MaxLength(20)]
         public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        ErrorMessage = "密码只能是数字和字母的组合")]
+        [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
+        [Display(Name = "密码")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "记住我的登录？")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "用户名")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,20}$",
+      ErrorMessage = "用户名只能是数字和字母的组合，长度不能超过20个字符")]
+        [MaxLength(20)]
         public string UserName { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email address")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        ErrorMessage = "密码只能是数字和字母的组合")]
+        [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
+        [Display(Name = "密码")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [System.Web.Mvc.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "确认密码")]
+        [RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
+        ErrorMessage = "密码只能是数字和字母的组合")]
+        [MaxLength(15, ErrorMessage = "密码的长度不能超过15个字符")]
+        [System.Web.Mvc.Compare("Password", ErrorMessage = "输入的密码和密码确认不一致")]
         public string ConfirmPassword { get; set; }
     }
 }

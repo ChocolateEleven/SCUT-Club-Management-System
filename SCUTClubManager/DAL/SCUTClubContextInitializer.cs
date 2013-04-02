@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using SCUTClubManager.Models;
+using System.Web.Security;
+using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.DAL
 {
@@ -19,11 +21,13 @@ namespace SCUTClubManager.DAL
                 Name = "Student"
             };
 
-            var students = new List<Student>
+            bool a = false; a = Membership.Provider is BusinessLogic.ScmMembershipProvider;
+
+            var students = new List<User>
             {
                 new Student { 
                     UserName = "000000001",
-                    Password = "123456",
+                    Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     FirstName = "一",
                     LastName = "张",
@@ -46,7 +50,7 @@ namespace SCUTClubManager.DAL
 
                 new Student { 
                     UserName = "000000002",
-                    Password = "123456",
+                    Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     FirstName = "二",
                     LastName = "张",
@@ -116,9 +120,6 @@ namespace SCUTClubManager.DAL
 
             };
 
-            students.ForEach(s => context.Set<Student>().Add(s));
-
-
             var messages = new List<Message>
             {
                 new Message{
@@ -136,9 +137,9 @@ namespace SCUTClubManager.DAL
             };
 
             messages.ForEach(s => context.Messages.Add(s));
-
-
             context.RoleBases.Add(role);
+            students.ForEach(s => context.Users.Add(s));
+
             context.SaveChanges();
         }
     }
