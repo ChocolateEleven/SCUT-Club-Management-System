@@ -12,16 +12,16 @@ namespace SCUTClubManager.Controllers
 { 
     public class PollController : Controller
     {
-        private SCUTClubContext db = new SCUTClubContext();
-       // private UnitOfWork unitOfWork = new UnitOfWork();
+        //private SCUTClubContext db = new SCUTClubContext();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         //
         // GET: /Poll/
 
         public ViewResult Index()
         {
-            var polls = db.Polls.Include(p => p.Author);
-           // var polls = unitOfWork.Polls;
+            // var polls = db.Polls.Include(p => p.Author);
+            var polls = unitOfWork.Polls;
             return View(polls.ToList());
         }
 
@@ -30,7 +30,7 @@ namespace SCUTClubManager.Controllers
 
         public ViewResult Details(int id)
         {
-            Poll poll = db.Polls.Find(id);
+            Poll poll = unitOfWork.Polls.Find(id);
             return View(poll);
         }
 
@@ -39,7 +39,8 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.AuthorUserName = new SelectList(db.Users, "UserName", "Password");
+            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
+
             return View();
         } 
 
@@ -51,12 +52,12 @@ namespace SCUTClubManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Polls.Add(poll);
-                db.SaveChanges();
+                unitOfWork.Polls.Add(poll);
+                unitOfWork.SaveChanges();
                 return RedirectToAction("Index");  
             }
 
-            ViewBag.AuthorUserName = new SelectList(db.Users, "UserName", "Password", poll.AuthorUserName);
+            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", poll.AuthorUserName);
             return View(poll);
         }
         
@@ -65,8 +66,8 @@ namespace SCUTClubManager.Controllers
  
         public ActionResult Edit(int id)
         {
-            Poll poll = db.Polls.Find(id);
-            ViewBag.AuthorUserName = new SelectList(db.Users, "UserName", "Password", poll.AuthorUserName);
+            Poll poll = unitOfWork.Polls.Find(id);
+            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", poll.AuthorUserName);
             return View(poll);
         }
 
@@ -78,11 +79,13 @@ namespace SCUTClubManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(poll).State = EntityState.Modified;
-                db.SaveChanges();
+               // db.Entry(poll).State = EntityState.Modified;
+               // db.SaveChanges();
+                unitOfWork.Polls.Update(poll);
+                unitOfWork.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AuthorUserName = new SelectList(db.Users, "UserName", "Password", poll.AuthorUserName);
+            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", poll.AuthorUserName);
             return View(poll);
         }
 
@@ -91,7 +94,7 @@ namespace SCUTClubManager.Controllers
  
         public ActionResult Delete(int id)
         {
-            Poll poll = db.Polls.Find(id);
+            Poll poll = unitOfWork.Polls.Find(id);
             return View(poll);
         }
 
@@ -101,15 +104,15 @@ namespace SCUTClubManager.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {            
-            Poll poll = db.Polls.Find(id);
-            db.Polls.Remove(poll);
-            db.SaveChanges();
+            Poll poll = unitOfWork.Polls.Find(id);
+            unitOfWork.Polls.Delete(poll);
+            unitOfWork.SaveChanges();
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            unitOfWork.Dispose();
             base.Dispose(disposing);
         }
     }

@@ -123,8 +123,8 @@ namespace SCUTClubManager.DAL
             var messages = new List<Message>
             {
                 new Message{
-                    SenderId = "000000004",
-                    ReceiverId = "000000002",
+                    SenderId = students[3].UserName,
+                    ReceiverId = students[1].UserName,
                     Title = "test",
                     ReadMark = true,
                     Date = new DateTime(2009,09,09),
@@ -136,8 +136,116 @@ namespace SCUTClubManager.DAL
                 }
             };
 
+            var polls = new List<Poll> 
+            { 
+                new Poll{
+                    Title = "testPoll",
+                    Question = "Poll Question",
+                    Author = students[1],
+                    AuthorUserName = students[1].UserName,
+                    OpenDate = new DateTime(2013,01,01),
+                    CloseDate = new DateTime(2013,04,01),
+                    IsMultiSelectable = false,
+                    Items = new List<PollItem>
+                    {
+                        new PollItem{
+                            PollId = 1,
+                            Caption = "A",
+                            Count = 10
+                        },
+                        new PollItem{
+                            PollId = 2,
+                            Caption = "B",
+                            Count = 170
+                        },
+                        new PollItem{
+                            PollId = 3,
+                            Caption = "C",
+                            Count = 50
+                        },
+                        new PollItem{
+                            PollId = 4,
+                            Caption = "D",
+                            Count = 20
+                        }
+                    }
+                   
+                },
+
+                new Poll{
+                    Title = "testPoll2",
+                    Question = "Poll Question2",
+                    Author = students[2],
+                    AuthorUserName = students[1].UserName,
+                    OpenDate = new DateTime(2013,04,01),
+                    CloseDate = new DateTime(2013,04,22),
+                    IsMultiSelectable = false,
+                    Items = new List<PollItem>
+                    {
+                        new PollItem{
+                            PollId = 1,
+                            Caption = "A",
+                            Count = 0
+                        },
+                        new PollItem{
+                            PollId = 2,
+                            Caption = "B",
+                            Count = 760
+                        },
+                        new PollItem{
+                            PollId = 3,
+                            Caption = "C",
+                            Count = 540
+                        },
+                        new PollItem{
+                            PollId = 4,
+                            Caption = "D",
+                            Count = 230
+                        }
+                    }
+                   
+                },
+
+                new Poll{
+                    Title = "testPoll3",
+                    Question = "Poll Question3",
+                    Author = students[2],
+                    AuthorUserName = students[1].UserName,
+                    OpenDate = new DateTime(2013,05,10),
+                    CloseDate = new DateTime(2013,05,30),
+                    IsMultiSelectable = false,
+                    Items = new List<PollItem>
+                    {
+                        new PollItem{
+                            PollId = 1,
+                            Caption = "A",
+                            Count = 60
+                        },
+                        new PollItem{
+                            PollId = 2,
+                            Caption = "B",
+                            Count = 370
+                        },
+                        new PollItem{
+                            PollId = 3,
+                            Caption = "C",
+                            Count = 5
+                        },
+                        new PollItem{
+                            PollId = 4,
+                            Caption = "D",
+                            Count = 30
+                        }
+                    }
+                   
+                }
+            };
+
+            polls.ForEach(s => context.Polls.Add(s));
+
             messages.ForEach(s => context.Messages.Add(s));
             context.RoleBases.Add(role);
+
             students.ForEach(s => context.Users.Add(s));
 
             context.SaveChanges();

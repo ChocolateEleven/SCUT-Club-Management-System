@@ -4,6 +4,17 @@
     ViewBag.Title = "Create";
 }
 
+<script>
+    $(document).ready(function(){
+        $("p").click(function ()
+        {
+            $(this).hide();
+        });
+    });
+</script>
+
+<p>stud</p>
+
 <h2>Create</h2>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -61,6 +72,8 @@
             @Html.EditorFor(model => model.IsMultiSelectable)
             @Html.ValidationMessageFor(model => model.IsMultiSelectable)
         </div>
+        
+        
 
         <p>
             <input type="submit" value="Create" />

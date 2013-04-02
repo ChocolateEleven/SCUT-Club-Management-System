@@ -22,5 +22,25 @@ namespace SCUTClubManager.HtmlHelpers
             }
         }
 
+        public static string getStatus(DateTime openTime, DateTime closeTime)
+        {
+            if (openTime.CompareTo(DateTime.Now) > 0)
+            {
+                return "暂未开始";
+            }
+            else if (openTime.CompareTo(DateTime.Now) <= 0 &&
+                closeTime.CompareTo(DateTime.Now) >= 0)
+            {
+                return "进行中";
+            }
+            else if (closeTime.CompareTo(DateTime.Now) < 0)
+            {
+                return "已结束";
+            }
+
+            return "";
+        }
+
+
     }
 }

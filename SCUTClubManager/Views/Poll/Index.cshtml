@@ -12,22 +12,22 @@
 <table>
     <tr>
         <th>
-            Title
+            标题
         </th>
         <th>
-            Question
+            问题
         </th>
         <th>
-            Author
+            发起人
         </th>
         <th>
-            OpenDate
+            开始时间
         </th>
         <th>
-            CloseDate
+            结束时间
         </th>
         <th>
-            IsMultiSelectable
+            状态
         </th>
         <th></th>
     </tr>
@@ -41,7 +41,7 @@
             @Html.DisplayFor(modelItem => item.Question)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Author.Password)
+            @Html.DisplayFor(modelItem => item.Author.UserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.OpenDate)
@@ -50,7 +50,7 @@
             @Html.DisplayFor(modelItem => item.CloseDate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IsMultiSelectable)
+            @HtmlHelperExtensions.getStatus(item.OpenDate, item.CloseDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
