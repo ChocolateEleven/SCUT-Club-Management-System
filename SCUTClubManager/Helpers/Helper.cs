@@ -5,11 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using SCUTClubManager.Models;
 
-namespace SCUTClubManager.HtmlHelpers
+namespace SCUTClubManager.Helpers
 {
     public static class HtmlHelperExtensions
     {
-
         public static string GetFullName(User user)
         {
             if (!(user is Student))
