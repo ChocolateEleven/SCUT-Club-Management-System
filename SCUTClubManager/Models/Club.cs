@@ -15,20 +15,7 @@ namespace SCUTClubManager.Models
         public Decimal Fund { get; set; }
         public DateTime FoundDate { get; set; }
 
-        public int MemberCount
-        {
-            get
-            {
-                int count = 0;
-
-                foreach (var branch in Branches)
-                {
-                    count += branch.MemberCount;
-                }
-
-                return count;
-            }
-        }
+        public int MemberCount { get; set; }
 
         public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
         public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
