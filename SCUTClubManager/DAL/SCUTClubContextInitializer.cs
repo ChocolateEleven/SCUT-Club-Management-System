@@ -15,6 +15,7 @@ namespace SCUTClubManager.DAL
         {
             base.Seed(context);
 
+            #region UserRoles
             List<UserRole> roles = new List<UserRole>
             {
                 new UserRole
@@ -28,7 +29,9 @@ namespace SCUTClubManager.DAL
                     Name = "社联"
                 }
             };
+            #endregion
 
+            #region Users(including students)
             var students = new List<User>
             {
                 new User
@@ -86,7 +89,7 @@ namespace SCUTClubManager.DAL
 
                 new Student { 
                     UserName = "000000003",
-                    Password = "123456",
+                    Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     FirstName = "三",
                     LastName = "张",
@@ -109,7 +112,7 @@ namespace SCUTClubManager.DAL
 
                 new Student { 
                     UserName = "000000004",
-                    Password = "123456",
+                    Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     FirstName = "四",
                     LastName = "张",
@@ -132,7 +135,9 @@ namespace SCUTClubManager.DAL
 
 
             };
+            #endregion
 
+            #region Messages
             var messages = new List<Message>
             {
                 new Message{
@@ -148,8 +153,9 @@ namespace SCUTClubManager.DAL
                    }
                 }
             };
+            #endregion
 
-<<<<<<< HEAD
+            #region Polls
             var polls = new List<Poll> 
             { 
                 new Poll{
@@ -254,15 +260,269 @@ namespace SCUTClubManager.DAL
                    
                 }
             };
+            #endregion
 
+            #region ClubMajorInfos
+            List<ClubMajorInfo> major_infos = new List<ClubMajorInfo>
+            {
+                new ClubMajorInfo
+                {
+                    Instructor = "萨麦尔",
+                    Name = "Ira"
+                },
+                new ClubMajorInfo
+                {
+                    Instructor = "利维坦",
+                    Name = "Invidia"
+                },
+                new ClubMajorInfo
+                {
+                    Instructor = "路西法",
+                    Name = "Superbia"
+                },
+                new ClubMajorInfo
+                {
+                    Instructor = "阿斯莫德",
+                    Name = "Luxuria"
+                }
+            };
+            #endregion
+
+            #region ClubSubInfos
+            List<ClubSubInfo> sub_infos = new List<ClubSubInfo>
+            {
+                new ClubSubInfo
+                {
+                    Address = "Nevaeh",
+                    PosterUrl = "ClubPosters/Ira.png",
+                    Principle = "Saligia",
+                    Purpose = "...",
+                    Range = "Ultimate",
+                    Regulation = "Nothing"
+                },
+                new ClubSubInfo
+                {
+                    Address = "Esidarap",
+                    PosterUrl = "ClubPosters/Invidia.png",
+                    Principle = "Saligia",
+                    Purpose = "...",
+                    Range = "Ultimate",
+                    Regulation = "Nothing"
+                },
+                new ClubSubInfo
+                {
+                    Address = "Anavrin",
+                    PosterUrl = "ClubPosters/Superbia.png",
+                    Principle = "Saligia",
+                    Purpose = "...",
+                    Range = "Ultimate",
+                    Regulation = "Nothing"
+                },
+                new ClubSubInfo
+                {
+                    Address = "Muisyle",
+                    PosterUrl = "ClubPosters/Luxuria.png",
+                    Principle = "Saligia",
+                    Purpose = "...",
+                    Range = "Ultimate",
+                    Regulation = "Nothing"
+                }
+            };
+            #endregion
+
+            #region Clubs
+            List<Club> clubs = new List<Club>
+            {
+                new Club
+                {
+                    Level = 1,
+                    Fund = 100,
+                    FoundDate = DateTime.Now,
+                    MajorInfo = major_infos[0],
+                    SubInfo = sub_infos[0],
+                    MemberCount = 2
+                },
+                new Club
+                {
+                    Level = 1,
+                    Fund = 20,
+                    FoundDate = DateTime.Now.AddDays(10),
+                    MajorInfo = major_infos[1],
+                    SubInfo = sub_infos[1],
+                    MemberCount = 1
+                },
+                new Club
+                {
+                    Level = 3,
+                    Fund = 1000,
+                    FoundDate = DateTime.Parse("2009-10-20"),
+                    MajorInfo = major_infos[2],
+                    SubInfo = sub_infos[2],
+                    MemberCount = 3
+                },
+                new Club
+                {
+                    Level = 0,
+                    Fund = 33,
+                    FoundDate = DateTime.Parse("2012-11-11"),
+                    MajorInfo = major_infos[3],
+                    SubInfo = sub_infos[3],
+                    MemberCount = 1
+                }
+            };
+#endregion
+
+            #region ClubBranches
+            List<ClubBranch> branches = new List<ClubBranch>
+            {
+                new ClubBranch
+                {
+                    Club = clubs[0],
+                    MemberCount = 2,
+                    NewMemberCount = 0,
+                    BranchName = "会员部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[0],
+                    MemberCount = 0,
+                    NewMemberCount = 0,
+                    BranchName = "信息部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[1],
+                    MemberCount = 1,
+                    NewMemberCount = 1,
+                    BranchName = "会员部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[2],
+                    MemberCount = 1,
+                    NewMemberCount = 0,
+                    BranchName = "会员部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[2],
+                    MemberCount = 0,
+                    NewMemberCount = 0,
+                    BranchName = "公交部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[2],
+                    MemberCount = 2,
+                    NewMemberCount = 1,
+                    BranchName = "宣传部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[3],
+                    MemberCount = 1,
+                    NewMemberCount = 1,
+                    BranchName = "会员部"
+                }
+            };
+            #endregion
+
+#region ClubRoles
+            List<ClubRole> club_roles = new List<ClubRole>
+            {
+                new ClubRole
+                {
+                    Id = 3,
+                    Name = "会员"
+                },
+                new ClubRole
+                {
+                    Id = 4,
+                    Name = "干事"
+                },
+                new ClubRole
+                {
+                    Id = 5,
+                    Name = "会长"
+                },
+                new ClubRole
+                {
+                    Id = 6,
+                    Name = "部长"
+                }
+            };
+#endregion
+
+#region ClubMembers
+            List<ClubMember> club_members = new List<ClubMember>
+            {
+                new ClubMember
+                {
+                    BranchId = 1,
+                    ClubId = 1,
+                    ClubRoleId = 3,
+                    JoinDate = DateTime.Now,
+                    UserName = "000000001"
+                },
+                new ClubMember
+                {
+                    BranchId = 1,
+                    ClubId = 1,
+                    ClubRoleId = 5,
+                    JoinDate = DateTime.Now,
+                    UserName = "000000002"
+                },
+                new ClubMember
+                {
+                    BranchId = 3,
+                    ClubId = 2,
+                    ClubRoleId = 5,
+                    JoinDate = DateTime.Now.AddDays(20),
+                    UserName = "000000003"
+                },
+                new ClubMember
+                {
+                    BranchId = 4,
+                    ClubId = 3,
+                    ClubRoleId = 5,
+                    JoinDate = DateTime.Parse("2009-10-20"),
+                    UserName = "000000004"
+                },
+                new ClubMember
+                {
+                    BranchId = 6,
+                    ClubId = 3,
+                    ClubRoleId = 6,
+                    JoinDate = DateTime.Parse("2010-3-3"),
+                    UserName = "000000003"
+                },
+                new ClubMember
+                {
+                    BranchId = 6,
+                    ClubId = 3,
+                    ClubRoleId = 4,
+                    JoinDate = DateTime.Now,
+                    UserName = "000000001"
+                },
+                new ClubMember
+                {
+                    BranchId = 7,
+                    ClubId = 4,
+                    ClubRoleId = 5,
+                    JoinDate = DateTime.Parse("2012-11-11"),
+                    UserName = "000000001"
+                }
+            };
+#endregion
+
+            major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
+            sub_infos.ForEach(s => context.ClubSubInfos.Add(s));
+            club_roles.ForEach(s => context.RoleBases.Add(s));
+            clubs.ForEach(s => context.Clubs.Add(s));
+            branches.ForEach(s => context.ClubBranches.Add(s));
+            club_members.ForEach(s => context.ClubMembers.Add(s));
             polls.ForEach(s => context.Polls.Add(s));
-
-            messages.ForEach(s => context.Messages.Add(s));
-            context.RoleBases.Add(role);
-
-=======
             roles.ForEach(s => context.RoleBases.Add(s));
->>>>>>> fd550e70e1d649b2493ba13ab717ea4f7c89e800
             students.ForEach(s => context.Users.Add(s));
             messages.ForEach(s => context.Messages.Add(s));
 
