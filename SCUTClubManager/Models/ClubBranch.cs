@@ -21,7 +21,6 @@ namespace SCUTClubManager.Models
         public virtual Club Club { get; set; }
 
         [Required]
-
         public int MemberCount { get; set; }
 
         [Required]

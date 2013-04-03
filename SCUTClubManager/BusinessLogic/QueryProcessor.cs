@@ -43,12 +43,10 @@ namespace SCUTClubManager.BusinessLogic
                     }
                 }
 
+                // 过滤（搜索）。
                 if (filter != null)
                 {
-                    // 过滤（搜索）。
-
                     query = query.Where(filter);
-
                 }
 
                 // 排序。

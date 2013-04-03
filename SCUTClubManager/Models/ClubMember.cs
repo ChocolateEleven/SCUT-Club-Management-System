@@ -26,7 +26,6 @@ namespace SCUTClubManager.Models
 
         public int ClubRoleId { get; set; }
 
-
         public virtual Student Student { get; set; }
         public virtual Club Club { get; set; }
         public virtual ClubRole ClubRole { get; set; }
