@@ -30,7 +30,7 @@ namespace SCUTClubManager.Controllers
 
             if (!Roles.Provider.IsUserInRole(User.Identity.Name, "社联"))
             {
-                RedirectToAction("List", new { page_number = 1, order = "", search = "", search_option = "" });
+                return RedirectToAction("List", new { page_number = 1, order = "", search = "", search_option = "" });
             }
 
             return View();
@@ -52,12 +52,17 @@ namespace SCUTClubManager.Controllers
             var clubs = db.Clubs;
             string[] includes = {"MajorInfo"};
 
+            if (order == null)
+            {
+                order = "";
+            }
+
             ViewBag.Search = search;
             ViewBag.CurrentOrder = order;
-            ViewBag.NameOrderOpt = ViewBag.NameOrderOpt == "" ? "NameDesc" : "";
-            ViewBag.LevelOrderOpt = ViewBag.LevelOrderOpt == "Level" ? "LevelDesc" : "Level";
-            ViewBag.FoundDateOpt = ViewBag.FoundDateOpt == "FoundDate" ? "FoundDateDesc" : "FoundDate";
-            ViewBag.MemberCountOpt = ViewBag.MemberCountOpt == "MemberCount" ? "MemberCountDesc" : "MemberCount";
+            ViewBag.NameOrderOpt = order == "" ? "NameDesc" : "";
+            ViewBag.LevelOrderOpt = order == "Level" ? "LevelDesc" : "Level";
+            ViewBag.FoundDateOrderOpt = order == "FoundDate" ? "FoundDateDesc" : "FoundDate";
+            ViewBag.MemberCountOrderOpt = order == "MemberCount" ? "MemberCountDesc" : "MemberCount";
 
             Expression<Func<Club, bool>> filter = null;
             if (!String.IsNullOrWhiteSpace(search))
@@ -119,13 +124,13 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Club/Delete/5
 
-        [Authorize(Roles = "社联")]
-        public ActionResult Delete(int id)
-        {
-            Club club = db.Clubs.Find(id);
+        //[Authorize(Roles = "社联")]
+        //public ActionResult Delete(int id)
+        //{
+        //    Club club = db.Clubs.Find(id);
 
-            return View(club);
-        }
+        //    return View(club);
+        //}
 
         [Authorize]
         public ActionResult Introduction(int id)
@@ -155,15 +160,15 @@ namespace SCUTClubManager.Controllers
         //
         // POST: /Club/Delete/5
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [Authorize(Roles = "社联")]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {            
             Club club = db.Clubs.Find(id);
             db.Clubs.Delete(club);
             db.SaveChanges();
 
-            return RedirectToAction("Index");
+            return Json(new { idToDelete = id, success = true });
         }
 
         protected override void Dispose(bool disposing)

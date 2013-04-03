@@ -6,9 +6,18 @@
 
 <h2>社团列表</h2>
 
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        deleteConfirm(".DeleteButton", "确定要取缔该社团吗？", "/Club/Delete");
+    });
+</script>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
 <table>
     <tr>
         <th>
@@ -23,11 +32,14 @@
         <th>
             @Html.ActionLink("成立日期", "List", new { page_number = 1, order = ViewBag.FoundDateOrderOpt, search = ViewBag.Search });
         </th>
-        <th></th>
+        @if (Roles.IsUserInRole("社联"))
+        {
+            <th></th>
+        }
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="row-@item.Id">
         <td>
             @Html.DisplayFor(modelItem => item.MajorInfo.Name)
         </td>
@@ -40,11 +52,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.FoundDate)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
+        @if (Roles.IsUserInRole("社联"))
+        {
+            <td>
+                <a href="#" class="DeleteButton" data-id="@item.Id">取缔</a>
+            </td>
+        }
     </tr>
 }
 

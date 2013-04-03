@@ -282,8 +282,8 @@
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Club\List.cshtml" />
     <Content Include="Views\Club\Details.cshtml" />
-    <Content Include="Views\Club\Delete.cshtml" />
     <Content Include="Views\Club\Index.cshtml" />
+    <Content Include="Views\Shared\_Confirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
