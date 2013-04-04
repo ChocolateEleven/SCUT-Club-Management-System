@@ -7,9 +7,8 @@ using SCUTClubManager.Models;
 
 namespace SCUTClubManager.Helpers
 {
-    public static class HtmlHelperExtensions
+    public static class LabelHelpers
     {
-
         public static string GetFullName(User user)
         {
             if (!(user is Student))
@@ -22,7 +21,7 @@ namespace SCUTClubManager.Helpers
             }
         }
 
-        public static string getStatus(DateTime openTime, DateTime closeTime)
+        public static string GetStatus(DateTime openTime, DateTime closeTime)
         {
             if (openTime.CompareTo(DateTime.Now) > 0)
             {

@@ -12,13 +12,13 @@
     <div class="display-label">发件人</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Sender.UserName)
-        @HtmlHelperExtensions.GetFullName(ViewBag.sender as SCUTClubManager.Models.User)
+        @LabelHelpers.GetFullName(ViewBag.sender as SCUTClubManager.Models.User)
     </div>
 
     <div class="display-label">收件人</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Receiver.UserName)
-        @HtmlHelperExtensions.GetFullName(ViewBag.receiver as SCUTClubManager.Models.User)
+        @LabelHelpers.GetFullName(ViewBag.receiver as SCUTClubManager.Models.User)
     </div>
 
     <div class="display-label">标题</div>

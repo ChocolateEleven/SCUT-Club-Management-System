@@ -33,10 +33,10 @@
              @Html.ActionLink(item.Title,"Details", new { id=item.Id })
         </td>
         <td>
-            @HtmlHelperExtensions.GetFullName(item.Sender)
+            @LabelHelpers.GetFullName(item.Sender)
         </td>
         <td>
-            @HtmlHelperExtensions.GetFullName(item.Receiver) 
+            @LabelHelpers.GetFullName(item.Receiver) 
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)

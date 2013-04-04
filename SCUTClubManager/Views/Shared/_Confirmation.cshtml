@@ -12,7 +12,6 @@
                     "确认": function () {
                         var data = {};
                         data[param_name] = $(source).data(param_name);
-
                         $.post(url, data, function (data) {
                             callback(data);
                             $("#confirmWnd").dialog("close");

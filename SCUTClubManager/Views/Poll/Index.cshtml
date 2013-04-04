@@ -50,7 +50,7 @@
             @Html.DisplayFor(modelItem => item.CloseDate)
         </td>
         <td>
-            @HtmlHelperExtensions.getStatus(item.OpenDate, item.CloseDate)
+            @LabelHelpers.GetStatus(item.OpenDate, item.CloseDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

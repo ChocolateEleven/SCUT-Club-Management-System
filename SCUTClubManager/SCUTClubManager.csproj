@@ -118,7 +118,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConfigurationManager.cs" />
-    <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Helpers\LabelHelpers.cs" />
+    <Compile Include="Helpers\IEnumerableExtensions.cs" />
     <Compile Include="Models\ApplicatedAsset.cs" />
     <Compile Include="Models\AssetBase.cs" />
     <Compile Include="Models\AssignedAsset.cs" />
@@ -284,6 +285,7 @@
     <Content Include="Views\Club\Details.cshtml" />
     <Content Include="Views\Club\Index.cshtml" />
     <Content Include="Views\Shared\_Confirmation.cshtml" />
+    <Content Include="Views\Club\Introduction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
