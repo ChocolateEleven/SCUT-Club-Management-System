@@ -14,23 +14,19 @@
     });
 </script>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
 <table>
     <tr>
         <th>
-            @Html.ActionLink("社团名", "List", new { page_number = 1, order = ViewBag.NameOrderOpt, search = ViewBag.Search });
+            @Html.ActionLink("社团名", "List", new { page_number = 1, order = ViewBag.NameOrderOpt, search = ViewBag.Search })
         </th>
         <th>
-            @Html.ActionLink("社团等级", "List", new { page_number = 1, order = ViewBag.LevelOrderOpt, search = ViewBag.Search });
+            @Html.ActionLink("社团等级", "List", new { page_number = 1, order = ViewBag.LevelOrderOpt, search = ViewBag.Search })
         </th>
         <th>
-            @Html.ActionLink("总人数", "List", new { page_number = 1, order = ViewBag.MemberCountOrderOpt, search = ViewBag.Search });
+            @Html.ActionLink("总人数", "List", new { page_number = 1, order = ViewBag.MemberCountOrderOpt, search = ViewBag.Search })
         </th>
         <th>
-            @Html.ActionLink("成立日期", "List", new { page_number = 1, order = ViewBag.FoundDateOrderOpt, search = ViewBag.Search });
+            @Html.ActionLink("成立日期", "List", new { page_number = 1, order = ViewBag.FoundDateOrderOpt, search = ViewBag.Search })
         </th>
         @if (Roles.IsUserInRole("社联"))
         {
@@ -41,7 +37,7 @@
 @foreach (var item in Model) {
     <tr id="row-@item.Id">
         <td>
-            @Html.DisplayFor(modelItem => item.MajorInfo.Name)
+            @Html.ActionLink(item.MajorInfo.Name, "Introduction", new { id = item.Id })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Level)
