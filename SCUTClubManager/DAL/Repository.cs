@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace SCUTClubManager.DAL
 {
@@ -52,6 +53,12 @@ namespace SCUTClubManager.DAL
         public T Find(object id)
         {
             return table.Find(id);
+        }
+
+        public IRepository<T> Include<TProperty>(Expression<Func<T, TProperty>> path)
+        {
+            table.Include(path);
+            return this;
         }
     }
 }
