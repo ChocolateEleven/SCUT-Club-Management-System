@@ -5,6 +5,7 @@ using System.Web;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using PagedList;
+using SCUTClubManager.Helpers;
 
 namespace SCUTClubManager.BusinessLogic
 {
@@ -24,35 +25,44 @@ namespace SCUTClubManager.BusinessLogic
          *  @returns 完成做操后的集合。
          */
         public static IEnumerable<T> Query<T>(IEnumerable<T> collection, Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> order_by = null, string[] includes = null, int? page_number = null, int? items_per_page = null)
+            String order_by = null, string[] includes = null, int? page_number = null, int? items_per_page = null)
             where T : class
         {
             IPagedList<T> paged_list = null;
 
             if (collection != null && collection is DbSet<T>)
             {
-                DbSet<T> db_set = collection as DbSet<T>;
-                IQueryable<T> query = db_set as IQueryable<T>;
-
+                IQueryable<T> db_set = collection as DbSet<T>;
+                IEnumerable<T> query = null;
+                              
                 // 包含。
                 if (includes != null)
                 {
                     foreach (var include in includes)
                     {
-                        query.Include(include);
+                        db_set = db_set.Include(include);
                     }
                 }
 
                 // 过滤（搜索）。
                 if (filter != null)
                 {
-                    query = query.Where(filter);
+                    db_set = db_set.Where(filter);
                 }
+
+                query = db_set;
 
                 // 排序。
                 if (order_by != null)
                 {
-                    query = order_by(query);
+                    if (order_by.EndsWith("Desc") || order_by.EndsWith("Descending"))
+                    {
+                        query = query.OrderByDescending(order_by.Substring(0, order_by.IndexOf("Desc")));
+                    }
+                    else
+                    {
+                        query = query.OrderBy(order_by);
+                    }
                 }
 
                 // 分页。

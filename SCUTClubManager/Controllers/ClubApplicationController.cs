@@ -81,7 +81,7 @@ namespace SCUTClubManager.Controllers
             }
 
             var club_list = QueryProcessor.Query<Application>(applications, filter: filter,
-                order_by: s => s.OrderBy(r => r.Date), page_number: page_number, items_per_page: 20);
+                order_by: "Date", page_number: page_number, items_per_page: 20);
 
             return View(club_list);
         }

@@ -52,14 +52,14 @@ namespace SCUTClubManager.Controllers
             var clubs = db.Clubs;
             string[] includes = {"MajorInfo"};
 
-            if (order == null)
+            if (String.IsNullOrEmpty(order))
             {
-                order = "";
+                order = "MajorInfo.Name";
             }
 
             ViewBag.Search = search;
             ViewBag.CurrentOrder = order;
-            ViewBag.NameOrderOpt = order == "" ? "NameDesc" : "";
+            ViewBag.NameOrderOpt = order == "MajorInfo.Name" ? "MajorInfo.NameDesc" : "MajorInfo.Name";
             ViewBag.LevelOrderOpt = order == "Level" ? "LevelDesc" : "Level";
             ViewBag.FoundDateOrderOpt = order == "FoundDate" ? "FoundDateDesc" : "FoundDate";
             ViewBag.MemberCountOrderOpt = order == "MemberCount" ? "MemberCountDesc" : "MemberCount";
@@ -70,44 +70,7 @@ namespace SCUTClubManager.Controllers
                 filter = s => s.MajorInfo.Name.Contains(search);
             }
 
-            var club_list = QueryProcessor.Query<Club>(clubs.ToList(), filter,
-                s =>
-                {
-                    switch (order)
-                    {
-                        // 名字降序
-                        case "NameDesc":
-                            return s.OrderByDescending(a => a.MajorInfo.Name);
-
-                        // 社团等级升序
-                        case "Level":
-                            return s.OrderBy(a => a.Level);
-
-                        // 社团等级降序
-                        case "LevelDesc":
-                            return s.OrderByDescending(a => a.Level);
-
-                        // 成立日期升序
-                        case "FoundDate":
-                            return s.OrderBy(a => a.FoundDate);
-
-                        // 成立日期降序
-                        case "FoundDateDesc":
-                            return s.OrderByDescending(a => a.FoundDate);
-
-                        // 总人数升序
-                        case "MemberCount":
-                            return s.OrderBy(a => a.MemberCount);
-
-                        // 总人数降序
-                        case "MemberCountDesc":
-                            return s.OrderByDescending(a => a.MemberCount);
-
-                        // 名字升序（默认）
-                        default:
-                            return s.OrderBy(a => a.MajorInfo.Name);
-                    }
-                }, includes, page_number, 20);
+            var club_list = QueryProcessor.Query<Club>(clubs.ToList(), filter, order, includes, page_number, 20);
 
             return View(club_list);
         }
@@ -135,8 +98,8 @@ namespace SCUTClubManager.Controllers
         [Authorize]
         public ActionResult Introduction(int id)
         {
-            Club club = db.Clubs.Find(id);
-            ViewBag["IsMember"] = ScmRoleProvider.HasMembershipIn(id);
+            Club club = db.Clubs.Include(t => t.MajorInfo).Include(t => t.SubInfo).Find(id);
+            ViewBag.IsMember = ScmRoleProvider.HasMembershipIn(id);
 
             return View(club);
         }
