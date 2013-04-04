@@ -10,8 +10,8 @@ namespace SCUTClubManager.DAL
     {
         private SCUTClubContext context = new SCUTClubContext();
 
-        private Repository<ClubInfoModificationApplication> clubInfoModificationApplications;
-        public Repository<ClubInfoModificationApplication> ClubInfoModificationApplications
+        private IRepository<ClubInfoModificationApplication> clubInfoModificationApplications;
+        public IRepository<ClubInfoModificationApplication> ClubInfoModificationApplications
         {
             get
             {
@@ -23,8 +23,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<BranchModification> branchModifications;
-        public Repository<BranchModification> BranchModifications
+        private IRepository<BranchModification> branchModifications;
+        public IRepository<BranchModification> BranchModifications
         {
             get 
             {
@@ -36,8 +36,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubBranch> clubBranches;
-        public Repository<ClubBranch> ClubBranches
+        private IRepository<ClubBranch> clubBranches;
+        public IRepository<ClubBranch> ClubBranches
         {
             get
             {
@@ -49,8 +49,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubApplicationInclination> clubApplicationInclinations;
-        public Repository<ClubApplicationInclination> ClubApplicationInclinations
+        private IRepository<ClubApplicationInclination> clubApplicationInclinations;
+        public IRepository<ClubApplicationInclination> ClubApplicationInclinations
         {
             get 
             {
@@ -62,8 +62,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubApplication> clubApplications;
-        public Repository<ClubApplication> ClubApplications
+        private IRepository<ClubApplication> clubApplications;
+        public IRepository<ClubApplication> ClubApplications
         {
             get
             {
@@ -75,8 +75,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubApplicationDetails> clubApplicationDetails;
-        public Repository<ClubApplicationDetails> ClubApplicationDetails
+        private IRepository<ClubApplicationDetails> clubApplicationDetails;
+        public IRepository<ClubApplicationDetails> ClubApplicationDetails
         {
             get
             {
@@ -88,8 +88,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubRole> clubRoles;
-        public Repository<ClubRole> ClubRoles
+        private IRepository<ClubRole> clubRoles;
+        public IRepository<ClubRole> ClubRoles
         {
             get
             {
@@ -101,8 +101,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<UserRole> userRoles;
-        public Repository<UserRole> UserRoles
+        private IRepository<UserRole> userRoles;
+        public IRepository<UserRole> UserRoles
         {
             get
             {
@@ -114,8 +114,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubRegisterApplication> clubRegisterApplications;
-        public Repository<ClubRegisterApplication> ClubRegisterApplications
+        private IRepository<ClubRegisterApplication> clubRegisterApplications;
+        public IRepository<ClubRegisterApplication> ClubRegisterApplications
         {
             get
             {
@@ -127,8 +127,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<ClubRegisterApplicant> clubRegisterApplicants;
-        public Repository<ClubRegisterApplicant> ClubRegisterApplicants
+        private IRepository<ClubRegisterApplicant> clubRegisterApplicants;
+        public IRepository<ClubRegisterApplicant> ClubRegisterApplicants
         {
             get
             {
@@ -141,8 +141,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<ClubRegisterApplicantDescription> clubRegisterApplicantDescription;
-        public Repository<ClubRegisterApplicantDescription> ClubRegisterApplicantDescription
+        private IRepository<ClubRegisterApplicantDescription> clubRegisterApplicantDescription;
+        public IRepository<ClubRegisterApplicantDescription> ClubRegisterApplicantDescription
         {
             get
             {
@@ -154,8 +154,8 @@ namespace SCUTClubManager.DAL
             }
         }
 
-        private Repository<Application> applications;
-        public Repository<Application> Applications
+        private IRepository<Application> applications;
+        public IRepository<Application> Applications
         {
             get
             {
@@ -168,8 +168,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<ClubUnregisterApplication> clubUnregisterApplications;
-        public Repository<ClubUnregisterApplication> ClubUnregisterApplications
+        private IRepository<ClubUnregisterApplication> clubUnregisterApplications;
+        public IRepository<ClubUnregisterApplication> ClubUnregisterApplications
         {
             get
             {
@@ -182,8 +182,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Club> clubs;
-        public Repository<Club> Clubs
+        private IRepository<Club> clubs;
+        public IRepository<Club> Clubs
         {
             get
             {
@@ -196,8 +196,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<FundDetails> fundDetailses;
-        public Repository<FundDetails> FundDetailses
+        private IRepository<FundDetails> fundDetailses;
+        public IRepository<FundDetails> FundDetailses
         {
             get
             {
@@ -211,8 +211,8 @@ namespace SCUTClubManager.DAL
 
 
 
-        private Repository<ClubMember> clubMembers;
-        public Repository<ClubMember> ClubMembers
+        private IRepository<ClubMember> clubMembers;
+        public IRepository<ClubMember> ClubMembers
         {
             get
             {
@@ -225,8 +225,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Poll> polls;
-        public Repository<Poll> Polls
+        private IRepository<Poll> polls;
+        public IRepository<Poll> Polls
         {
             get
             {
@@ -239,8 +239,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<PollItem> pollItems;
-        public Repository<PollItem> PollItems
+        private IRepository<PollItem> pollItems;
+        public IRepository<PollItem> PollItems
         {
             get
             {
@@ -253,8 +253,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Message> messages;
-        public Repository<Message> Messages
+        private IRepository<Message> messages;
+        public IRepository<Message> Messages
         {
             get
             {
@@ -267,8 +267,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<User> users;
-        public Repository<User> Users
+        private IRepository<User> users;
+        public IRepository<User> Users
         {
             get
             {
@@ -281,8 +281,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<ContactInfo> contactInfos;
-        public Repository<ContactInfo> ContactInfos
+        private IRepository<ContactInfo> contactInfos;
+        public IRepository<ContactInfo> ContactInfos
         {
             get
             {
@@ -295,8 +295,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Student> students;
-        public Repository<Student> Students
+        private IRepository<Student> students;
+        public IRepository<Student> Students
         {
             get
             {
@@ -309,8 +309,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Thread> threads;
-        public Repository<Thread> Threads
+        private IRepository<Thread> threads;
+        public IRepository<Thread> Threads
         {
             get
             {
@@ -323,8 +323,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Reply> replies;
-        public Repository<Reply> Replies
+        private IRepository<Reply> replies;
+        public IRepository<Reply> Replies
         {
             get
             {
@@ -337,8 +337,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<MessageContent> messageContents;
-        public Repository<MessageContent> MessageContents
+        private IRepository<MessageContent> messageContents;
+        public IRepository<MessageContent> MessageContents
         {
             get
             {
@@ -351,23 +351,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-
-        //private Repository<EventOrganizer> eventOrganizers;
-        //public Repository<EventOrganizer> EventOrganizers
-        //{
-        //    get
-        //    {
-        //        if (this.eventOrganizers == null)
-        //        {
-        //            this.eventOrganizers = new Repository<EventOrganizer>(context);
-        //        }
-        //        return eventOrganizers;
-        //    }
-        //}
-
-
-        private Repository<EventArgs> events;
-        public Repository<EventArgs> Events
+        private IRepository<EventArgs> events;
+        public IRepository<EventArgs> Events
         {
             get
             {
@@ -380,8 +365,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<EventDescription> eventDescriptions;
-        public Repository<EventDescription> EventDescriptions
+        private IRepository<EventDescription> eventDescriptions;
+        public IRepository<EventDescription> EventDescriptions
         {
             get
             {
@@ -394,8 +379,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Location> locations;
-        public Repository<Location> Locations
+        private IRepository<Location> locations;
+        public IRepository<Location> Locations
         {
             get
             {
@@ -408,8 +393,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<LocationAssignment> locationAssignments;
-        public Repository<LocationAssignment> LocationAssignments
+        private IRepository<LocationAssignment> locationAssignments;
+        public IRepository<LocationAssignment> LocationAssignments
         {
             get
             {
@@ -423,8 +408,8 @@ namespace SCUTClubManager.DAL
 
 
 
-        private Repository<LocationAvailableTime> locationAvailableTimes;
-        public Repository<LocationAvailableTime> LocationAvailableTimes
+        private IRepository<LocationAvailableTime> locationAvailableTimes;
+        public IRepository<LocationAvailableTime> LocationAvailableTimes
         {
             get
             {
@@ -437,8 +422,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<LocationApplication> locationApplications;
-        public Repository<LocationApplication> LocationApplications
+        private IRepository<LocationApplication> locationApplications;
+        public IRepository<LocationApplication> LocationApplications
         {
             get
             {
@@ -451,8 +436,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Time> times;
-        public Repository<Time> Times
+        private IRepository<Time> times;
+        public IRepository<Time> Times
         {
             get
             {
@@ -465,8 +450,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<AssetAssignment> assetAssignments;
-        public Repository<AssetAssignment> AssetAssignments
+        private IRepository<AssetAssignment> assetAssignments;
+        public IRepository<AssetAssignment> AssetAssignments
         {
             get
             {
@@ -479,8 +464,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<Asset> assets;
-        public Repository<Asset> Assets
+        private IRepository<Asset> assets;
+        public IRepository<Asset> Assets
         {
             get
             {
@@ -493,8 +478,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<AssetApplication> assetApplications;
-        public Repository<AssetApplication> AssetApplications
+        private IRepository<AssetApplication> assetApplications;
+        public IRepository<AssetApplication> AssetApplications
         {
             get
             {
@@ -507,8 +492,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<SubEvent> subEvents;
-        public Repository<SubEvent> SubEvents
+        private IRepository<SubEvent> subEvents;
+        public IRepository<SubEvent> SubEvents
         {
             get
             {
@@ -521,8 +506,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<SubEventDescription> subEventDescriptions;
-        public Repository<SubEventDescription> SubEventDescriptions
+        private IRepository<SubEventDescription> subEventDescriptions;
+        public IRepository<SubEventDescription> SubEventDescriptions
         {
             get
             {
@@ -535,8 +520,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<FundApplication> fundApplications;
-        public Repository<FundApplication> FundApplications
+        private IRepository<FundApplication> fundApplications;
+        public IRepository<FundApplication> FundApplications
         {
             get
             {
@@ -549,8 +534,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<UserPoll> userPolls;
-        public Repository<UserPoll> UserPolls
+        private IRepository<UserPoll> userPolls;
+        public IRepository<UserPoll> UserPolls
         {
             get
             {
@@ -563,8 +548,8 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private Repository<ApplicationRejectReason> applicationRejectReasons;
-        public Repository<ApplicationRejectReason> ApplicationRejectReasons
+        private IRepository<ApplicationRejectReason> applicationRejectReasons;
+        public IRepository<ApplicationRejectReason> ApplicationRejectReasons
         {
             get
             {
