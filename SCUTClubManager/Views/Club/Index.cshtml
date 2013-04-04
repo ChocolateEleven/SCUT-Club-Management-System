@@ -2,22 +2,19 @@
     ViewBag.Title = "社团管理";
 }
 
-<script src="/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+<h2>社团管理</h2>
+
+@Html.Partial("_Confirmation")
+
 <script type="text/javascript">
     $(function () {
-        $("#enableRecruit").click(function () {
-            var is_enabling_recruit = $(this).data('value');
-
-            $.post("/Club/EnableRecruit", { "is_enabling": is_enabling_recruit }, function (data) {
-                $("#enableRecruit").text(data.text);
-                $('#enableRecruit').data('value', data.value);
-            });
+        confirm("#enableRecruit", "确认要" + "@ViewBag.EnableRecruitText" + "吗？", "/Club/EnableRecruit", "is_enabling", function (data) {
+            $("#enableRecruit").text(data.text);
+            $('#enableRecruit').data('is_enabling', data.value);
         });
     });
 </script>
 
-<h2>社团管理</h2>
-
 @Html.ActionLink("社团事务审批", "List", "ClubApplication", new { page_number = 1, pass_filter = "", search = "", search_option = "", type_filter = "" })
 @Html.ActionLink("社团列表", "List", new { page_number = 1, order = "", search = "", search_option = "" })
-<a href="javascript: void(0)" id="enableRecruit" data-value="@ViewBag.EnableRecruitValue">@ViewBag.EnableRecruitText</a>
+<a href="javascript: void(0)" id="enableRecruit" data-is_enabling="@ViewBag.EnableRecruitValue">@ViewBag.EnableRecruitText</a>
