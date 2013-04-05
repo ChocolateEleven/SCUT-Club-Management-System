@@ -38,15 +38,19 @@ namespace SCUTClubManager.BusinessLogic
                 if (user is Student)
                 {
                     Student student = user as Student;
-                    ClubMember membership = student.MemberShips.Single(t => t.ClubId == club_id);
 
-                    if (membership != null)
+                    if (student.MemberShips.Any(t => t.ClubId == club_id))
                     {
-                        var all_roles = context.ClubRoles.ToList();
+                        ClubMember membership = student.MemberShips.Single(t => t.ClubId == club_id);
 
-                        if (!possible_roles.All(t => all_roles.Any(p => p.Name.Equals(t))))
+                        if (possible_roles != null)
                         {
-                            throw new ArgumentException("One or more undefined club roles are given.");
+                            var all_roles = context.ClubRoles.ToList();
+
+                            if (!possible_roles.All(t => all_roles.Any(p => p.Name.Equals(t))))
+                            {
+                                throw new ArgumentException("One or more undefined club roles are given.");
+                            }
                         }
 
                         if ((branch_id == null || membership.BranchId == branch_id) && (possible_roles == null ||
