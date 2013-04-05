@@ -1,7 +1,34 @@
 ﻿@model SCUTClubManager.Models.Club
 
 @{
-    ViewBag.Title = "Introduction";
+    ViewBag.Title = Model.MajorInfo.Name;
 }
 
-<h2>Introduction</h2>
+<h2>@Model.MajorInfo.Name</h2>
+<div class="SplashPanel">
+    <img src='@Url.Content("~/Content/Images/ClubSplashPanel/" + Model.SubInfo.PosterUrl)' />
+</div>
+
+<table class="PanelButtonContainer">
+    <tr>
+        <td class="PanelButton">
+            @Html.ActionLink("社团详情", "Details", new { id = Model.Id })
+        </td>
+        @{
+            if (ViewBag.IsMember)
+            {
+            <td class="PanelButton">@Html.ActionLink("进入", "Manage", new { id = Model.Id })</td>
+                }
+                else
+                {
+                    if (User.IsInRole("学生") && ConfigurationManager.IsRecruitEnabled)
+                    {
+            <td class="PanelButton">@Html.ActionLink("申请加入", "Apply", "ClubMemberApplication", new { club_id = Model.Id })</td>
+                    }
+                }
+        }
+        <td class="PanelButton">
+            <a href="#" onclick="goBack()">返回</a>
+        </td>
+    </tr>
+</table>
