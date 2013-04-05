@@ -294,7 +294,7 @@ namespace SCUTClubManager.DAL
                 new ClubSubInfo
                 {
                     Address = "Nevaeh",
-                    PosterUrl = "ClubPosters/Ira.png",
+                    PosterUrl = "Ira.png",
                     Principle = "Saligia",
                     Purpose = "...",
                     Range = "Ultimate",
@@ -303,7 +303,7 @@ namespace SCUTClubManager.DAL
                 new ClubSubInfo
                 {
                     Address = "Esidarap",
-                    PosterUrl = "ClubPosters/Invidia.png",
+                    PosterUrl = "Invidia.png",
                     Principle = "Saligia",
                     Purpose = "...",
                     Range = "Ultimate",
@@ -312,7 +312,7 @@ namespace SCUTClubManager.DAL
                 new ClubSubInfo
                 {
                     Address = "Anavrin",
-                    PosterUrl = "ClubPosters/Superbia.png",
+                    PosterUrl = "Superbia.png",
                     Principle = "Saligia",
                     Purpose = "...",
                     Range = "Ultimate",
@@ -321,7 +321,7 @@ namespace SCUTClubManager.DAL
                 new ClubSubInfo
                 {
                     Address = "Muisyle",
-                    PosterUrl = "ClubPosters/Luxuria.png",
+                    PosterUrl = "Luxuria.png",
                     Principle = "Saligia",
                     Purpose = "...",
                     Range = "Ultimate",
