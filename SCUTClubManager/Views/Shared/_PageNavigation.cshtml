@@ -1,0 +1,50 @@
+﻿@model PagedList.IPagedList
+
+<script type="text/javascript">
+    $(function () {
+        $("#pageNumber").keypress(function (e) {
+            if (e.which == 13) {
+                var page_number = $("#pageNumber").val();
+
+                if (page_number < 1) {
+                    page_number = 1;
+                } else if (page_number > '@Model.PageCount') {
+                    page_number = '@Model.PageCount';
+                }
+
+            document.location = location.pathname + "?page_number=" + page_number;
+        }
+        });
+    });
+</script>
+
+<div class="PageNavigationBar">
+    @if (Model.HasPreviousPage)
+    {
+        <div class="PageNavigationBtn">
+            @Html.ActionLink("首页", "List", new { page_number = 1 })
+        </div>
+        <div class="PageNavigationBtn">
+            @Html.ActionLink("上一页", "List", new { page_number = Model.PageNumber - 1 })
+        </div>
+    }
+
+    <div class="PageNavigationBtn">
+        @Html.TextBox("pageNumber", Model.PageNumber)
+    </div>
+
+    <div class="PageNavigationBtn">
+        <span> / @Model.PageCount</span>
+    </div>
+
+    @if (Model.HasNextPage)
+    {
+        <div class="PageNavigationBtn">
+            @Html.ActionLink("下一页", "List", new { page_number = Model.PageNumber + 1 })
+        </div>
+        <div class="PageNavigationBtn">
+            @Html.ActionLink("尾页", "List", new { page_number = Model.PageCount })
+        </div>
+    }
+
+</div>

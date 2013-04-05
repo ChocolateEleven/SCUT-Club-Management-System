@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SCUTClubManager.Models.Club>
+﻿@model IPagedList<SCUTClubManager.Models.Club>
 
 @{
     ViewBag.Title = "社团列表";
@@ -58,3 +58,5 @@
 }
 
 </table>
+
+@Html.Partial("_PageNavigation", Model)

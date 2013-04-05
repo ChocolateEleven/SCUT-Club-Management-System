@@ -24,7 +24,7 @@ namespace SCUTClubManager.BusinessLogic
          *  @param items_per_page 每页包含的项目数。
          *  @returns 完成做操后的集合。
          */
-        public static IEnumerable<T> Query<T>(IEnumerable<T> collection, Expression<Func<T, bool>> filter = null,
+        public static IPagedList<T> Query<T>(IEnumerable<T> collection, Expression<Func<T, bool>> filter = null,
             String order_by = null, string[] includes = null, int? page_number = null, int? items_per_page = null)
             where T : class
         {
@@ -66,13 +66,26 @@ namespace SCUTClubManager.BusinessLogic
                 }
 
                 // 分页。
+
+                // 处理坑爹情况1
+                if (page_number < 1)
+                {
+                    page_number = 1;
+                }
+
                 if (page_number.HasValue && items_per_page.HasValue)
                 {
                     paged_list = query.ToPagedList(page_number.Value, items_per_page.Value);
+
+                    // 坑爹2
+                    if (page_number > paged_list.PageCount)
+                    {
+                        paged_list = query.ToPagedList(paged_list.PageCount, items_per_page.Value);
+                    }
                 }
                 else
                 {
-                    return query;
+                    paged_list = query.ToPagedList(1, query.Count());
                 }
             }
 
