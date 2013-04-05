@@ -47,7 +47,7 @@ namespace SCUTClubManager.Controllers
         }
 
         [Authorize]
-        public ActionResult List(int page_number, string order, string search)
+        public ActionResult List(int page_number, string order = "", string search = "")
         {
             var clubs = db.Clubs;
             string[] includes = {"MajorInfo"};
@@ -70,7 +70,7 @@ namespace SCUTClubManager.Controllers
                 filter = s => s.MajorInfo.Name.Contains(search);
             }
 
-            var club_list = QueryProcessor.Query<Club>(clubs.ToList(), filter, order, includes, page_number, 20);
+            var club_list = QueryProcessor.Query<Club>(clubs.ToList(), filter, order, includes, page_number, 1);
 
             return View(club_list);
         }
@@ -83,17 +83,6 @@ namespace SCUTClubManager.Controllers
             Club club = db.Clubs.Find(id);
             return View(club);
         }
-
-        //
-        // GET: /Club/Delete/5
-
-        //[Authorize(Roles = "社联")]
-        //public ActionResult Delete(int id)
-        //{
-        //    Club club = db.Clubs.Find(id);
-
-        //    return View(club);
-        //}
 
         [Authorize]
         public ActionResult Introduction(int id)
