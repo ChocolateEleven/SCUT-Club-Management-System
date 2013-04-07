@@ -10,10 +10,8 @@ namespace SCUTClubManager.Models
     {
         public virtual ICollection<BranchModification> ModificationBranches { get; set; }
 
-        [Required]
-        public int ClubSubInfoId { get; set; }
-        [Required]
-        public int ClubMajorInfoId { get; set; }
+        public int? ClubSubInfoId { get; set; }
+        public int? ClubMajorInfoId { get; set; }
 
         public virtual ClubMajorInfo MajorInfo { get; set; }
         public virtual ClubSubInfo SubInfo { get; set; }

@@ -11,9 +11,9 @@ namespace SCUTClubManager.Models
         public virtual ICollection<ClubRegisterApplicant> Applicants { get; set; }
         public virtual ICollection<BranchModification> Branches { get; set; }
 
-        [Required]
+        //[Required]
         public int ClubSubInfoId { get; set; }
-        [Required]
+        //[Required]
         public int ClubMajorInfoId { get; set; }
 
         public virtual ClubMajorInfo MajorInfo { get; set; }
