@@ -1,0 +1,51 @@
+﻿@model SCUTClubManager.Models.ClubMember
+
+@{
+    ViewBag.Title = Model.Club.MajorInfo.Name;
+}
+
+<h2>@Model.Club.MajorInfo.Name</h2>
+
+<div class="InfoTips">
+    <span>@Model.Branch.BranchName</span>
+    <span>@Model.ClubRole.Name</span>
+    <span>@Model.Student.FullName</span>
+</div>
+
+<div class="ManagementBtnContainer">
+    <div class="ManagementBtn">
+        @Html.ActionLink("成员管理", "List", "ClubMember", new { club_id = Model.ClubId, branch_id = Model.BranchId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("招新工作", "List", "ClubMemberApplication", new { club_id = Model.ClubId, branch_id = Model.BranchId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("财务管理", "List", "Fund", new { club_id = Model.ClubId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("注销社团", "ApplyRemoveClub", "ClubApplication", new { club_id = Model.ClubId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("社团活动", "List", "Event", new { club_id = Model.ClubId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("社团信息", "Details", new { id = Model.ClubId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("退出社团", "Quit", "ClubMember", new { club_id = Model.ClubId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("我的活动", "MyEvent", new { club_id = Model.ClubId })
+    </div>
+
+    <div class="ManagementBtn">
+        @Html.ActionLink("离开", "Introduction", new { id = Model.ClubId, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })
+    </div>
+</div>

@@ -17,7 +17,8 @@
         @{
             if (ViewBag.IsMember)
             {
-            <td class="PanelButton">@Html.ActionLink("进入", "Manage", new { id = Model.Id })</td>
+            <td class="PanelButton">@Html.ActionLink("进入", "Manage", 
+            new { id = Model.Id, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })</td>
                 }
                 else
                 {
@@ -28,7 +29,7 @@
                 }
         }
         <td class="PanelButton">
-            <a href="#" onclick="goBack()">返回</a>
+            @Html.ActionLink("返回", "List", new { page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })
         </td>
     </tr>
 </table>
