@@ -370,7 +370,7 @@ namespace SCUTClubManager.DAL
                     MemberCount = 1
                 }
             };
-#endregion
+            #endregion
 
             #region ClubBranches
             List<ClubBranch> branches = new List<ClubBranch>
@@ -427,7 +427,7 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
-#region ClubRoles
+            #region ClubRoles
             List<ClubRole> club_roles = new List<ClubRole>
             {
                 new ClubRole
@@ -451,9 +451,9 @@ namespace SCUTClubManager.DAL
                     Name = "部长"
                 }
             };
-#endregion
+            #endregion
 
-#region ClubMembers
+            #region ClubMembers
             List<ClubMember> club_members = new List<ClubMember>
             {
                 new ClubMember
@@ -513,7 +513,104 @@ namespace SCUTClubManager.DAL
                     UserName = "000000001"
                 }
             };
-#endregion
+            #endregion
+
+            #region ClubRegisterApplications
+            List<ClubRegisterApplication> club_register_applications = new List<ClubRegisterApplication>
+            {
+                new ClubRegisterApplication
+                {
+                    Id = 1,
+                    Date = DateTime.Now,
+                    ClubId = null,
+                    Status = "n",
+                    Applicant = students[1] as Student,
+                    RejectReason = null,
+                    Applicants = new List<ClubRegisterApplicant>
+                    {
+                        new ClubRegisterApplicant
+                        {
+                            Applicant = students[1] as Student,
+                            IsMainApplicant = true,
+                            Description = new ClubRegisterApplicantDescription
+                            {
+                                Description = "4yklnfadkgbglkanfgjngklnhk"
+                            }
+                        },
+                        new ClubRegisterApplicant
+                        {
+                            Applicant = students[2] as Student,
+                            IsMainApplicant = false,
+                            Description = new ClubRegisterApplicantDescription
+                            {
+                                Description = "jkhdsfmdfrrr"
+                            }
+                        }
+                    },
+                    Branches = new List<BranchModification>
+                    {
+                        new BranchCreation
+                        {
+                            BranchId = null,
+                            BranchName = "会员部"
+                        }
+                    },
+                    MajorInfo = new ClubMajorInfo
+                    {
+                        Name = "新社团",
+                        Instructor = "Nameless"
+                    },
+                    SubInfo = new ClubSubInfo
+                    {
+                        Principle = "毁灭",
+                        Purpose = "破坏",
+                        Range = "无限",
+                        Address = "地球",
+                        PosterUrl = "N.png",
+                        Regulation = "None"
+                    },
+                    Material = "Materials/N.doc"
+                }
+            };
+            #endregion
+
+            #region ClubUnRegisterApplication
+            List<ClubUnregisterApplication> club_unregister_applications = new List<ClubUnregisterApplication>
+            {
+                new ClubUnregisterApplication
+                {
+                    Id = 2,
+                    Date = DateTime.Now,
+                    Club = clubs[0],
+                    Status = "n",
+                    Applicant = students[1] as Student,
+                    RejectReason = null,
+                    Reason = "I don't care."
+                }
+            };
+            #endregion
+
+            #region ClubInfoModificationApplications
+            //List<ClubInfoModificationApplication> club_modification_applications = new List<ClubInfoModificationApplication>
+            //{
+            //    new ClubInfoModificationApplication
+            //    {
+            //        Id = 2,
+            //        Date = DateTime.Now,
+            //        Club = clubs[0],
+            //        Status = "n",
+            //        Applicant = students[1] as Student,
+            //        RejectReason = null,
+            //        MajorInfo = null,
+            //        SubInfo = null,
+            //        ModificationBranches = new List<BranchModification>
+            //        {
+            //            new BranchDeletion
+            //            {
+
+            //    }
+            //};
+            #endregion
 
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
             sub_infos.ForEach(s => context.ClubSubInfos.Add(s));
@@ -525,6 +622,8 @@ namespace SCUTClubManager.DAL
             roles.ForEach(s => context.RoleBases.Add(s));
             students.ForEach(s => context.Users.Add(s));
             messages.ForEach(s => context.Messages.Add(s));
+            club_register_applications.ForEach(s => context.Applications.Add(s));
+            club_unregister_applications.ForEach(s => context.Applications.Add(s));
 
             context.SaveChanges();
         }
