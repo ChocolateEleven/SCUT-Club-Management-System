@@ -1,0 +1,34 @@
+﻿@model SCUTClubManager.Models.Application
+
+@if (Model is SCUTClubManager.Models.ClubRegisterApplication)
+{
+    <span>成立新社团申请</span>
+}
+else if (Model is SCUTClubManager.Models.ClubUnregisterApplication)
+{
+    <span>@Model.Club.MajorInfo.Name 注销申请</span>
+}
+else if (Model is SCUTClubManager.Models.ClubInfoModificationApplication)
+{
+    <span>@Model.Club.MajorInfo.Name 修改信息申请</span>
+}
+else if (Model is SCUTClubManager.Models.LocationApplication)
+{
+    <span>场地</span>
+}
+else if (Model is SCUTClubManager.Models.AssetApplication)
+{
+    <span>物资</span>
+}
+else if (Model is SCUTClubManager.Models.FundApplication)
+{
+    <span>财务</span>
+}
+else if (Model is SCUTClubManager.Models.ClubApplication)
+{
+    <span>加入</span>
+}
+else
+{
+    <span>未知</span>
+}
