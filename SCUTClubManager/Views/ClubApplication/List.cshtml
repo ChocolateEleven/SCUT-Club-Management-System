@@ -1,0 +1,58 @@
+﻿@model IPagedList<SCUTClubManager.Models.Application>
+
+@{
+    ViewBag.Title = "社团事务申请列表";
+}
+
+<h2>社团事务申请列表</h2>
+
+<div class="OperationBtn">
+    @Html.ActionLink("已审批", "List", new { club_id = ViewBag.ClubId, order = ViewBag.CurrentOrder, 
+    pass_filter = "Verified", search = ViewBag.Search, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
+</div>
+
+<div class="OperationBtn">
+    @Html.ActionLink("待审批", "List", new { club_id = ViewBag.ClubId, order = ViewBag.CurrentOrder, 
+    pass_filter = "NotVerified", search = ViewBag.Search, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
+</div>
+
+@Html.Partial("_SearchBar")
+
+<table class="ContentTable">
+    <tr>
+        <th>
+            @Html.DisplayText("申请名称")
+        </th>
+        <th>
+            @Html.ActionLink("负责人", "List", new { order = ViewBag.ApplicantNameOrderOpt, search = ViewBag.Search,
+       search_option = ViewBag.SearchOption, pass_filter = ViewBag.PassFilter, type_filter = ViewBag.TypeFilter })
+        </th>
+        <th>
+            @Html.ActionLink("申请日期", "List", new { order = ViewBag.DateOrderOpt, search = ViewBag.Search,
+       search_option = ViewBag.SearchOption, pass_filter = ViewBag.PassFilter, type_filter = ViewBag.TypeFilter })
+        </th>
+        <th>
+            @Html.ActionLink("审批状态", "List", new { order = ViewBag.PassOrderOpt, search = ViewBag.Search,
+       search_option = ViewBag.SearchOption, pass_filter = ViewBag.PassFilter, type_filter = ViewBag.TypeFilter })
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            <a href="Details?id=@item.Id">@Html.DisplayFor(modelItem => item)</a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Applicant.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @SCUTClubManager.Helpers.LabelHelpers.GetStatus(item.Status)
+        </td>
+    </tr>
+    }
+</table>
+
+@Html.Partial("_PageNavigation", Model)
