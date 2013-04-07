@@ -1,0 +1,43 @@
+﻿<script type="text/javascript">
+    function search() {
+        var docLocation = location.pathname + "?page_number=1";
+
+        if ('@ViewBag.CurrentOrder' != '') {
+            docLocation += "&order=@ViewBag.CurrentOrder";
+        }
+        if ('@ViewBag.PassFilter' != '') {
+            docLocation += "&pass_filter=@ViewBag.PassFilter";
+        }
+        if ('@ViewBag.TypeFilter' != '') {
+            docLocation += "&type_filter=@ViewBag.TypeFilter";
+        }
+
+        docLocation += "&search_option=" + $("#SearchOptions").val();
+        docLocation += "&search=" + $("#searchBox").val();
+
+        document.location = docLocation;
+    }
+
+    $(function () {
+        $("#searchBtn").click(search);
+    });
+</script>
+
+@if (!String.IsNullOrEmpty(ViewBag.SearchOptions))
+{
+    <div class="OperationBtn">
+        @Html.DropDownList("SearchOptions", "名称")
+    </div>
+}
+
+<div class="OperationBtn">
+    @Html.TextBox("searchBox")
+    <a id="searchBtn" href="#">搜索</a>
+</div>
+
+@if (!String.IsNullOrEmpty(ViewBag.Search))
+{
+    <div class="OperationBtn">
+        @Html.ActionLink("返回", "List", new { page_number = 1, order = ViewBag.CurrentOrder, pass_filter = ViewBag.PassFilter, type_filter = ViewBag.TypeFilter })
+    </div>
+}

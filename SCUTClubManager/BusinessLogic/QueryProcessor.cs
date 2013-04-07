@@ -77,10 +77,13 @@ namespace SCUTClubManager.BusinessLogic
                 {
                     paged_list = query.ToPagedList(page_number.Value, items_per_page.Value);
 
-                    // 坑爹2
-                    if (page_number > paged_list.PageCount)
+                    if (paged_list.PageCount != 0)
                     {
-                        paged_list = query.ToPagedList(paged_list.PageCount, items_per_page.Value);
+                        // 坑爹2
+                        if (page_number > paged_list.PageCount)
+                        {
+                            paged_list = query.ToPagedList(paged_list.PageCount, items_per_page.Value);
+                        }
                     }
                 }
                 else
