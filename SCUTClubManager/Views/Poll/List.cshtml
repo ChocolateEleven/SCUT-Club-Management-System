@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SCUTClubManager.Models.Poll>
+﻿@model IPagedList<SCUTClubManager.Models.Poll>
 
 @{
     ViewBag.Title = "Index";
@@ -61,3 +61,5 @@
 }
 
 </table>
+
+@Html.Partial("_PageNavigation", Model)

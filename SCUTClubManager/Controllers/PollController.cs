@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
+using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -18,11 +19,11 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Poll/
 
-        public ViewResult Index()
+        public ViewResult List(int page_number)
         {
             // var polls = db.Polls.Include(p => p.Author);
-            var polls = unitOfWork.Polls;
-            return View(polls.ToList());
+            var polls = QueryProcessor.Query(unitOfWork.Polls.ToList(), order_by: "Title", page_number: page_number, items_per_page: 2);
+            return View(polls);
         }
 
         //
@@ -48,17 +49,21 @@ namespace SCUTClubManager.Controllers
         // POST: /Poll/Create
 
         [HttpPost]
-        public ActionResult Create(Poll poll)
+        public ActionResult Create(string[] items,Poll poll)
         {
-            if (ModelState.IsValid)
-            {
-                unitOfWork.Polls.Add(poll);
-                unitOfWork.SaveChanges();
-                return RedirectToAction("Index");  
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    unitOfWork.Polls.Add(poll);
+            //    unitOfWork.SaveChanges();
+            //    return Json("1");
+            //    //return RedirectToAction("Index");  
+            //}
 
-            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", poll.AuthorUserName);
-            return View(poll);
+            //var i = ViewBag.items;
+
+            //ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", poll.AuthorUserName);
+            //return View(poll);
+            return View();
         }
         
         //

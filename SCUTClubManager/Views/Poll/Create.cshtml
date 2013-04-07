@@ -1,19 +1,95 @@
 ﻿@model SCUTClubManager.Models.Poll
 
+@using SCUTClubManager.Models;
+
 @{
     ViewBag.Title = "Create";
 }
 
 <script>
-    $(document).ready(function(){
-        $("p").click(function ()
+    $(document).ready(function () {
+
+        $("#btSubmit").click(function ()
         {
-            $(this).hide();
+
+            $(this).contents("clicked");
+            
+            var polls = new Object();
+            polls.Title = $("#Title").val();
+            polls.Title = $("#Question").val();
+            polls.AuthorUserName = $("#AuthorUserName").val();
+            polls.OpenDate = $("#OpenDate").val();
+            polls.CloseDate = $("#CloseDate").val();
+            polls.IsMultiSelectable = $("#IsMultiSelectable").val();
+            polls.Items = new Array();
+
+            var liList = document.getElementById("olPollItems").childElementCount;
+            var items = Array();
+            var item = "dsf";
+            debugger;
+
+            $("#olPollItems").children().each(function (i) {
+                items[i] = this.children(0).value;
+            });
+
+           //for(var i=1; i<=liList; i++)
+           //{
+           //    //alert("dfsa");
+           //    //items[i - 1] = $("#olPollItems").children[i].val();
+           //    items[i-1]=(document.getElementById("olPollItems").childNodes)[i].textContent;
+           //    alert((document.getElementById("olPollItems").childNodes)[i].textContent);
+           //    alert(items[i - 1]);
+           //    debugger;
+           //}
+
+           //$.post({"/Poll/Create", { items: item, test: "3245" }, function (data) {
+           //    debugger;
+           //    document.write(data);
+           //});
+
+            
+
+           $.ajax({
+               type: "POST",
+               contentType: "application/json;charset=utf-8",
+               url: "/Poll/Create",
+               data: JSON.stringify({items: items ,poll: polls }),
+               dataType: "json",
+               success: function(data) {
+                   debugger;
+                   document.write(data);
+               },
+               error: function(result) {
+                   alert("error");
+               }
+           });
         });
+
+
+        //$("form").submit(function (eventObject) {
+        //    document.write(eventObject.Title);
+        //    debugger;
+        //    return false;
+        //    debugger;
+        //});
+
+        $("#btAddPollItem").click(function () {
+            $(".tt").attr({
+                "readonly": "true"
+            })
+
+            $("#olPollItems").append("<li><textarea></textarea></li>");
+            
+        });
+
+
     });
+
+    
 </script>
 
 <p>stud</p>
+
 
 <h2>Create</h2>
 
@@ -24,6 +100,7 @@
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Poll</legend>
+        
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Title)
@@ -73,12 +150,19 @@
             @Html.ValidationMessageFor(model => model.IsMultiSelectable)
         </div>
         
+        <ol id="olPollItems" type="A">
+        </ol>
+
+        <input type="button" id="btAddPollItem" value="add"/ >
         
+        <input type="button" id="bt2" value="test"/ >
 
         <p>
-            <input type="submit" value="Create" />
+            <a href="#" id="btSubmit">Create</a>
         </p>
+
     </fieldset>
+    
 }
 
 <div>
