@@ -591,25 +591,28 @@ namespace SCUTClubManager.DAL
             #endregion
 
             #region ClubInfoModificationApplications
-            //List<ClubInfoModificationApplication> club_modification_applications = new List<ClubInfoModificationApplication>
-            //{
-            //    new ClubInfoModificationApplication
-            //    {
-            //        Id = 2,
-            //        Date = DateTime.Now,
-            //        Club = clubs[0],
-            //        Status = "n",
-            //        Applicant = students[1] as Student,
-            //        RejectReason = null,
-            //        MajorInfo = null,
-            //        SubInfo = null,
-            //        ModificationBranches = new List<BranchModification>
-            //        {
-            //            new BranchDeletion
-            //            {
-
-            //    }
-            //};
+            List<ClubInfoModificationApplication> club_modification_applications = new List<ClubInfoModificationApplication>
+            {
+                new ClubInfoModificationApplication
+                {
+                    Id = 3,
+                    Date = DateTime.Now,
+                    Club = clubs[0],
+                    Status = "n",
+                    Applicant = students[1] as Student,
+                    RejectReason = null,
+                    MajorInfo = null,
+                    SubInfo = null,
+                    ModificationBranches = new List<BranchModification>
+                    {
+                        new BranchDeletion
+                        {
+                            OrigBranch = branches[1],
+                            ApplicationId = 3
+                        }
+                    }
+                }
+            };
             #endregion
 
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
@@ -624,6 +627,7 @@ namespace SCUTClubManager.DAL
             messages.ForEach(s => context.Messages.Add(s));
             club_register_applications.ForEach(s => context.Applications.Add(s));
             club_unregister_applications.ForEach(s => context.Applications.Add(s));
+            club_modification_applications.ForEach(s => context.Applications.Add(s));
 
             context.SaveChanges();
         }

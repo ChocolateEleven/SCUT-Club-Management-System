@@ -31,7 +31,7 @@ namespace SCUTClubManager.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var applications = db.Applications.Include(s => s.Club).Include(s => s.Club.MajorInfo).Include(s => s.Applicant).ToList();
+            IQueryable<Application> applications = db.Applications.Include(s => s.Club).Include(s => s.Club.MajorInfo).Include(s => s.Applicant).ToList() as IQueryable<Application>;
 
             switch (type_filter)
             {
@@ -95,7 +95,7 @@ namespace SCUTClubManager.Controllers
             }
 
             var club_list = QueryProcessor.Query<Application>(applications, filter: filter,
-                order_by: order, page_number: page_number, items_per_page: 20);
+                order_by: order, page_number: page_number, items_per_page: 20);          
 
             return View(club_list);
         }

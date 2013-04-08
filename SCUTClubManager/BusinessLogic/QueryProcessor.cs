@@ -30,9 +30,9 @@ namespace SCUTClubManager.BusinessLogic
         {
             IPagedList<T> paged_list = null;
 
-            if (collection != null && collection is DbSet<T>)
+            if (collection != null && collection is IQueryable<T>)
             {
-                IQueryable<T> db_set = collection as DbSet<T>;
+                IQueryable<T> db_set = collection as IQueryable<T>;
                 IEnumerable<T> query = null;
                               
                 // 包含。

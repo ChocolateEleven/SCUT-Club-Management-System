@@ -8,7 +8,7 @@ namespace SCUTClubManager.DAL
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> ToList();
+        IQueryable<T> ToList();
 
         void Delete(T instance);
 
