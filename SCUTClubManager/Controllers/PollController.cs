@@ -19,6 +19,11 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Poll/
 
+        public ActionResult Index()
+        {
+            return RedirectToAction("List",new {page_number=1});
+        }
+
         public ViewResult List(int page_number)
         {
             // var polls = db.Polls.Include(p => p.Author);
@@ -49,21 +54,46 @@ namespace SCUTClubManager.Controllers
         // POST: /Poll/Create
 
         [HttpPost]
-        public ActionResult Create(string[] items,Poll poll)
+        public ActionResult Create(Poll poll, string[] test)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    unitOfWork.Polls.Add(poll);
-            //    unitOfWork.SaveChanges();
-            //    return Json("1");
-            //    //return RedirectToAction("Index");  
-            //}
+            //var ab = this.Request.Form[test0];
+            ViewBag.AuthorUserName = User.Identity.Name;
 
-            //var i = ViewBag.items;
 
-            //ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Password", poll.AuthorUserName);
-            //return View(poll);
-            return View();
+            if (test == null || test.Length < 2)
+            {
+                ModelState.AddModelError("PollItems", "请至少设置两个选项");
+            }
+
+            if (poll.OpenDate != null && poll.CloseDate != null &&
+                poll.OpenDate.CompareTo(poll.CloseDate) > 0)
+            {
+                ModelState.AddModelError("Date","投票结束时间不能早于投票开始时间，请检查后再提交");
+            }
+
+            for (int i = 0; i < test.Length; i++)
+            {
+                PollItem tempItem = new PollItem()
+                {
+                    Caption = test[i],
+                    Count = 0,
+                    Poll = poll
+                };
+                unitOfWork.PollItems.Add(tempItem);
+                poll.Items.Add(tempItem);
+            }
+
+            if (ModelState.IsValid)
+            {
+                unitOfWork.Polls.Add(poll);
+                unitOfWork.SaveChanges();
+
+                return RedirectToAction("Index");
+
+            }
+
+            //return Json(false);
+            return View(poll);
         }
         
         //

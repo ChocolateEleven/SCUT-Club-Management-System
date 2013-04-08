@@ -3,107 +3,69 @@
 @using SCUTClubManager.Models;
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "发起新投票";
 }
 
 <script>
     $(document).ready(function () {
+        //$("#dateSettingHint").hide()
+        //$("#pollItemsHint").hide()
 
-        $("#btSubmit").click(function ()
-        {
+        $("#btSubmit").click(function () {
 
-            $(this).contents("clicked");
-            
-            var polls = new Object();
-            polls.Title = $("#Title").val();
-            polls.Title = $("#Question").val();
-            polls.AuthorUserName = $("#AuthorUserName").val();
-            polls.OpenDate = $("#OpenDate").val();
-            polls.CloseDate = $("#CloseDate").val();
-            polls.IsMultiSelectable = $("#IsMultiSelectable").val();
-            polls.Items = new Array();
+        //    if ($("#olPollItems").children().length < 2) {
+        //        $("#pollItemsHint").show()
+        //        debugger
+        //    }
+        //    else {
+        //        $("#pollItemsHint").hide()
+        //    }
 
-            var liList = document.getElementById("olPollItems").childElementCount;
-            var items = Array();
-            var item = "dsf";
-            debugger;
+        //    if ($("#OpenDate").val() > $("#CloseDate").val()) {
+        //        $("#dateSettingHint").show()
+        //        debugger
+        //    }
+        //    else {
+        //        $("#dateSettingHint").hide()
+        //    }
 
-            $("#olPollItems").children().each(function (i) {
-                items[i] = this.children(0).value;
-            });
 
-           //for(var i=1; i<=liList; i++)
-           //{
-           //    //alert("dfsa");
-           //    //items[i - 1] = $("#olPollItems").children[i].val();
-           //    items[i-1]=(document.getElementById("olPollItems").childNodes)[i].textContent;
-           //    alert((document.getElementById("olPollItems").childNodes)[i].textContent);
-           //    alert(items[i - 1]);
-           //    debugger;
-           //}
-
-           //$.post({"/Poll/Create", { items: item, test: "3245" }, function (data) {
-           //    debugger;
-           //    document.write(data);
-           //});
-
-            
-
-           $.ajax({
-               type: "POST",
-               contentType: "application/json;charset=utf-8",
-               url: "/Poll/Create",
-               data: JSON.stringify({items: items ,poll: polls }),
-               dataType: "json",
-               success: function(data) {
-                   debugger;
-                   document.write(data);
-               },
-               error: function(result) {
-                   alert("error");
-               }
-           });
         });
-
-
-        //$("form").submit(function (eventObject) {
-        //    document.write(eventObject.Title);
-        //    debugger;
-        //    return false;
-        //    debugger;
-        //});
 
         $("#btAddPollItem").click(function () {
             $(".tt").attr({
                 "readonly": "true"
             })
 
-            $("#olPollItems").append("<li><textarea></textarea></li>");
-            
+            var count = document.getElementById("olPollItems").childElementCount;
+
+            $("#olPollItems").append("<li><input type='text' name='test' id='test" + count + "'></input></li>");
+           
         });
 
 
-    });
+        $("#CloseDate").datepicker();
 
-    
+        $("#OpenDate").datepicker();
+
+
+    });
 </script>
 
-<p>stud</p>
-
-
-<h2>Create</h2>
+<h2>@ViewBag.Title</h2>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
+
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Poll</legend>
+        <legend>投票</legend>
         
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Title)
+            标题
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Title)
@@ -111,7 +73,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Question)
+            问题
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Question)
@@ -119,52 +81,70 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.AuthorUserName, "Author")
+            发起人
         </div>
         <div class="editor-field">
             @Html.DropDownListFor(model => model.AuthorUserName, null)
             @Html.ValidationMessageFor(model => model.AuthorUserName)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.OpenDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.OpenDate)
-            @Html.ValidationMessageFor(model => model.OpenDate)
+
+        <div id="Date">
+            <div id="dateSettingHint">
+                @Html.ValidationMessage("Date")
+            </div>
+            <div class="editor-label">
+                开始时间
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.OpenDate)
+                @Html.ValidationMessageFor(model => model.OpenDate)
+            </div>
+
+            <div class="editor-label">
+                结束时间
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.CloseDate)
+                @Html.ValidationMessageFor(model => model.CloseDate)
+            </div>
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CloseDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CloseDate)
-            @Html.ValidationMessageFor(model => model.CloseDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IsMultiSelectable)
+            是否多选题
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.IsMultiSelectable)
             @Html.ValidationMessageFor(model => model.IsMultiSelectable)
         </div>
+
+        <div class="editor-label">
+            选项：
+        </div>
+        <div class="editer-field">
+            @Html.ValidationMessage("PollItems")
+            <ol id="olPollItems" type="A">
+                @if ( Model != null && Model.Items != null)
+                {
+                    var k = 0;
+                    foreach (var i in Model.Items)
+                    {
+                    <li>
+                        <input type='text' name='test' id="test + @k" value="@i.Caption" />
+                    </li>
+                    }
+                }
+            </ol>
+        </div>
+
+
+        <input type="button" id="btAddPollItem" value="增加选项"/ >
         
-        <ol id="olPollItems" type="A">
-        </ol>
-
-        <input type="button" id="btAddPollItem" value="add"/ >
-        
-        <input type="button" id="bt2" value="test"/ >
-
-        <p>
-            <a href="#" id="btSubmit">Create</a>
-        </p>
-
     </fieldset>
-    
+
+    <input id="btSubmit" type="submit" name ="submit" value="RequestForm" />
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("返回", "Index")
 </div>

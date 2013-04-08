@@ -12,6 +12,7 @@ namespace SCUTClubManager.Models
         public int PollId { get; set; }
 
         [MaxLength(50)]
+        [Required(ErrorMessage="请输入选项内容")]
         public string Caption { get; set; }
         public int Count { get; set; }
         public virtual Poll Poll { get; set; }
