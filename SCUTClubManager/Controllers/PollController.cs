@@ -24,11 +24,32 @@ namespace SCUTClubManager.Controllers
             return RedirectToAction("List",new {page_number=1});
         }
 
-        public ViewResult List(int page_number)
+        public ViewResult List(int page_number = 1, string search = "", string search_option = "Title")
         {
+            List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string,string>>();
+            select_list.Add(new KeyValuePair<string,string>("标题", "Title"));
+            select_list.Add(new KeyValuePair<string,string>("作者", "Author"));
+            ViewBag.SearchOptions = new SelectList(select_list);
             // var polls = db.Polls.Include(p => p.Author);
-            var polls = QueryProcessor.Query(unitOfWork.Polls.ToList(), order_by: "Title", page_number: page_number, items_per_page: 2);
-            return View(polls);
+            var polls = unitOfWork.Polls.ToList();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                switch (search_option)
+                {
+                    case "Title":
+                        polls = polls.Where(s => s.Title.Contains(search));
+                        break;
+                    case "Author":
+                        polls = polls.Where(s => Helpers.LabelHelpers.GetFullName(s.Author).Contains(search));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            var list = QueryProcessor.Query(polls, order_by: "Title", page_number: page_number, items_per_page: 2);
+            return View(list);
         }
 
         //
