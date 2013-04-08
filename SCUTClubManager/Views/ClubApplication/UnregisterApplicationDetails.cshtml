@@ -1,0 +1,32 @@
+﻿@model SCUTClubManager.Models.ClubUnregisterApplication
+
+@{
+    ViewBag.Title = Model.Club.MajorInfo.Name + "的注销申请";
+}
+
+<h2>@Model.Club.MajorInfo.Name@Html.Raw("的注销申请")</h2>
+
+@Html.Partial("_ApplicationInfo")
+
+<fieldset>
+    <legend>注销理由</legend>
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Reason)
+    </div>
+</fieldset>
+
+@Html.Partial("_VerifyBar", Model.Id)
+
+<p>
+    @Html.ActionLink("返回", "List", new
+{
+    page_number = ViewBag.PageNumber,
+    club_id = ViewBag.ClubId,
+    order = ViewBag.CurrentOrder,
+    pass_filter = ViewBag.PassFilter,
+    search = ViewBag.Search,
+    search_option = ViewBag.SearchOption,
+    type_filter = ViewBag.TypeFilter
+})
+</p>

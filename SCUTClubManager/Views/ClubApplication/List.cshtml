@@ -32,10 +32,10 @@
     {
     <tr>
         <td>
-            <a href="Details?id=@item.Id">@Html.DisplayFor(modelItem => item)</a>
+            <a href="Details?id=@item.Id&club_id=@ViewBag.ClubId&page_number=@ViewBag.PageNumber&order=@ViewBag.CurrentOrder&pass_filter=@ViewBag.PassFilter&search=@ViewBag.Search&search_option=@ViewBag.SearchOption&type_filter=@ViewBag.TypeFilter">@Html.DisplayFor(modelItem => item)</a>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Applicant.FullName)
+            @Html.DisplayFor(modelItem => item.Applicant.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)

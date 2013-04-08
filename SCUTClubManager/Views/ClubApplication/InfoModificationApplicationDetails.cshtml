@@ -1,0 +1,102 @@
+﻿@model SCUTClubManager.Models.ClubInfoModificationApplication
+
+@{
+    ViewBag.Title = Model.Club.MajorInfo.Name + "的信息修改申请";
+}
+
+<h2>@Model.Club.MajorInfo.Name@Html.Raw("的信息修改申请")</h2>
+
+@Html.Partial("_ApplicationInfo")
+
+@if (Model.MajorInfo != null)
+{
+<fieldset>
+    <legend>基本信息</legend>
+
+    <div class="display-label">社团名称</div>
+    <div class="display-field">
+        @LabelHelpers.GetComparedText(Model.Club.MajorInfo.Name, Model.MajorInfo.Name)
+    </div>
+
+    <div class="display-label">指导教师</div>
+    <div class="display-field">
+        @LabelHelpers.GetComparedText(Model.Club.MajorInfo.Instructor, Model.MajorInfo.Instructor)
+    </div>
+</fieldset>
+}
+
+@if (Model.SubInfo != null)
+{
+<fieldset>
+    <legend>次要信息</legend>
+
+    <div class="display-label">宗旨</div>
+    <div class="display-field">
+        @LabelHelpers.GetComparedText(Model.Club.SubInfo.Principle, Model.SubInfo.Principle)
+    </div>
+
+    <div class="display-label">目的</div>
+    <div class="display-field">
+        @LabelHelpers.GetComparedText(Model.Club.SubInfo.Purpose, Model.SubInfo.Purpose)
+    </div>
+
+    <div class="display-label">活动范围</div>
+    <div class="display-field">
+        @LabelHelpers.GetComparedText(Model.Club.SubInfo.Range, Model.SubInfo.Range)
+    </div>
+
+    <div class="display-label">地址</div>
+    <div class="display-field">
+        @LabelHelpers.GetComparedText(Model.Club.SubInfo.Address, Model.SubInfo.Address)
+    </div>
+
+    <div class="display-label">规章制度</div>
+    <div class="display-field">
+        @LabelHelpers.GetComparedText(Model.Club.SubInfo.Regulation, Model.SubInfo.Regulation)
+    </div>
+</fieldset>
+}
+
+@if (Model.ModificationBranches != null && Model.ModificationBranches.Count != 0)
+{
+    <fieldset>
+        <legend>部门变更</legend>
+        @foreach (var branch_modification in Model.ModificationBranches)
+        {
+            if (branch_modification is SCUTClubManager.Models.BranchCreation)
+            {
+            <div class="BranchModification">创建新部门——@Html.DisplayFor(item => branch_modification.BranchName)</div>
+            }
+            else if (branch_modification is SCUTClubManager.Models.BranchDeletion)
+            {
+            <div class="BranchModification">删除部门——@Html.DisplayFor(item => branch_modification.OrigBranch.BranchName)</div>
+            }
+            else if (branch_modification is SCUTClubManager.Models.BranchModification)
+            {
+            <div class="BranchModification">
+                原部门——@Html.DisplayFor(item => branch_modification.OrigBranch.BranchName)
+                变更为 @Html.DisplayFor(item => branch_modification.BranchName)
+            </div>
+            }
+            else
+            {
+            <div class="BranchModification">未知变更</div>
+            }
+        }
+    </fieldset>
+}
+
+@Html.Partial("_VerifyBar", Model.Id)
+
+<p>
+    @Html.ActionLink("返回", "List", new
+{
+    page_number = ViewBag.PageNumber,
+    club_id = ViewBag.ClubId,
+    order = ViewBag.CurrentOrder,
+    pass_filter = ViewBag.PassFilter,
+    search = ViewBag.Search,
+    search_option = ViewBag.SearchOption,
+    type_filter = ViewBag.TypeFilter
+})
+</p>

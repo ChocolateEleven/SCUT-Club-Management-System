@@ -17,7 +17,7 @@ namespace SCUTClubManager.Helpers
             }
             else
             {
-                return (user as Student).FullName;
+                return (user as Student).Name;
             }
         }
 
@@ -53,6 +53,28 @@ namespace SCUTClubManager.Helpers
                 default:
                     return "未知";
             }
+        }
+
+        public static HtmlString GetComparedText(object orig_obj, object new_obj)
+        {
+            string result = "";
+
+            if (!orig_obj.GetType().Equals(new_obj.GetType()))
+            {
+                throw new ArgumentException();
+            }
+
+            if (orig_obj.Equals(new_obj))
+            {
+                result += "<div class=\"NoChangeComparedText\">" + orig_obj.ToString() + "</div>";
+            }
+            else
+            {
+                result += "<div class=\"ChangedComparedText\">" + new_obj.ToString() + 
+                    "</div><div class=\"ChangedComparedText\">(原为" + orig_obj.ToString() + ")</div>";
+            }
+
+            return new HtmlString(result);
         }
     }
 }
