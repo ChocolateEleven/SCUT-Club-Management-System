@@ -6,15 +6,7 @@
 
 <h2>社团事务申请列表</h2>
 
-<div class="OperationBtn">
-    @Html.ActionLink("已审批", "List", new { club_id = ViewBag.ClubId, order = ViewBag.CurrentOrder, 
-    pass_filter = "Verified", search = ViewBag.Search, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
-</div>
-
-<div class="OperationBtn">
-    @Html.ActionLink("待审批", "List", new { club_id = ViewBag.ClubId, order = ViewBag.CurrentOrder, 
-    pass_filter = "NotVerified", search = ViewBag.Search, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
-</div>
+@Html.Partial("_PassFilterBar")
 
 @Html.Partial("_SearchBar")
 
