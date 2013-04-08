@@ -96,7 +96,8 @@ namespace SCUTClubManager.BusinessLogic
             return paged_list;
         }
 
-        public static IQueryable<Application> FilterApplication(IQueryable<Application> collection, string pass_filter, string type_filter)
+        public static IQueryable<Application> FilterApplication(IQueryable<Application> collection, string pass_filter = "", 
+            string type_filter = "", int club_id = 0)
         {
             var applications = collection;
 
@@ -158,6 +159,11 @@ namespace SCUTClubManager.BusinessLogic
 
                 default:
                     break;
+            }
+
+            if (club_id != 0)
+            {
+                applications = applications.Where(t => t.ClubId == club_id);
             }
 
             return applications;

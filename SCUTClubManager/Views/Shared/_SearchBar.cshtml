@@ -23,15 +23,15 @@
     });
 </script>
 
-@if (!String.IsNullOrEmpty(ViewBag.SearchOptions))
+@if (ViewBag.SearchOptions != null)
 {
     <div class="OperationBtn">
-        @Html.DropDownList("SearchOptions", "名称")
+        @Html.DropDownList("SearchOptions")
     </div>
 }
 
 <div class="OperationBtn">
-    @Html.TextBox("searchBox")
+    @Html.TextBox("searchBox", ViewBag.Search as string)
     <a id="searchBtn" href="#">搜索</a>
 </div>
 

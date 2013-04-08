@@ -1,0 +1,97 @@
+﻿@model SCUTClubManager.Models.ClubRegisterApplication
+
+@{
+    ViewBag.Title = Model.MajorInfo.Name + "的成立申请";
+}
+
+<h2>@Model.MajorInfo.Name@Html.Raw("的成立申请")</h2>
+
+@Html.Partial("_ApplicationInfo")
+
+<fieldset>
+    <legend>社团信息</legend>
+
+    <div class="display-label">社团名称</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MajorInfo.Name)
+    </div>
+
+    <div class="display-label">指导教师</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MajorInfo.Instructor)
+    @*</div>*@
+
+    <div class="display-label">宗旨</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Principle)
+    </div>
+
+    <div class="display-label">目的</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Purpose)
+    </div>
+
+    <div class="display-label">活动范围</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Range)
+    </div>
+
+    <div class="display-label">地址</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Address)
+    </div>
+
+    <div class="display-label">规章制度</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Regulation)
+    </div>
+
+    <div class="display-label">海报</div>
+    <div class="display-field">
+        <img src='@Url.Content("~/Content/Images/ClubSplashPanel/" + Model.SubInfo.PosterUrl)' />
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>社团部门</legend>
+    @foreach (var branch in Model.Branches)
+    {
+        <div class="display-field">
+            @Html.DisplayFor(modelItem => branch.BranchName)
+        </div>
+    }
+</fieldset>
+
+<fieldset>
+    <legend>申请人</legend>
+    @foreach (var applicant in Model.Applicants)
+    {
+        <div class="Name">
+            @LabelHelpers.GetFullName(applicant.Applicant)
+        </div>
+        if (applicant.IsMainApplicant)
+        {
+        <div class="PrefixInfo">
+            主要申请人
+        </div>
+        <div class="Description">
+            @Html.DisplayFor(modelItem => applicant.Description.Description)
+        </div>
+        }
+    }
+</fieldset>
+
+@Html.Partial("_VerifyBar", Model.Id)
+
+<p>
+    @Html.ActionLink("返回", "List", new
+{
+    page_number = ViewBag.PageNumber,
+    club_id = ViewBag.ClubId,
+    order = ViewBag.CurrentOrder,
+    pass_filter = ViewBag.PassFilter,
+    search = ViewBag.Search,
+    search_option = ViewBag.SearchOption,
+    type_filter = ViewBag.TypeFilter
+})
+</p>

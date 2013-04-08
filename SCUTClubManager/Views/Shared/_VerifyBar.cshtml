@@ -1,0 +1,32 @@
+﻿@model int
+
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        confirm("#pass", "确定要通过这个申请吗？", function () {
+            $("#is_passed").val(true);
+            $("#result").submit();
+        });
+        confirm("#reject", "确定要驳回这个申请吗？", function () {
+            $("#is_passed").val(false);
+            $("#result").submit();
+        });
+    })
+</script>
+
+<div class="VerifyBar">
+    <div class="VerifyBtn">
+        <a href="#" id="pass">通过</a>
+    </div>
+    <div class="VerifyBtn">
+        <a href="#" id="reject">驳回</a>
+    </div>
+</div>
+
+<div class="HiddenData" hidden>
+    <form id="result" action="Verify" method="post">
+        <input name="id" type="hidden" value="@Model"/>
+        <input name="is_passed" id="is_passed" type="hidden" />
+    </form>
+</div>

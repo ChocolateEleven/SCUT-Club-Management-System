@@ -1,5 +1,5 @@
 ﻿<script type="text/javascript">
-    function confirm(target, msg, url, param_name, callback) {
+    function confirmAjax(target, msg, url, param_name, callback) {
         $(target).click(function () {
             var source = this;
 
@@ -25,7 +25,7 @@
         });
     }
 
-    function deleteConfirm(target, msg, url, item_prefix) {
+    function deleteConfirmAjax(target, msg, url, item_prefix) {
         confirm(target, msg, url, "id", function (data) {
             if (data.success == true) {
                 if (item_prefix != null) {
@@ -34,6 +34,28 @@
                     $("#row-" + data.idToDelete).fadeOut("slow");
                 }
             }
+        });
+    }
+
+    function confirm(target, msg, callback) {
+        $(target).click(function (event) {
+            event.preventDefault();
+
+            $("#confirmWnd").text(msg);
+            $("#confirmWnd").dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    "确认": function () {
+                        callback();
+                        $("#confirmWnd").dialog("close");
+                    },
+                    "取消": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
         });
     }
 </script>

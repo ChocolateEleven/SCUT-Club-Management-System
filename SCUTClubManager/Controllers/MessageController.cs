@@ -42,7 +42,7 @@ namespace SCUTClubManager.Controllers
                     if (user is Student)
                     {
                         Student student = user as Student;
-                        ViewBag.userName = student.FullName;
+                        ViewBag.userName = student.Name;
                     }
                 }
             }

@@ -17,12 +17,12 @@ namespace SCUTClubManager.Models
 
         //[Required]
         public bool IsMainApplicant { get; set; }
-        public virtual ClubRegisterApplicantDescription Description { get; set; }
+        public ClubRegisterApplicantDescription Description { get; set; }
 
         //[Required]
         public int ApplicationId { get; set; }
 
-        public virtual Student Applicant { get; set; }
+        public Student Applicant { get; set; }
 
         public virtual ClubRegisterApplication Application { get; set; }
     }
