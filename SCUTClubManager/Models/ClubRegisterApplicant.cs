@@ -10,16 +10,16 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        //[Required]
         [RegularExpression(@"^[a-z0-9A-Z]{1,20}$", ErrorMessage = "只能是数字和字母的组合，长度不能超过20个字符")]
         [MaxLength(20)]
         public string ApplicantUserName { get; set; }
 
-        [Required]
+        //[Required]
         public bool IsMainApplicant { get; set; }
         public virtual ClubRegisterApplicantDescription Description { get; set; }
 
-        [Required]
+        //[Required]
         public int ApplicationId { get; set; }
 
         public virtual Student Applicant { get; set; }

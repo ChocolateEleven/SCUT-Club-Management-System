@@ -24,7 +24,7 @@ namespace SCUTClubManager.Controllers
         public ViewResult Index(string receivers = null)
         {
            // var messages = db.Messages.Include(m => m.Sender).Include(m => m.Receiver);
-            var messages =unitOfWork.Messages.ToList();
+            IEnumerable<Message> messages = unitOfWork.Messages.ToList();
 
 
             if (receivers != null)

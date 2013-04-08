@@ -11,14 +11,14 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        //[Required]
         public int? BranchId { get; set; }
 
-        [Required]
+        //[Required]
         public int ApplicationId { get; set; }
 
         [MaxLength(20)]
-        [Required]
+        //[Required]
         public string BranchName { get; set; }
 
         [ForeignKey("BranchId")]

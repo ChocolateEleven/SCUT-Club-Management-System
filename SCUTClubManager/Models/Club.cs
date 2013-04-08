@@ -16,6 +16,7 @@ namespace SCUTClubManager.Models
         public DateTime FoundDate { get; set; }
 
         public int MemberCount { get; set; }
+        public int NewMemberCount { get; set; }
 
         public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
         public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }

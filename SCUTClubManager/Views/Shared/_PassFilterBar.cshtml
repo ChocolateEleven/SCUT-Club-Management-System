@@ -1,0 +1,61 @@
+﻿<div class="PassFilterBar">
+    <div class="PassFilterBtn">
+        @Html.ActionLink("已审批", "List", new
+   {
+       club_id = ViewBag.ClubId,
+       order = ViewBag.CurrentOrder,
+       pass_filter = "Verified",
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       type_filter = ViewBag.TypeFilter
+   })
+    </div>
+
+    <div class="PassFilterBtn">
+        @Html.ActionLink("待审批", "List", new
+   {
+       club_id = ViewBag.ClubId,
+       order = ViewBag.CurrentOrder,
+       pass_filter = "NotVerified",
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       type_filter = ViewBag.TypeFilter
+   })
+    </div>
+
+    <div class="PassFilterBtn">
+        @Html.ActionLink("全部", "List", new
+   {
+       club_id = ViewBag.ClubId,
+       order = ViewBag.CurrentOrder,
+       pass_filter = "",
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       type_filter = ViewBag.TypeFilter
+   })
+    </div>
+
+    <div class="PassFilterBtn">
+        @Html.ActionLink("已通过", "List", new
+   {
+       club_id = ViewBag.ClubId,
+       order = ViewBag.CurrentOrder,
+       pass_filter = "Passed",
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       type_filter = ViewBag.TypeFilter
+   })
+    </div>
+
+    <div class="PassFilterBtn">
+        @Html.ActionLink("被驳回", "List", new
+   {
+       club_id = ViewBag.ClubId,
+       order = ViewBag.CurrentOrder,
+       pass_filter = "Failed",
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       type_filter = ViewBag.TypeFilter
+   })
+    </div>
+</div>

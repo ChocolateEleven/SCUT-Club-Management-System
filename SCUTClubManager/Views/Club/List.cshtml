@@ -1,5 +1,4 @@
 ﻿@model IPagedList<SCUTClubManager.Models.Club>
-
 @{
     ViewBag.Title = "社团列表";
 }
@@ -14,7 +13,16 @@
     });
 </script>
 
-<table>
+@if (User.IsInRole("学生"))
+{
+    <div class="OperationBtn">
+        @Html.ActionLink("申请成立新社团", "ApplyNewClub", "ClubApplication")
+    </div>
+}
+
+@Html.Partial("_SearchBar")
+
+<table class="ContentTable">
     <tr>
         <th>
             @Html.ActionLink("社团名", "List", new { page_number = 1, order = ViewBag.NameOrderOpt, search = ViewBag.Search })
@@ -34,28 +42,31 @@
         }
     </tr>
 
-@foreach (var item in Model) {
-    <tr id="row-@item.Id">
-        <td>
-            @Html.ActionLink(item.MajorInfo.Name, "Introduction", new { id = item.Id })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Level)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MemberCount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FoundDate)
-        </td>
-        @if (Roles.IsUserInRole("社联"))
-        {
+    @foreach (var item in Model)
+    {
+        <tr id="row-@item.Id">
             <td>
-                <a href="#" class="DeleteButton" data-id="@item.Id">取缔</a>
+                @Html.ActionLink(item.MajorInfo.Name, "Introduction", 
+                new { id = item.Id, page_number = Model.PageNumber, order = ViewBag.CurrentOrder, search = ViewBag.Search })
             </td>
-        }
-    </tr>
-}
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberCount)
+                <span class="AdditionalInfo">(+@item.NewMemberCount)</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoundDate)
+            </td>
+            @if (Roles.IsUserInRole("社联"))
+            {
+                <td>
+                    <a href="#" class="DeleteButton" data-id="@item.Id">取缔</a>
+                </td>
+            }
+        </tr>
+    }
 
 </table>
 

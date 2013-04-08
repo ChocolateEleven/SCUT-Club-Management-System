@@ -10,11 +10,10 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
-        public int ClubId { get; set; }
+        public int? ClubId { get; set; }
 
         [MaxLength(1)]
         public string Status { get; set; }
-
 
         public virtual Club Club { get; set; }
         public virtual Student Applicant { get; set; }

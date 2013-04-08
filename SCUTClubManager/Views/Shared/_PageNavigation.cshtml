@@ -20,6 +20,15 @@
                 if ('@ViewBag.Search' != '') {
                     docLocation += "&search=@ViewBag.Search";
                 }
+                if ('@ViewBag.PassFilter' != '') {
+                    docLocation += "&pass_filter=@ViewBag.PassFilter";
+                }
+                if ('@ViewBag.SearchOption' != '') {
+                    docLocation += "&search_option=@ViewBag.SearchOption";
+                }
+                if ('@ViewBag.TypeFilter' != '') {
+                    docLocation += "&type_filter=@ViewBag.TypeFilter";
+                }
                 
                 document.location = docLocation
         }
@@ -31,10 +40,12 @@
     @if (Model.HasPreviousPage)
     {
         <div class="PageNavigationBtn">
-            @Html.ActionLink("首页", "List", new { page_number = 1, order = ViewBag.CurrentOrder, search = ViewBag.Search })
+            @Html.ActionLink("首页", "List", new { page_number = 1, order = ViewBag.CurrentOrder, 
+           search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
         </div>
         <div class="PageNavigationBtn">
-            @Html.ActionLink("上一页", "List", new { page_number = Model.PageNumber - 1, order = ViewBag.CurrentOrder, search = ViewBag.Search })
+            @Html.ActionLink("上一页", "List", new { page_number = Model.PageNumber - 1, order = ViewBag.CurrentOrder, 
+           search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
         </div>
     }
 
@@ -49,10 +60,12 @@
     @if (Model.HasNextPage)
     {
         <div class="PageNavigationBtn">
-            @Html.ActionLink("下一页", "List", new { page_number = Model.PageNumber + 1, order = ViewBag.CurrentOrder, search = ViewBag.Search })
+            @Html.ActionLink("下一页", "List", new { page_number = Model.PageNumber + 1, order = ViewBag.CurrentOrder,
+           search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
         </div>
         <div class="PageNavigationBtn">
-            @Html.ActionLink("尾页", "List", new { page_number = Model.PageCount, order = ViewBag.CurrentOrder, search = ViewBag.Search })
+            @Html.ActionLink("尾页", "List", new { page_number = Model.PageCount, order = ViewBag.CurrentOrder,
+           search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter })
         </div>
     }
 

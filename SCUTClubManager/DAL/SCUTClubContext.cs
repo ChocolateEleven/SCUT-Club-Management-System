@@ -162,12 +162,15 @@ namespace SCUTClubManager.DAL
 
             model_builder.Entity<Club>().HasMany(t => t.Branches).WithRequired(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.Members).WithRequired(t => t.Club).WillCascadeOnDelete(true);
-            model_builder.Entity<Club>().HasRequired(t => t.MajorInfo).WithRequiredPrincipal().WillCascadeOnDelete(true);
-            model_builder.Entity<Club>().HasRequired(t => t.SubInfo).WithRequiredPrincipal().WillCascadeOnDelete(true);
+            model_builder.Entity<Club>().HasRequired(t => t.MajorInfo).WithRequiredDependent().WillCascadeOnDelete(true);
+            model_builder.Entity<Club>().HasRequired(t => t.SubInfo).WithRequiredDependent().WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.Events).WithRequired(t => t.Club).WillCascadeOnDelete(true);
-            model_builder.Entity<Club>().HasMany(t => t.Applications).WithRequired(t => t.Club).WillCascadeOnDelete(true);
+            model_builder.Entity<Club>().HasMany(t => t.Applications).WithOptional(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.AssetAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.LocationAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
+
+            model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.MajorInfo).WithRequiredDependent();
+            model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.SubInfo).WithRequiredDependent();
         }
     }
 }

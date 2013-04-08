@@ -289,6 +289,11 @@
     <Content Include="Views\Shared\_Confirmation.cshtml" />
     <Content Include="Views\Club\Introduction.cshtml" />
     <Content Include="Views\Shared\_PageNavigation.cshtml" />
+    <Content Include="Views\Club\Manage.cshtml" />
+    <Content Include="Views\Shared\_SearchBar.cshtml" />
+    <Content Include="Views\ClubApplication\List.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Application.cshtml" />
+    <Content Include="Views\Shared\_PassFilterBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

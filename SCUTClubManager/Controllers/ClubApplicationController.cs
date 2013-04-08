@@ -23,32 +23,23 @@ namespace SCUTClubManager.Controllers
         }
 
         [Authorize]
-        public ActionResult List(int page_number, string pass_filter, string search, string search_option, string type_filter)
+        public ActionResult List(int club_id = 0, int page_number = 1, string order = "Date", string pass_filter = "", string search = "", string search_option = "", string type_filter = "")
         {
-            var applications = db.Applications.ToList();
-
-            switch (type_filter)
+            if (!User.IsInRole("社联") && !ScmRoleProvider.HasMembershipIn(club_id))
             {
-                case "Register":
-                    applications.Where(t => t is ClubRegisterApplication);
-                    break;
-
-                case "Unregister":
-                    applications.Where(t => t is ClubUnregisterApplication);
-                    break;
-
-                case "InfoModify":
-                    applications.Where(t => t is ClubInfoModificationApplication);
-                    break;
-
-                default:
-                    applications.Where(t => t is ClubRegisterApplication || t is ClubUnregisterApplication || t is ClubInfoModificationApplication);
-                    break;
+                // TODO: 将用户重定向到另一个页面。
+                return RedirectToAction("Index", "Home");
             }
-            
+
+            IQueryable<Application> applications = db.Applications.Include(s => s.Club).Include(s => s.Club.MajorInfo).Include(s => s.Applicant).ToList() as IQueryable<Application>;
+
+            ViewBag.ClubId = club_id;
+            ViewBag.CurrentOrder = order;
+            ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
             ViewBag.Search = search;
             ViewBag.PassFilter = pass_filter;
             ViewBag.SearchOption = search_option;
+            ViewBag.TypeFilter = type_filter;
 
             Expression<Func<Application, bool>> filter = null;
             if (!String.IsNullOrWhiteSpace(search) && !String.IsNullOrWhiteSpace(search_option))
@@ -64,24 +55,10 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-            if (!String.IsNullOrWhiteSpace(pass_filter))
-            {
-                if (pass_filter == "Passed")
-                {
-                    applications = applications.Where(s => s.Status == "p");
-                }
-                else if (pass_filter == "Failed")
-                {
-                    applications = applications.Where(s => s.Status == "f");
-                }
-                else if (pass_filter == "NotVerified")
-                {
-                    applications = applications.Where(s => s.Status == "n");
-                }
-            }
+            applications = QueryProcessor.FilterApplication(applications, pass_filter, type_filter);
 
             var club_list = QueryProcessor.Query<Application>(applications, filter: filter,
-                order_by: "Date", page_number: page_number, items_per_page: 20);
+                order_by: order, page_number: page_number, items_per_page: 20);          
 
             return View(club_list);
         }

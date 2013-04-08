@@ -24,7 +24,7 @@ namespace SCUTClubManager.DAL
             table = context.Set<T>();
         }
 
-        public IEnumerable<T> ToList()
+        public IQueryable<T> ToList()
         {
             return table;
         }

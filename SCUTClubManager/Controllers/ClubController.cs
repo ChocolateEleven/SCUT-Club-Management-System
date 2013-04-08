@@ -85,23 +85,29 @@ namespace SCUTClubManager.Controllers
         }
 
         [Authorize]
-        public ActionResult Introduction(int id)
+        public ActionResult Introduction(int id, int page_number = 1, string order = "", string search = "")
         {
             Club club = db.Clubs.Include(t => t.MajorInfo).Include(t => t.SubInfo).Find(id);
             ViewBag.IsMember = ScmRoleProvider.HasMembershipIn(id);
+            ViewBag.PageNumber = page_number;
+            ViewBag.Order = order;
+            ViewBag.Search = search;
 
             return View(club);
         }
 
         [Authorize]
-        public ActionResult Manage(int id)
+        public ActionResult Manage(int id, int page_number = 1, string order = "", string search = "")
         {
             ClubMember membership = ScmRoleProvider.GetRoleInClub(id);
 
+            ViewBag.PageNumber = page_number;
+            ViewBag.Order = order;
+            ViewBag.Search = search;
+
             if (membership == null)
             {
-                // TODO: 转向到错误提示页面。
-                return RedirectToAction("Index");
+                return RedirectToAction("Introduction");
             }
             else
             {

@@ -1,35 +1,66 @@
 ﻿@model SCUTClubManager.Models.Club
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.MajorInfo.Name + "详情";
 }
 
-<h2>Details</h2>
+<h2>@Model.MajorInfo.Name</h2>
 
 <fieldset>
-    <legend>Club</legend>
+    <legend>基本信息</legend>
 
-    <div class="display-label">Level</div>
+    <div class="display-label">社团等级</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Level)
     </div>
 
-    <div class="display-label">Fund</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Fund)
-    </div>
-
-    <div class="display-label">FoundDate</div>
+    <div class="display-label">成立日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FoundDate)
     </div>
 
-    <div class="display-label">Info</div>
+    <div class="display-label">成员人数</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.MajorInfo.Name)
+        @Html.DisplayFor(model => model.MemberCount)
+        <span class="AdditionalInfo">(+@Model.NewMemberCount)</span>
+    </div>
+
+    <div class="display-label">指导教师</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MajorInfo.Instructor)
     </div>
 </fieldset>
+
+<fieldset>
+    <legend>次要信息</legend>
+
+    <div class="display-label">宗旨</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Principle)
+    </div>
+
+    <div class="display-label">目的</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Purpose)
+    </div>
+
+    <div class="display-label">活动范围</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Range)
+    </div>
+
+    <div class="display-label">地址</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Address)
+    </div>
+
+    <div class="display-label">规章制度</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SubInfo.Regulation)
+    </div>
+</fieldset>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("修改", "ApplyInfoModification", "ClubApplication", new { id=Model.Id }) |
+    <a href="#" onclick="goBack()">返回</a>
 </p>

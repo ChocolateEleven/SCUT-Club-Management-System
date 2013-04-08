@@ -39,5 +39,20 @@ namespace SCUTClubManager.Helpers
 
             return "";
         }
+
+        public static string GetStatus(string status_code)
+        {
+            switch (status_code)
+            {
+                case "n":
+                    return "未审批";
+                case "p":
+                    return "通过";
+                case "f":
+                    return "拒绝";
+                default:
+                    return "未知";
+            }
+        }
     }
 }
