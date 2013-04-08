@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Data.Entity;
 using PagedList;
 using SCUTClubManager.Helpers;
+using SCUTClubManager.Models;
 
 namespace SCUTClubManager.BusinessLogic
 {
@@ -24,7 +25,7 @@ namespace SCUTClubManager.BusinessLogic
          *  @param items_per_page 每页包含的项目数。
          *  @returns 完成做操后的集合。
          */
-        public static IPagedList<T> Query<T>(IEnumerable<T> collection, Expression<Func<T, bool>> filter = null,
+        public static IPagedList<T> Query<T>(IEnumerable<T> collection, Expression<Func<T, bool>> filter = null, 
             String order_by = null, string[] includes = null, int? page_number = null, int? items_per_page = null)
             where T : class
         {
@@ -93,6 +94,73 @@ namespace SCUTClubManager.BusinessLogic
             }
 
             return paged_list;
+        }
+
+        public static IQueryable<Application> FilterApplication(IQueryable<Application> collection, string pass_filter, string type_filter)
+        {
+            var applications = collection;
+
+            switch (pass_filter)
+            {
+                case "Passed":
+                    applications = applications.Where(s => s.Status == "p");
+                    break;
+
+                case "Failed":
+                    applications = applications.Where(s => s.Status == "f");
+                    break;
+
+                case "NotVerified":
+                    applications = applications.Where(s => s.Status == "n");
+                    break;
+
+                case "Verified":
+                    applications = applications.Where(s => s.Status == "p" || s.Status == "f");
+                    break;
+
+                default:
+                    break;
+            }
+
+            switch (type_filter)
+            {
+                case "Register":
+                    applications = applications.Where(t => t is ClubRegisterApplication);
+                    break;
+
+                case "Unregister":
+                    applications = applications.Where(t => t is ClubUnregisterApplication);
+                    break;
+
+                case "InfoModify":
+                    applications = applications.Where(t => t is ClubInfoModificationApplication);
+                    break;
+
+                case "ClubTransaction":
+                    applications = applications.Where(t => t is ClubRegisterApplication || t is ClubUnregisterApplication || t is ClubInfoModificationApplication);
+                    break;
+
+                case "Location":
+                    applications = applications.Where(t => t is LocationApplication);
+                    break;
+
+                case "Asset":
+                    applications = applications.Where(t => t is AssetApplication);
+                    break;
+
+                case "Fund":
+                    applications = applications.Where(t => t is FundApplication);
+                    break;
+
+                case "ClubMember":
+                    applications = applications.Where(t => t is ClubApplication);
+                    break;
+
+                default:
+                    break;
+            }
+
+            return applications;
         }
     }
 }

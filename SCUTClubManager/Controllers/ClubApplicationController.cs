@@ -33,25 +33,6 @@ namespace SCUTClubManager.Controllers
 
             IQueryable<Application> applications = db.Applications.Include(s => s.Club).Include(s => s.Club.MajorInfo).Include(s => s.Applicant).ToList() as IQueryable<Application>;
 
-            switch (type_filter)
-            {
-                case "Register":
-                    applications.Where(t => t is ClubRegisterApplication);
-                    break;
-
-                case "Unregister":
-                    applications.Where(t => t is ClubUnregisterApplication);
-                    break;
-
-                case "InfoModify":
-                    applications.Where(t => t is ClubInfoModificationApplication);
-                    break;
-
-                default:
-                    applications.Where(t => t is ClubRegisterApplication || t is ClubUnregisterApplication || t is ClubInfoModificationApplication);
-                    break;
-            }
-
             ViewBag.ClubId = club_id;
             ViewBag.CurrentOrder = order;
             ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
@@ -74,25 +55,7 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-            if (!String.IsNullOrWhiteSpace(pass_filter))
-            {
-                if (pass_filter == "Passed")
-                {
-                    applications = applications.Where(s => s.Status == "p");
-                }
-                else if (pass_filter == "Failed")
-                {
-                    applications = applications.Where(s => s.Status == "f");
-                }
-                else if (pass_filter == "NotVerified")
-                {
-                    applications = applications.Where(s => s.Status == "n");
-                }
-                else if (pass_filter == "Verified")
-                {
-                    applications = applications.Where(s => s.Status == "p" || s.Status == "f");
-                }
-            }
+            applications = QueryProcessor.FilterApplication(applications, pass_filter, type_filter);
 
             var club_list = QueryProcessor.Query<Application>(applications, filter: filter,
                 order_by: order, page_number: page_number, items_per_page: 20);          
