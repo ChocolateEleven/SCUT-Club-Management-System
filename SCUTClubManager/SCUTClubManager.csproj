@@ -303,6 +303,7 @@
     <Content Include="Views\Shared\InvalidOperationError.cshtml" />
     <Content Include="Views\Poll\Details.cshtml" />
     <Content Include="Views\Shared\DuplicateVoteError.cshtml" />
+    <Content Include="Views\ClubApplication\ApplyNewClub.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

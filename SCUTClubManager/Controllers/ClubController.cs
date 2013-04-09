@@ -70,7 +70,7 @@ namespace SCUTClubManager.Controllers
                 filter = s => s.MajorInfo.Name.Contains(search);
             }
 
-            var club_list = QueryProcessor.Query<Club>(clubs.ToList(), filter, order, includes, page_number, 1);
+            var club_list = QueryProcessor.Query<Club>(clubs.ToList(), filter, order, includes, page_number, 4);
 
             return View(club_list);
         }
