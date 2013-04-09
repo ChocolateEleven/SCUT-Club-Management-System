@@ -29,7 +29,7 @@ namespace SCUTClubManager.Controllers
             List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string,string>>();
             select_list.Add(new KeyValuePair<string,string>("标题", "Title"));
             select_list.Add(new KeyValuePair<string,string>("作者", "Author"));
-            ViewBag.SearchOptions = new SelectList(select_list);
+            ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Title");
             // var polls = db.Polls.Include(p => p.Author);
             var polls = unitOfWork.Polls.ToList();
 
@@ -41,7 +41,7 @@ namespace SCUTClubManager.Controllers
                         polls = polls.Where(s => s.Title.Contains(search));
                         break;
                     case "Author":
-                        polls = polls.Where(s => Helpers.LabelHelpers.GetFullName(s.Author).Contains(search));
+                        polls = polls.Where(s => (s.Author is Student && (s.Author as Student).Name.Contains(search)) || (search == "社联" && !(s.Author is Student)));
                         break;
                     default:
                         break;
