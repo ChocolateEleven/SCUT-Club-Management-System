@@ -60,6 +60,35 @@
     </div>
 </fieldset>
 
+<fieldset>
+    <legend>社团架构</legend>
+    <table>
+        <tr>
+            <th>
+                部门
+            </th>
+            <th>
+                成员人数
+            </th>
+        </tr>
+        @if (Model.Branches != null)
+        {
+            foreach (var branch in Model.Branches)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => branch.BranchName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => branch.MemberCount)
+                    <span class="AdditionalInfo">(+@branch.NewMemberCount)</span>
+                </td>
+            </tr>
+            }
+        }
+    </table>
+</fieldset>
+
 <p>
     @Html.ActionLink("修改", "ApplyInfoModification", "ClubApplication", new { id=Model.Id }) |
     <a href="#" onclick="goBack()">返回</a>
