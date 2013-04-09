@@ -522,27 +522,7 @@ namespace SCUTClubManager.DAL
                     Status = "n",
                     Applicant = students[1] as Student,
                     RejectReason = null,
-                    Applicants = new List<ClubRegisterApplicant>
-                    {
-                        new ClubRegisterApplicant
-                        {
-                            Applicant = students[1] as Student,
-                            IsMainApplicant = true,
-                            Description = new ClubRegisterApplicantDescription
-                            {
-                                Description = "4yklnfadkgbglkanfgjngklnhk"
-                            }
-                        },
-                        new ClubRegisterApplicant
-                        {
-                            Applicant = students[2] as Student,
-                            IsMainApplicant = false,
-                            Description = new ClubRegisterApplicantDescription
-                            {
-                                Description = "jkhdsfmdfrrr"
-                            }
-                        }
-                    },
+                    Applicants = new List<ClubRegisterApplicant>(),
                     Branches = new List<BranchModification>
                     {
                         new BranchCreation
@@ -568,6 +548,26 @@ namespace SCUTClubManager.DAL
                     Material = "Materials/N.doc"
                 }
             };
+
+            club_register_applications[0].Applicants.Add(
+                new ClubRegisterApplicant
+                {
+                    Applicant = students[1] as Student,
+                    IsMainApplicant = true,
+                    Description = new ClubRegisterApplicantDescription
+                    {
+                        Description = "I have two tables Application_User and Application_User_Access." + 
+                        " Application_User_Access table is having a foreign key constraint with Application_User " + 
+                        "table.When I delete a record in Application_User table, I receive The DELETE statement conflicted "
+                    }
+                });
+
+            club_register_applications[0].Applicants.Add(
+                new ClubRegisterApplicant
+                {
+                    Applicant = students[2] as Student,
+                    IsMainApplicant = false,
+                });
             #endregion
 
             #region ClubUnRegisterApplication
@@ -586,6 +586,14 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
+            #region BranchModifications
+            BranchModification branch_modification = new BranchDeletion
+            {
+                OrigBranch = branches[1],
+                ApplicationId = 3
+            };
+            #endregion
+
             #region ClubInfoModificationApplications
             List<ClubInfoModificationApplication> club_modification_applications = new List<ClubInfoModificationApplication>
             {
@@ -601,11 +609,7 @@ namespace SCUTClubManager.DAL
                     SubInfo = null,
                     ModificationBranches = new List<BranchModification>
                     {
-                        new BranchDeletion
-                        {
-                            OrigBranch = branches[1],
-                            ApplicationId = 3
-                        }
+                        branch_modification
                     }
                 }
             };
