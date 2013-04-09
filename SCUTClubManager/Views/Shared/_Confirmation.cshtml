@@ -12,6 +12,7 @@
                     "确认": function () {
                         var data = {};
                         data[param_name] = $(source).data(param_name);
+                        debugger;
                         $.post(url, data, function (data) {
                             callback(data);
                             $("#confirmWnd").dialog("close");
@@ -56,6 +57,42 @@
                     }
                 }
             });
+        });
+    }
+
+    function notify(target, msg, callback) {
+        $(target).click(function (event) {
+            event.preventDefault();
+
+            $("#confirmWnd").text(msg);
+            $("#confirmWnd").dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    "确认": function () {
+                        callback();
+                        $("#confirmWnd").dialog("close");
+                    }
+                }
+            });
+        });
+    }
+
+    function messageBox(msg, callback) {
+        $("#confirmWnd").text(msg);
+        $("#confirmWnd").dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                "确认": function () {
+                    if (callback != null) {
+                        callback();
+                    }
+                    $("#confirmWnd").dialog("close");
+                }
+            }
         });
     }
 </script>
