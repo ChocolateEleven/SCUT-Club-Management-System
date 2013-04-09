@@ -7,6 +7,14 @@
 }
 
 <script>
+    function deletePollItem(id) {
+        $("#deletePollItem" + id).remove();
+    }
+
+    function deletePollItem2(id) {
+        $("#deletePollItem2" + id).remove();
+    }
+
     $(document).ready(function () {
         //$("#dateSettingHint").hide()
         //$("#pollItemsHint").hide()
@@ -39,7 +47,7 @@
 
             var count = document.getElementById("olPollItems").childElementCount;
 
-            $("#olPollItems").append("<li><input type='text' name='test' id='test" + count + "'></input></li>");
+            $("#olPollItems").append("<li id='deletePollItem" + count + "'><input type='text' name='item' id='item" + count + "'></input><button id='" + count + "' onclick='deletePollItem(" + count + ")'>删除</a></li>");
            
         });
 
@@ -113,15 +121,17 @@
             选项：
         </div>
         <div class="editer-field">
-            @Html.ValidationMessage("PollItems")
+            @Html.ValidationMessage("PollItemNumber")
             <ol id="olPollItems" type="A">
                 @if ( Model != null && Model.Items != null)
                 {
                     var k = 0;
                     foreach (var i in Model.Items)
                     {
-                    <li>
-                        <input type='text' name='test' id="test + @k" value="@i.Caption" />
+                    <li id="@Html.Raw("deletePollItem2" + i.Id)" >
+                        <input type='text' name='item' id="item + @k" value="@i.Caption" />
+                        <button onclick='deletePollItem2(@i.Id)'>删除</button>
+                        @Html.ValidationMessage("PollItem"+i.Id)
                     </li>
                     }
                 }

@@ -12,7 +12,7 @@
                     "确认": function () {
                         var data = {};
                         data[param_name] = $(source).data(param_name);
-                        debugger;
+                        
                         $.post(url, data, function (data) {
                             callback(data);
                             $("#confirmWnd").dialog("close");
@@ -21,7 +21,7 @@
                     "取消": function () {
                         $(this).dialog("close");
                     }
-                }
+                } 
             });
         });
     }
