@@ -45,7 +45,7 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = club_id;
             ViewBag.CurrentOrder = order;
             ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
-            ViewBag.ApplicantNameOrderOpt = order == "Applicant.FullName" ? "Applicant.FullNameDesc" : "Applicant.FullName";
+            ViewBag.ApplicantNameOrderOpt = order == "Applicant.Name" ? "Applicant.NameDesc" : "Applicant.Name";
             ViewBag.PassOrderOpt = order == "Status" ? "StatusDesc" : "Status";
             ViewBag.Search = search;
             ViewBag.PassFilter = pass_filter;
@@ -127,7 +127,197 @@ namespace SCUTClubManager.Controllers
 
             if (application != null && application.Status == "n")
             {
+                // 更改申请状态
                 application.Status = is_passed ? "p" : "f";
+
+                // 使申请生效
+                if (application is ClubRegisterApplication)
+                {
+                    ClubRole president = null;
+                    ClubRole member = null;
+
+                    foreach (var role in db.ClubRoles.ToList())
+                    {
+                        if (role.Name == "会长")
+                        {
+                            president = role;
+                        }
+                        else if (role.Name == "会员")
+                        {
+                            member = role;
+                        }
+                    }
+
+                    ClubRegisterApplication register_application = application as ClubRegisterApplication;
+                    int applicant_count = register_application.Applicants.Count();
+                    
+                    ClubBranch member_branch = new ClubBranch
+                    {
+                        BranchName = "会员部",
+                        MemberCount = applicant_count,
+                        NewMemberCount = applicant_count,
+                        Members = new List<ClubMember>()
+                    };
+
+                    ClubMajorInfo major_info = new ClubMajorInfo
+                    {
+                        Name = register_application.MajorInfo.Name,
+                        Instructor = register_application.MajorInfo.Instructor
+                    };
+
+                    ClubSubInfo sub_info = new ClubSubInfo
+                    {
+                        Principle = register_application.SubInfo.Principle,
+                        Purpose = register_application.SubInfo.Purpose,
+                        Range = register_application.SubInfo.Range,
+                        Address = register_application.SubInfo.Address,
+                        PosterUrl = register_application.SubInfo.PosterUrl,
+                        Regulation = register_application.SubInfo.Regulation
+                    };
+
+                    Club registering_club = new Club
+                    {
+                        Level = 1,
+                        Fund = 0,
+                        FoundDate = DateTime.Now,
+                        MemberCount = applicant_count,
+                        NewMemberCount = applicant_count,
+                        MajorInfo = major_info,
+                        SubInfo = sub_info,
+                        Branches = new List<ClubBranch>
+                        {
+                            member_branch
+                        },
+                        Applications = new List<Application>
+                        {
+                            register_application
+                        }
+                    };
+
+                    if (register_application.Applicants != null)
+                    {
+                        foreach (var applicant in register_application.Applicants)
+                        {
+                            member_branch.Members.Add(new ClubMember
+                            {
+                                JoinDate = DateTime.Now,
+                                Student = applicant.Applicant,
+                                Club = registering_club,
+                                ClubRole = applicant.IsMainApplicant ? president : member
+                            });
+                        }
+                    }
+                    else
+                    {
+                        // 不可能出现没有申请人的社团申请
+                        throw new ArgumentException("No applicant in this club register application.");
+                    }
+
+                    //if (register_application.Branches != null)
+                    //{
+                    //    foreach (var created_branch in register_application.Branches)
+                    //    {
+                    //        registering_club.Branches.Add(new ClubBranch
+                    //        {
+                    //            BranchName = created_branch.BranchName,
+                    //            MemberCount = 0,
+                    //            NewMemberCount = 0
+                    //        });
+                    //    }
+                    //}
+
+                    db.Clubs.Add(registering_club);
+                }
+                else if (application is ClubInfoModificationApplication)
+                {
+                    ClubInfoModificationApplication info_modification_application = application as ClubInfoModificationApplication;
+                    Club modifying_club = info_modification_application.Club;
+
+                    if (modifying_club != null)
+                    {
+                        if (info_modification_application.MajorInfo != null)
+                        {
+                            modifying_club.MajorInfo.Name = info_modification_application.MajorInfo.Name;
+                            modifying_club.MajorInfo.Instructor = info_modification_application.MajorInfo.Instructor;
+                        }
+
+                        if (info_modification_application.SubInfo != null)
+                        {
+                            modifying_club.SubInfo.Address = info_modification_application.SubInfo.Address;
+                            modifying_club.SubInfo.PosterUrl = info_modification_application.SubInfo.PosterUrl;
+                            modifying_club.SubInfo.Principle = info_modification_application.SubInfo.Principle;
+                            modifying_club.SubInfo.Purpose = info_modification_application.SubInfo.Purpose;
+                            modifying_club.SubInfo.Range = info_modification_application.SubInfo.Range;
+                            modifying_club.SubInfo.Regulation = info_modification_application.SubInfo.Regulation;
+                        }
+
+                        if (info_modification_application.ModificationBranches != null)
+                        {
+                            foreach (var branch_modification in info_modification_application.ModificationBranches)
+                            {
+                                if (branch_modification is BranchCreation)
+                                {
+                                    modifying_club.Branches.Add(new ClubBranch
+                                    {
+                                        BranchName = branch_modification.BranchName,
+                                        MemberCount = 0,
+                                        NewMemberCount = 0
+                                    });
+                                }
+                                else if (branch_modification is BranchDeletion)
+                                {
+                                    var orig_branch = branch_modification.OrigBranch;
+                                    ClubBranch receiving_branch = null;
+
+                                    // 优先选用会员部作为收容部门，若会员部不存在则使用第一个找到的部门。
+                                    receiving_branch = modifying_club.Branches.First(s => s.BranchName == "会员部");
+                                    if (receiving_branch == null)
+                                    {
+                                        receiving_branch = modifying_club.Branches.First();
+                                    }
+
+                                    // 还是没有部门？没救了
+                                    if (receiving_branch == null)
+                                    {
+                                        throw new NullReferenceException("Damn! There is no branch in this stupid club!!!");
+                                    }
+
+                                    foreach (var branch_member in branch_modification.OrigBranch.Members)
+                                    {
+                                        receiving_branch.Members.Add(branch_member);
+                                    }
+
+                                    receiving_branch.MemberCount += orig_branch.MemberCount;
+                                    receiving_branch.NewMemberCount += orig_branch.NewMemberCount;
+
+                                    modifying_club.Branches.Remove(branch_modification.OrigBranch);
+                                    db.ClubBranches.Delete(branch_modification.OrigBranch);
+                                }
+                                else if (branch_modification is BranchUpdate)
+                                {
+                                    branch_modification.OrigBranch.BranchName = branch_modification.BranchName;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 修改一个不存在的社团。。。
+                        throw new ArgumentException("The club being modified does not exist.");
+                    }
+                }
+                else if (application is ClubUnregisterApplication)
+                {
+                    ClubUnregisterApplication unregister_application = application as ClubUnregisterApplication;
+
+                    db.Clubs.Delete(unregister_application.Club);
+                }
+                else
+                {
+                    // 只有3种社团事务申请。
+                    throw new ArgumentException("Invalid club transaction application!");
+                }
+
                 db.SaveChanges();
 
                 return RedirectToAction("List");

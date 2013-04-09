@@ -27,7 +27,7 @@
     }
 
     function deleteConfirmAjax(target, msg, url, item_prefix) {
-        confirm(target, msg, url, "id", function (data) {
+        confirmAjax(target, msg, url, "id", function (data) {
             if (data.success == true) {
                 if (item_prefix != null) {
                     $(item_prefix + data.idToDelete).fadeOut("slow");
