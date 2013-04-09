@@ -1,7 +1,7 @@
 ﻿@model SCUTClubManager.Models.Application
 
 <div class="ApplicationInfo">
-        由 @LabelHelpers.GetFullName(Model.Applicant) 于 @Html.DisplayFor(model => model.Date) 申请， @LabelHelpers.GetStatus(Model.Status)
+        由 @Html.DisplayFor(model => model.Applicant.Name) 于 @Html.DisplayFor(model => model.Date) 申请， @LabelHelpers.GetStatus(Model.Status)
 </div>
 
 @if (Model.Status == "f")

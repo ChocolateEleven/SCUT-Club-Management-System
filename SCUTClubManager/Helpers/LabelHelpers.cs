@@ -9,18 +9,6 @@ namespace SCUTClubManager.Helpers
 {
     public static class LabelHelpers
     {
-        public static string GetFullName(User user)
-        {
-            if (!(user is Student))
-            {
-                return "社联";
-            }
-            else
-            {
-                return (user as Student).Name;
-            }
-        }
-
         public static string GetStatus(DateTime openTime, DateTime closeTime)
         {
             if (openTime.CompareTo(DateTime.Now) > 0)

@@ -195,7 +195,7 @@ namespace SCUTClubManager.DAL
                     AuthorUserName = students[1].UserName,
                     OpenDate = new DateTime(2013,04,01),
                     CloseDate = new DateTime(2013,04,22),
-                    IsMultiSelectable = false,
+                    IsMultiSelectable = true,
                     Items = new List<PollItem>
                     {
                         new PollItem{

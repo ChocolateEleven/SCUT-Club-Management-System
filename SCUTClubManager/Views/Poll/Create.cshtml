@@ -80,15 +80,6 @@
             @Html.ValidationMessageFor(model => model.Question)
         </div>
 
-        <div class="editor-label">
-            发起人
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.AuthorUserName, null)
-            @Html.ValidationMessageFor(model => model.AuthorUserName)
-        </div>
-
-
         <div id="Date">
             <div id="dateSettingHint">
                 @Html.ValidationMessage("Date")
@@ -142,7 +133,7 @@
         
     </fieldset>
 
-    <input id="btSubmit" type="submit" name ="submit" value="RequestForm" />
+    <input id="btSubmit" type="submit" name ="submit" value="提交" />
 }
 
 <div>

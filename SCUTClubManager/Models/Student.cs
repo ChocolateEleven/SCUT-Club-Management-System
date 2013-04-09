@@ -18,9 +18,6 @@ namespace SCUTClubManager.Models
         //[MaxLength(10, ErrorMessage = "名字的长度不能超过10个字符")]
         //public string FirstName { get; set; }
 
-        [RegularExpression(@"^\w{1,10}$", ErrorMessage = "请输入正确的字符")]
-        [MaxLength(10, ErrorMessage = "姓名的长度不能超过10个字符")]
-        public string Name { get; set; }
 
         //[Required]
         [StringLength(1)]

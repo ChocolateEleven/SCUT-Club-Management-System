@@ -61,15 +61,22 @@ namespace SCUTClubManager.Controllers
             return View(poll);
         }
 
+
+        [HttpPost]
+        public ActionResult Details(string[] selectItem)
+        {
+
+            return View();
+        }
+
         //
         // GET: /Poll/Create
 
         public ActionResult Create()
         {
-            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
-
             return View();
-        } 
+        }
+
 
         //
         // POST: /Poll/Create
@@ -81,10 +88,7 @@ namespace SCUTClubManager.Controllers
             ViewBag.AuthorUserName = User.Identity.Name;
 
 
-            if (test == null || test.Length < 2)
-            {
-                ModelState.AddModelError("PollItems", "请至少设置两个选项");
-            }
+            
 
             if (poll.OpenDate != null && poll.CloseDate != null &&
                 poll.OpenDate.CompareTo(poll.CloseDate) > 0)
@@ -92,17 +96,29 @@ namespace SCUTClubManager.Controllers
                 ModelState.AddModelError("Date","投票结束时间不能早于投票开始时间，请检查后再提交");
             }
 
-            for (int i = 0; i < test.Length; i++)
+            if (test == null || test.Length < 2)
             {
-                PollItem tempItem = new PollItem()
-                {
-                    Caption = test[i],
-                    Count = 0,
-                    Poll = poll
-                };
-                unitOfWork.PollItems.Add(tempItem);
-                poll.Items.Add(tempItem);
+                ModelState.AddModelError("PollItems", "请至少设置两个选项");
             }
+            if (test != null)
+            {
+                if (poll.Items != null)
+                {
+                    poll.Items.Clear();
+                }
+                for (int i = 0; i < test.Length; i++)
+                {
+                    PollItem tempItem = new PollItem()
+                    {
+                        Caption = test[i],
+                        Count = 0,
+                        Poll = poll
+                    };
+                    unitOfWork.PollItems.Add(tempItem);
+                    poll.Items.Add(tempItem);
+                }
+            }
+            poll.AuthorUserName = User.Identity.Name;
 
             if (ModelState.IsValid)
             {

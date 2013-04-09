@@ -67,7 +67,7 @@
     @foreach (var applicant in Model.Applicants)
     {
         <div class="Name">
-            @LabelHelpers.GetFullName(applicant.Applicant)
+             @Html.DisplayFor(modelItem => applicant.Applicant.Name)
         </div>
         if (applicant.IsMainApplicant)
         {
