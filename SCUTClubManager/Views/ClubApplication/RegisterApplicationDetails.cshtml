@@ -8,6 +8,12 @@
 
 @Html.Partial("_ApplicationInfo")
 
+<script type="text/javascript">
+    $(function () {
+        $(".NameMain").tooltip();
+    })
+</script>
+
 <fieldset>
     <legend>社团信息</legend>
 
@@ -19,7 +25,7 @@
     <div class="display-label">指导教师</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.MajorInfo.Instructor)
-    @*</div>*@
+    </div>
 
     <div class="display-label">宗旨</div>
     <div class="display-field">
@@ -66,22 +72,28 @@
     <legend>申请人</legend>
     @foreach (var applicant in Model.Applicants)
     {
-        <div class="Name">
+        if(applicant.IsMainApplicant)
+        {
+        <div class="NameMain" title="@applicant.Description.Description">
              @Html.DisplayFor(modelItem => applicant.Applicant.Name)
         </div>
-        if (applicant.IsMainApplicant)
-        {
         <div class="PrefixInfo">
             主要申请人
         </div>
-        <div class="Description">
-            @Html.DisplayFor(modelItem => applicant.Description.Description)
+        }
+        else
+        {
+            <div class="Name">
+             @Html.DisplayFor(modelItem => applicant.Applicant.Name)
         </div>
         }
     }
 </fieldset>
 
-@Html.Partial("_VerifyBar", Model.Id)
+@if (Model.Status == "n")
+{
+    //Html.RenderPartial("_VerifyBar", Model.Id);
+}
 
 <p>
     @Html.ActionLink("返回", "List", new
