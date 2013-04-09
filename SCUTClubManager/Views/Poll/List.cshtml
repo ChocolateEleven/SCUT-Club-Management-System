@@ -11,11 +11,18 @@
     @Html.Partial("_SearchBar")
 </div>
 
+@Html.Partial("_Confirmation")
+
+<script>
+    $(document).ready(function () {
+        deleteConfirmAjax(".deleteLink", "确认删除？", "/Poll/Delete");
+    });
+</script>
 
 <table>
     <tr>
         <th>
-            标题
+            @Html.ActionLink("标题", "List", new { order = ViewBag.TitleOrderOpt })
         </th>
         <th>
             问题
@@ -24,10 +31,10 @@
             发起人
         </th>
         <th>
-            开始时间
+            @Html.ActionLink("开始时间", "List", new { order = ViewBag.OpenDateOrderOpt })
         </th>
         <th>
-            结束时间
+            @Html.ActionLink("结束时间", "List", new { order = ViewBag.CloseDateOrderOpt })
         </th>
         <th>
             状态
@@ -36,9 +43,9 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="row-@item.Id">
         <td>
-            @Html.ActionLink(item.Title, "Details", new { id=item.Id })
+            @Html.ActionLink(item.Title, "Vote", new { id=item.Id })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Question)
@@ -56,7 +63,7 @@
             @LabelHelpers.GetStatus(item.OpenDate, item.CloseDate)
         </td>
         <td>
-            @Html.ActionLink("删除", "Delete", new { id=item.Id })
+            <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
         </td>
     </tr>
 }

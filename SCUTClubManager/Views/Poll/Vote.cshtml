@@ -1,0 +1,121 @@
+﻿@model SCUTClubManager.Models.Poll
+@{
+    ViewBag.Title = "Details";
+}
+
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        $("#submitBtn").click(function (event) {
+            event.preventDefault();
+
+            var select_items = new Array();
+            $("#items").children('input').each(function () {
+                if (this.checked) {
+                    select_items.push(this.value);
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "Vote",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ id: "@Model.Id", selectItem: select_items }),
+                dataType: "json",
+                success: function (data) {
+                    if (data.success) {
+                        messageBox(data.msg, function () {
+                            document.location = "/Poll/Details/@Model.Id";
+                        });
+                    }else {
+                        messageBox(data.msg);
+                    }
+                }})
+        });
+        });
+</script>
+
+@Html.ActionLink("goto Details", "Details")
+
+@using (Html.BeginForm())
+{
+
+<h2>投票：@Html.Display(Model.Title)</h2>
+
+
+    <fieldset>
+        <legend></legend>
+
+
+        <div class="display-label">问题</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Question)
+        </div>
+
+        <div class="display-label">发起人</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Author.Name)
+        </div>
+
+        <div class="display-label">开始时间</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OpenDate)
+        </div>
+
+        <div class="display-label">结束时间</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.CloseDate)
+        </div>
+
+        <div class="display-label">
+            @{
+    if (Model.IsMultiSelectable)
+    {
+                <div>多选：</div>
+    }
+    else
+    {
+                <div>单选：</div>
+    }
+            }
+        </div>
+
+
+        <div class="display-field" id="items">
+            @{
+    if (Model.IsMultiSelectable)
+    {
+        foreach (var t in Model.Items)
+        {
+                <input type="checkbox" name="selectItem" value="@t.Id" /> @t.Caption<br />
+        }
+    }
+    else
+    {
+        foreach (var t in Model.Items)
+        {
+                <input type="radio" name="selectItem" value="@t.Id" /> @t.Caption<br />
+        }
+    }
+            }
+        </div>
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+    </fieldset>
+    
+    if (Model.OpenDate.CompareTo(DateTime.Now) <= 0)
+    {
+    <input id="submitBtn" type="submit" value="提交" />
+    }
+    else
+    {
+        <div>投票还未开始</div>
+    }
+}
+
+
+<p>
+    @Html.ActionLink("返回", "Index")
+</p>
