@@ -131,9 +131,11 @@ namespace SCUTClubManager.DAL
                     m.ToTable("ClubRole");
                 });
 
-            model_builder.Entity<AssetBase>()
+            model_builder.Entity<RoleBase>()
                 .Property(p => p.Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            model_builder.Entity<User>().Property(t => t.UserName).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // 表之间的关系。
             model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal();
@@ -171,6 +173,8 @@ namespace SCUTClubManager.DAL
 
             model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.MajorInfo).WithRequiredDependent();
             model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.SubInfo).WithRequiredDependent();
+
+            model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithOptional().WillCascadeOnDelete(true);
         }
     }
 }
