@@ -332,6 +332,7 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /ClubApplication/Create
 
+        [Authorize]
         public ActionResult ApplyNewClub()
         {
             return View();
@@ -341,7 +342,9 @@ namespace SCUTClubManager.Controllers
         // POST: /ClubApplication/Create
 
         [HttpPost]
-        public ActionResult ApplyNewClub(FormCollection collection)
+        [Authorize]
+        public ActionResult ApplyNewClub(ClubRegisterApplication register_application, BranchCreation[] new_branches,
+            HttpPostedFileBase poster, HttpPostedFileBase material)
         {
             try
             {
