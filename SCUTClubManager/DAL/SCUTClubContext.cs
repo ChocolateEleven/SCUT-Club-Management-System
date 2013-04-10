@@ -174,11 +174,8 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.MajorInfo).WithRequiredDependent();
             model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.SubInfo).WithRequiredDependent();
 
-<<<<<<< HEAD
             model_builder.Entity<Poll>().HasMany(t => t.Items).WithRequired(t => t.Poll).WillCascadeOnDelete(true);
-=======
             model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithOptional().WillCascadeOnDelete(true);
->>>>>>> f18ecbf36b3c65cc59e569812417ab2608e0aca0
         }
     }
 }
