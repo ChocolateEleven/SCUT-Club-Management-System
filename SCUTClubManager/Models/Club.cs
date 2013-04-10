@@ -11,11 +11,19 @@ namespace SCUTClubManager.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "社团等级")]
         public int Level { get; set; }
+
+        [Display(Name = "社团资金")]
         public Decimal Fund { get; set; }
+
+        [Display(Name = "成立日期")]
         public DateTime FoundDate { get; set; }
 
+        [Display(Name = "成员人数")]
         public int MemberCount { get; set; }
+
+        [Display(Name = "本学年新增人数")]
         public int NewMemberCount { get; set; }
 
         public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
