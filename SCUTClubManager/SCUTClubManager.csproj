@@ -305,7 +305,7 @@
     <Content Include="Views\Poll\Details.cshtml" />
     <Content Include="Views\Shared\DuplicateVoteError.cshtml" />
     <Content Include="Views\ClubApplication\ApplyNewClub.cshtml" />
-    <Content Include="Views\Forum\Index.cshtml" />
+    <Content Include="Views\Forum\List.cshtml" />
     <Content Include="Views\Forum\Details.cshtml" />
     <Content Include="Views\Forum\Create.cshtml" />
     <Content Include="Views\Forum\Edit.cshtml" />

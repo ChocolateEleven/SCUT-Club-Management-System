@@ -4,22 +4,67 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<script>
+    $(document).ready(function () {
+        $("#btPostReply").click(function () {
 
+            var replyText = $("#replyText").val();
+
+            $.ajax({
+                type: "POST",
+                url: "Forum",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ id: "@Model.Id", reply: replyText }),
+                dataType: "json",
+                success: function (data) {
+                    if (data.success ) {
+                        document.location = "/Forum/Details/@Model.Id";
+                    }
+                    else {
+                        $("#replyErrorMsg").text(data.msg);
+                    }
+                }
+            })
+        })
+    })
+</script>
+
+<h2>留言板</h2>
+
+
+@using (Html.BeginForm())
+{
 <fieldset>
-    <legend>Thread</legend>
+    <legend>楼主</legend>
 
-    <div class="display-label">Title</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Title)
-    </div>
+    @foreach (var reply in Model.Replies)
+    {
+        <h3> @reply.Number 楼</h3>
 
-    <div class="display-label">Author</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Author.Name)
-    </div>
+         <div>
+            标题: 回复 @Html.DisplayFor(model => model.Title)
+        </div>
+        <div>
+            作者:@reply.Author.Name
+        </div>
+        <div>
+            内容：@reply.Content
+        </div>
+    }
+    
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    
+
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+    
+    <div>
+        <input type="text" id="replyText" name="replyText" />  
+        <p id="replyErrorMsg"></p>
+    </div>
+
+    
+        <button id="btPostReply"  type="button">回复</button>
+        @Html.ActionLink("返回", "Index")
+}

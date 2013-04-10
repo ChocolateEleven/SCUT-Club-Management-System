@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
+using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -14,13 +15,48 @@ namespace SCUTClubManager.Controllers
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
 
+
+
+
         //
         // GET: /Forum/
-
-        public ViewResult Index()
+        public ActionResult Index()
         {
+            return RedirectToAction("List", new { page_number = 1 });
+        }
+
+        public ViewResult List(int page_number = 1, string search = "", string search_option = "Title", string order = "LatestReplyDateDesc")
+        {
+
+            List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string, string>>();
+            select_list.Add(new KeyValuePair<string, string>("标题", "Title"));
+            select_list.Add(new KeyValuePair<string, string>("作者", "Author"));
+            ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Title");
+            ViewBag.Search = search;
+            ViewBag.CurrentOrder = order;
+            ViewBag.PostDateOrderOpt = order == "PostDate" ? "PostDateDesc" : "PostDate";
+            ViewBag.LatestReplyDateOrderOpt = order == "LatestReplyDate" ? "LatestReplyDateDesc" : "LatestReplyDate";
+        
+
             var threads = unitOfWork.Threads.ToList();
-            return View(threads.ToList());
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                switch (search_option)
+                {
+                    case "Title":
+                        threads = threads.Where(s => s.Title.Contains(search));
+                        break;
+                    case "Author":
+                        threads = threads.Where(s => (s.Author is Student && (s.Author as Student).Name.Contains(search)) || (search == "社联" && !(s.Author is Student)));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            var list = QueryProcessor.Query(threads, page_number: page_number, items_per_page: 2, order_by: order);
+            return View(list);
         }
 
         //
@@ -32,12 +68,37 @@ namespace SCUTClubManager.Controllers
             return View(thread);
         }
 
+        [HttpPost]
+        public ActionResult Details(int id, string reply)
+        {
+            Thread thread = unitOfWork.Threads.Find(id);
+
+            if (String.IsNullOrEmpty(reply))
+            {
+                return Json(new { success = false, msg = "请输入内容" });
+            }
+            if (ModelState.IsValid)
+            {
+                Reply tempReply = new Reply
+                {
+                    Content = reply,
+                    AuthorUserName = User.Identity.Name,
+                    Date = DateTime.Now,
+                    Number = thread.Replies.Count+1,
+                    Thread = thread
+                };
+                unitOfWork.Replies.Add(tempReply);
+                thread.Replies.Add(tempReply);
+                unitOfWork.SaveChanges();
+            }
+            return Json(new { success = true, msg = "" });
+        }
+
         //
         // GET: /Forum/Create
 
         public ActionResult Create()
         {
-            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name");
             return View();
         } 
 
@@ -45,16 +106,30 @@ namespace SCUTClubManager.Controllers
         // POST: /Forum/Create
 
         [HttpPost]
-        public ActionResult Create(Thread thread)
+        public ActionResult Create(Thread thread,string threadContent)
         {
+            if (String.IsNullOrEmpty(threadContent))
+            {
+                ModelState.AddModelError("threadContent","请输入内容");
+            }
             if (ModelState.IsValid)
             {
+                thread.PostDate = DateTime.Now;
+                thread.LatestReplyDate = DateTime.Now;
+                thread.AuthorUserName = User.Identity.Name;
+                Reply tempReply = new Reply{ 
+                        Thread = thread,
+                        Number = 1,
+                        Date = DateTime.Now,
+                        AuthorUserName = User.Identity.Name,
+                        Content = threadContent};
+                unitOfWork.Replies.Add(tempReply);
+                thread.Replies.Add(tempReply);
                 unitOfWork.Threads.Add(thread);
                 unitOfWork.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
 
-            ViewBag.AuthorUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", thread.AuthorUserName);
             return View(thread);
         }
         

@@ -37,6 +37,7 @@ namespace SCUTClubManager.DAL
                 new User
                 {
                     UserName = "Admin",
+                    Name = "社联",
                     Password = PasswordProcessor.ProcessWithMD5("Admin"),
                     RoleId = 2
                 },
@@ -615,6 +616,153 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
+            #region Threads
+            List<Thread> threads = new List<Thread>
+            {
+                new Thread
+                {
+                    Id = 1,
+                    Title = "华南理工大学社团管理系统",
+                    Author = students[1],
+                    AuthorUserName = students[1].UserName,
+                    PostDate = new DateTime(2002,03,04),
+                    LatestReplyDate = new DateTime(2002,03,06),
+                    Replies = new List<Reply>
+                    {
+                        new Reply
+                        {
+                            Id = 1,
+                            ThreadId = 1,
+                            Content = "灌水灌水",
+                            Author = students[1],
+                            AuthorUserName = students[1].UserName,
+                            Date = new DateTime(2002,03,04),
+                            Number = 1
+                        },
+
+                        new Reply
+                        {
+                            Id = 2,
+                            ThreadId = 1,
+                            Content = "内容内容内容",
+                            Author = students[2],
+                            AuthorUserName = students[2].UserName,
+                            Date = new DateTime(2002,03,05),
+                            Number = 2
+                        },
+
+                        
+                        new Reply
+                        {
+                            Id = 3,
+                            ThreadId = 1,
+                            Content = "首先这个和空气中的污染物、阳光的角度都有关。城市早上空气差，这个说法一般来说是没错的，不管是夜间由于冷却作用导致的污染物富集，还是早高峰时段的汽车尾气排放都将导致空气中污染物浓度的上升。空气中颗粒物或者气体污染物影响大气能见度的方式千差万别，比如城市覆盖的棕红色的烟雾就是由于氮氧化物含量较高造成的。在太阳开始照耀大地以后，空气的活动开始，扩散作用加剧，这时候污染物浓度就会开始降低。",
+                            Author = students[3],
+                            AuthorUserName = students[3].UserName,
+                            Date = new DateTime(2002,03,05),
+                            Number = 3
+                        },
+
+                        new Reply
+                        {
+                            Id = 4,
+                            ThreadId = 1,
+                            Content = ",.,.,.,.,..,",
+                            Author = students[3],
+                            AuthorUserName = students[3].UserName,
+                            Date = new DateTime(2002,03,06),
+                            Number = 4
+                        },
+                    }
+                },
+
+                new Thread
+                {
+                    Id = 2,
+                    Title = "今天天气不错",
+                    Author = students[2],
+                    AuthorUserName = students[2].UserName,
+                    PostDate = new DateTime(2012,03,04),
+                    LatestReplyDate = new DateTime(2002,03,09),
+                    Replies = new List<Reply>
+                    {
+                        new Reply
+                        {
+                            Id = 1,
+                            ThreadId = 2,
+                            Content = "灌水灌水",
+                            Author = students[2],
+                            AuthorUserName = students[2].UserName,
+                            Date = new DateTime(2012,03,04),
+                            Number = 1
+                        },
+
+                        new Reply
+                        {
+                            Id = 2,
+                            ThreadId = 2,
+                            Content = "内容内容内容",
+                            Author = students[2],
+                            AuthorUserName = students[2].UserName,
+                            Date = new DateTime(2002,03,05),
+                            Number = 2
+                        },
+
+                        
+                        new Reply
+                        {
+                            Id = 3,
+                            ThreadId = 2,
+                            Content = "灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水灌水",
+                            Author = students[3],
+                            AuthorUserName = students[3].UserName,
+                            Date = new DateTime(2002,03,05),
+                            Number = 3
+                        },
+
+                        new Reply
+                        {
+                            Id = 4,
+                            ThreadId = 2,
+                            Content = "text() - Sets or returns the text content of selected elements \n"+
+                                        "html() - Sets or returns the content of selected elements (including HTML markup) \n"+
+                                        "val() - Sets or returns the value of form fields \n",
+                            Author = students[3],
+                            AuthorUserName = students[3].UserName,
+                            Date = new DateTime(2002,03,09),
+                            Number = 4
+                        },
+                    }
+                },
+
+                new Thread
+                {
+                    Id = 2,
+                    Title = "google",
+                    Author = students[1],
+                    AuthorUserName = students[1].UserName,
+                    LatestReplyDate = new DateTime(2013,03,04),
+                    PostDate = new DateTime(2013,03,04),
+                    Replies = new List<Reply>
+                    {
+                        new Reply
+                        {
+                            Id = 1,
+                            ThreadId = 2,
+                            Content = "此楼只有楼主一个人",
+                            Author = students[1],
+                            AuthorUserName = students[1].UserName,
+                            Date = new DateTime(2013,03,04),
+                            Number = 1
+                        }
+                    }
+                }
+
+            };
+            #endregion
+
+
+
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
             sub_infos.ForEach(s => context.ClubSubInfos.Add(s));
             club_roles.ForEach(s => context.RoleBases.Add(s));
@@ -628,6 +776,7 @@ namespace SCUTClubManager.DAL
             club_register_applications.ForEach(s => context.Applications.Add(s));
             club_unregister_applications.ForEach(s => context.Applications.Add(s));
             club_modification_applications.ForEach(s => context.Applications.Add(s));
+            threads.ForEach(s => context.Threads.Add(s));
 
             context.SaveChanges();
         }
