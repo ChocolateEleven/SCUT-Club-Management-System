@@ -45,6 +45,7 @@ namespace SCUTClubManager.DAL
         public DbSet<SubEventDescription> SubEventDescriptions { get; set; }
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
+        public DbSet<IdentityForTPC> Identities { get; set; }
 
         public SCUTClubContext() : base("DefaultConnection") { }
 
@@ -136,6 +137,9 @@ namespace SCUTClubManager.DAL
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             model_builder.Entity<User>().Property(t => t.UserName).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            // Id生成器的主键无需自动生成
+            model_builder.Entity<IdentityForTPC>().Property(t => t.BaseName).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // 表之间的关系。
             model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal();

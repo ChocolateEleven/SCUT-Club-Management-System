@@ -18,7 +18,7 @@ namespace SCUTClubManager.Models
         public int ApplicationId { get; set; }
 
         [MaxLength(20)]
-        //[Required]
+        //[Required(ErrorMessage = "请输入部门名")]
         public string BranchName { get; set; }
 
         [ForeignKey("BranchId")]

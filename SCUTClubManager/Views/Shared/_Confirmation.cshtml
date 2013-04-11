@@ -95,6 +95,24 @@
             }
         });
     }
+
+    function notify(data) {
+        $("#confirmWnd").text(data.msg);
+        $("#confirmWnd").dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                "确认": function () {
+                    if (data.success) {
+                        document.location = data.url;
+                    }
+
+                    $("#confirmWnd").dialog("close");
+                }
+            }
+        });
+    }
 </script>
 
 <div id="confirmWnd" hidden></div>

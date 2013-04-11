@@ -10,6 +10,24 @@ namespace SCUTClubManager.DAL
     {
         private SCUTClubContext context = new SCUTClubContext();
 
+        public int GenerateIdFor(string base_class_name)
+        {
+            var id_generators = context.Identities;
+
+            if (id_generators.Any(t => t.BaseName == base_class_name))
+            {
+                var id_generator = id_generators.Find(base_class_name);
+                int id = id_generator.Identity;
+                id_generator.Identity++;
+
+                this.SaveChanges();
+
+                return id;
+            }
+
+            throw new ArgumentException("There is no generators named " + base_class_name + ".");
+        }
+
         private IRepository<ClubInfoModificationApplication> clubInfoModificationApplications;
         public IRepository<ClubInfoModificationApplication> ClubInfoModificationApplications
         {

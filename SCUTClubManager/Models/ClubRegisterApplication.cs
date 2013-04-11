@@ -24,9 +24,5 @@ namespace SCUTClubManager.Models
 
         [Display(Name = "次要信息")]
         public virtual ClubSubInfo SubInfo { get; set; }
-
-        [MaxLength(256)]
-        [Display(Name = "申请材料")]
-        public string Material { get; set; }
     }
 }

@@ -15,6 +15,27 @@ namespace SCUTClubManager.DAL
         {
             base.Seed(context);
 
+            #region Ids
+            var ids = new List<IdentityForTPC>
+            {
+                new IdentityForTPC
+                {
+                    BaseName = "Application",
+                    Identity = 4
+                },
+                new IdentityForTPC
+                {
+                    BaseName = "AssetBase",
+                    Identity = 0
+                },
+                new IdentityForTPC
+                {
+                    BaseName = "RoleBase",
+                    Identity = 7
+                }
+            };
+            #endregion
+
             #region UserRoles
             List<UserRole> roles = new List<UserRole>
             {
@@ -545,8 +566,7 @@ namespace SCUTClubManager.DAL
                         Address = "地球",
                         PosterUrl = "N.png",
                         Regulation = "None"
-                    },
-                    Material = "Materials/N.doc"
+                    }
                 }
             };
 
@@ -590,6 +610,7 @@ namespace SCUTClubManager.DAL
             #region BranchModifications
             BranchModification branch_modification = new BranchDeletion
             {
+                BranchName = branches[1].BranchName,
                 OrigBranch = branches[1],
                 ApplicationId = 3
             };
@@ -761,8 +782,7 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
-
-
+            ids.ForEach(s => context.Identities.Add(s));
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
             sub_infos.ForEach(s => context.ClubSubInfos.Add(s));
             club_roles.ForEach(s => context.RoleBases.Add(s));

@@ -10,6 +10,7 @@ namespace SCUTClubManager.Helpers
     public static class ConfigurationManager
     {
         private static bool isRecruitEnabled = false;
+        private static string clubSplashPanelFolder = "~/Content/Images/ClubSplashPanels/";
         private static XmlWriterSettings settings = null;
 
         public static string ConfigFile
@@ -29,7 +30,12 @@ namespace SCUTClubManager.Helpers
 
                 using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
                 {
-                    xml.WriteElementString("IsRecruitEnabled", "false");
+                    xml.WriteStartElement("SCUTClubManagerConfigFile");
+
+                    xml.WriteElementString("IsRecruitEnabled", isRecruitEnabled.ToString());
+                    xml.WriteElementString("ClubSplashPanelFolder", clubSplashPanelFolder.ToString());
+
+                    xml.WriteEndElement();
 
                     xml.Flush();
                     xml.Close();
@@ -42,6 +48,17 @@ namespace SCUTClubManager.Helpers
                 {
                     string str = reader.ReadElementContentAsString().ToLower();
                     isRecruitEnabled = Boolean.Parse(str);
+                }
+                if (reader.ReadToFollowing("ClubSplashPanelFolder"))
+                {
+                    string str = reader.ReadElementContentAsString().ToLower();
+                    clubSplashPanelFolder = str;
+                    string mapped_path = HttpContext.Current.Server.MapPath(str);
+
+                    if (!Directory.Exists(mapped_path))
+                    {
+                        Directory.CreateDirectory(mapped_path);
+                    }
                 }
             }
         }
@@ -65,6 +82,29 @@ namespace SCUTClubManager.Helpers
                     }
 
                     isRecruitEnabled = value;
+                }
+            }
+        }
+
+        public static string ClubSplashPanelFolder
+        {
+            get
+            {
+                return clubSplashPanelFolder;
+            }
+            set
+            {
+                if (clubSplashPanelFolder != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("ClubSplashPanelFolder", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    clubSplashPanelFolder = value;
                 }
             }
         }
