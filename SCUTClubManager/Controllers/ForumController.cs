@@ -40,7 +40,7 @@ namespace SCUTClubManager.Controllers
 
             var threads = unitOfWork.Threads.ToList();
 
-            if (!String.IsNullOrEmpty(search))
+            if (!String.IsNullOrWhiteSpace(search))
             {
                 switch (search_option)
                 {
@@ -73,8 +73,9 @@ namespace SCUTClubManager.Controllers
         {
             Thread thread = unitOfWork.Threads.Find(id);
 
-            if (String.IsNullOrEmpty(reply))
+            if (String.IsNullOrWhiteSpace(reply))
             {
+                ModelState.AddModelError("replyError", "请输入内容");
                 return Json(new { success = false, msg = "请输入内容" });
             }
             if (ModelState.IsValid)
@@ -108,7 +109,7 @@ namespace SCUTClubManager.Controllers
         [HttpPost]
         public ActionResult Create(Thread thread,string threadContent)
         {
-            if (String.IsNullOrEmpty(threadContent))
+            if (String.IsNullOrWhiteSpace(threadContent))
             {
                 ModelState.AddModelError("threadContent","请输入内容");
             }
@@ -161,23 +162,24 @@ namespace SCUTClubManager.Controllers
 
         //
         // GET: /Forum/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            Thread thread = unitOfWork.Threads.Find(id);
-            return View(thread);
-        }
 
-        //
+        //public ActionResult Delete(int id)
+        //{
+        //    Thread thread = unitOfWork.Threads.Find(id);
+        //    return View(thread);
+        //}
+
+        
         // POST: /Forum/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {            
+        [HttpPost]
+        public ActionResult Delete(int id) 
+        {             
             Thread thread = unitOfWork.Threads.Find(id);
             unitOfWork.Threads.Delete(thread);
             unitOfWork.SaveChanges();
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+            return Json(new { idToDelete = id, success = true });
         }
 
         protected override void Dispose(bool disposing)
