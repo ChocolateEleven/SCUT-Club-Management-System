@@ -782,7 +782,6 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
-<<<<<<< HEAD
             #region Time
             List<Time> times = new List<Time>
             {
@@ -959,9 +958,7 @@ namespace SCUTClubManager.DAL
             #endregion
 
 
-=======
             ids.ForEach(s => context.Identities.Add(s));
->>>>>>> 6c3afe7cfd6a4a27705ed3fbcc7dc4575f43709b
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
             sub_infos.ForEach(s => context.ClubSubInfos.Add(s));
             club_roles.ForEach(s => context.RoleBases.Add(s));
