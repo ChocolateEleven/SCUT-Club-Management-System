@@ -38,7 +38,7 @@ namespace SCUTClubManager.Controllers
             // var polls = db.Polls.Include(p => p.Author);
             var polls = unitOfWork.Polls.ToList();
 
-            if (!String.IsNullOrEmpty(search))
+            if (!String.IsNullOrWhiteSpace(search))
             {
                 switch (search_option)
                 {
