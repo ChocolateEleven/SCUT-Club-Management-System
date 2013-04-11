@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 using System.Linq.Expressions;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
+using SCUTClubManager.Helpers;
 
 namespace SCUTClubManager.Controllers
 {
@@ -344,18 +346,51 @@ namespace SCUTClubManager.Controllers
         [HttpPost]
         [Authorize]
         public ActionResult ApplyNewClub(ClubRegisterApplication register_application, BranchCreation[] new_branches,
-            HttpPostedFileBase poster, HttpPostedFileBase material)
+            HttpPostedFileBase poster)
         {
-            try
+            if (new_branches != null)
             {
-                // TODO: Add insert logic here
+                register_application.Branches = new List<BranchModification>();
 
-                return RedirectToAction("Index");
+                foreach (var branch in new_branches)
+                {
+                    register_application.Branches.Add(branch);
+                }
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                int id = db.GenerateIdFor("Application");
+
+                if (poster != null && poster.ContentLength > 0)
+                {
+                    string guid = Guid.NewGuid().ToString();
+                    string extension = "";
+
+                    if (Path.HasExtension(poster.FileName))
+                    {
+                        extension = Path.GetExtension(poster.FileName);
+                    }
+
+                    string file_name = guid + extension;
+                    string path = Path.Combine(Server.MapPath(ConfigurationManager.ClubSplashPanelFolder), file_name);
+
+                    poster.SaveAs(path);
+                    register_application.SubInfo.PosterUrl = file_name;
+                }
+
+                register_application.ApplicantUserName = User.Identity.Name;
+                register_application.Date = DateTime.Now;
+                register_application.Status = "n";
+                register_application.Id = id;
+
+                db.Applications.Add(register_application);
+                db.SaveChanges();
+
+                return Json(new { success = true, msg = "成功提交申请", url = "List" });
             }
+
+            return Json(new { success = false, msg = "提交失败" });
         }
         
         //

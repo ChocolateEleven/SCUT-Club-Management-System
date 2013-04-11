@@ -12,6 +12,7 @@ namespace SCUTClubManager.Models
         public int ClubRegisterApplicantId { get; set; }
 
         [MaxLength(300)]
+        [Required(ErrorMessage = "请输入申请人描述")]
         public string Description { get; set; }
     }
 }

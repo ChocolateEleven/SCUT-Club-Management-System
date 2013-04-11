@@ -6,7 +6,7 @@
 
 <h2>@Model.MajorInfo.Name</h2>
 <div class="SplashPanel">
-    <img src='@Url.Content("~/Content/Images/ClubSplashPanel/" + Model.SubInfo.PosterUrl)' />
+    <img src='@Url.Content(ConfigurationManager.ClubSplashPanelFolder + Model.SubInfo.PosterUrl)' />
 </div>
 
 <table class="PanelButtonContainer">
