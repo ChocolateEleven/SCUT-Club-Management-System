@@ -10,7 +10,7 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string TimeName { get; set; }
 
         public virtual ICollection<AssetApplication> AssetApplications { get; set; }

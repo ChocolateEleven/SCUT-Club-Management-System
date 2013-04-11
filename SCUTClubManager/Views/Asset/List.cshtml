@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SCUTClubManager.Models.Asset>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>物资管理</h2>
+
+<p>
+    @Html.ActionLink("增加物资", "Create")
+    @Html.Partial("_SearchBar")
+</p>
+<table>
+    <tr>
+        <th>
+            物资
+        </th>
+        <th>
+            数量
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Count)
+        </td>
+        <td>
+            @Html.ActionLink("编辑", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("删除", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.Partial("_PageNavigation", Model)

@@ -104,6 +104,7 @@
     <Compile Include="BusinessLogic\ScmRoleProvider.cs" />
     <Compile Include="BusinessLogic\ScmMembershipProvider.cs" />
     <Compile Include="BusinessLogic\QueryProcessor.cs" />
+    <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\ClubApplicationController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
@@ -327,6 +328,14 @@
     <Content Include="Views\Forum\Create.cshtml" />
     <Content Include="Views\Forum\Edit.cshtml" />
     <Content Include="Views\Forum\Delete.cshtml" />
+    <Content Include="Views\Asset\List.cshtml" />
+    <Content Include="Views\Asset\Details.cshtml" />
+    <Content Include="Views\Asset\Create.cshtml" />
+    <Content Include="Views\Asset\Edit.cshtml" />
+    <Content Include="Views\Asset\Delete.cshtml" />
+    <Content Include="Views\Asset\Index.cshtml" />
+    <Content Include="Views\Asset\Calender.cshtml" />
+    <Content Include="Views\Asset\AvailableAsset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

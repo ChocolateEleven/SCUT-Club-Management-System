@@ -761,6 +761,180 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
+            #region Time
+            List<Time> times = new List<Time>
+            {
+                new Time
+                {
+                    TimeName = "上午1、2节课"
+                },
+                new Time
+                {
+                    TimeName = "上午3、4节课"
+                },
+                new Time
+                {
+                    TimeName = "中午"
+                },
+                new Time
+                {
+                    TimeName = "下午5、6节课"
+                },
+                new Time
+                {
+                    TimeName = "下午7、8、9节课"
+                },
+                new Time
+                {
+                    TimeName = "傍晚"
+                },
+                new Time
+                {
+                    TimeName = "晚上10、11、12节课"
+                },
+                new Time
+                {
+                    TimeName = "上午1、2、3、4节课"
+                },
+                new Time
+                {
+                    TimeName = "下午5、6、7、8、9节课"
+                },
+                new Time
+                {
+                    TimeName = "白天（上午、中午、下午）"
+                },
+                new Time
+                {
+                    TimeName = "全天"
+                }
+
+            };
+            #endregion
+
+            #region Asset
+            List<Asset> assets = new List<Asset>
+            {
+                new Asset
+                {
+                    Id = 1,
+                    Count = 10,
+                    Name = "帐篷"
+                },
+
+                new Asset
+                {
+                    Id = 2,
+                    Count = 20,
+                    Name = "长桌"
+                },
+
+                new Asset
+                {
+                    Id = 3,
+                    Count = 30,
+                    Name = "排插"
+                },
+
+                new Asset
+                {
+                    Id = 4,
+                    Count = 0,
+                    Name = "饮水机"
+                }
+
+            };
+            #endregion
+
+            #region AssetAssignment
+            List<AssetAssignment> assetAssignments = new List<AssetAssignment> 
+            {
+                new AssetAssignment
+                {
+                    Date = new DateTime(2013,4,11),
+                    Club = clubs[0],
+                    Time = times[0],
+                    Applicant = students[1] as Student,
+                    AssignedAssets = new List<AssignedAsset>
+                    {
+                        new AssignedAsset
+                        {
+                            Id = 11,
+                            Count = 4,
+                            Asset = assets[0]
+                        },
+                        new AssignedAsset
+                        {
+                            Id = 12,
+                            Count = 6,
+                            Asset = assets[1]
+                        },
+                        new AssignedAsset
+                        {
+                            Id = 13,
+                            Count = 4,
+                            Asset = assets[2]
+                        }
+                    }
+                },
+                new AssetAssignment
+                {
+                    Date = new DateTime(2013,3,19),
+                    Club = clubs[1],
+                    Time = times[5],
+                    Applicant = students[1] as Student,
+                    AssignedAssets = new List<AssignedAsset>
+                    {
+                        new AssignedAsset
+                        {
+                            Id = 14,
+                            Count = 2,
+                            Asset = assets[0]
+                        },
+                        new AssignedAsset
+                        {
+                            Id = 15,
+                            Count = 30,
+                            Asset = assets[2]
+                        },
+                        new AssignedAsset
+                        {
+                            Id = 16,
+                            Count = 3,
+                            Asset = assets[1]
+                        }
+                    }
+                },
+                new AssetAssignment
+                {
+                    Date = new DateTime(2014,5,17),
+                    Club = clubs[0],
+                    Time = times[9],
+                    Applicant = students[2] as Student,
+                    AssignedAssets = new List<AssignedAsset>
+                    {
+                        new AssignedAsset
+                        {
+                            Id = 17,
+                            Count = 2,
+                            Asset = assets[0]
+                        },
+                        new AssignedAsset
+                        {
+                            Id = 18,
+                            Count = 5,
+                            Asset = assets[2]
+                        },
+                        new AssignedAsset
+                        {
+                            Id = 19,
+                            Count = 1,
+                            Asset = assets[1]
+                        }
+                    }
+                }
+            };
+            #endregion
 
 
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
@@ -777,6 +951,9 @@ namespace SCUTClubManager.DAL
             club_unregister_applications.ForEach(s => context.Applications.Add(s));
             club_modification_applications.ForEach(s => context.Applications.Add(s));
             threads.ForEach(s => context.Threads.Add(s));
+            times.ForEach(s => context.Times.Add(s));
+            assets.ForEach(s => context.Assets.Add(s));
+            assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
 
             context.SaveChanges();
         }

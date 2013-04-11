@@ -1,0 +1,20 @@
+﻿@model SCUTClubManager.Models.Asset
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>AssetBase</legend>
+
+    <div class="display-label">Count</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Count)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
