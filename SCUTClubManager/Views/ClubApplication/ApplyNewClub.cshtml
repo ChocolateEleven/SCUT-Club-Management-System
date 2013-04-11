@@ -1,81 +1,230 @@
 ﻿@model SCUTClubManager.Models.ClubRegisterApplication
-
 @{
-    ViewBag.Title = "ApplyNewClub";
+    ViewBag.Title = "申请成立新社团";
 }
 
-<h2>ApplyNewClub</h2>
+<script type="text/javascript">
+    var branch_count = 0;
+    var applicant_count = 0;
 
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    function deleteItem(itemToDelete) {
+        // 获取被删除元素的类别
+        var class_name = "." + itemToDelete[0].className;
+        // 更新被删除的元素后所有元素Name属性的下标
+        $(itemToDelete).nextAll(class_name).each(function (index, element) {
+            var name = element.firstChild.name;
+            var left_bracket = name.indexOf("[");
+            var right_bracket = name.indexOf("]");
+            var orig_index = name.substring(left_bracket + 1, right_bracket);
+            var new_index = orig_index - 1;
+            
+            element.firstChild.name = name.replace(orig_index, new_index);
+        });
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>ClubRegisterApplication</legend>
+        // 移除被删除元素
+        $(itemToDelete).remove();
+    }
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ClubSubInfoId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ClubSubInfoId)
-            @Html.ValidationMessageFor(model => model.ClubSubInfoId)
-        </div>
+    function addBranch() {
+        var textbox = $("<div class='Branch'><input type='text' name='new_branches[" + $('.Branch').length + "].BranchName'"
+            + " value='请在此输入部门名' />" +
+            "<button class='deleteBranchBtn' onclick='deleteItem($(this).parent())'>删除</button></div>")
+            .insertBefore("#addBranchBtn").children('input');
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ClubMajorInfoId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ClubMajorInfoId)
-            @Html.ValidationMessageFor(model => model.ClubMajorInfoId)
-        </div>
+        placeHolder(textbox, 'PlaceHolder');
+    }
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Material)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Material)
-            @Html.ValidationMessageFor(model => model.Material)
-        </div>
+    function asMainApplicant (mainApplicantCheckBox) {
+        if (mainApplicantCheckBox.checked) {
+            var textarea = $("<div class='Description'><textarea name='Applicants[" + ($('.Applicant').length - 1) +
+                "].Description.Description'>请在这里输入对该主要申请人的描述</textarea></div>").appendTo(mainApplicantCheckBox.parentElement).children('textarea');
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ClubId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ClubId)
-            @Html.ValidationMessageFor(model => model.ClubId)
-        </div>
+            placeHolder(textarea, "PlaceHolder");
+        } else {
+            var description = $(mainApplicantCheckBox).siblings('.Description');
+            deleteItem(description);
+        }
+    }
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Status)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Status)
-            @Html.ValidationMessageFor(model => model.Status)
-        </div>
+    function addApplicant () {
+        var textbox = $("<div class='Applicant'><input type='text' name='Applicants[" + $('.Applicant').length + "].ApplicantUserName'" + 
+            "value='请在此输入申请人的用户名' class='ApplicantUserName' />" +
+            "<input type='checkbox' class='IsMainApplicant' name='Applicants[" + $('.Applicant').length + "].IsMainApplicant' onclick='asMainApplicant(this)'" +
+            "value='true'>作为主要申请人</input><button class='deleteApplicantBtn' onclick='deleteItem($(this).parent())'>删除</button></div>")
+            .insertBefore("#addApplicant").children(".ApplicantUserName");
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ApplicantUserName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ApplicantUserName)
-            @Html.ValidationMessageFor(model => model.ApplicantUserName)
-        </div>
+        placeHolder(textbox, "PlaceHolder");
+    }
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Date)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Date)
-            @Html.ValidationMessageFor(model => model.Date)
-        </div>
+    function submit_click(eventObject) {
+        var major_info = new Object();
+        major_info.Name = "NewClub";
+        major_info.Instructor = "Colo";
 
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
+        var register_application = new Object();
+        register_application.MajorInfo = major_info;
+        register_application.ApplicantUserName = "Admin";
+        register_application.Date = Date.now();
+
+
+
+        debugger;
+
+        $("form").ajaxSubmit({
+            type: "POST",
+            url: "ApplyNewClub",
+            success: function (data) {
+                if (data.success) {
+                    debugger;
+                    messageBox(data.msg, function () {
+                    });
+                } else {
+                    debugger;
+                    messageBox(data.msg);
+                }
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+        return false;
+    }
+
+    $(function () {
+        $('form').ajaxForm({
+            success: function (data) {
+                if (data.success) {
+                    debugger;
+                    messageBox(data.msg, function () {
+                    });
+                } else {
+                    debugger;
+                    messageBox(data.msg);
+                }
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+
+        $('form').submit(function (eventObject) {
+            debugger;
+        });
+
+        placeHolder($('textarea'), "PlaceHolder");
+    })
+
+</script>
+
+<h2>申请成立新社团</h2>
+
+@Html.ValidationSummary(true)
+@using (Html.BeginForm())
+{
+<fieldset>
+    <legend>@Html.LabelFor(model => model.MajorInfo)</legend>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MajorInfo.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.MajorInfo.Name)
+        @Html.ValidationMessageFor(model => model.MajorInfo.Name)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MajorInfo.Instructor)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.MajorInfo.Instructor)
+        @Html.ValidationMessageFor(model => model.MajorInfo.Instructor)
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>@Html.LabelFor(model => model.SubInfo)</legend>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SubInfo.Principle)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.SubInfo.Principle)
+        @Html.ValidationMessageFor(model => model.SubInfo.Principle)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SubInfo.Purpose)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.SubInfo.Purpose)
+        @Html.ValidationMessageFor(model => model.SubInfo.Purpose)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SubInfo.Range)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.SubInfo.Range)
+        @Html.ValidationMessageFor(model => model.SubInfo.Range)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SubInfo.Address)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.SubInfo.Address)
+        @Html.ValidationMessageFor(model => model.SubInfo.Address)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SubInfo.Regulation)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.SubInfo.Regulation)
+        @Html.ValidationMessageFor(model => model.SubInfo.Regulation)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.SubInfo.PosterUrl)
+    </div>
+    <div class="editor-field">
+        <input type="file" name="poster" id="poster" />
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>@Html.LabelFor(model => model.Branches)</legend>
+    <div class="DescriptionText">
+        要新增一个部门，请点击“新增”按钮，并输入新部门的名称。要删除一个部门，请点击该部门旁的“删除”按钮。
+    </div>
+    <div class="editor-field" id="addBranch">
+        <button id="addBranchBtn" onclick="addBranch()" type="button" >新增</button>
+    </div>
+</fieldset>
+    
+<fieldset>
+    <legend>@Html.LabelFor(model => model.Applicants)</legend>
+    <div class="DescriptionText">
+        提交该申请的用户自动作为一名主要申请人。此外，要添加一名申请人，请点击“添加”按钮，并输入这名申请人的用户名。
+            若要将一名已在列表中的申请人作为主要申请人，请勾选“作为主要申请人”。注意，所有主要申请人都必须填写申请人描述。
+            若要将一名申请人移除出列表，请点击这名申请人旁的“移除”按钮。
+    </div>
+    <div class="Applicant">
+        <input type="text" name="Applicants[0].ApplicantUserName" class="ApplicantUserName" id="submitter" value="@User.Identity.Name" disabled="disabled" />
+        <input type="hidden" name="Applicants[0].ApplicantUserName" class="ApplicantUserName" value="@User.Identity.Name" />
+        <input type="checkbox" class="IsMainApplicant" name='Applicants[0].IsMainApplicant' checked="checked" value="4" disabled="disabled">作为主要申请人</input>        <input class='IsMainApplicant' name='Applicants[0].IsMainApplicant' type='hidden' value='true' />
+        <div>
+            <textarea class="Description" name="Applicants[0].Description.Description">请在这里输入对该主要申请人的描述</textarea>
+        </div>
+    </div>
+    <div class="editor-field" id="addApplicant">
+        <button id="addApplicantBtn" onclick="addApplicant()"  type="button" >新增</button>
+    </div>
+</fieldset>
+
+<p>
+    <input type="submit" value="提交" />
+</p>
 }
-
+    
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

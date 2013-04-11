@@ -12,14 +12,21 @@
             docLocation += "&type_filter=@ViewBag.TypeFilter";
         }
 
+        var search = $("#searchBox").val();
+        
+        if (search == "请输入搜索内容") {
+            search = '';
+        }
+
         docLocation += "&search_option=" + $("#SearchOptions").val();
-        docLocation += "&search=" + $("#searchBox").val();
+        docLocation += "&search=" + search;
 
         document.location = docLocation;
     }
 
     $(function () {
         $("#searchBtn").click(search);
+        placeHolder($("#searchBox"), "PlaceHolder");
     });
 </script>
 
@@ -31,7 +38,7 @@
 }
 
 <div class="OperationBtn">
-    @Html.TextBox("searchBox", ViewBag.Search as string)
+    @Html.TextBox("searchBox", String.IsNullOrEmpty(ViewBag.Search as string) ? "请输入搜索内容" : ViewBag.Search as string)
     <a id="searchBtn" href="#">搜索</a>
 </div>
 

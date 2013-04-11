@@ -9,9 +9,6 @@
     请输入你的账号和密码。若遇到任何问题请咨询系统管理员。
 </p>
 
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
 @Html.ValidationSummary(true, "账号或密码错误，请重试。")
 
 @using (Html.BeginForm()) {
