@@ -21,12 +21,12 @@ namespace SCUTClubManager.DAL
                 new IdentityForTPC
                 {
                     BaseName = "Application",
-                    Identity = 4
+                    Identity = 6
                 },
                 new IdentityForTPC
                 {
                     BaseName = "AssetBase",
-                    Identity = 0
+                    Identity = 20
                 },
                 new IdentityForTPC
                 {
@@ -957,6 +957,90 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
+            #region AssetApplication
+            List<AssetApplication> assetApplications = new List<AssetApplication> 
+            {
+                new AssetApplication
+                {
+                    Id = 4,
+                    Time = times[0],
+                    Status = "n",
+                    Applicant = students[1] as Student,
+                    Date = new DateTime(2013,04,12),
+                    Club = clubs[0],
+                    RejectReason = null,
+                    ApplicatedAssets = new List<ApplicatedAsset>
+                    {
+                        new ApplicatedAsset
+                        {
+                            Id = 5,
+                            Count = 5,
+                            Asset = assets[0]
+                        },
+
+                        new ApplicatedAsset
+                        {
+                            Id = 6,
+                            Count = 4,
+                            Asset = assets[2]
+                        }
+                    }
+                },
+                new AssetApplication
+                {
+                    Id = 5,
+                    Time = times[1],
+                    Club = clubs[1],
+                    Status = "f",
+                    Applicant = students[3] as Student,
+                    Date = new DateTime(2013,04,15),
+                    RejectReason = null,
+                    ApplicatedAssets = new List<ApplicatedAsset>()
+                    //{
+                    //    new ApplicatedAsset
+                    //    {
+                    //        Id = 7,
+                    //        Count = 3,
+                    //        Asset = assets[0]
+                    //    },
+
+                    //    new ApplicatedAsset
+                    //    {
+                    //        Id = 8,
+                    //        Count = 5,
+                    //        Asset = assets[2]
+                    //    }
+                    //}
+                }
+                //,
+                //new AssetApplication
+                //{
+                //    Id = 6,
+                //    Time = times[5],
+                //    Club = clubs[1],
+                //    Status = "p",
+                //    Applicant = students[0] as Student,
+                //    Date = new DateTime(2013,04,10),
+                //    RejectReason = null,
+                //    ApplicatedAssets = new List<ApplicatedAsset>
+                //    {
+                //        new ApplicatedAsset
+                //        {
+                //            Id = 9,
+                //            Count = 2,
+                //            Asset = assets[0]
+                //        },
+
+                //        new ApplicatedAsset
+                //        {
+                //            Id = 10,
+                //            Count = 3,
+                //            Asset = assets[2]
+                //        }
+                //    }
+                //}
+            };
+            #endregion
 
             ids.ForEach(s => context.Identities.Add(s));
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
@@ -975,7 +1059,8 @@ namespace SCUTClubManager.DAL
             threads.ForEach(s => context.Threads.Add(s));
             times.ForEach(s => context.Times.Add(s));
             assets.ForEach(s => context.Assets.Add(s));
-            assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
+            //assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
+            assetApplications.ForEach(s => context.Applications.Add(s));
 
             context.SaveChanges();
         }

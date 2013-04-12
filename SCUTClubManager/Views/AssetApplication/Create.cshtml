@@ -1,0 +1,73 @@
+﻿@model SCUTClubManager.Models.AssetApplication
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>AssetApplication</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubEventId, "SubEvent")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("SubEventId", String.Empty)
+            @Html.ValidationMessageFor(model => model.SubEventId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TimeId, "Time")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("TimeId", String.Empty)
+            @Html.ValidationMessageFor(model => model.TimeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ClubId, "Club")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ClubId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ClubId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Status)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Status)
+            @Html.ValidationMessageFor(model => model.Status)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ApplicantUserName, "Applicant")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ApplicantUserName", String.Empty)
+            @Html.ValidationMessageFor(model => model.ApplicantUserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Date)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Date)
+            @Html.ValidationMessageFor(model => model.Date)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

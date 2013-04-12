@@ -21,14 +21,14 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Index()
         {
-            return RedirectToAction("List");
+            return View();
         }
 
-        public ActionResult List(int page_number = 1, string search = "", string order = "Name")
+        public ActionResult List(int page_number = 1, string search = "")
         {
              ViewBag.Search = search;
            var  asset =  QueryProcessor.Query<Asset>(unitOfWork.Assets.ToList(),
-               filter: t => t.Name.Contains(search), order_by: order, page_number: page_number, items_per_page: 2);
+               filter: t => t.Name.Contains(search), order_by: "Name", page_number: page_number, items_per_page: 2);
             return View(asset);
         }
 
@@ -110,14 +110,14 @@ namespace SCUTClubManager.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Calender()
+        public ActionResult Calendar()
         {
             ViewBag.timeId = new SelectList(unitOfWork.Times.ToList(),"Id","TimeName");
             return View();
         }
 
         [HttpPost]
-        public ActionResult Calender(DateTime date,int timeId)
+        public ActionResult Calendar(DateTime date,int timeId)
         {
             return RedirectToAction("AvailableAsset", new { date, timeId });
         }
@@ -136,7 +136,10 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-            IEnumerable<Asset> available_assets = assets.Where(t => t.Count > 0).OrderBy(s => s.Name);
+            IEnumerable<Asset> available_assets = assets.OrderBy(s => s.Name);
+
+            ViewBag.Date = date.ToString("yyyy年MM月dd日");
+            ViewBag.Time = unitOfWork.Times.Find(timeId).TimeName;
 
             return View(available_assets.ToPagedList(1, 10));
         }

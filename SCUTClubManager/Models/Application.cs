@@ -14,6 +14,7 @@ namespace SCUTClubManager.Models
 
         [MaxLength(1)]
         [Display(Name = "申请状态")]
+        //n,p,f
         public string Status { get; set; }
 
         [Display(Name = "申请社团")]

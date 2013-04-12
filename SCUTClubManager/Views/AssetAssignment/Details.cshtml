@@ -1,0 +1,35 @@
+﻿@model SCUTClubManager.Models.AssetAssignment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>AssetAssignment</legend>
+
+    <div class="display-label">Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+
+    <div class="display-label">Club</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Club.Id)
+    </div>
+
+    <div class="display-label">Time</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Time.TimeName)
+    </div>
+
+    <div class="display-label">Applicant</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Applicant.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

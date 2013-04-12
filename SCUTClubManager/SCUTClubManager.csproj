@@ -104,6 +104,8 @@
     <Compile Include="BusinessLogic\ScmRoleProvider.cs" />
     <Compile Include="BusinessLogic\ScmMembershipProvider.cs" />
     <Compile Include="BusinessLogic\QueryProcessor.cs" />
+    <Compile Include="Controllers\AssetApplicationController.cs" />
+    <Compile Include="Controllers\AssetAssignmentController.cs" />
     <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\ClubApplicationController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
@@ -337,8 +339,18 @@
     <Content Include="Views\Asset\Edit.cshtml" />
     <Content Include="Views\Asset\Delete.cshtml" />
     <Content Include="Views\Asset\Index.cshtml" />
-    <Content Include="Views\Asset\Calender.cshtml" />
+    <Content Include="Views\Asset\Calendar.cshtml" />
     <Content Include="Views\Asset\AvailableAsset.cshtml" />
+    <Content Include="Views\AssetAssignment\Index.cshtml" />
+    <Content Include="Views\AssetAssignment\Details.cshtml" />
+    <Content Include="Views\AssetAssignment\Create.cshtml" />
+    <Content Include="Views\AssetAssignment\Edit.cshtml" />
+    <Content Include="Views\AssetAssignment\Delete.cshtml" />
+    <Content Include="Views\AssetApplication\Index.cshtml" />
+    <Content Include="Views\AssetApplication\Details.cshtml" />
+    <Content Include="Views\AssetApplication\Create.cshtml" />
+    <Content Include="Views\AssetApplication\Edit.cshtml" />
+    <Content Include="Views\AssetApplication\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
