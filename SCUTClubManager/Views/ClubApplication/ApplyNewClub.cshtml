@@ -27,9 +27,8 @@
     function addBranch() {
         var name = "new_branches[" + $('.Branch').length + "].BranchName";
 
-        var textbox = $("<div class='Branch'><input type='text' class='required' name='" + name
-            + "' value='请在此输入部门名' data-val='true' data-val-required='请输入部门名' /><span" +
-            " class='field-validation-valid' data-valmsg-for='" + name + "' data-valmsg-replace='true'></span>" +
+        var textbox = $("<div class='Branch'>" + textboxFor(name, "请在此输入部门名", "",
+{ required: true, required_msg: "请输入部门名", regex: "^[\\u2E80-\\u9FFFa-zA-Z0-9]{1,20}$", regex_msg: "部门名必须在1~20个字之间，且不能有标点符号" }) +
             "<button class='deleteBranchBtn' onclick='deleteItem($(this).parent())'>删除</button></div>")
             .insertBefore("#addBranchBtn").children('input');
 
@@ -43,9 +42,8 @@
             var name = "Applicants[" + ($('.Applicant').length - 1) +
                 "].Description.Description";
 
-            var textarea = $("<div class='Description'><textarea data-val='true' data-val-required='请输入申请人描述' name='" + name +
-                "' data-val='true' >请在这里输入对该主要申请人的描述</textarea><span data-valmsg-for='"
-                + name + "' data-valmsg-replace='true'></span></div>")
+            var textarea = $("<div class='Description'>" +
+ textareaFor(name, "请在这里输入对主要申请人的描述", "", { required: true, required_msg: "请输入对主要申请人的描述" }) + "</div>")
                 .appendTo(mainApplicantCheckBox.parentElement).children('textarea');
 
             placeHolder(textarea, "PlaceHolder");
@@ -58,20 +56,46 @@
     }
 
     function addApplicant() {
-        var textbox_name = "Applicants[" + $('.Applicant').length +
-                "].ApplicantUserName";
-        var checkbox_name = "Applicants[" + $('.Applicant').length + "].IsMainApplicant";
+        var applicant_user_name_box = $("#applicantUserName");
 
-        var textbox = $("<div class='Applicant'><input type='text' name='" + textbox_name + "'" +
-            "value='请在此输入申请人的用户名' class='ApplicantUserName' data-val='true' data-val-required='请输入申请人用户名' />" +
-            "<span data-valmsg-for='" + textbox_name + "' data-valmsg-replace='true'></span>" +
-            "<input type='checkbox' class='IsMainApplicant' name='" + checkbox_name + "' onclick='asMainApplicant(this)'" +
-            "value='true'>作为主要申请人</input><button class='deleteApplicantBtn' onclick='deleteItem($(this).parent())'>删除</button></div>")
-            .insertBefore("#addApplicant").children(".ApplicantUserName");
+        $.post("ApplyNewClubAddApplicant", { user_name: applicant_user_name_box.val() }, function (data) {
+            if (data.success) {
+                var no_duplicate = true;
 
-        placeHolder(textbox, "PlaceHolder");
+                $("input[type='hidden'].ApplicantUserName").each(function (index, element) {
+                    if ($(element).val() == applicant_user_name_box.val()) {
+                        $("#addApplicantErrorMsg").addClass("Error");
+                        $("#addApplicantErrorMsg").text("不能添加同一个用户到申请人列表中");
+                        no_duplicate = false;
+                    }
+                });
 
-        refreshFormValidations();
+                if (no_duplicate) {
+                    var textbox_name = "Applicants[" + $('.Applicant').length +
+                            "].ApplicantUserName";
+                    var textbox_value = applicant_user_name_box.val();
+                    var checkbox_name = "Applicants[" + $('.Applicant').length + "].IsMainApplicant";
+
+                    var textbox = $("<div class='Applicant'>" + textboxFor(textbox_name, textbox_value, "ApplicantUserName") +
+                        "<input type='hidden' class='ApplicantUserName' name='" + textbox_name + "' value='" + textbox_value +
+                        "' /><input type='checkbox' class='IsMainApplicant' name='" +
+                        checkbox_name + "' onclick='asMainApplicant(this)'" +
+                        "value='true'>作为主要申请人</input><button class='deleteApplicantBtn' onclick='deleteItem($(this).parent())'>删除</button></div>")
+                        .insertBefore("#addApplicant").children(".ApplicantUserName");
+
+                    textbox.attr("disabled", "disabled");
+                    applicant_user_name_box.val("请输入新申请人的用户名");
+                    applicant_user_name_box.addClass("PlaceHolder");
+
+                    refreshFormValidations();
+
+                    $("#addApplicantErrorMsg").text("");
+                }
+            } else {
+                $("#addApplicantErrorMsg").addClass("Error");
+                $("#addApplicantErrorMsg").text(data.msg);
+            }
+        });
     }
 
     $(function () {
@@ -83,6 +107,14 @@
         });
 
         placeHolder($('textarea'), "PlaceHolder");
+        placeHolder($("#applicantUserName"), "PlaceHolder");
+
+        $("#applicantUserName").keypress(function () {
+            if ($("#addApplicantErrorMsg").hasClass("Error")) {
+                $("#addApplicantErrorMsg").removeClass("Error");
+                $("#addApplicantErrorMsg").text("");
+            }
+        });
     })
 
 </script>
@@ -200,7 +232,7 @@
             <input type="checkbox" class="IsMainApplicant" name='Applicants[0].IsMainApplicant' checked="checked" value="4" disabled="disabled">作为主要申请人</input>
             <input class='IsMainApplicant' name='Applicants[0].IsMainApplicant' type='hidden' value='true' />
             <div>
-                <textarea class="Description" data-val="true" data-val-required="请输入申请人描述" name="Applicants[0].Description.Description">请在这里输入对该主要申请人的描述</textarea>
+                <textarea class="Description" data-val="true" data-val-required="请输入对主要申请人的描述" name="Applicants[0].Description.Description">请在这里输入对主要申请人的描述</textarea>
                 <span data-valmsg-for="Applicants[0].Description.Description" data-valmsg-replace="true"></span>
             </div>
         </div>
@@ -227,7 +259,9 @@
             }
         }*@
         <div class="editor-field" id="addApplicant">
+            <input type="text" name="applicant_user_name" id="applicantUserName" value="请输入新申请人的用户名" />
             <button id="addApplicantBtn" onclick="addApplicant()" type="button">新增</button>
+            <span id="addApplicantErrorMsg" class="ErrorMessage"></span>
         </div>
     </fieldset>
 

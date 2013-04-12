@@ -392,7 +392,36 @@ namespace SCUTClubManager.Controllers
 
             return Json(new { success = false, msg = "提交失败" });
         }
-        
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult ApplyNewClubAddApplicant(string user_name)
+        {
+            if (db.Students.ToList().Any(t => t.UserName == user_name))
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, msg = "该用户不存在或该用户不是学生" });
+            }
+        }
+
+        [Authorize]
+        public ActionResult ApplyModifyClubInfo(int id)
+        {
+            var club = db.Clubs.Include(t => t.MajorInfo).Include(t => t.SubInfo).Include(t => t.Branches).Find(id);
+
+            if (club != null)
+            {
+                return View(club);
+            }
+            else
+            {
+                return View("ClubNotFoundError");
+            }
+        }
+
         //
         // GET: /ClubApplication/Edit/5
  

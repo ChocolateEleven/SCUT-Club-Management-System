@@ -1,0 +1,80 @@
+﻿@model SCUTClubManager.Models.Club
+
+@{
+    ViewBag.Title = "修改社团信息";
+}
+
+<h2>修改社团信息</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Club</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Level)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Level)
+            @Html.ValidationMessageFor(model => model.Level)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Fund)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Fund)
+            @Html.ValidationMessageFor(model => model.Fund)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FoundDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FoundDate)
+            @Html.ValidationMessageFor(model => model.FoundDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MemberCount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MemberCount)
+            @Html.ValidationMessageFor(model => model.MemberCount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NewMemberCount)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NewMemberCount)
+            @Html.ValidationMessageFor(model => model.NewMemberCount)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ClubSubInfoId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ClubSubInfoId)
+            @Html.ValidationMessageFor(model => model.ClubSubInfoId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ClubMajorInfoId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ClubMajorInfoId)
+            @Html.ValidationMessageFor(model => model.ClubMajorInfoId)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
