@@ -244,7 +244,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="Scripts\goBack.js" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
@@ -252,7 +251,6 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.min.js" />
-    <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\helpers.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
@@ -351,6 +349,8 @@
     <Content Include="Views\AssetApplication\Create.cshtml" />
     <Content Include="Views\AssetApplication\Edit.cshtml" />
     <Content Include="Views\AssetApplication\Delete.cshtml" />
+    <Content Include="Views\Shared\ClubNotFoundError.cshtml" />
+    <Content Include="Views\ClubApplication\ApplyModifyClubInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
