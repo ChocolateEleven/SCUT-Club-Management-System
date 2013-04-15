@@ -31,6 +31,8 @@ namespace SCUTClubManager.Models
         public virtual ICollection<FundDetails> FundDetails { get; set; }
         public virtual ICollection<Event> Events { get; set; }
         public virtual ICollection<ClubMember> Members { get; set; }
+
+        [Display(Name = "部门")]
         public virtual ICollection<ClubBranch> Branches { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
 

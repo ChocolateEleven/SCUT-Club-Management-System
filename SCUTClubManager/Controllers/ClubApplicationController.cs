@@ -346,7 +346,7 @@ namespace SCUTClubManager.Controllers
         [HttpPost]
         [Authorize]
         public ActionResult ApplyNewClub(ClubRegisterApplication register_application, BranchCreation[] new_branches,
-            HttpPostedFileBase poster)
+            HttpPostedFileBase poster, string[] test)
         {
             if (new_branches != null)
             {
@@ -397,7 +397,7 @@ namespace SCUTClubManager.Controllers
         [Authorize]
         public ActionResult ApplyNewClubAddApplicant(string user_name)
         {
-            if (db.Students.ToList().Any(t => t.UserName == user_name))
+            if (db.Students.ToList().Any(t => t.UserName == user_name) && ModelState.IsValid)
             {
                 return Json(new { success = true });
             }
@@ -420,6 +420,66 @@ namespace SCUTClubManager.Controllers
             {
                 return View("ClubNotFoundError");
             }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ApplyModifyClubInfo(Club modified_club, int[] deleted_branch_ids)
+        {
+            if (ModelState.IsValid)
+            {
+                ClubInfoModificationApplication application = new ClubInfoModificationApplication();
+
+                if (modified_club.MajorInfo != null)
+                {
+                    application.MajorInfo = modified_club.MajorInfo;
+                }
+
+                if (modified_club.SubInfo != null)
+                {
+                    application.SubInfo = modified_club.SubInfo;
+                }
+
+                application.ModificationBranches = new List<BranchModification>();
+                Club club = db.Clubs.Include(t => t.Branches).Find(modified_club.Id);
+
+                foreach (var modified_branch in modified_club.Branches)
+                {
+                    if (modified_branch.Id == 0)
+                    {
+                        application.ModificationBranches.Add(new BranchCreation
+                        {
+                            BranchName = modified_branch.BranchName
+                        });
+                    }
+                    else
+                    {
+                        ClubBranch orig_branch = club.Branches.First(t => t.Id == modified_branch.Id);
+
+                        if (orig_branch.BranchName != modified_branch.BranchName)
+                        {
+                            application.ModificationBranches.Add(new BranchUpdate
+                            {
+                                BranchName = modified_branch.BranchName,
+                                OrigBranch = orig_branch
+                            });
+                        }
+                    }
+                }
+
+                if (deleted_branch_ids != null)
+                {
+                    foreach (int deleted_branch_id in deleted_branch_ids)
+                    {
+                        application.ModificationBranches.Add(new BranchDeletion
+                        {
+                            BranchId = deleted_branch_id
+                        });
+                    }
+                }
+            }
+
+            return View("ClubNotFoundError");
         }
 
         //

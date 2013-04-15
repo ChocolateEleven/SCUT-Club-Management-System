@@ -5,10 +5,56 @@
 }
 
 <script type="text/javascript">
-    //function (
+    function onDeleteBranch(branchToDelete) {
+        debugger;
+        var id = branchToDelete.siblings('input[type="hidden"]').val();
+        $("#deletedBranchId").append("<input type='hidden' value='" + id + "' name='deleted_branch_ids' />");
+    }
+
+    $(function () {
+        var item_contents = new Array(
+            "<input type='text' name='Branches[0].BranchName'/>",
+            "<input type='hidden' name='Branches[0].Id'/>");
+        var insert_contents = new Array(
+            "<input type='text' value='在此输入部门名'/>");
+
+        var branch_list = new DynamicList(item_contents, "#branchList", insert_contents, null, onDeleteBranch);
+
+        $('#hidden').children().each(function (index, element) {
+            var values = new Array();
+            values[0] = $(element).children(".BranchName").val();
+            values[1] = $(element).children(".BranchId").val();
+
+            branch_list.add(values);
+        });
+
+        $('input').attr('disabled', 'true');
+        $('button').attr('disabled', 'true');
+        $('button.EnableEdit').removeAttr('disabled');
+
+        $('button.EnableEdit').click(function () {
+            $(this).parent().parent().find('input').removeAttr('disabled');
+            $(this).parent().parent().find('button').removeAttr('disabled');
+            $(this).attr('disabled', 'disabled');
+            $('input[type="submit"]').removeAttr('disabled');
+        });
+    })
 </script>
 
 <h2>修改社团信息</h2>
+
+<div id="hidden">
+    @if (Model.Branches != null)
+    {
+        foreach (var branch in Model.Branches)
+        {
+            <div class="Branch">
+                <input type="hidden" class="BranchId" value="@branch.Id" />
+                <input type="hidden" class="BranchName" value="@branch.BranchName" />
+            </div>
+        }
+    }
+</div>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -19,7 +65,7 @@
         <legend>基本信息</legend>
 
         <div class="editor-field">
-            <button type="button" onclick="enableEdit($('#major_info'))">编辑</button>
+            <button type="button" class="EnableEdit">编辑</button>
         </div>
 
         <div class="editor-label">
@@ -43,7 +89,7 @@
         <legend>次要信息</legend>
 
         <div class="editor-field">
-            <button type="button" onclick="enableEdit($('#sub_info'))">编辑</button>
+            <button type="button" class="EnableEdit">编辑</button>
         </div>
 
         <div class="editor-label">
@@ -98,27 +144,23 @@
         <legend>社团架构</legend>
 
         <div class="editor-field">
-            <button type="button" onclick="enableEdit($('#branches'))">编辑</button>
+            <button type="button" class="EnableEdit">编辑</button>
         </div>
 
-            @if (Model.Branches != null)
-            {
-                foreach (var branch in Model.Branches)
-                {
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Branches)
+        </div>
 
-                            @Html.EditorFor(item => branch.BranchName)
-                            @Html.HiddenFor(item => branch.Id)
-                            <button type="button" onclick="deleteBranch($(this))">删除</button>
-                        </td>
-                    </tr>
-                }
-            }
+        <div class="editor-field">
+            <div id="branchList"></div>
+        </div>
 
-        <button type="button" onclick="addBranch()">增加新部门</button>
+        <div id="deletedBranchId">
+        </div>
     </fieldset>
     
     <p>
-        <input type="submit" value="Save" />
+        <input type="submit" value="提交" />
     </p>
 }
 
