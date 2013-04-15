@@ -15,18 +15,21 @@
     })
 </script>
 
-<div class="VerifyBar">
-    <div class="VerifyBtn">
-        <a href="#" id="pass">通过</a>
+@if (HttpContext.Current.User.IsInRole("社联"))
+{
+    <div class="VerifyBar">
+        <div class="VerifyBtn">
+            <a href="#" id="pass">通过</a>
+        </div>
+        <div class="VerifyBtn">
+            <a href="#" id="reject">驳回</a>
+        </div>
     </div>
-    <div class="VerifyBtn">
-        <a href="#" id="reject">驳回</a>
-    </div>
-</div>
 
-<div class="HiddenData" hidden>
-    <form id="result" action="Verify" method="post">
-        <input name="id" type="hidden" value="@Model"/>
-        <input name="is_passed" id="is_passed" type="hidden" />
-    </form>
-</div>
+    <div class="HiddenData" hidden>
+        <form id="result" action="Verify" method="post">
+            <input name="id" type="hidden" value="@Model"/>
+            <input name="is_passed" id="is_passed" type="hidden" />
+        </form>
+    </div>
+}

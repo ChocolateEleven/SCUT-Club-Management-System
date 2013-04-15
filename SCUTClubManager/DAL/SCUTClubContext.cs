@@ -184,6 +184,9 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithOptional().WillCascadeOnDelete(true);
             model_builder.Entity<Thread>().HasMany(t => t.Replies).WithRequired(t => t.Thread).WillCascadeOnDelete(true);
             //model_builder.Entity<Time>().HasMany(t => t.AssetApplications).WithRequired(t => t.Time);
+
+            model_builder.Entity<AssetApplication>().HasMany(t => t.ApplicatedAssets).WithRequired().WillCascadeOnDelete(true);
+            model_builder.Entity<AssetAssignment>().HasMany(t => t.AssignedAssets).WithRequired(t => t.AssetAssignment).WillCascadeOnDelete(true);
         }
     }
 } 

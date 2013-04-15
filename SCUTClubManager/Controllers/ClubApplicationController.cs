@@ -26,7 +26,7 @@ namespace SCUTClubManager.Controllers
 
         [Authorize]
         public ActionResult List(int club_id = 0, int page_number = 1, string order = "Date", string pass_filter = "", string search = "", 
-            string search_option = "ClubName", string type_filter = "")
+            string search_option = "ClubName", string type_filter = "ClubTransaction")
         {
             if (!User.IsInRole("社联") && !ScmRoleProvider.HasMembershipIn(club_id))
             {
@@ -265,7 +265,8 @@ namespace SCUTClubManager.Controllers
                                         {
                                             BranchName = branch_modification.BranchName,
                                             MemberCount = 0,
-                                            NewMemberCount = 0
+                                            NewMemberCount = 0,
+                                            Club = modifying_club
                                         });
                                     }
                                     else if (branch_modification is BranchDeletion)
@@ -314,7 +315,7 @@ namespace SCUTClubManager.Controllers
                     {
                         ClubUnregisterApplication unregister_application = application as ClubUnregisterApplication;
 
-                        db.Clubs.Delete(unregister_application.Club);
+                        db.Clubs.Include(t => t.Applications).Delete(unregister_application.Club);
                     }
                     else
                     {
@@ -424,11 +425,19 @@ namespace SCUTClubManager.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult ApplyModifyClubInfo(Club modified_club, int[] deleted_branch_ids)
+        public ActionResult ApplyModifyClubInfo(Club modified_club, int[] deleted_branch_ids, HttpPostedFileBase poster)
         {
             if (ModelState.IsValid)
             {
                 ClubInfoModificationApplication application = new ClubInfoModificationApplication();
+                int id = db.GenerateIdFor("Application");
+
+                application.Id = id;
+                application.Status = "n";
+                application.RejectReason = null;
+                application.Date = DateTime.Now;
+                application.ClubId = modified_club.Id;
+                application.ApplicantUserName = User.Identity.Name;
 
                 if (modified_club.MajorInfo != null)
                 {
@@ -443,26 +452,29 @@ namespace SCUTClubManager.Controllers
                 application.ModificationBranches = new List<BranchModification>();
                 Club club = db.Clubs.Include(t => t.Branches).Find(modified_club.Id);
 
-                foreach (var modified_branch in modified_club.Branches)
+                if (modified_club.Branches != null)
                 {
-                    if (modified_branch.Id == 0)
+                    foreach (var modified_branch in modified_club.Branches)
                     {
-                        application.ModificationBranches.Add(new BranchCreation
+                        if (modified_branch.Id == 0)
                         {
-                            BranchName = modified_branch.BranchName
-                        });
-                    }
-                    else
-                    {
-                        ClubBranch orig_branch = club.Branches.First(t => t.Id == modified_branch.Id);
-
-                        if (orig_branch.BranchName != modified_branch.BranchName)
-                        {
-                            application.ModificationBranches.Add(new BranchUpdate
+                            application.ModificationBranches.Add(new BranchCreation
                             {
-                                BranchName = modified_branch.BranchName,
-                                OrigBranch = orig_branch
+                                BranchName = modified_branch.BranchName
                             });
+                        }
+                        else
+                        {
+                            ClubBranch orig_branch = club.Branches.First(t => t.Id == modified_branch.Id);
+
+                            if (orig_branch.BranchName != modified_branch.BranchName)
+                            {
+                                application.ModificationBranches.Add(new BranchUpdate
+                                {
+                                    BranchName = modified_branch.BranchName,
+                                    OrigBranch = orig_branch
+                                });
+                            }
                         }
                     }
                 }
@@ -477,6 +489,13 @@ namespace SCUTClubManager.Controllers
                         });
                     }
                 }
+
+                //if (poster != null 
+
+                db.Applications.Add(application);
+                db.SaveChanges();
+
+                return RedirectToAction("Details", new { id = application.Id });
             }
 
             return View("ClubNotFoundError");

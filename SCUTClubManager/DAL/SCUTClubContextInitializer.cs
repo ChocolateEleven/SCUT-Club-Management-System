@@ -549,8 +549,9 @@ namespace SCUTClubManager.DAL
                     {
                         new BranchCreation
                         {
-                            BranchId = null,
-                            BranchName = "会员部"
+                            OrigBranch = null,
+                            BranchName = "会员部",
+                            ApplicationId = 1
                         }
                     },
                     MajorInfo = new ClubMajorInfo
@@ -608,10 +609,9 @@ namespace SCUTClubManager.DAL
             #endregion
 
             #region BranchModifications
-            BranchModification branch_modification = new BranchDeletion
+            BranchModification branch_modification = new BranchCreation
             {
-                BranchName = branches[1].BranchName,
-                OrigBranch = branches[1],
+                BranchName = "New Branch",
                 ApplicationId = 3
             };
             #endregion
@@ -1056,9 +1056,9 @@ namespace SCUTClubManager.DAL
             threads.ForEach(s => context.Threads.Add(s));
             times.ForEach(s => context.Times.Add(s));
             assets.ForEach(s => context.Assets.Add(s));
-            //club_register_applications.ForEach(s => context.Applications.Add(s));
+            club_register_applications.ForEach(s => context.Applications.Add(s));
             club_unregister_applications.ForEach(s => context.Applications.Add(s));
-            //club_modification_applications.ForEach(s => context.Applications.Add(s));
+            club_modification_applications.ForEach(s => context.Applications.Add(s));
 
             int counter = Application.counter;
 

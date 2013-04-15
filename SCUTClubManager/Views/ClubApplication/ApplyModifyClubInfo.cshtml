@@ -6,7 +6,6 @@
 
 <script type="text/javascript">
     function onDeleteBranch(branchToDelete) {
-        debugger;
         var id = branchToDelete.siblings('input[type="hidden"]').val();
         $("#deletedBranchId").append("<input type='hidden' value='" + id + "' name='deleted_branch_ids' />");
     }
@@ -14,7 +13,7 @@
     $(function () {
         var item_contents = new Array(
             "<input type='text' name='Branches[0].BranchName'/>",
-            "<input type='hidden' name='Branches[0].Id'/>");
+            "<input type='hidden' name='Branches[0].Id' value='0' />");
         var insert_contents = new Array(
             "<input type='text' value='在此输入部门名'/>");
 
@@ -33,7 +32,7 @@
         $('button.EnableEdit').removeAttr('disabled');
 
         $('button.EnableEdit').click(function () {
-            $(this).parent().parent().find('input').removeAttr('disabled');
+            $(this).parent().parent().find('input[class!="DisabledForever"]').removeAttr('disabled');
             $(this).parent().parent().find('button').removeAttr('disabled');
             $(this).attr('disabled', 'disabled');
             $('input[type="submit"]').removeAttr('disabled');
@@ -48,10 +47,13 @@
     {
         foreach (var branch in Model.Branches)
         {
-            <div class="Branch">
-                <input type="hidden" class="BranchId" value="@branch.Id" />
-                <input type="hidden" class="BranchName" value="@branch.BranchName" />
-            </div>
+            if (branch.BranchName != "会员部")
+            {
+        <div class="Branch">
+            <input type="hidden" class="BranchId" value="@branch.Id" />
+            <input type="hidden" class="BranchName" value="@branch.BranchName" />
+        </div>
+            }
         }
     }
 </div>
@@ -136,19 +138,22 @@
             @Html.LabelFor(model => model.SubInfo.PosterUrl)
         </div>
         <div class="editor-field">
-            <input type="file" name="poster" id="SubInfo_PosterUrl" />
+            <input type="file" name="poster" id="poster" />
         </div>
     </fieldset>
     
     <fieldset id="branches">
         <legend>社团架构</legend>
-
         <div class="editor-field">
             <button type="button" class="EnableEdit">编辑</button>
         </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Branches)
+        </div>
+
+        <div class="editor-field">
+            <input class="DisabledForever" type="text" value="会员部" disabled="disabled" />
         </div>
 
         <div class="editor-field">

@@ -15,6 +15,6 @@
     });
 </script>
 
-@Html.ActionLink("社团事务审批", "List", "ClubApplication")
+@Html.ActionLink("社团事务审批", "List", "ClubApplication", new { type_filter = "ClubTransaction" }, null)
 @Html.ActionLink("社团列表", "List", new { page_number = 1, order = "", search = "", search_option = "" })
 <a href="javascript: void(0)" id="enableRecruit" data-is_enabling="@ViewBag.EnableRecruitValue">@ViewBag.EnableRecruitText</a>
