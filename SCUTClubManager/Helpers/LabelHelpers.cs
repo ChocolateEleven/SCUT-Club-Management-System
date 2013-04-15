@@ -9,6 +9,9 @@ namespace SCUTClubManager.Helpers
 {
     public static class LabelHelpers
     {
+        public static int DELETED_ID = -1;
+        public static int CREATED_ID = 0;
+
         public static string GetStatus(DateTime openTime, DateTime closeTime)
         {
             if (openTime.CompareTo(DateTime.Now) > 0)

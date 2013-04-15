@@ -176,14 +176,14 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<Club>().HasMany(t => t.AssetAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.LocationAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
 
-            model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.MajorInfo).WithRequiredDependent();
-            model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.SubInfo).WithRequiredDependent();
+            //model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.MajorInfo).WithRequiredDependent();
+            //model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.SubInfo).WithRequiredDependent();
 
             model_builder.Entity<Poll>().HasMany(t => t.Items).WithRequired(t => t.Poll).WillCascadeOnDelete(true);
 
             model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithOptional().WillCascadeOnDelete(true);
             model_builder.Entity<Thread>().HasMany(t => t.Replies).WithRequired(t => t.Thread).WillCascadeOnDelete(true);
-            model_builder.Entity<Time>().HasMany(t => t.AssetApplications).WithRequired(t => t.Time);
+            //model_builder.Entity<Time>().HasMany(t => t.AssetApplications).WithRequired(t => t.Time);
         }
     }
 } 

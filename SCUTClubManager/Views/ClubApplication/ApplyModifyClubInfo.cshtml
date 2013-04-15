@@ -4,75 +4,122 @@
     ViewBag.Title = "修改社团信息";
 }
 
+<script type="text/javascript">
+    //function (
+</script>
+
 <h2>修改社团信息</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Club</legend>
 
-        @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Id)
+    
+    <fieldset id="major_info">
+        <legend>基本信息</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Level)
-        </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Level)
-            @Html.ValidationMessageFor(model => model.Level)
+            <button type="button" onclick="enableEdit($('#major_info'))">编辑</button>
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Fund)
+            @Html.LabelFor(model => model.MajorInfo.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Fund)
-            @Html.ValidationMessageFor(model => model.Fund)
+            @Html.EditorFor(model => model.MajorInfo.Name)
+            @Html.ValidationMessageFor(model => model.MajorInfo.Name)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.FoundDate)
+            @Html.LabelFor(model => model.MajorInfo.Instructor)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.FoundDate)
-            @Html.ValidationMessageFor(model => model.FoundDate)
+            @Html.EditorFor(model => model.MajorInfo.Instructor)
+            @Html.ValidationMessageFor(model => model.MajorInfo.Instructor)
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MemberCount)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.MemberCount)
-            @Html.ValidationMessageFor(model => model.MemberCount)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.NewMemberCount)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.NewMemberCount)
-            @Html.ValidationMessageFor(model => model.NewMemberCount)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ClubSubInfoId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ClubSubInfoId)
-            @Html.ValidationMessageFor(model => model.ClubSubInfoId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ClubMajorInfoId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ClubMajorInfoId)
-            @Html.ValidationMessageFor(model => model.ClubMajorInfoId)
-        </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
     </fieldset>
+
+    <fieldset id="sub_info">
+        <legend>次要信息</legend>
+
+        <div class="editor-field">
+            <button type="button" onclick="enableEdit($('#sub_info'))">编辑</button>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubInfo.Principle)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SubInfo.Principle)
+            @Html.ValidationMessageFor(model => model.SubInfo.Principle)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubInfo.Purpose)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SubInfo.Purpose)
+            @Html.ValidationMessageFor(model => model.SubInfo.Purpose)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubInfo.Range)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SubInfo.Range)
+            @Html.ValidationMessageFor(model => model.SubInfo.Range)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubInfo.Address)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SubInfo.Address)
+            @Html.ValidationMessageFor(model => model.SubInfo.Address)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubInfo.Regulation)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SubInfo.Regulation)
+            @Html.ValidationMessageFor(model => model.SubInfo.Regulation)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SubInfo.PosterUrl)
+        </div>
+        <div class="editor-field">
+            <input type="file" name="poster" id="SubInfo_PosterUrl" />
+        </div>
+    </fieldset>
+    
+    <fieldset id="branches">
+        <legend>社团架构</legend>
+
+        <div class="editor-field">
+            <button type="button" onclick="enableEdit($('#branches'))">编辑</button>
+        </div>
+
+            @if (Model.Branches != null)
+            {
+                foreach (var branch in Model.Branches)
+                {
+
+                            @Html.EditorFor(item => branch.BranchName)
+                            @Html.HiddenFor(item => branch.Id)
+                            <button type="button" onclick="deleteBranch($(this))">删除</button>
+                        </td>
+                    </tr>
+                }
+            }
+
+        <button type="button" onclick="addBranch()">增加新部门</button>
+    </fieldset>
+    
+    <p>
+        <input type="submit" value="Save" />
+    </p>
 }
 
 <div>

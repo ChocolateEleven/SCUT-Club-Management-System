@@ -84,3 +84,48 @@ function textareaFor(name, default_msg, class_name, options) {
 
     return textarea;
 }
+
+function indexInName(item, index) {
+    var name = item.attr("name");
+    var left_bracket = name.indexOf("[");
+    var right_bracket = name.indexOf("]");
+    var orig_index = name.substring(left_bracket + 1, right_bracket);
+
+    if (index == null) {
+        return orig_index;
+    } else {
+        item.attr("name", name.replace(orig_index, index));
+        return item;
+    }
+}
+
+function addItem(values) {
+    if (value.length != this.items.length) {
+        throw new Error("The length of parameter value does not match the length of items.");
+    }
+
+    for (var i = 0; i < items.length; ++i) {
+        indexInName($(this.items[i], this.itemCount));
+}
+
+function DynamicList(items, container, on_insert, on_remove) {
+    if (items == null) {
+        throw new Error("Parameter items cannot be null.");
+    }
+
+    if (container == null) {
+        throw new Error("Parameter container cannot be null.");
+    }
+
+    this.items = new Array();
+
+    for (var i = 0; i < items.length; ++i) {
+        this.items[i] = items[i];
+    }
+
+    this.onInsert = on_insert;
+    this.onDelete = on_delete;
+    this.itemCount = 0;
+    this.add = addItem;
+    this.container = container;
+}

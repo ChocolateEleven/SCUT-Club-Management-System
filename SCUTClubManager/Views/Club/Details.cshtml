@@ -90,6 +90,16 @@
 </fieldset>
 
 <p>
-    @Html.ActionLink("修改", "ApplyInfoModification", "ClubApplication", new { id=Model.Id }) |
-    <a href="#" onclick="goBack()">返回</a>
+    @{
+        string[] roles = { "会长" };
+    }
+    @if (SCUTClubManager.BusinessLogic.ScmRoleProvider.HasMembershipIn(club_id: Model.Id, possible_roles: roles))
+    {
+        var html_str = Html.ActionLink("修改", "ApplyModifyClubInfo", "ClubApplication", new { id = Model.Id }, null);
+        
+        Html.ViewContext.Writer.Write(html_str);
+        Html.ViewContext.Writer.Write("|");
+    }
+
+    @Html.ActionLink("返回", "Introduction", new { id = Model.Id, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })
 </p>

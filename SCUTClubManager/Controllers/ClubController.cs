@@ -78,9 +78,14 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Club/Details/5
         [Authorize]
-        public ViewResult Details(int id)
+        public ViewResult Details(int id, int page_number = 1, string order = "", string search = "")
         {
             Club club = db.Clubs.Find(id);
+
+            ViewBag.PageNumber = page_number;
+            ViewBag.Order = order;
+            ViewBag.Search = search;
+
             return View(club);
         }
 

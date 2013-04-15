@@ -25,7 +25,7 @@ namespace SCUTClubManager.Models
         public virtual Time Time { get; set; }
         public virtual Event Event { get; set; }
         public virtual ICollection<LocationApplication> LocationApplications { get; set; }
-        public virtual ICollection<AssetApplication> AssetApplications { get; set; }
+        //public virtual ICollection<AssetApplication> AssetApplications { get; set; }
         public virtual FundApplication FundApplication { get; set; }
     }
 }

@@ -8,6 +8,14 @@ namespace SCUTClubManager.Models
 {
     public abstract class Application
     {
+        public static int counter = 0;
+
+        public Application()
+        {
+            ++counter;
+        }
+
+        [Key]
         public int Id { get; set; }
 
         public int? ClubId { get; set; }

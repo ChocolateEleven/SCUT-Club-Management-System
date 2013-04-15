@@ -8,9 +8,9 @@ namespace SCUTClubManager.Models
     public class ApplicatedAsset : AssetBase
     {
         public int AssetId { get; set; }
-        public int AssetApplicationId { get; set; }
+        //public int AssetApplicationId { get; set; }
 
         public virtual Asset Asset { get; set; }
-        public virtual AssetApplication AssetApplication { get; set; }
+        //public virtual AssetApplication AssetApplication { get; set; }
     }
 }

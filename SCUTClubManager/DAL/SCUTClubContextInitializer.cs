@@ -21,7 +21,7 @@ namespace SCUTClubManager.DAL
                 new IdentityForTPC
                 {
                     BaseName = "Application",
-                    Identity = 6
+                    Identity = 7
                 },
                 new IdentityForTPC
                 {
@@ -577,8 +577,8 @@ namespace SCUTClubManager.DAL
                     IsMainApplicant = true,
                     Description = new ClubRegisterApplicantDescription
                     {
-                        Description = "I have two tables Application_User and Application_User_Access." + 
-                        " Application_User_Access table is having a foreign key constraint with Application_User " + 
+                        Description = "I have two tables Application_User and Application_User_Access." +
+                        " Application_User_Access table is having a foreign key constraint with Application_User " +
                         "table.When I delete a record in Application_User table, I receive The DELETE statement conflicted "
                     }
                 });
@@ -969,7 +969,7 @@ namespace SCUTClubManager.DAL
                     Date = new DateTime(2013,04,12),
                     Club = clubs[0],
                     RejectReason = null,
-                    ApplicatedAssets = new List<ApplicatedAsset>
+                    ApplicatedAssets = new List<ApplicatedAsset>()
                     {
                         new ApplicatedAsset
                         {
@@ -996,49 +996,49 @@ namespace SCUTClubManager.DAL
                     Date = new DateTime(2013,04,15),
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>()
-                    //{
-                    //    new ApplicatedAsset
-                    //    {
-                    //        Id = 7,
-                    //        Count = 3,
-                    //        Asset = assets[0]
-                    //    },
+                    {
+                        new ApplicatedAsset
+                        {
+                            Id = 7,
+                            Count = 3,
+                            Asset = assets[0]
+                        },
 
-                    //    new ApplicatedAsset
-                    //    {
-                    //        Id = 8,
-                    //        Count = 5,
-                    //        Asset = assets[2]
-                    //    }
-                    //}
+                        new ApplicatedAsset
+                        {
+                            Id = 8,
+                            Count = 5,
+                            Asset = assets[2]
+                        }
+                    }
                 }
-                //,
-                //new AssetApplication
-                //{
-                //    Id = 6,
-                //    Time = times[5],
-                //    Club = clubs[1],
-                //    Status = "p",
-                //    Applicant = students[0] as Student,
-                //    Date = new DateTime(2013,04,10),
-                //    RejectReason = null,
-                //    ApplicatedAssets = new List<ApplicatedAsset>
-                //    {
-                //        new ApplicatedAsset
-                //        {
-                //            Id = 9,
-                //            Count = 2,
-                //            Asset = assets[0]
-                //        },
+                ,
+                new AssetApplication
+                {
+                    Id = 6,
+                    Time = times[5],
+                    Club = clubs[1],
+                    Status = "p",
+                    Applicant = students[0] as Student,
+                    Date = new DateTime(2013,04,10),
+                    RejectReason = null,
+                    ApplicatedAssets = new List<ApplicatedAsset>
+                    {
+                        new ApplicatedAsset
+                        {
+                            Id = 9,
+                            Count = 2,
+                            Asset = assets[0]
+                        },
 
-                //        new ApplicatedAsset
-                //        {
-                //            Id = 10,
-                //            Count = 3,
-                //            Asset = assets[2]
-                //        }
-                //    }
-                //}
+                        new ApplicatedAsset
+                        {
+                            Id = 10,
+                            Count = 3,
+                            Asset = assets[2]
+                        }
+                    }
+                }
             };
             #endregion
 
@@ -1053,14 +1053,17 @@ namespace SCUTClubManager.DAL
             roles.ForEach(s => context.RoleBases.Add(s));
             students.ForEach(s => context.Users.Add(s));
             messages.ForEach(s => context.Messages.Add(s));
-            club_register_applications.ForEach(s => context.Applications.Add(s));
-            club_unregister_applications.ForEach(s => context.Applications.Add(s));
-            club_modification_applications.ForEach(s => context.Applications.Add(s));
             threads.ForEach(s => context.Threads.Add(s));
             times.ForEach(s => context.Times.Add(s));
             assets.ForEach(s => context.Assets.Add(s));
+            //club_register_applications.ForEach(s => context.Applications.Add(s));
+            club_unregister_applications.ForEach(s => context.Applications.Add(s));
+            //club_modification_applications.ForEach(s => context.Applications.Add(s));
+
+            int counter = Application.counter;
+
             //assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
-            assetApplications.ForEach(s => context.Applications.Add(s));
+            //assetApplications.ForEach(s => context.Applications.Add(s));
 
             context.SaveChanges();
         }

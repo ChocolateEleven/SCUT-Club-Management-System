@@ -34,9 +34,9 @@ namespace SCUTClubManager.Models
         public virtual ICollection<ClubBranch> Branches { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
 
-        [Required]
+        //[Required]
         public int ClubSubInfoId { get; set; }
-        [Required]
+        //[Required]
         public int ClubMajorInfoId { get; set; }
 
         public virtual ClubMajorInfo MajorInfo { get; set; }
