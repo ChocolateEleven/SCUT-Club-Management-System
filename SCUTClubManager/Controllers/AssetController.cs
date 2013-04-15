@@ -139,7 +139,9 @@ namespace SCUTClubManager.Controllers
             IEnumerable<Asset> available_assets = assets.OrderBy(s => s.Name);
 
             ViewBag.Date = date.ToString("yyyy年MM月dd日");
-            ViewBag.Time = unitOfWork.Times.Find(timeId).TimeName;
+            var time = unitOfWork.Times.Find(timeId);
+            ViewBag.Time = time.TimeName;
+            ViewBag.TimeId = time.Id;
 
             return View(available_assets.ToPagedList(1, 10));
         }

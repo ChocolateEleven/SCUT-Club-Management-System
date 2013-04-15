@@ -4,6 +4,53 @@
     ViewBag.Title = "AvailableAsset";
 }
 
+<p id ="test"></p>
+
+<script>
+    function funBorrow(item)
+    {
+        $("#test").text("dsafdsf");
+        debugger;
+        var borrow_count = item.siblings(".BorrowCount").children().val();
+        var available_count = item.siblings(".ItemCount").children().text();
+
+        if (!/^\d+$/.test(borrow_count)) {
+            var err = item.parent().find("span.ErrorMessage");
+            err.text("请输入数字");
+        } else if (Number(borrow_count) <= 0)
+        {
+            var err = item.parent().find("span.ErrorMessage");
+            err.text("借用数量必须大于0");
+
+        }else if (Number(borrow_count) > Number(available_count)) {
+            var err = item.parent().find("span.ErrorMessage");
+            err.text("可借用数量不足");
+        } else {
+            $("#BorrowApplication").append("<tr><td><input type='text' readonly name='item_name' value='" + item.siblings(".ItemName").children().text() + "'/><input type='hidden' name='item_id' value='" + item.siblings(".ItemName").children("input").val() + "'/></td><td><input type='text' readonly name='item_borrow_count' value='" + item.siblings(".BorrowCount").children().val() + "'/></td></tr>");
+            $(this).siblings(".Count").text;
+
+            $(this).parent().parent().find("span.ErrorMessage").text("");
+        }
+    }
+
+    function checkkey(v) {
+        var kc = event.keyCode;
+        if (!(kc > 47 && kc < 58)) {
+            //只允许“0-9”。
+            event.returnValue = false;
+            alert("请输入数字");
+        }
+    }
+
+
+    function checkvalue(obj) {
+        if (!/^\d+$/.test(obj.value) && obj.value != '') {
+            alert('请输入数字');
+            obj.select();
+        }
+    }
+</script>
+
 <h2>@ViewBag.Date @ViewBag.Time 的可借物资</h2>
 
 <table>
@@ -14,17 +61,51 @@
         <th>
             可借数量
         </th>
+        <th>
+            借用数量
+        </th>
+        <th>
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
+        <td class="ItemName">
+            <span>@Html.DisplayFor(modelItem => item.Name)</span>
+            <input class="ItemId" type="hidden" value ="@item.Id"/>
+        </td>
+        <td class ="ItemCount">
+            <span>@Html.DisplayFor(modelItem => item.Count)</span>
+        </td>
+        <td class="BorrowCount">
+            <input type="text" class="Count" />
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Count)
+            <a href="#" class ="Borrow" onclick="funBorrow($(this).parent())">增加借用</a>
+        </td>
+        <td>
+            <span class="ErrorMessage"></span>
         </td>
     </tr>
 }
+    
 
 </table>
+
+<h2>借用申请</h2>
+
+@using (Html.BeginForm("Create","AssetApplication")) {
+<table id="BorrowApplication">
+    <tr>
+        <th>
+            名称
+        </th>
+        <th>
+            借用数量
+        </th>
+    </tr>
+    
+</table>
+    
+     <input type="submit"/>
+}

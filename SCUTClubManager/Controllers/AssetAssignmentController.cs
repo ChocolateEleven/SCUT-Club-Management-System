@@ -37,33 +37,61 @@ namespace SCUTClubManager.Controllers
             return View(assetassignment);
         }
 
-        //
-        // GET: /AssetAssignment/Create
 
-        public ActionResult Create(DateTime date,int timeId)
+
+        public ActionResult Add(AssetApplication asset_application)
         {
-            ViewBag.Date = date;
-            ViewBag.Time = unitOfWork.Times.Find(timeId);
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Name");
-            return View();
-        } 
-
-        //
-        // POST: /AssetAssignment/Create
-
-        [HttpPost]
-        public ActionResult Create(AssetAssignment assetassignment,DateTime date,int timeId)
-        {
-            if (ModelState.IsValid)
+            var date = asset_application.Date;
+            var time = asset_application.Time;
+            var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.TimeId == time.Id);
+            List<Asset> assets = unitOfWork.Assets.ToList().ToList();
+            foreach(var assignment in assignments)
             {
-                unitOfWork.AssetAssignments.Add(assetassignment);
+                foreach(var assigned_asset in assignment.AssignedAssets)
+                {
+                    var asset = assets.Find(s => s.Id == assigned_asset.Id);
+                    asset.Count -= assigned_asset.Count;
+                }
+            }
+            List<int> app_asset_count_error = new List<int>();
+            bool no_error_mark = true;
+            foreach(var applicated_asset in asset_application.ApplicatedAssets)
+            {
+                if( applicated_asset.Count > assets.Find( s => s.Id == applicated_asset.Id ).Count)
+                {
+                    app_asset_count_error.Add( applicated_asset.Id);
+                    no_error_mark = false;
+                }
+            }
+
+            AssetAssignment asset_assignment = new AssetAssignment
+            {
+                Date = date,
+                Club = asset_application.Club,
+                Time = asset_application.Time,
+                Applicant = asset_application.Applicant,
+                AssignedAssets = new List<AssignedAsset>()
+            };
+
+            foreach (var item in asset_application.ApplicatedAssets)
+            {
+                asset_assignment.AssignedAssets.Add(
+                    new AssignedAsset
+                    {
+                        Id = unitOfWork.GenerateIdFor("AssetBase"),
+                        Count = item.Count,
+                        Asset = item.Asset
+                    });
+            }
+
+
+            if (no_error_mark == true)
+            {
+                unitOfWork.AssetAssignments.Add(asset_assignment);
                 unitOfWork.SaveChanges();
                 return RedirectToAction("List");  
             }
-            ViewBag.Time = unitOfWork.Times.Find(timeId);
-            ViewBag.Date = date;
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Name", assetassignment.ClubId);
-            return View(assetassignment);
+            return View();
         }
         
         //

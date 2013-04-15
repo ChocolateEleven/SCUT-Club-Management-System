@@ -1062,8 +1062,8 @@ namespace SCUTClubManager.DAL
 
             int counter = Application.counter;
 
-            //assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
-            //assetApplications.ForEach(s => context.Applications.Add(s));
+            assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
+            assetApplications.ForEach(s => context.Applications.Add(s));
 
             context.SaveChanges();
         }
