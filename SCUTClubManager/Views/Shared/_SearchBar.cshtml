@@ -11,6 +11,15 @@
         if ('@ViewBag.TypeFilter' != '') {
             docLocation += "&type_filter=@ViewBag.TypeFilter";
         }
+        if ('@ViewBag.ClubId' != '') {
+            docLocation += "&club_id=@ViewBag.ClubId";
+        }
+        if ('@ViewBag.BranchFilter' != '') {
+            docLocation += "&branch_filter=@ViewBag.BranchFilter";
+        }
+        if ('@ViewBag.RoleFilter' != '') {
+            docLocation += "&role_filter=@ViewBag.RoleFilter";
+        }
 
         var search = $("#searchBox").val();
         
@@ -45,6 +54,7 @@
 @if (!String.IsNullOrEmpty(ViewBag.Search))
 {
     <div class="OperationBtn">
-        @Html.ActionLink("返回", "List", new { page_number = 1, order = ViewBag.CurrentOrder, pass_filter = ViewBag.PassFilter, type_filter = ViewBag.TypeFilter })
+        @Html.ActionLink("返回", "List", new { page_number = 1, order = ViewBag.CurrentOrder, pass_filter = ViewBag.PassFilter, type_filter = ViewBag.TypeFilter,
+       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
     </div>
 }

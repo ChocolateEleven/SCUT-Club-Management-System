@@ -104,19 +104,19 @@ namespace SCUTClubManager.BusinessLogic
             switch (pass_filter)
             {
                 case "Passed":
-                    applications = applications.Where(s => s.Status == "p");
+                    applications = applications.Where(s => s.Status == Application.PASSED);
                     break;
 
                 case "Failed":
-                    applications = applications.Where(s => s.Status == "f");
+                    applications = applications.Where(s => s.Status == Application.FAILED);
                     break;
 
                 case "NotVerified":
-                    applications = applications.Where(s => s.Status == "n");
+                    applications = applications.Where(s => s.Status == Application.NOT_VERIFIED);
                     break;
 
                 case "Verified":
-                    applications = applications.Where(s => s.Status == "p" || s.Status == "f");
+                    applications = applications.Where(s => s.Status == Application.PASSED || s.Status == Application.FAILED);
                     break;
 
                 default:

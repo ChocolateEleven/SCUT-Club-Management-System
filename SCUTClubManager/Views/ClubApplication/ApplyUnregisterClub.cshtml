@@ -1,0 +1,73 @@
+﻿@model SCUTClubManager.Models.Club
+
+@{
+    ViewBag.Title = "申请注销";
+}
+
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        var reason_textbox = $("#reason");
+        placeHolder(reason_textbox, "PlaceHolder");
+
+        $('form').ajaxForm({
+            success: notify,
+            error: function (e) {
+                debugger;
+            }
+        });
+    })
+</script>
+
+<h2>申请注销</h2>
+
+<h3>将要注销以下社团</h3>
+<fieldset>
+    <legend>@Html.DisplayFor(model => model.MajorInfo.Name)</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.MajorInfo.Instructor)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MajorInfo.Instructor)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.FoundDate)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FoundDate)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Level)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Level)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Fund)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fund)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.MemberCount)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MemberCount)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.NewMemberCount)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.NewMemberCount)
+    </div>
+</fieldset>
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>注销理由</legend>
+        <textarea id="reason" name="Reason" data-val-required="注销理由不能为空" data-val="true">请在此输入注销理由</textarea>
+        <span data-valmsg-for="Reason" data-valmsg-replace="true"></span>
+        <input type="hidden" value="@Model.Id" name="ClubId" />
+        <p>
+            <input type="submit" value="提交" />
+            |
+        @Html.ActionLink("Back to List", "Index")
+        </p>
+    </fieldset>
+}

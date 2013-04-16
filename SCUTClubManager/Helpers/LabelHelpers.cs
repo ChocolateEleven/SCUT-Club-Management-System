@@ -35,12 +35,12 @@ namespace SCUTClubManager.Helpers
         {
             switch (status_code)
             {
-                case "n":
+                case Application.NOT_VERIFIED:
                     return "未审批";
-                case "p":
+                case Application.PASSED:
                     return "通过";
-                case "f":
-                    return "拒绝";
+                case Application.FAILED:
+                    return "驳回";
                 default:
                     return "未知";
             }

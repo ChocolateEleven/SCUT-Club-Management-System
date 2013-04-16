@@ -236,28 +236,6 @@
                 <span data-valmsg-for="Applicants[0].Description.Description" data-valmsg-replace="true"></span>
             </div>
         </div>
-        @*@if (Model != null && Model.Applicant != null)
-        {
-            int counter = 0;
-
-            foreach (var branch in Model.Branches)
-            {
-                string name = "new_branches[" + counter + "].BranchName";
-                counter++;
-
-                // 第一名申请人
-                if (counter == 1)
-                {
-                    continue;
-                }
-                
-            <div class="Branch">
-                <input type='text' class='BranchName' name='@name' />
-                @Html.ValidationMessage(name)
-                <button class='deleteBranchBtn' onclick='deleteItem(this.parentElement)'>删除</button>
-            </div>
-            }
-        }*@
         <div class="editor-field" id="addApplicant">
             <input type="text" name="applicant_user_name" id="applicantUserName" value="请输入新申请人的用户名" />
             <button id="addApplicantBtn" onclick="addApplicant()" type="button">新增</button>

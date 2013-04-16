@@ -18,5 +18,21 @@ namespace SCUTClubManager.Models
         [Display(Name = "指导教师")]
         [Required(ErrorMessage = "请输入指导教师")]
         public string Instructor { get; set; }
+
+        public static bool operator == (ClubMajorInfo obj1, ClubMajorInfo obj2)
+        {
+            if (Object.ReferenceEquals(obj1, null) ^ Object.ReferenceEquals(obj2, null))
+                return false;
+
+            if (Object.ReferenceEquals(obj1, null) && Object.ReferenceEquals(obj2, null))
+                return true;
+
+            return obj1.Name == obj2.Name && obj1.Instructor == obj2.Instructor;
+        }
+
+        public static bool operator != (ClubMajorInfo obj1, ClubMajorInfo obj2)
+        {
+            return !(obj1 == obj2);
+        }
     }
 }

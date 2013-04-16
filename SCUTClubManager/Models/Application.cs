@@ -8,12 +8,9 @@ namespace SCUTClubManager.Models
 {
     public abstract class Application
     {
-        public static int counter = 0;
-
-        public Application()
-        {
-            ++counter;
-        }
+        public const string NOT_VERIFIED = "n";
+        public const string PASSED = "p";
+        public const string FAILED = "f";
 
         [Key]
         public int Id { get; set; }

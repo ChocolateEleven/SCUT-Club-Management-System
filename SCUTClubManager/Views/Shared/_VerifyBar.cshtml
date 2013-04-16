@@ -4,13 +4,36 @@
 
 <script type="text/javascript">
     $(function () {
+        var form = $("#verifyForm");
+
         confirm("#pass", "确定要通过这个申请吗？", function () {
             $("#is_passed").val(true);
-            $("#result").submit();
+            form.submit();
         });
         confirm("#reject", "确定要驳回这个申请吗？", function () {
-            $("#is_passed").val(false);
-            $("#result").submit();
+            var reason_box = $("<textarea name='reject_reason' data-val-required='驳回理由不能为空' data-val='true'>请在此输入驳回理由</textarea>");
+            var validation_msg = $("<span data-valmsg-for='reject_reason' data-valmsg-replace='true'></span>");
+
+            placeHolder(reason_box, "PlaceHolder");
+            form.append(reason_box);
+            form.append(validation_msg);
+
+            form.parent().dialog({
+                resizable: false,
+                height: 350,
+                modal: true,
+                buttons: {
+                    "确认": function () {
+                        $("#is_passed").val(false);
+                        form.submit();
+                        $("#confirmWnd").dialog("close");
+                        form.parent().dialog("close");
+                    },
+                    "取消": function () {
+                        form.parent().dialog("close");
+                    }
+                }
+            });
         });
     })
 </script>
@@ -27,7 +50,7 @@
     </div>
 
     <div class="HiddenData" hidden>
-        <form id="result" action="Verify" method="post">
+        <form id="verifyForm" action="Verify" method="post">
             <input name="id" type="hidden" value="@Model"/>
             <input name="is_passed" id="is_passed" type="hidden" />
         </form>

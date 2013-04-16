@@ -26,7 +26,7 @@
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("注销社团", "ApplyRemoveClub", "ClubApplication", new { club_id = Model.ClubId })
+        @Html.ActionLink("注销社团", "ApplyUnregisterClub", "ClubApplication", new { id = Model.ClubId }, null)
     </div>
 
     <div class="ManagementBtn">

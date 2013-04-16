@@ -4,15 +4,22 @@
     ViewBag.Title = "修改社团信息";
 }
 
+@Html.Partial("_Confirmation")
+
 <script type="text/javascript">
     function onDeleteBranch(branchToDelete) {
         var id = branchToDelete.siblings('input[type="hidden"]').val();
-        $("#deletedBranchId").append("<input type='hidden' value='" + id + "' name='deleted_branch_ids' />");
+
+        if (id != 0) {
+            $("#deletedBranchId").append("<input type='hidden' value='" + id + "' name='deleted_branch_ids' />");
+        }
     }
 
     $(function () {
         var item_contents = new Array(
-            "<input type='text' name='Branches[0].BranchName'/>",
+            textboxFor("Branches[0].BranchName", "请在此输入部门名", "",
+{ required: true, required_msg: "请输入部门名", regex: "^[\\u2E80-\\u9FFFa-zA-Z0-9]{1,20}$", regex_msg: "部门名必须在1~20个字之间，且不能有标点符号" })
+            ,
             "<input type='hidden' name='Branches[0].Id' value='0' />");
         var insert_contents = new Array(
             "<input type='text' value='在此输入部门名'/>");
@@ -27,17 +34,28 @@
             branch_list.add(values);
         });
 
-        $('input').attr('disabled', 'true');
-        $('button').attr('disabled', 'true');
+        $('input[class!="EnabledForever"]').attr('disabled', 'true');
+        $('button[class!="EnabledForever"]').attr('disabled', 'true');
         $('button.EnableEdit').removeAttr('disabled');
 
         $('button.EnableEdit').click(function () {
             $(this).parent().parent().find('input[class!="DisabledForever"]').removeAttr('disabled');
             $(this).parent().parent().find('button').removeAttr('disabled');
             $(this).attr('disabled', 'disabled');
-            $('input[type="submit"]').removeAttr('disabled');
+            $('#submitBtn').removeAttr('disabled');
+        });
+
+        $('form').ajaxForm({
+            success: notify,
+            error: function (e) {
+                debugger;
+            }
         });
     })
+
+    function submitBtn_Click() {
+        $("#InfoModification").submit();
+    }
 </script>
 
 <h2>修改社团信息</h2>
@@ -58,10 +76,30 @@
     }
 </div>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("UploadPoster", "Club"))
+{
+    @Html.ValidationSummary(true)
+    <input class="EnabledForever" type="hidden" name="club_id" value="@Model.Id" />
+
+    <fieldset id="poster">
+        <legend>上传新海报</legend>
+        <div>
+            上传新海报不需要通过审查，上传后直接生效。
+        </div>
+        <div>
+            <input class="EnabledForever" type="file" name="poster" />
+        </div>
+        <p>
+            <input class="EnabledForever" type="submit" value="上传" />
+        </p>
+    </fieldset>
+}
+
+@using(Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
-    @Html.HiddenFor(model => model.Id)
+    <input type="hidden" class="EnabledForever" name="Id" value="@Model.Id" />
     
     <fieldset id="major_info">
         <legend>基本信息</legend>
@@ -138,7 +176,7 @@
             @Html.LabelFor(model => model.SubInfo.PosterUrl)
         </div>
         <div class="editor-field">
-            <input type="file" name="poster" id="poster" />
+            <span>请在“上传新海报”区域操作</span>
         </div>
     </fieldset>
     
@@ -163,9 +201,9 @@
         <div id="deletedBranchId">
         </div>
     </fieldset>
-    
+
     <p>
-        <input type="submit" value="提交" />
+        <input class="EnabledForever" type="submit" value="提交" />
     </p>
 }
 

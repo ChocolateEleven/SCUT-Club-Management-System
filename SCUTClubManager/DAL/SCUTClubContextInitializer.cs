@@ -1060,8 +1060,6 @@ namespace SCUTClubManager.DAL
             club_unregister_applications.ForEach(s => context.Applications.Add(s));
             club_modification_applications.ForEach(s => context.Applications.Add(s));
 
-            int counter = Application.counter;
-
             assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
             assetApplications.ForEach(s => context.Applications.Add(s));
 

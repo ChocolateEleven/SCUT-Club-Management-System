@@ -37,5 +37,23 @@ namespace SCUTClubManager.Models
         [Display(Name = "规章制度")]
         [Required(ErrorMessage = "请输入规章制度")]
         public string Regulation { get; set; }
+
+        public static bool operator ==(ClubSubInfo obj1, ClubSubInfo obj2)
+        {
+            if (Object.ReferenceEquals(obj1, null) ^ Object.ReferenceEquals(obj2, null))
+                return false;
+
+            if (Object.ReferenceEquals(obj1, null) && Object.ReferenceEquals(obj2, null))
+                return true;
+
+            return obj1.Principle == obj2.Principle && obj1.Purpose == obj2.Purpose
+                && obj1.Range == obj2.Range && obj1.Address == obj2.Address &&
+                obj1.Regulation == obj2.Regulation;
+        }
+
+        public static bool operator !=(ClubSubInfo obj1, ClubSubInfo obj2)
+        {
+            return !(obj1 == obj2);
+        }
     }
 }

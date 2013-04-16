@@ -124,7 +124,11 @@ function dynamicList_DeleteItem(itemToDelete, caller) {
         var new_index = orig_index - 1;
 
         $(element).children(".DynamicListItemContent").each(function (child_index, child_element) {
-            indexIn("name", $(child_element), new_index);
+            if (child_element.tagName == "SPAN") {
+                indexIn("data-valmsg-for", $(child_element), new_index);
+            } else {
+                indexIn("name", $(child_element), new_index);
+            }
         });
 
         indexIn("id", $(element), new_index);
@@ -136,39 +140,53 @@ function dynamicList_DeleteItem(itemToDelete, caller) {
 }
 
 function dynamicList_AddItem(values) {
+    var should_add = true;
+
     if (this.onInsert != null) {
-        this.onInsert(this.itemContents, values);
+        should_add = this.onInsert(this.itemContents, values);
     }
 
-    var item = $('<div class="DynamicListItem" id="dynamic_list_item[' + this.itemCount + ']"></div>');
-    $(this.container).append(item);
+    if (should_add) {
+        var item = $('<div class="DynamicListItem" id="dynamic_list_item[' + this.itemCount + ']"></div>');
+        $(this.container).append(item);
 
-    for (var i = 0; i < this.itemContents.length; ++i) {
-        var content = indexIn("name", $(this.itemContents[i]), this.itemCount).addClass("DynamicListItemContent").appendTo(item);
+        for (var i = 0; i < this.itemContents.length; ++i) {
+            var content = $(this.itemContents[i]);
 
-        if (i < values.length) {
-            content.val(values[i]);
+            for (var j = 0; j < content.length; ++j) {
+                if (content[j].tagName == "SPAN") {
+                    indexIn("data-valmsg-for", $(content[j]), this.itemCount);
+                } else {
+                    indexIn("name", $(content[j]), this.itemCount);
+                }
+            }
+
+            content.addClass("DynamicListItemContent").appendTo(item);
+
+            if (i < values.length) {
+                content.val(values[i]);
+            }
         }
+
+        var caller = this;
+        var button = $('<button type="button">删除</button>');
+
+        button.click(function () {
+            dynamicList_DeleteItem(item, caller);
+        });
+        button.appendTo(item);
+
+        this.itemCount++;
+
+        var children = this.insertPanel.children(".DynamicListInsertValue");
+
+        children.each(function (index, element) {
+            $(element).val($(element).attr("data-defaultVal"));
+            $(element).addClass("PlaceHolder");
+        });
+
+        refreshFormValidations();
     }
-
-    var caller = this;
-    var button = $('<button type="button">删除</button>');
-
-    button.click(function () {
-        dynamicList_DeleteItem(item, caller);
-    });
-    button.appendTo(item);
-
-    this.itemCount++;
-
-    var children = this.insertPanel.children(".DynamicListInsertValue");
-
-    children.each(function (index, element) {
-        $(element).val($(element).attr("data-defaultVal"));
-        $(element).addClass("PlaceHolder");
-    });
-
-    refreshFormValidations();
 }
 
 function DynamicList(item_contents, container, insert_contents, on_insert, on_remove) {
@@ -192,7 +210,7 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
     this.add = dynamicList_AddItem;
     this.container = container;
 
-    var insert_panel = $('<div class="DynamicListInsertPanel"></div>');
+    var insert_panel = $('<form class="DynamicListInsertPanel"></form>');
     this.insertPanel = insert_panel;
 
     insert_panel.insertAfter($(this.container));
@@ -208,16 +226,26 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
         placeHolder(content, "PlaceHolder", "data-defaultVal", button);
     }
 
+    refreshFormValidations();
+
     var caller = this;
 
     insert_panel.append(button);
     button.click(function () {
         var values = new Array();
 
-        $('div.DynamicListInsertPanel').children('.DynamicListInsertValue').each(function (index, element) {
-            values[index] = $(element).val();
-        });
+        if ($('.DynamicListInsertPanel').valid()) {
+            $('form.DynamicListInsertPanel').children('.DynamicListInsertValue').each(function (index, element) {
+                    values[index] = $(element).val();
+            });
 
-        caller.add(values);
+            caller.add(values);
+        }
+    });
+
+    $('form[class!="DynamicListInsertPanel"]').submit(function () {
+        $('form.DynamicListInsertPanel').children('.DynamicListInsertValue').each(function (index, element) {
+            $(element).removeAttr("data-val");
+        });
     });
 }

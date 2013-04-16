@@ -21,7 +21,7 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("List");
         }
 
         [Authorize]
@@ -123,14 +123,14 @@ namespace SCUTClubManager.Controllers
 
         [HttpPost]
         [Authorize(Roles = "社联")]
-        public ActionResult Verify(int id, bool is_passed)
+        public ActionResult Verify(int id, bool is_passed, string reject_reason)
         {
             Application application = db.Applications.Find(id);
 
-            if (application != null && application.Status == "n")
+            if (application != null && application.Status == Application.NOT_VERIFIED)
             {
                 // 更改申请状态
-                application.Status = is_passed ? "p" : "f";
+                application.Status = is_passed ? Application.PASSED : Application.FAILED;
 
                 // 使申请生效
                 if (is_passed)
@@ -323,6 +323,13 @@ namespace SCUTClubManager.Controllers
                         throw new ArgumentException("Invalid club transaction application!");
                     }
                 }
+                else
+                {
+                    application.RejectReason = new ApplicationRejectReason
+                    {
+                        Reason = reject_reason
+                    };
+                }
 
                 db.SaveChanges();
 
@@ -382,7 +389,7 @@ namespace SCUTClubManager.Controllers
 
                 register_application.ApplicantUserName = User.Identity.Name;
                 register_application.Date = DateTime.Now;
-                register_application.Status = "n";
+                register_application.Status = Application.NOT_VERIFIED;
                 register_application.Id = id;
 
                 db.Applications.Add(register_application);
@@ -422,35 +429,40 @@ namespace SCUTClubManager.Controllers
                 return View("ClubNotFoundError");
             }
         }
-
+        
         [Authorize]
         [HttpPost]
-        public ActionResult ApplyModifyClubInfo(Club modified_club, int[] deleted_branch_ids, HttpPostedFileBase poster)
+        public ActionResult ApplyModifyClubInfo(Club modified_club, int[] deleted_branch_ids)
         {
             if (ModelState.IsValid)
             {
+                Club club = db.Clubs.Include(t => t.Branches).Find(modified_club.Id);
+
                 ClubInfoModificationApplication application = new ClubInfoModificationApplication();
                 int id = db.GenerateIdFor("Application");
+                bool has_changed = false;
 
                 application.Id = id;
-                application.Status = "n";
+                application.Status = Application.NOT_VERIFIED;
                 application.RejectReason = null;
                 application.Date = DateTime.Now;
                 application.ClubId = modified_club.Id;
                 application.ApplicantUserName = User.Identity.Name;
 
-                if (modified_club.MajorInfo != null)
+                if (modified_club.MajorInfo != null && modified_club.MajorInfo != club.MajorInfo)
                 {
                     application.MajorInfo = modified_club.MajorInfo;
+                    has_changed = true;
                 }
 
-                if (modified_club.SubInfo != null)
+                if (modified_club.SubInfo != null && modified_club.SubInfo != club.SubInfo)
                 {
                     application.SubInfo = modified_club.SubInfo;
+                    application.SubInfo.PosterUrl = club.SubInfo.PosterUrl;
+                    has_changed = true;
                 }
 
                 application.ModificationBranches = new List<BranchModification>();
-                Club club = db.Clubs.Include(t => t.Branches).Find(modified_club.Id);
 
                 if (modified_club.Branches != null)
                 {
@@ -462,6 +474,7 @@ namespace SCUTClubManager.Controllers
                             {
                                 BranchName = modified_branch.BranchName
                             });
+                            has_changed = true;
                         }
                         else
                         {
@@ -474,6 +487,7 @@ namespace SCUTClubManager.Controllers
                                     BranchName = modified_branch.BranchName,
                                     OrigBranch = orig_branch
                                 });
+                                has_changed = true;
                             }
                         }
                     }
@@ -488,69 +502,60 @@ namespace SCUTClubManager.Controllers
                             BranchId = deleted_branch_id
                         });
                     }
+                    has_changed = true;
                 }
 
-                //if (poster != null 
+                if (has_changed)
+                {
+                    db.Applications.Add(application);
+                    db.SaveChanges();
+
+                    return Json(new { success = true, msg = "成功提交申请", url = "/ClubApplication/Details?id=" + application.Id });
+                }
+                else
+                {
+                    return Json(new { success = false, msg = "没有做出任何修改，提交失败" });
+                }
+            }
+
+            return Json(new { success = false, msg = "提交失败" });
+        }
+
+        [Authorize]
+        public ActionResult ApplyUnregisterClub(int id)
+        {
+            var club = db.Clubs.Include(t => t.MajorInfo).Include(t => t.SubInfo).Include(t => t.Branches).Find(id);
+
+            if (club != null)
+            {
+                return View(club);
+            }
+            else
+            {
+                return View("ClubNotFoundError");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ApplyUnregisterClub(ClubUnregisterApplication application)
+        {
+            if (ModelState.IsValid)
+            {
+                int id = db.GenerateIdFor("Application");
+
+                application.ApplicantUserName = User.Identity.Name;
+                application.Date = DateTime.Now;
+                application.Status = Application.NOT_VERIFIED;
+                application.Id = id;
 
                 db.Applications.Add(application);
                 db.SaveChanges();
 
-                return RedirectToAction("Details", new { id = application.Id });
+                return Json(new { success = true, msg = "成功提交申请", url = "/ClubApplication/Details?id=" + application.Id });
             }
 
-            return View("ClubNotFoundError");
-        }
-
-        //
-        // GET: /ClubApplication/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /ClubApplication/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /ClubApplication/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /ClubApplication/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return Json(new { success = false, msg = "提交失败" });
         }
     }
 }

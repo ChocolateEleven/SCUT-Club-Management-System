@@ -77,7 +77,7 @@
             {
             <tr>
                 <td>
-                    @Html.DisplayFor(model => branch.BranchName)
+                    @Html.ActionLink(branch.BranchName, "List", "ClubMember", new { club_id = Model.Id, branch_filter = branch.Id }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(model => branch.MemberCount)

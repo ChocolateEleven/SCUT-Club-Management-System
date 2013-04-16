@@ -1,0 +1,61 @@
+﻿@model IPagedList<SCUTClubManager.Models.ClubMember>
+
+@{
+    ViewBag.Title = ViewBag.ClubName + ViewBag.BranchName + ViewBag.RoleName + "列表";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("_SearchBar")
+
+<table>
+    <tr>
+        <th>
+            @Html.ActionLink("用户名", "List", new { club_id = ViewBag.ClubId, order = ViewBag.UserNameOrderOpt, 
+           search = ViewBag.Search, search_option = ViewBag.SearchOption, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
+        </th>
+        <th>
+            @Html.ActionLink("姓名", "List", new { club_id = ViewBag.ClubId, order = ViewBag.NameOrderOpt, 
+           search = ViewBag.Search, search_option = ViewBag.SearchOption, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
+        </th>
+        <th>
+            @Html.ActionLink("加入日期", "List", new { club_id = ViewBag.ClubId, order = ViewBag.JoinDateOrderOpt, 
+           search = ViewBag.Search, search_option = ViewBag.SearchOption, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
+        </th>
+        <th>
+            部门
+        </th>
+        <th>
+            角色
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Student.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JoinDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Branch.BranchName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClubRole.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.Partial("_PageNavigation", Model)

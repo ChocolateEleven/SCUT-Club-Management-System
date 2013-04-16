@@ -111,6 +111,8 @@
     <Compile Include="Controllers\AssetController.cs" />
     <Compile Include="Controllers\ClubApplicationController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
+    <Compile Include="Controllers\ClubMemberApplicationController.cs" />
+    <Compile Include="Controllers\ClubMemberController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
@@ -353,6 +355,9 @@
     <Content Include="Views\AssetApplication\Delete.cshtml" />
     <Content Include="Views\Shared\ClubNotFoundError.cshtml" />
     <Content Include="Views\ClubApplication\ApplyModifyClubInfo.cshtml" />
+    <Content Include="Views\ClubApplication\ApplyUnregisterClub.cshtml" />
+    <Content Include="Views\ClubMember\List.cshtml" />
+    <Content Include="Views\Shared\_BranchFilterBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,6 +11,7 @@ using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
 using SCUTClubManager.Helpers;
 using System.Linq.Expressions;
+using System.IO;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -132,6 +133,44 @@ namespace SCUTClubManager.Controllers
             db.SaveChanges();
 
             return Json(new { idToDelete = id, success = true });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult UploadPoster(HttpPostedFileBase poster, int club_id)
+        {
+            if (poster != null && poster.ContentLength > 0)
+            {
+                Club club = db.Clubs.Include(t => t.SubInfo).Find(club_id);
+                string file_name;
+                string path;
+
+                if (String.IsNullOrWhiteSpace(club.SubInfo.PosterUrl))
+                {
+                    string guid = Guid.NewGuid().ToString();
+                    string extension = "";
+
+                    if (Path.HasExtension(poster.FileName))
+                    {
+                        extension = Path.GetExtension(poster.FileName);
+                    }
+
+                    file_name = guid + extension;
+                }
+                else
+                {
+                    file_name = club.SubInfo.PosterUrl;
+                }
+
+                path = Path.Combine(Server.MapPath(ConfigurationManager.ClubSplashPanelFolder), file_name);
+                poster.SaveAs(path);
+
+                return Json(new { success = false, msg = "上传成功" });
+            }
+            else
+            {
+                return Json(new { success = false, msg = "上传失败" });
+            }
         }
 
         protected override void Dispose(bool disposing)
