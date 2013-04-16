@@ -138,6 +138,8 @@ namespace SCUTClubManager.Controllers
 
             IEnumerable<Asset> available_assets = assets.OrderBy(s => s.Name);
 
+            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
+            ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
             ViewBag.Date = date.ToString("yyyy年MM月dd日");
             var time = unitOfWork.Times.Find(timeId);
             ViewBag.Time = time.TimeName;

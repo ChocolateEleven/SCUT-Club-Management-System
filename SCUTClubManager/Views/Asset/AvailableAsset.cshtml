@@ -53,6 +53,8 @@
 
 <h2>@ViewBag.Date @ViewBag.Time 的可借物资</h2>
 
+
+
 <table>
     <tr>
         <th>
@@ -68,7 +70,10 @@
         </th>
     </tr>
 
+    
 @foreach (var item in Model) {
+    
+    
     <tr>
         <td class="ItemName">
             <span>@Html.DisplayFor(modelItem => item.Name)</span>
@@ -95,17 +100,27 @@
 <h2>借用申请</h2>
 
 @using (Html.BeginForm("Create","AssetApplication")) {
-<table id="BorrowApplication">
-    <tr>
-        <th>
-            名称
-        </th>
-        <th>
-            借用数量
-        </th>
-    </tr>
     
-</table>
+    <div>
+        @Html.DropDownList("ClubId",String.Empty)
+    </div>
+    <div>
+        @Html.DropDownList("SubEventId",String.Empty)
+    </div>
     
-     <input type="submit"/>
+    <table id="BorrowApplication">
+        <tr>
+            <th>
+                名称
+            </th>
+            <th>
+                借用数量
+            </th>
+        </tr>
+        
+    </table>
+        
+    <input type="hidden" name="date" value="@ViewBag.Date" />
+    <input type="hidden" name="TimeId" value="@ViewBag.TimeId" />
+    <input type="submit"/>
 }

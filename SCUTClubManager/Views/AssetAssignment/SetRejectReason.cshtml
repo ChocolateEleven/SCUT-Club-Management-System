@@ -1,0 +1,19 @@
+﻿@model SCUTClubManager.Models.ApplicationRejectReason
+
+@{
+    ViewBag.Title = "SetRejectReason";
+}
+
+<h2>请输入拒绝申请的原因</h2>
+
+@using(Html.BeginForm()){
+    @Html.ValidationSummary(true)
+
+    <div>
+        @Html.TextAreaFor(model => model.Reason)
+    </div>
+
+    <input type="hidden" value="@ViewBag.application_id" />
+    
+    <input type="submit" value="确定"/>
+}
