@@ -37,7 +37,7 @@ namespace SCUTClubManager.DAL
         public DbSet<EventDescription> EventDescriptions { get; set; }
         public DbSet<LocationAssignment> LocationAssignments { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<LocationAvailableTime> LocationAvailableTimes { get; set; }
+        public DbSet<LocationUnavailableTime> LocationAvailableTimes { get; set; }
         public DbSet<Time> Times { get; set; }
         public DbSet<AssetAssignment> AssetAssignments { get; set; }
         public DbSet<AssetBase> Assets { get; set; }

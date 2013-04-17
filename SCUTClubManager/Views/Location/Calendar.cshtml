@@ -1,0 +1,26 @@
+﻿
+@model SCUTClubManager.Models.Time
+
+@{
+    ViewBag.Title = "Calender";
+}
+
+<script>
+    $(document).ready(function () {
+        $("#cal").datepicker()
+    });
+</script>
+
+<h2>按日期借用场地</h2>
+
+
+@using (Html.BeginForm()) {
+<div>
+    请输入日期:  <input id="cal" name="date" type="text"/>
+</div>
+<div>
+    请选择时间段: @Html.DropDownList("timeId", String.Empty) 
+</div>
+
+<input type="submit" value="查询" />
+}

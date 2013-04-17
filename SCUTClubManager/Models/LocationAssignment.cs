@@ -23,7 +23,7 @@ namespace SCUTClubManager.Models
 
         public int TimeId { get; set; }
 
-        public virtual ICollection<Location> Location { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
         public virtual Time Time { get; set; }
         public virtual Club Club { get; set; }
 

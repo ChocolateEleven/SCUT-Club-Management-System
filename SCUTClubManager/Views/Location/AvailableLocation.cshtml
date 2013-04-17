@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SCUTClubManager.Models.Location>
+
+@{
+    ViewBag.Title = "AvailableLocation";
+}
+
+@Html.ActionLink("查看已借出", "AssignedAsset", new { date = @ViewBag.date, timeId = @ViewBag.timeId})
+
+<h2>可用场地</h2>
+
+<table>
+    <tr>
+        <th>
+            名称
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            <a href="#" class ="Borrow" onclick="funBorrow($(this).parent())">借用</a>
+        </td>
+        <td>
+            <span class="ErrorMessage"></span>
+        </td>
+    </tr>
+}
+</table>
+
+<h2>借用申请</h2>
+@using (Html.BeginForm("Create","AssetApplication")) {
+    
+    <div>
+        借用社团：
+        @Html.DropDownList("ClubId",String.Empty)
+    </div>
+    <div>
+        借用活动：
+        @Html.DropDownList("SubEventId",String.Empty)
+    </div>
+    
+    <table id="BorrowApplication">
+        <tr>
+            <th>
+                名称
+            </th>
+        </tr>
+        
+    </table>
+        
+    <input type="hidden" name="date" value="@ViewBag.Date" />
+    <input type="hidden" name="TimeId" value="@ViewBag.TimeId" />
+    <input type="submit" value="提交"/>
+}
+

@@ -115,6 +115,7 @@
     <Compile Include="Controllers\ClubMemberController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PollController.cs" />
     <Compile Include="DAL\IRepository.cs" />
@@ -166,7 +167,7 @@
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationApplication.cs" />
     <Compile Include="Models\LocationAssignment.cs" />
-    <Compile Include="Models\LocationAvailableTime.cs" />
+    <Compile Include="Models\LocationUnavailableTime.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\MessageContent.cs" />
     <Compile Include="Models\Poll.cs" />
@@ -360,6 +361,15 @@
     <Content Include="Views\Shared\_BranchFilterBar.cshtml" />
     <Content Include="Views\Shared\_RoleFilterBar.cshtml" />
     <Content Include="Views\AssetAssignment\SetRejectReason.cshtml" />
+    <Content Include="Views\Asset\AssignedAsset.cshtml" />
+    <Content Include="Views\Location\List.cshtml" />
+    <Content Include="Views\Location\Details.cshtml" />
+    <Content Include="Views\Location\Create.cshtml" />
+    <Content Include="Views\Location\Edit.cshtml" />
+    <Content Include="Views\Location\Delete.cshtml" />
+    <Content Include="Views\Location\AvailableLocation.cshtml" />
+    <Content Include="Views\Location\Index.cshtml" />
+    <Content Include="Views\Location\Calendar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

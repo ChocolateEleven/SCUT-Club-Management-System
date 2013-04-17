@@ -21,7 +21,7 @@ namespace SCUTClubManager.DAL
                 new IdentityForTPC
                 {
                     BaseName = "Application",
-                    Identity = 7
+                    Identity = 10
                 },
                 new IdentityForTPC
                 {
@@ -871,7 +871,7 @@ namespace SCUTClubManager.DAL
             #endregion
 
             #region AssetAssignment
-            List<AssetAssignment> assetAssignments = new List<AssetAssignment> 
+            List<AssetAssignment> asset_assignments = new List<AssetAssignment> 
             {
                 new AssetAssignment
                 {
@@ -961,7 +961,7 @@ namespace SCUTClubManager.DAL
             #endregion
 
             #region AssetApplication
-            List<AssetApplication> assetApplications = new List<AssetApplication> 
+            List<AssetApplication> asset_applications = new List<AssetApplication> 
             {
                 new AssetApplication
                 {
@@ -1045,6 +1045,151 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
+
+            #region Location
+            List<Location> locations = new List<Location> 
+            {
+                new Location
+                {
+                    Name = "A1101",
+                    UnAvailableTimes = new List<LocationUnavailableTime>
+                    {
+                        new LocationUnavailableTime
+                        {
+                            Time = times[0],
+                            WeekDayId = 1
+                        },
+                        new LocationUnavailableTime
+                        {
+                            Time = times[5],
+                            WeekDayId = 5
+                        }
+                    }
+                },
+                new Location
+                {
+                    Name = "A1102",
+                    UnAvailableTimes = new List<LocationUnavailableTime>
+                    {
+                        new LocationUnavailableTime
+                        {
+                            Time = times[2],
+                            WeekDayId = 3
+                        },
+                        new LocationUnavailableTime
+                        {
+                            Time = times[4],
+                            WeekDayId = 2
+                        },
+                        new LocationUnavailableTime
+                        {
+                            Time = times[3],
+                            WeekDayId = 2
+                        },
+                        new LocationUnavailableTime
+                        {
+                            Time = times[4],
+                            WeekDayId = 4
+                        }
+                    }
+                },
+                new Location
+                {
+                    Name = "A1103",
+                    UnAvailableTimes = new List<LocationUnavailableTime>
+                    {
+                        new LocationUnavailableTime
+                        {
+                            Time = times[1],
+                            WeekDayId = 2
+                        },
+                        new LocationUnavailableTime
+                        {
+                            Time = times[3],
+                            WeekDayId = 4
+                        },
+                        new LocationUnavailableTime
+                        {
+                            Time = times[1],
+                            WeekDayId = 3
+                        }
+                    }
+                }
+            };
+            #endregion
+
+            #region LocationApplication
+            List<LocationApplication> location_applications = new List<LocationApplication> 
+            {
+                new LocationApplication
+                {
+                    Id = 7,
+                    Status = "n",
+                    Club = clubs[0],
+                    Applicant = students[0] as Student,
+                    Date = new DateTime(2013,1,3),
+                    Time = times[0],
+                    Location = new List<Location>
+                    {
+                        locations[0],locations[1]
+                    }
+                },
+                new LocationApplication
+                {
+                    Id = 8,
+                    Status = "f",
+                    Club = clubs[1],
+                    Applicant = students[1] as Student,
+                    Date = new DateTime(2013,1,4),
+                    Time = times[0],
+                    Location = new List<Location>
+                    {
+                        locations[2],locations[1],locations[0]
+                    }
+                },
+                new LocationApplication
+                {
+                    Id = 9,
+                    Status = "p",
+                    Club = clubs[2],
+                    Applicant = students[2] as Student,
+                    Date = new DateTime(2013,1,5),
+                    Time = times[0],
+                    Location = new List<Location>
+                    {
+                        locations[0]
+                    }
+                }
+            };
+            #endregion
+
+            #region LocationAssignment
+            List<LocationAssignment> location_assignments = new List<LocationAssignment>
+            {
+                new LocationAssignment
+                {
+                    Date = new DateTime(2013,4,17),
+                    Club = clubs[0],
+                    Time = times[0],
+                    Applicant = students[0] as Student
+                },
+                 new LocationAssignment
+                {
+                    Date = new DateTime(2013,4,18),
+                    Club = clubs[2],
+                    Time = times[4],
+                    Applicant = students[0] as Student
+                },
+                 new LocationAssignment
+                {
+                    Date = new DateTime(2013,4,10),
+                    Club = clubs[1],
+                    Time = times[2],
+                    Applicant = students[0] as Student
+                }
+            };
+            #endregion
+
             ids.ForEach(s => context.Identities.Add(s));
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
             sub_infos.ForEach(s => context.ClubSubInfos.Add(s));
@@ -1063,8 +1208,11 @@ namespace SCUTClubManager.DAL
             club_unregister_applications.ForEach(s => context.Applications.Add(s));
             club_modification_applications.ForEach(s => context.Applications.Add(s));
 
-            assetAssignments.ForEach(s => context.AssetAssignments.Add(s));
-            assetApplications.ForEach(s => context.Applications.Add(s));
+            asset_assignments.ForEach(s => context.AssetAssignments.Add(s));
+            asset_applications.ForEach(s => context.Applications.Add(s));
+            locations.ForEach(s => context.Locations.Add(s));
+            location_applications.ForEach(s => context.Applications.Add(s));
+            location_assignments.ForEach(s => context.LocationAssignments.Add(s));
 
             context.SaveChanges();
         }

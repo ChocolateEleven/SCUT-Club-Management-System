@@ -14,7 +14,7 @@ namespace SCUTClubManager.Models
         [MaxLength(20)]
         public string Name { get; set; }
 
-        public virtual ICollection<LocationAvailableTime> AvailableTimes { get; set; }
+        public virtual ICollection<LocationUnavailableTime> UnAvailableTimes { get; set; }
         public virtual ICollection<LocationApplication> Applications { get; set; }
         public virtual ICollection<LocationAssignment> Assignments { get; set; }
     }

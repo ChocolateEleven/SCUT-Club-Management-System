@@ -59,7 +59,7 @@ namespace SCUTClubManager.Controllers
             {
                 unitOfWork.Assets.Add(asset);
                 unitOfWork.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("List");  
             }
 
             return View(asset);
@@ -120,6 +120,29 @@ namespace SCUTClubManager.Controllers
         public ActionResult Calendar(DateTime date,int timeId)
         {
             return RedirectToAction("AvailableAsset", new { date, timeId });
+        }
+
+        public ActionResult AssignedAsset(DateTime date, int timeId)
+        {
+            var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.TimeId == timeId);
+            List<AssignedAsset> assigned_assets = new List<AssignedAsset>();
+            foreach(var assignment in assignments)
+            {
+                foreach(var assigned_asset in assignment.AssignedAssets)
+                {
+                    assigned_assets.Add(assigned_asset);
+                }
+            }
+
+            IEnumerable<AssignedAsset>  list = assigned_assets.OrderBy(s => s.Asset.Name);
+            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
+            ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
+            ViewBag.Date = date.ToString("yyyy年MM月dd日");
+            var time = unitOfWork.Times.Find(timeId);
+            ViewBag.Time = time.TimeName;
+            ViewBag.TimeId = time.Id;
+
+            return View(list.ToPagedList(1, 10));
         }
 
         public ActionResult AvailableAsset(DateTime date,int timeId)

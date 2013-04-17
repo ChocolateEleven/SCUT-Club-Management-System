@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCUTClubManager.Models
 {
-    public class LocationAvailableTime
+    public class LocationUnavailableTime
     {
         public int Id { get; set; }
 

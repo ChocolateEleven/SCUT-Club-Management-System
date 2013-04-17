@@ -4,7 +4,8 @@
     ViewBag.Title = "AvailableAsset";
 }
 
-<p id ="test"></p>
+@Html.ActionLink("查看已借出", "AssignedAsset", new { date = @ViewBag.date, timeId = @ViewBag.timeId})
+
 
 <script>
     function funBorrow(item)
@@ -102,9 +103,11 @@
 @using (Html.BeginForm("Create","AssetApplication")) {
     
     <div>
+        借用社团：
         @Html.DropDownList("ClubId",String.Empty)
     </div>
     <div>
+        借用活动：
         @Html.DropDownList("SubEventId",String.Empty)
     </div>
     
@@ -122,5 +125,5 @@
         
     <input type="hidden" name="date" value="@ViewBag.Date" />
     <input type="hidden" name="TimeId" value="@ViewBag.TimeId" />
-    <input type="submit"/>
+    <input type="submit" value="提交"/>
 }

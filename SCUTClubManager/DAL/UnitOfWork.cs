@@ -426,14 +426,14 @@ namespace SCUTClubManager.DAL
 
 
 
-        private IRepository<LocationAvailableTime> locationAvailableTimes;
-        public IRepository<LocationAvailableTime> LocationAvailableTimes
+        private IRepository<LocationUnavailableTime> locationAvailableTimes;
+        public IRepository<LocationUnavailableTime> LocationAvailableTimes
         {
             get
             {
                 if (this.locationAvailableTimes == null)
                 {
-                    this.locationAvailableTimes = new Repository<LocationAvailableTime>(context);
+                    this.locationAvailableTimes = new Repository<LocationUnavailableTime>(context);
                 }
                 return locationAvailableTimes;
             }
