@@ -367,7 +367,8 @@ namespace SCUTClubManager.DAL
                     FoundDate = DateTime.Now.AddDays(10),
                     MajorInfo = major_infos[1],
                     SubInfo = sub_infos[1],
-                    MemberCount = 1
+                    MemberCount = 1,
+                    NewMemberCount = 1
                 },
                 new Club
                 {
@@ -376,7 +377,8 @@ namespace SCUTClubManager.DAL
                     FoundDate = DateTime.Parse("2009-10-20"),
                     MajorInfo = major_infos[2],
                     SubInfo = sub_infos[2],
-                    MemberCount = 3
+                    MemberCount = 3,
+                    NewMemberCount = 1
                 },
                 new Club
                 {
@@ -385,7 +387,8 @@ namespace SCUTClubManager.DAL
                     FoundDate = DateTime.Parse("2012-11-11"),
                     MajorInfo = major_infos[3],
                     SubInfo = sub_infos[3],
-                    MemberCount = 1
+                    MemberCount = 1,
+                    NewMemberCount = 1
                 }
             };
             #endregion

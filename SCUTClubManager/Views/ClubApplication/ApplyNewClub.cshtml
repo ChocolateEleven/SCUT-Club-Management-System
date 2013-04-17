@@ -20,7 +20,7 @@
             element.firstChild.name = name.replace(orig_index, new_index);
         });
 
-         移除被删除元素
+        // 移除被删除元素
         $(itemToDelete).remove();
     }
 
@@ -81,7 +81,7 @@
                         "' /><input type='checkbox' class='IsMainApplicant' name='" +
                         checkbox_name + "' onclick='asMainApplicant(this)'" +
                         "value='true'>作为主要申请人</input><button class='deleteApplicantBtn' onclick='deleteItem($(this).parent())'>删除</button></div>")
-                        .insertBefore("#addApplicant").children(".ApplicantUserName");
+                        .insertBefore("#addApplicant").children("input.ApplicantUserName[type='text']");
 
                     textbox.attr("disabled", "disabled");
                     applicant_user_name_box.val("请输入新申请人的用户名");

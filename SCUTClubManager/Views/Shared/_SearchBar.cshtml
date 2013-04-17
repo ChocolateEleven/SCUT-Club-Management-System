@@ -22,10 +22,6 @@
         }
 
         var search = $("#searchBox").val();
-        
-        if (search == "请输入搜索内容") {
-            search = '';
-        }
 
         docLocation += "&search_option=" + $("#SearchOptions").val();
         docLocation += "&search=" + search;
@@ -34,10 +30,21 @@
     }
 
     $(function () {
+        placeHolder($("#searchBox"), "PlaceHolder", null, "#searchBtn");
         $("#searchBtn").click(search);
-        placeHolder($("#searchBox"), "PlaceHolder");
     });
 </script>
+
+@if (!String.IsNullOrEmpty(ViewBag.Search))
+{
+    <div>
+        <span>
+            搜索“
+        @ViewBag.Search
+            ”的结果
+        </span>
+    </div>
+}
 
 @if (ViewBag.SearchOptions != null)
 {
@@ -47,7 +54,7 @@
 }
 
 <div class="OperationBtn">
-    @Html.TextBox("searchBox", String.IsNullOrEmpty(ViewBag.Search as string) ? "请输入搜索内容" : ViewBag.Search as string)
+    @Html.TextBox("searchBox", "请输入搜索内容")
     <a id="searchBtn" href="#">搜索</a>
 </div>
 

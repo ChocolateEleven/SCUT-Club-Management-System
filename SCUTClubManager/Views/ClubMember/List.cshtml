@@ -1,61 +1,175 @@
 ﻿@model IPagedList<SCUTClubManager.Models.ClubMember>
-
 @{
     ViewBag.Title = ViewBag.ClubName + ViewBag.BranchName + ViewBag.RoleName + "列表";
 }
 
 <h2>@ViewBag.Title</h2>
 
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        $("input.ItemSelector[name='all_in']").change(function () {
+            var all_in_box = this;
+
+            $("input.ItemSelector[name!='all_in']").each(function (index) {
+                this.checked = all_in_box.checked;
+                $(this).change();
+            });
+        });
+
+        $("input.ItemSelector[name!='all_in']").change(function () {
+            var checkbox = $(this);
+            var id_field = checkbox.siblings("input[name='member_ids']");
+
+            if (checkbox[0].checked) {
+                id_field.removeAttr("disabled");
+            } else {
+                $("input.ItemSelector[name='all_in']")[0].checked = false;
+                id_field.attr("disabled", "true");
+            }
+        });
+
+        $('form').ajaxForm({
+            success: function (data) {
+                notify(data);
+
+                if (data.role != null || data.operation != 'update') {
+                    var checkboxes = $("input.ItemSelector[name!='all_in']");
+
+                    if (((data.role != "会员" && data.role != "会长") || ("@ViewBag.BranchName" == "" || "@ViewBag.BranchName" == "会员部")) &&
+                            (data.role == "@ViewBag.RoleName" || "@ViewBag.RoleName" == "全部成员") && (data.operation == "update")) {
+                        checkboxes.each(function (index, element) {
+                            if (this.checked) {
+                                $(this).parent().parent().find(".ClubRoleName").text(data.role);
+                            }
+                        });
+                    } else {
+                        checkboxes.each(function (index, element) {
+                            if (this.checked) {
+                                $(this).parent().parent().fadeOut();
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+        
+        $("input[name='all_in']").tooltip();
+        $("#update").tooltip();
+        $("#remove").tooltip();
+
+        confirm("#update", "确定要改变选中成员的角色吗？", function () {
+            $('form').attr('action', 'UpdateMembers');
+            $('form').submit();
+        });
+
+        confirm("#remove", "确定要开除选中的成员吗？", function () {
+            $('form').attr('action', 'RemoveMembers');
+            $('form').submit();
+        });
+    })
+</script>
+
+@Html.Partial("_BranchFilterBar")
+@Html.Partial("_RoleFilterBar")
 @Html.Partial("_SearchBar")
 
-<table>
-    <tr>
-        <th>
-            @Html.ActionLink("用户名", "List", new { club_id = ViewBag.ClubId, order = ViewBag.UserNameOrderOpt, 
-           search = ViewBag.Search, search_option = ViewBag.SearchOption, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
-        </th>
-        <th>
-            @Html.ActionLink("姓名", "List", new { club_id = ViewBag.ClubId, order = ViewBag.NameOrderOpt, 
-           search = ViewBag.Search, search_option = ViewBag.SearchOption, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
-        </th>
-        <th>
-            @Html.ActionLink("加入日期", "List", new { club_id = ViewBag.ClubId, order = ViewBag.JoinDateOrderOpt, 
-           search = ViewBag.Search, search_option = ViewBag.SearchOption, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
-        </th>
-        <th>
-            部门
-        </th>
-        <th>
-            角色
-        </th>
-        <th></th>
-    </tr>
+@using (Html.BeginForm("UpdateMembers", "ClubMember"))
+{
+    <input type="hidden" name="branch_filter" value="@ViewBag.BranchFilter" />
+    <input type="hidden" name="role_filter" value="@ViewBag.RoleFilter" />
+    <input type="hidden" name="search" value="@ViewBag.Search" />
+    <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
+    <input type="hidden" name="club_id" value="@ViewBag.ClubId" />
+    
+    <table>
+        <tr>
+            <th>
+                <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部成员" />
+                <input type="hidden" name="all_in" value="false" />
+            </th>
+            <th>
+                @Html.ActionLink("用户名", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.UserNameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter
+           })
+            </th>
+            <th>
+                @Html.ActionLink("姓名", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.NameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter
+           })
+            </th>
+            <th>
+                @Html.ActionLink("加入日期", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.JoinDateOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter
+           })
+            </th>
+            <th>部门
+            </th>
+            <th>角色
+            </th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Student.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JoinDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Branch.BranchName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClubRole.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input class="ItemSelector" type="checkbox" />
+                    <input name="member_ids" type="hidden" value="@item.Id" disabled="disabled" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JoinDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Branch.BranchName)
+                </td>
+                <td>
+                    <span class="ClubRoleName">@Html.DisplayFor(modelItem => item.ClubRole.Name)</span>
+                </td>
+            </tr>
+        }
+
+    </table>
+    
+    <div>
+        <span>将选中的成员改变为如下角色（若角色选择为“会员”或“会长”则会同时将该成员的所属部门变为会员部）：</span>
+        @Html.DropDownList("role_id", ViewBag.RoleList as SelectList)
+    </div>
+    
+    <div>
+        <button id="update" type="button" title="改变选中成员的角色">转职</button>
+    </div>
+    
+    <div>
+        <button id="remove" type="button" title="将选中的成员开除出本社团">开除</button>
+    </div>
 }
-
-</table>
 
 @Html.Partial("_PageNavigation", Model)

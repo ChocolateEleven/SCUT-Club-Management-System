@@ -32,8 +32,9 @@ namespace SCUTClubManager.Controllers
                 return View("PermissionDeniedError");
             }
 
+            ClubMember membership = ScmRoleProvider.GetRoleInClub(club_id);
             IQueryable<ClubMember> members =
-                db.ClubMembers.Include(t => t.Student).Include(t => t.Branch).Include(t => t.ClubRole).ToList().Where(t => t.ClubId == club_id) as IQueryable<ClubMember>;
+                db.ClubMembers.Include(t => t.Student).Include(t => t.Branch).Include(t => t.ClubRole).ToList();
             Club club = db.Clubs.Include(s => s.Branches).Include(s => s.MajorInfo).Find(club_id);
 
             ViewBag.BranchName = "";
@@ -47,7 +48,6 @@ namespace SCUTClubManager.Controllers
 
             // 部门选项下拉框
             List<KeyValuePair<string, int>> branch_list = new List<KeyValuePair<string, int>>();
-            branch_list.Add(new KeyValuePair<string, int>("全部", 0));
             foreach (var branch in club.Branches)
             {
                 branch_list.Add(new KeyValuePair<string, int>(branch.BranchName, branch.Id));
@@ -57,20 +57,32 @@ namespace SCUTClubManager.Controllers
                     ViewBag.BranchName = branch.BranchName;
                 }
             }
+            if (membership != null)
+            {
+                branch_list.Add(new KeyValuePair<string, int>("本部门", membership.BranchId));
+            }
+            branch_list.Add(new KeyValuePair<string, int>("全部", 0));
             ViewBag.BranchFilters = new SelectList(branch_list, "Value", "Key", branch_filter);
 
             // 角色选项下拉框
             List<KeyValuePair<string, int>> role_list = new List<KeyValuePair<string, int>>();
-            role_list.Add(new KeyValuePair<string, int>("全部", 0));
+            List<KeyValuePair<string, int>> available_roles = new List<KeyValuePair<string, int>>();
             foreach (var role in db.ClubRoles.ToList())
             {
-                role_list.Add(new KeyValuePair<string, int>(role.Name, role.Id));
+                available_roles.Add(new KeyValuePair<string, int>(role.Name, role.Id));
 
-                if (role.Id == role_filter)
+                if ((ViewBag.BranchName == "会员部" || ViewBag.BranchName == "") || (role.Name != "会长" && role.Name != "会员"))
                 {
-                    ViewBag.RoleName = role.Name;
+                    role_list.Add(new KeyValuePair<string, int>(role.Name, role.Id));
+
+                    if (role.Id == role_filter)
+                    {
+                        ViewBag.RoleName = role.Name;
+                    }
                 }
             }
+            ViewBag.RoleList = new SelectList(available_roles, "Value", "Key");
+            role_list.Add(new KeyValuePair<string, int>("全部", 0));
             ViewBag.RoleFilters = new SelectList(role_list, "Value", "Key", role_filter);
 
             ViewBag.ClubId = club_id;
@@ -84,20 +96,165 @@ namespace SCUTClubManager.Controllers
             ViewBag.SearchOption = search_option;
             ViewBag.RoleFilter = role_filter;
 
-            Expression<Func<ClubMember, bool>> filter = null;
-            if (!String.IsNullOrWhiteSpace(search) && !String.IsNullOrWhiteSpace(search_option))
+            members = FilterMembers(members, club_id, branch_filter, role_filter, search, search_option);
+
+            var member_list = QueryProcessor.Query<ClubMember>(members, filter: null,
+                order_by: order, page_number: page_number, items_per_page: 20);
+
+            return View(member_list);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult UpdateMembers(int role_id, int[] member_ids, bool all_in, int club_id,
+            int branch_filter, int role_filter, string search, string search_option)
+        {
+            string operation = "update";
+
+            if (member_ids != null && member_ids.Length > 0)
             {
-                switch (search_option)
+                ClubRole role = db.ClubRoles.Find(role_id);
+
+                if (role != null)
                 {
-                    case "Name":
-                        filter = s => s.Student.Name.Contains(search);
-                        break;
-                    case "UserName":
-                        filter = s => s.UserName.Contains(search);
-                        break;
+                    string message;
+                    ClubBranch member_branch = db.ClubBranches.ToList().SingleOrDefault(t => t.ClubId == club_id && t.BranchName == "会员部");
+                    bool branch_changed = (role.Name == "会长" || role.Name == "会员") && member_branch != null;
+
+                    if (all_in)
+                    {
+                        var members = FilterMembers(db.ClubMembers.Include(t => t.Branch).ToList(), club_id, branch_filter, role_filter, search, search_option);
+
+                        foreach (var member in members)
+                        {
+                            member.ClubRoleId = role_id;
+
+                            if (branch_changed)
+                            {
+                                member.Branch.MemberCount--;
+                                member_branch.MemberCount++;
+
+                                if (member.IsNewMember)
+                                {
+                                    member.Branch.NewMemberCount--;
+                                    member_branch.NewMemberCount++;
+                                }
+
+                                member.BranchId = member_branch.Id;
+                            }
+                        }
+
+                        message = "已将当前搜索/过滤条件下所有成员的角色改变为" + role.Name;
+                    }
+                    else
+                    {
+                        foreach (int member_id in member_ids)
+                        {
+                            ClubMember member = db.ClubMembers.Find(member_id);
+
+                            if (member != null)
+                            {
+                                member.ClubRoleId = role_id;
+                            }
+
+                            if (branch_changed)
+                            {
+                                member.Branch.MemberCount--;
+                                member_branch.MemberCount++;
+
+                                if (member.IsNewMember)
+                                {
+                                    member.Branch.NewMemberCount--;
+                                    member_branch.NewMemberCount++;
+                                }
+
+                                member.BranchId = member_branch.Id;
+                            }
+                        }
+
+                        message = "已将选中成员的角色改变为" + role.Name;
+                    }
+
+                    db.SaveChanges();
+
+                    return Json(new { success = false, msg = message, role = role.Name, operation = operation });
                 }
+
+                return Json(new { success = false, msg = "该角色不存在", operation = operation });
             }
 
+            return Json(new { success = false, msg = "没有选择任何成员", operation = operation });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult RemoveMembers(int[] member_ids, bool all_in, int club_id,
+            int branch_filter, int role_filter, string search, string search_option)
+        {
+            string operation = "delete";
+
+            if (member_ids != null && member_ids.Length > 0)
+            {
+                string message;
+                Club club = db.Clubs.Find(club_id);
+
+                if (all_in)
+                {
+                    var members = FilterMembers(db.ClubMembers.Include(t => t.Branch).ToList(), club_id, branch_filter, role_filter, search, search_option);
+
+                    foreach (var member in members)
+                    {
+
+                        member.Branch.MemberCount--;
+                        club.MemberCount--;
+
+                        if (member.IsNewMember)
+                        {
+                            member.Branch.NewMemberCount--;
+                            club.NewMemberCount--;
+                        }
+
+                        db.ClubMembers.Delete(member);
+                    }
+
+                    message = "已将当前搜索/过滤条件下所有成员移除出本社团";
+                }
+                else
+                {
+                    foreach (int member_id in member_ids)
+                    {
+                        ClubMember member = db.ClubMembers.Find(member_id);
+
+                        if (member != null)
+                        {
+                            member.Branch.MemberCount--;
+                            club.MemberCount--;
+
+                            if (member.IsNewMember)
+                            {
+                                member.Branch.NewMemberCount--;
+                                club.NewMemberCount--;
+                            }
+
+                            db.ClubMembers.Delete(member);
+                        }
+                    }
+                }
+                
+                message = "已将选中成员移除出本社团";
+
+                db.SaveChanges();
+
+                return Json(new { success = false, msg = message, operation = operation });
+            }
+
+            return Json(new { success = false, msg = "没有选择任何成员", operation = operation });
+        }
+
+        private IQueryable<ClubMember> FilterMembers(IQueryable<ClubMember> collection, int club_id,
+            int branch_filter, int role_filter, string search, string search_option)
+        {
+            IQueryable<ClubMember> members = collection.Where(t => t.ClubId == club_id);
             if (branch_filter != 0)
             {
                 members = members.Where(t => t.BranchId == branch_filter);
@@ -107,96 +264,20 @@ namespace SCUTClubManager.Controllers
                 members = members.Where(t => t.ClubRoleId == role_filter);
             }
 
-            var member_list = QueryProcessor.Query<ClubMember>(members, filter: filter,
-                order_by: order, page_number: page_number, items_per_page: 20);
-
-            return View(member_list);
-        }
-
-        //
-        // GET: /ClubMember/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        //
-        // GET: /ClubMember/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        } 
-
-        //
-        // POST: /ClubMember/Create
-
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
+            if (!String.IsNullOrWhiteSpace(search) && !String.IsNullOrWhiteSpace(search_option))
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                switch (search_option)
+                {
+                    case "Name":
+                        members = members.Where(t => t.Student.Name.Contains(search));
+                        break;
+                    case "UserName":
+                        members = members.Where(t => t.UserName.Contains(search));
+                        break;
+                }
             }
-            catch
-            {
-                return View();
-            }
-        }
-        
-        //
-        // GET: /ClubMember/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        //
-        // POST: /ClubMember/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /ClubMember/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /ClubMember/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return members;
         }
     }
 }

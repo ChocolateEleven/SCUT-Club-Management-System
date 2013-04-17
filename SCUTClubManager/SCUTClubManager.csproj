@@ -358,6 +358,7 @@
     <Content Include="Views\ClubApplication\ApplyUnregisterClub.cshtml" />
     <Content Include="Views\ClubMember\List.cshtml" />
     <Content Include="Views\Shared\_BranchFilterBar.cshtml" />
+    <Content Include="Views\Shared\_RoleFilterBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

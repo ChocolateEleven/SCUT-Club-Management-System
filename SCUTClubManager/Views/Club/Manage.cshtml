@@ -14,15 +14,15 @@
 
 <div class="ManagementBtnContainer">
     <div class="ManagementBtn">
-        @Html.ActionLink("成员管理", "List", "ClubMember", new { club_id = Model.ClubId, branch_id = Model.BranchId })
+        @Html.ActionLink("成员管理", "List", "ClubMember", new { club_id = Model.ClubId, branch_filter = Model.BranchId }, null)
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("招新工作", "List", "ClubMemberApplication", new { club_id = Model.ClubId, branch_id = Model.BranchId })
+        @Html.ActionLink("招新工作", "List", "ClubMemberApplication", new { club_id = Model.ClubId, branch_id = Model.BranchId }, null)
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("财务管理", "List", "Fund", new { club_id = Model.ClubId })
+        @Html.ActionLink("财务管理", "List", "Fund", new { club_id = Model.ClubId }, null)
     </div>
 
     <div class="ManagementBtn">
@@ -30,19 +30,19 @@
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("社团活动", "List", "Event", new { club_id = Model.ClubId })
+        @Html.ActionLink("社团活动", "List", "Event", new { club_id = Model.ClubId }, null)
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("社团信息", "Details", new { id = Model.ClubId })
+        @Html.ActionLink("社团信息", "Details", new { id = Model.ClubId }, null)
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("退出社团", "Quit", "ClubMember", new { club_id = Model.ClubId })
+        @Html.ActionLink("退出社团", "Quit", "ClubMember", new { club_id = Model.ClubId }, null)
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("我的活动", "MyEvent", new { club_id = Model.ClubId })
+        @Html.ActionLink("我的活动", "MyEvent", new { club_id = Model.ClubId }, null)
     </div>
 
     <div class="ManagementBtn">

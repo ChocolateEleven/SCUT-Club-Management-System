@@ -30,5 +30,14 @@ namespace SCUTClubManager.Models
         public virtual Club Club { get; set; }
         public virtual ClubRole ClubRole { get; set; }
         public virtual ClubBranch Branch { get; set; }
+
+        public bool IsNewMember
+        {
+            get
+            {
+                return ((DateTime.Now.Year - JoinDate.Year) < 1) ||
+                    ((DateTime.Now.Year - JoinDate.Year) == 1 && (DateTime.Now.DayOfYear - JoinDate.DayOfYear) < 0);
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<script type="text/javascript">
     $(function () {
-        $("#BranchFilters").change(function () {
+        $("#RoleFilters").change(function () {
             var docLocation = location.pathname + "?page_number=1";
 
             if ('@ViewBag.CurrentOrder' != '') {
@@ -15,8 +15,8 @@
             if ('@ViewBag.ClubId' != '') {
                 docLocation += "&club_id=@ViewBag.ClubId";
             }
-            if ('@ViewBag.RoleFilter' != '') {
-                docLocation += "&role_filter=@ViewBag.RoleFilter";
+            if ('@ViewBag.BranchFilter' != '') {
+                docLocation += "&branch_filter=@ViewBag.BranchFilter";
             }
             if ('@ViewBag.SearchOption' != '') {
                 docLocation += "&search_option=@ViewBag.SearchOption";
@@ -25,16 +25,16 @@
                 docLocation += "&search=@ViewBag.Search";
             }
 
-            docLocation += "&branch_filter=" + $("#BranchFilters").val();
+            docLocation += "&role_filter=" + $("#RoleFilters").val();
 
             document.location = docLocation;
         });
     })
 </script>
 
-@if (ViewBag.BranchFilters != null)
+@if (ViewBag.RoleFilters != null)
 {
     <div class="OperationBtn">
-        @Html.DropDownList("BranchFilters")
+        @Html.DropDownList("RoleFilters")
     </div>
 }

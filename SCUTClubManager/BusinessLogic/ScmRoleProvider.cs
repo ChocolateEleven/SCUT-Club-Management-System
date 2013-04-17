@@ -96,6 +96,26 @@ namespace SCUTClubManager.BusinessLogic
             return null;
         }
 
+        /**
+         *  获取给定社团角色名称对应的Id。
+         *  @param role_name 要查询的社团角色名称。
+         *  @returns 查询结果，若不存在该角色则返回0。
+         */
+        public static int GetRoleIdByName(string role_name)
+        {
+            UnitOfWork context = new UnitOfWork();
+            ClubRole role = context.ClubRoles.ToList().SingleOrDefault(t => t.Name == role_name);
+
+            if (role != null)
+            {
+                return role.Id;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         // 以下为对用户全局权限的管理用。用于区分系统管理员和一般用户。
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
