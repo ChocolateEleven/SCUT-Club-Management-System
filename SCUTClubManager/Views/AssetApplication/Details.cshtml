@@ -4,42 +4,94 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>申请详细</h2>
 
 <fieldset>
-    <legend>AssetApplication</legend>
+    <legend>物资申请</legend>
 
-    <div class="display-label">SubEvent</div>
+    <div class="display-label">活动项</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.SubEvent.Title)
+        @if(Model.SubEvent != null)
+        {
+            @Html.DisplayFor(model => model.SubEvent.Title)
+        }
+        else
+        {
+            <p>无</p>
+        }
+    </div>
+    
+    <div class="display-label">日期</div>
+    <div class="display-field">
+        @Model.Date.ToString("yyyy年MM月dd日")
     </div>
 
-    <div class="display-label">Time</div>
+    <div class="display-label">时间段</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Time.TimeName)
     </div>
 
-    <div class="display-label">Club</div>
+    <div class="display-label">申请社团</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Club.Id)
+        @Html.DisplayFor(model => model.Club.MajorInfo.Name)
     </div>
-
-    <div class="display-label">Status</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
-    </div>
-
-    <div class="display-label">Applicant</div>
+    
+    <div class="display-label">申请人</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Applicant.Name)
     </div>
 
-    <div class="display-label">Date</div>
+    <div class="display-label">状态</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Date)
+        @SCUTClubManager.Helpers.LabelHelpers.GetStatus(Model.Status)
+    </div>
+    @if (Model.Status == "f" )
+    {
+        <div class="display-label">拒绝理由</div>
+        <div class="display-field">
+            @if(Model.RejectReason != null)
+            {
+                Html.DisplayFor(model => model.RejectReason);
+            }
+            else
+            {
+                <p>无</p>
+            }
+        </div> 
+    }
+
+    <div>
+    物资申请
+    <table>
+        <tr>
+            <th>
+                名称
+            </th>
+            <th>
+                数量
+            </th>
+        </tr>
+        @foreach(var item in Model.ApplicatedAssets)
+        {
+        <tr>
+            <td>
+                @item.Asset.Name
+            </td>
+            <td>
+                @item.Count
+            </td>
+        </tr>
+        }
+    </table>
     </div>
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div>
+    @if(Model.Status == "n")
+    {
+        <div>
+            <span>@Html.ActionLink("批准", "Handle", new { pass=true, id=Model.Id })</span> 
+            <span>@Html.ActionLink("驳回","Handle", new { pass=false, id=Model.Id })</span>
+        </div>
+    }
+    @Html.ActionLink("返回", "Index")
+</div>

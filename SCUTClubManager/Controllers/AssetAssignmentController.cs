@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
+using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -22,10 +23,35 @@ namespace SCUTClubManager.Controllers
             return RedirectToAction("List");     
         }
 
-        public ViewResult List()
+        public ViewResult List(int page_number = 1, string search = "", string search_option = "Club", string order = "Date")
         {
-            var assetassignments = unitOfWork.AssetAssignments.Include(a => a.Time).Include(a => a.Club).Include(a => a.Applicant);
-            return View(assetassignments.ToList());
+            List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string, string>>();
+            select_list.Add(new KeyValuePair<string,string>("申请人", "Applicant"));
+            select_list.Add(new KeyValuePair<string, string>("申请社团", "Club"));
+            ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Applicant");
+            ViewBag.Search = search;
+            ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
+
+            var asseta_ssignments = unitOfWork.AssetAssignments.ToList();
+
+            if (!String.IsNullOrWhiteSpace(search))
+            {
+                switch (search_option)
+                {
+                    case "Applicant":
+                        asseta_ssignments = asseta_ssignments.Where(s => s.Applicant.Name.Contains(search));
+                        break;
+                    case "Club":
+                        asseta_ssignments = asseta_ssignments.Where(s => s.Club.MajorInfo.Name.Contains(search));
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            var list = QueryProcessor.Query(asseta_ssignments, order_by: order, page_number: page_number, items_per_page: 2);
+
+            return View(list);
         }
 
         //
@@ -39,8 +65,9 @@ namespace SCUTClubManager.Controllers
 
 
 
-        public ActionResult Add(AssetApplication asset_application)
+        public ActionResult Add(int id)
         {
+            var asset_application = unitOfWork.AssetApplications.Find(id);
             var date = asset_application.Date;
             var time = asset_application.Time;
             var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.TimeId == time.Id);
@@ -49,7 +76,7 @@ namespace SCUTClubManager.Controllers
             {
                 foreach(var assigned_asset in assignment.AssignedAssets)
                 {
-                    var asset = assets.Find(s => s.Id == assigned_asset.Id);
+                    var asset = assets.Find(s => s.Id == assigned_asset.AssetId);
                     asset.Count -= assigned_asset.Count;
                 }
             }
@@ -57,9 +84,10 @@ namespace SCUTClubManager.Controllers
             bool no_error_mark = true;
             foreach(var applicated_asset in asset_application.ApplicatedAssets)
             {
-                if( applicated_asset.Count > assets.Find( s => s.Id == applicated_asset.Id ).Count)
+                if( applicated_asset.Count > assets.Find( s => s.Id == applicated_asset.AssetId ).Count)
                 {
                     app_asset_count_error.Add( applicated_asset.Id);
+                    //申请数量超出可用数量
                     no_error_mark = false;
                 }
             }
@@ -76,7 +104,7 @@ namespace SCUTClubManager.Controllers
             foreach (var item in asset_application.ApplicatedAssets)
             {
                 asset_assignment.AssignedAssets.Add(
-                    new AssignedAsset
+                    new AssignedAsset 
                     {
                         Id = unitOfWork.GenerateIdFor("AssetBase"),
                         Count = item.Count,
@@ -89,11 +117,38 @@ namespace SCUTClubManager.Controllers
             {
                 unitOfWork.AssetAssignments.Add(asset_assignment);
                 unitOfWork.SaveChanges();
-                return RedirectToAction("List");  
+                return RedirectToAction("List","AssetApplication");  
+            }
+
+            return RedirectToAction("SetRejectReason", new { enouthAsset = false, application_id = id});
+        }
+
+        public ActionResult SetRejectReason(int application_id, bool enoughAsset = true)
+        {
+            ViewBag.application_id = application_id;
+            ViewBag.enoughAsset = enoughAsset;
+            if (enoughAsset)
+            {
+                ViewBag.Reason = ""; 
+            }
+            else
+            {
+                ViewBag.Reason = "物资不足，请更改日期后再次申请";
             }
             return View();
         }
-        
+
+        [HttpPost]
+        [ActionName("SetRejectReason")]
+        public ActionResult SetRejectReason2(ApplicationRejectReason Reason, int application_id)
+        {
+            if (Reason != null)
+            {
+                unitOfWork.AssetApplications.Find(application_id).RejectReason = Reason;
+            }
+            return RedirectToAction("List","AssetApplication");
+        }
+
         //
         // GET: /AssetAssignment/Edit/5
  

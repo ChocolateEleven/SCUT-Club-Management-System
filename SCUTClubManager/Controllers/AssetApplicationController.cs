@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
+using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -17,17 +18,40 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /AssetApplication/
 
-        public ViewResult Index()
+        public ActionResult List(int page_number = 1, string search = "", string search_option = "Club", string order = "Date")
         {
-            List<AssetApplication> assetApplications = new List<AssetApplication>();
-            foreach(var application in unitOfWork.Applications.ToList())
+            List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string, string>>();
+            select_list.Add(new KeyValuePair<string, string>("申请人", "Applicant"));
+            select_list.Add(new KeyValuePair<string, string>("申请社团","Club"));
+            ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Applicant");
+            ViewBag.Search = search;
+            ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
+
+            var asset_applications = unitOfWork.AssetApplications.ToList();
+
+            if (!String.IsNullOrWhiteSpace(search))
             {
-                if (application is AssetApplication)
+                switch (search_option)
                 {
-                    assetApplications.Add(application as AssetApplication);
+                    case "Applicant":
+                        asset_applications = asset_applications.Where(s => s.Applicant.Name.Contains(search));
+                        break;
+                    case "Club":
+                        asset_applications = asset_applications.Where(s => s.Club.MajorInfo.Name.Contains(search));
+                        break;
+                    default:
+                        break;
                 }
+
             }
-            return View(assetApplications.ToList());
+            var list = QueryProcessor.Query(asset_applications, order_by: order, page_number: page_number, items_per_page: 2);
+            return View(list);
+        }
+
+        public ActionResult Index()
+        {
+            return RedirectToAction("List");
+ 
         }
 
         //
@@ -42,9 +66,33 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /AssetApplication/Create
         [HttpPost]
-        public ActionResult Create(string[] item_id, string[] item_name, string[] item_borrow_count)
+        public ActionResult Create(int TimeId, DateTime Date,  int ClubId, int[] item_id, int[] item_borrow_count)
         {
-            
+            AssetApplication asset_application = new AssetApplication
+            {
+                Club = unitOfWork.Clubs.Find(ClubId),
+                ApplicantUserName = User.Identity.Name,
+                Date = Date,
+                Status = "n",
+                Time = unitOfWork.Times.Find(TimeId),
+                ApplicatedAssets = new List<ApplicatedAsset>()
+            };
+            int i = 0;
+            foreach(int s in item_id)
+            {
+                asset_application.ApplicatedAssets.Add( new ApplicatedAsset
+                {
+                    Asset = new Asset
+                    {
+                       Name = unitOfWork.Assets.Find(s).Name,
+                       Count = item_borrow_count[i]
+                    }
+                });
+                i++;
+            }
+            unitOfWork.Applications.Add(asset_application);
+            unitOfWork.SaveChanges();
+
             //ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id");
             //ViewBag.ApplicantUserName = User.Identity.Name;
             //ViewBag.Id =
@@ -106,6 +154,22 @@ namespace SCUTClubManager.Controllers
             ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetapplication.TimeId);
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", assetapplication.SubEventId);
             return View(assetapplication);
+        }
+         
+        public ActionResult Handle(bool pass, int id)
+        {
+            var asset_application = unitOfWork.AssetApplications.Find(id);
+            if (pass)
+            {
+                asset_application.Status = "p";
+                unitOfWork.AssetApplications.Update(asset_application);
+                unitOfWork.SaveChanges();
+                return RedirectToAction("Add", "AssetAssignment",new { id = asset_application.Id});
+            }
+            asset_application.Status = "f";
+            unitOfWork.AssetApplications.Update(asset_application);
+            unitOfWork.SaveChanges();
+            return RedirectToAction("SetRejectReason","AssetAssignment", new { enouthAsset = false, application_id = id }); ;
         }
 
         //

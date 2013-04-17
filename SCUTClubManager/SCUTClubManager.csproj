@@ -343,12 +343,12 @@
     <Content Include="Views\Asset\Index.cshtml" />
     <Content Include="Views\Asset\Calendar.cshtml" />
     <Content Include="Views\Asset\AvailableAsset.cshtml" />
-    <Content Include="Views\AssetAssignment\Index.cshtml" />
+    <Content Include="Views\AssetAssignment\List.cshtml" />
     <Content Include="Views\AssetAssignment\Details.cshtml" />
     <Content Include="Views\AssetAssignment\Create.cshtml" />
     <Content Include="Views\AssetAssignment\Edit.cshtml" />
     <Content Include="Views\AssetAssignment\Delete.cshtml" />
-    <Content Include="Views\AssetApplication\Index.cshtml" />
+    <Content Include="Views\AssetApplication\List.cshtml" />
     <Content Include="Views\AssetApplication\Details.cshtml" />
     <Content Include="Views\AssetApplication\Create.cshtml" />
     <Content Include="Views\AssetApplication\Edit.cshtml" />
@@ -359,6 +359,7 @@
     <Content Include="Views\ClubMember\List.cshtml" />
     <Content Include="Views\Shared\_BranchFilterBar.cshtml" />
     <Content Include="Views\Shared\_RoleFilterBar.cshtml" />
+    <Content Include="Views\AssetAssignment\SetRejectReason.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
