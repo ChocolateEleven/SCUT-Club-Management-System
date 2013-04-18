@@ -17,6 +17,9 @@ namespace SCUTClubManager.Models
         public int BranchId { get; set; }
         public int Order { get; set; }
 
+        [MaxLength(1)]
+        public string Status { get; set; }
+
         public virtual ClubBranch Branch { get; set; }
         public virtual ClubApplication Application { get; set; }
     }

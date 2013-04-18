@@ -11,6 +11,8 @@ namespace SCUTClubManager.Models
         public const string NOT_VERIFIED = "n";
         public const string PASSED = "p";
         public const string FAILED = "f";
+        public const int ALL = 0;
+        public const int FLEXIBLE = -1;
 
         [Key]
         public int Id { get; set; }
@@ -19,7 +21,7 @@ namespace SCUTClubManager.Models
 
         [MaxLength(1)]
         [Display(Name = "申请状态")]
-        //n,p,f
+        //n,p,f 见上面常量
         public string Status { get; set; }
 
         [Display(Name = "申请社团")]

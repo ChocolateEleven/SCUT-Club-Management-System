@@ -96,7 +96,11 @@ namespace SCUTClubManager.BusinessLogic
             return paged_list;
         }
 
-        public static IQueryable<Application> FilterApplication(IQueryable<Application> collection, string pass_filter = "", 
+        /** 过滤应用程序，哦不，申请才对。
+         *  @param pass_filter 为""时表示不过滤，"Passed"表示只留下通过的，"Failed"表示只留下悲剧掉的，"NotVerified"表示只留下未审批的。"Verified"表示只留下审批过的。
+         *  @param type_filter 为""时表示不过滤，"ClubTransaction"表示只留下社团事物相关的三巨头——成立、注销和修改。其余自行YY。
+         */
+        public static IEnumerable<Application> FilterApplication(IEnumerable<Application> collection, string pass_filter = "", 
             string type_filter = "", int club_id = 0)
         {
             var applications = collection;

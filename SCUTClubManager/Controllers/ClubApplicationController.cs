@@ -34,7 +34,7 @@ namespace SCUTClubManager.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            IQueryable<Application> applications = 
+            IEnumerable<Application> applications = 
                 db.Applications.Include(s => s.Club).Include(s => s.Club.MajorInfo).Include(s => s.Applicant).ToList() as IQueryable<Application>;
 
             // 下拉框

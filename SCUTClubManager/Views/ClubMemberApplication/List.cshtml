@@ -1,0 +1,232 @@
+﻿@model IPagedList<SCUTClubManager.Models.ClubApplication>
+@{
+    ViewBag.Title = ViewBag.ClubName + ViewBag.BranchName + ViewBag.RoleName + "招新审批";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        $("input.ItemSelector[name='all_in']").change(function () {
+            var all_in_box = this;
+
+            $("input.ItemSelector[name!='all_in']").each(function (index) {
+                this.checked = all_in_box.checked;
+                $(this).change();
+            });
+        });
+
+        $("input.ItemSelector[name!='all_in']").change(function () {
+            var checkbox = $(this);
+            var id_field = checkbox.siblings("input[name='member_ids']");
+
+            if (checkbox[0].checked) {
+                id_field.removeAttr("disabled");
+            } else {
+                $("input.ItemSelector[name='all_in']")[0].checked = false;
+                id_field.attr("disabled", "true");
+            }
+        });
+
+        $('form').ajaxForm({
+            success: function (data) {
+                notify(data);
+
+                if (data.role != null || data.operation != 'update') {
+                    var checkboxes = $("input.ItemSelector[name!='all_in']");
+
+                    if (((data.role != "会员" && data.role != "会长") || ("@ViewBag.BranchName" == "" || "@ViewBag.BranchName" == "会员部")) &&
+                            (data.role == "@ViewBag.RoleName" || "@ViewBag.RoleName" == "全部成员") && (data.operation == "update")) {
+                        checkboxes.each(function (index, element) {
+                            if (this.checked) {
+                                $(this).parent().parent().find(".ClubRoleName").text(data.role);
+                            }
+                        });
+                    } else {
+                        checkboxes.each(function (index, element) {
+                            if (this.checked) {
+                                $(this).parent().parent().fadeOut();
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+        
+        $("input[name='all_in']").tooltip();
+        $("#update").tooltip();
+        $("#remove").tooltip();
+
+        confirm("#update", "确定要改变选中成员的角色吗？", function () {
+            $('form').attr('action', 'UpdateMembers');
+            $('form').submit();
+        });
+
+        confirm("#remove", "确定要开除选中的成员吗？", function () {
+            $('form').attr('action', 'RemoveMembers');
+            $('form').submit();
+        });
+    })
+</script>
+
+@Html.Partial("_BranchFilterBar")
+@Html.Partial("_RoleFilterBar")
+@Html.Partial("_SearchBar")
+
+@using (Html.BeginForm("Verify", "ClubMemberApplication"))
+{
+    <input type="hidden" name="branch_filter" value="@ViewBag.BranchFilter" />
+    <input type="hidden" name="role_filter" value="@ViewBag.RoleFilter" />
+    <input type="hidden" name="search" value="@ViewBag.Search" />
+    <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
+    <input type="hidden" name="club_id" value="@ViewBag.ClubId" />
+    
+    <table>
+        <tr>
+            <th>
+                <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部申请" />
+                <input type="hidden" name="all_in" value="false" />
+            </th>
+            <th>
+                @Html.ActionLink("申请人用户名", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.ApplicantUserNameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter,
+               pass_filter = ViewBag.PassFilter
+           })
+            </th>
+            <th>
+                @Html.ActionLink("申请人姓名", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.ApplicantNameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter,
+               pass_filter = ViewBag.PassFilter
+           })
+            </th>
+            <th>
+                @Html.ActionLink("申请日期", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.DateOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter,
+               pass_filter = ViewBag.PassFilter
+           })
+            </th>
+            <th>
+                @Html.ActionLink("申请加入的社团", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.ClubNameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter,
+               pass_filter = ViewBag.PassFilter
+           })
+            </th>
+            <th>
+                申请加入的部门
+            </th>
+            <th>
+                @Html.ActionLink("申请角色", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.RoleOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter,
+               pass_filter = ViewBag.PassFilter
+           })
+            </th>
+            <th>
+                @Html.ActionLink("审批状态", "List", new
+           {
+               club_id = ViewBag.ClubId,
+               order = ViewBag.PassOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               branch_filter = ViewBag.BranchFilter,
+               role_filter = ViewBag.RoleFilter,
+               pass_filter = ViewBag.PassFilter
+           })
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input class="ItemSelector" type="checkbox" />
+                    <input name="application_ids" type="hidden" value="@item.Id" disabled="disabled" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicantUserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Applicant.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+                </td>
+                <td>
+                    @if (String.IsNullOrEmpty(ViewBag.BranchName))
+                    {
+                        if (item.Inclinations.Count(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED) != 0)
+                        {
+                        @Html.DisplayFor(modelItem => item.Inclinations.First(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED).Branch.BranchName)
+                        }
+                        else
+                        {
+                        @Html.Raw("待审批")
+                        }
+                    }
+                    else
+                    {
+                        @ViewBag.BranchName
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.Name)
+                </td>
+                <td>
+                    @LabelHelpers.GetStatus(item.Status)
+                </td>
+            </tr>
+        }
+
+    </table>
+    
+    <div>
+        对选中的申请进行审批
+    </div>
+    
+    <div>
+        <button id="pass" type="button" title="通过选中的申请">同意</button>
+    </div>
+    
+    <div>
+        <button id="reject" type="button" title="拒绝选中的申请">拒绝</button>
+    </div>
+}
+
+@Html.Partial("_PageNavigation", Model)
