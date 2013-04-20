@@ -98,6 +98,8 @@ namespace SCUTClubManager.Controllers
             ViewBag.PageNumber = page_number;
             ViewBag.Order = order;
             ViewBag.Search = search;
+            ViewBag.HasApplied = db.ClubApplications.ToList().Any(t => t.ClubId == id && t.ApplicantUserName == User.Identity.Name 
+                && t.Status == Application.NOT_VERIFIED);
 
             return View(club);
         }

@@ -132,50 +132,44 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-            var application_list = QueryProcessor.Query<ClubApplication>(applications, filter: filter,
-                order_by: order, page_number: page_number, items_per_page: 20);
-
-            // 由于Include这坑爹方法不支持OrderBy，只能用传说中的In-Memory Sorting了……
-            foreach (var application in application_list)
-            {
-                application.Inclinations = application.Inclinations.OrderBy(t => t.Order).ToList();
-            }
-
             if (club_id == Application.ALL) // 用户查看自己的社团战史
             {
                 string my_user_name = User.Identity.Name;
-                application_list = application_list.Where(t => t.ApplicantUserName == my_user_name) as IPagedList<ClubApplication>;
-                application_list = QueryProcessor.FilterApplication(application_list, pass_filter) as IPagedList<ClubApplication>;
+                applications = applications.Where(t => t.ApplicantUserName == my_user_name);
+                applications = QueryProcessor.FilterApplication(applications, pass_filter) as IQueryable<ClubApplication>;
             }
             else // 社团*长们查看自己社团当前被战状况
             {
                 // 社团*长们只能查看未被审批的加入申请
-                application_list = QueryProcessor.FilterApplication(application_list, Application.NOT_VERIFIED) as IPagedList<ClubApplication>;
+                applications = QueryProcessor.FilterApplication(applications, Application.NOT_VERIFIED) as IQueryable<ClubApplication>;
 
                 if (branch_filter != Application.ALL)
                 {
                     if (branch_filter == Application.FLEXIBLE)
                     {
                         // 查找所有待调剂（全部志愿被拒绝且可调剂）的申请
-                        application_list = application_list.Where(t => t.Inclinations.All(s => s.Status == Application.FAILED)) as IPagedList<ClubApplication>;
+                        applications = applications.Where(t => t.Inclinations.All(s => s.Status == Application.FAILED));
                     }
                     else // 按部门过滤的时候*长们只能查看当前未审批的最优先志愿为给定部门的申请
                     {
                         // 找出所有未被审批志愿中包含给定部门的申请
-                        application_list = application_list.Where(t => t.Inclinations.Count(s => s.Status == Application.NOT_VERIFIED
-                            && s.BranchId == branch_filter) > 0) as IPagedList<ClubApplication>;
+                        applications = applications.Where(t => t.Inclinations.Count(s => s.Status == Application.NOT_VERIFIED
+                            && s.BranchId == branch_filter) > 0);
+
                         // 找出这些申请中最优先未审批志愿为给定部门的
-                        application_list = application_list.Where(t => t.Inclinations.First(s => s.Status == Application.NOT_VERIFIED).BranchId == branch_filter)
-                            as IPagedList<ClubApplication>;
+                        applications = applications.Where(t => t.Inclinations.FirstOrDefault(s => s.Status == Application.NOT_VERIFIED).BranchId == branch_filter);
                     }
                 }
 
                 // 找出所有申请角色为给定角色的申请
                 if (role_filter != Application.ALL)
                 {
-                    application_list = application_list.Where(t => t.RoleId == role_filter) as IPagedList<ClubApplication>;
+                    applications = applications.Where(t => t.RoleId == role_filter);
                 }
             }
+
+            var application_list = QueryProcessor.Query<ClubApplication>(applications, filter: filter,
+                order_by: order, page_number: page_number, items_per_page: 20);
 
             return View(application_list);
         }

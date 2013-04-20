@@ -17,16 +17,21 @@
         @{
             if (ViewBag.IsMember)
             {
-            <td class="PanelButton">@Html.ActionLink("进入", "Manage", 
+            <td class="PanelButton">@Html.ActionLink("进入", "Manage",
             new { id = Model.Id, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })</td>
-                }
-                else
+            }
+            else if (!ViewBag.HasApplied)
+            {
+                if (User.IsInRole("学生") && ConfigurationManager.IsRecruitEnabled)
                 {
-                    if (User.IsInRole("学生") && ConfigurationManager.IsRecruitEnabled)
-                    {
             <td class="PanelButton">@Html.ActionLink("申请加入", "Apply", "ClubMemberApplication", new { club_id = Model.Id })</td>
-                    }
                 }
+            }
+            else
+            {
+            <td>已提交加入申请，请耐心等待审批。
+            </td>
+            }
         }
         <td class="PanelButton">
             @Html.ActionLink("返回", "List", new { page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })

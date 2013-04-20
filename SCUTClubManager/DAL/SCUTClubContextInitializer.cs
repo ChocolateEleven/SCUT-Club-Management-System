@@ -444,6 +444,27 @@ namespace SCUTClubManager.DAL
                     MemberCount = 1,
                     NewMemberCount = 1,
                     BranchName = "会员部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[3],
+                    MemberCount = 0,
+                    NewMemberCount = 0,
+                    BranchName = "文化部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[3],
+                    MemberCount = 0,
+                    NewMemberCount = 0,
+                    BranchName = "天文部"
+                },
+                new ClubBranch
+                {
+                    Club = clubs[3],
+                    MemberCount = 0,
+                    NewMemberCount = 0,
+                    BranchName = "考古部"
                 }
             };
             #endregion
@@ -1045,7 +1066,6 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
-
             #region Location
             List<Location> locations = new List<Location> 
             {
@@ -1190,6 +1210,90 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
+            #region ClubApplications
+            var club_applications = new List<ClubApplication>
+            {
+                new ClubApplication
+                {
+                    Id = 10,
+                    Date = DateTime.Now,
+                    ApplicantUserName = "000000004",
+                    ClubId = 4,
+                    Details = new ClubApplicationDetails
+                    {
+                        Reason = "Because I wanna join."
+                    },
+                    Status = Application.NOT_VERIFIED,
+                    RoleId = 4,
+                    RejectReason = null,
+                    IsFlexible = true,
+                    Inclinations = new List<ClubApplicationInclination>
+                    {
+                        new ClubApplicationInclination
+                        {
+                            Branch = branches[7],
+                            Order = 1,
+                            Status = Application.NOT_VERIFIED
+                        },
+                        new ClubApplicationInclination
+                        {
+                            Branch = branches[8],
+                            Order = 2,
+                            Status = Application.NOT_VERIFIED
+                        }
+                    }
+                },
+                new ClubApplication
+                {
+                    Id = 11,
+                    Date = DateTime.Now,
+                    ApplicantUserName = "000000002",
+                    ClubId = 4,
+                    Details = new ClubApplicationDetails
+                    {
+                        Reason = "Whatever."
+                    },
+                    Status = Application.NOT_VERIFIED,
+                    RoleId = 4,
+                    RejectReason = null,
+                    IsFlexible = false,
+                    Inclinations = new List<ClubApplicationInclination>
+                    {
+                        new ClubApplicationInclination
+                        {
+                            Branch = branches[9],
+                            Order = 1,
+                            Status = Application.NOT_VERIFIED
+                        }
+                    }
+                },
+                new ClubApplication
+                {
+                    Id = 12,
+                    Date = DateTime.Now,
+                    ApplicantUserName = "000000003",
+                    ClubId = 4,
+                    Details = new ClubApplicationDetails
+                    {
+                        Reason = "Need a reason?"
+                    },
+                    Status = Application.NOT_VERIFIED,
+                    RoleId = 3,
+                    RejectReason = null,
+                    IsFlexible = true,
+                    Inclinations = new List<ClubApplicationInclination>
+                    {
+                        new ClubApplicationInclination
+                        {
+                            Branch = branches[7],
+                            Order = 1,
+                            Status = Application.NOT_VERIFIED
+                        }
+                    }
+                }
+            };
+            #endregion
+
             ids.ForEach(s => context.Identities.Add(s));
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
             sub_infos.ForEach(s => context.ClubSubInfos.Add(s));
@@ -1207,6 +1311,7 @@ namespace SCUTClubManager.DAL
             club_register_applications.ForEach(s => context.Applications.Add(s));
             club_unregister_applications.ForEach(s => context.Applications.Add(s));
             club_modification_applications.ForEach(s => context.Applications.Add(s));
+            club_applications.ForEach(s => context.Applications.Add(s));
 
             asset_assignments.ForEach(s => context.AssetAssignments.Add(s));
             asset_applications.ForEach(s => context.Applications.Add(s));
