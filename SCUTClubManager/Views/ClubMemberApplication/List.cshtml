@@ -20,7 +20,7 @@
 
         $("input.ItemSelector[name!='all_in']").change(function () {
             var checkbox = $(this);
-            var id_field = checkbox.siblings("input[name='member_ids']");
+            var id_field = checkbox.siblings("input[name='application_ids']");
 
             if (checkbox[0].checked) {
                 id_field.removeAttr("disabled");
@@ -59,17 +59,16 @@
         });
         
         $("input[name='all_in']").tooltip();
-        $("#update").tooltip();
-        $("#remove").tooltip();
+        $("#pass").tooltip();
+        $("#reject").tooltip();
 
-        confirm("#update", "确定要改变选中成员的角色吗？", function () {
-            $('form').attr('action', 'UpdateMembers');
-            $('form').submit();
+        confirm("#pass", "确定要通过选中的申请吗？", function () {
+            $("input[name='is_passed']").val(true);
+            form.submit();
         });
-
-        confirm("#remove", "确定要开除选中的成员吗？", function () {
-            $('form').attr('action', 'RemoveMembers');
-            $('form').submit();
+        confirm("#reject", "确定要拒绝选中的申请吗？", function () {
+            $("input[name='is_passed']").val(false);
+            form.submit();
         });
     })
 </script>
@@ -191,13 +190,29 @@
                 <td>
                     @if (String.IsNullOrEmpty(ViewBag.BranchName))
                     {
-                        if (item.Inclinations.Count(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED) != 0)
+                        if (item.Role.Name == "会员")
+                        {
+                        @Html.Raw("会员部")
+                        }
+                        else if (item.Inclinations.Any(t => t.Status == SCUTClubManager.Models.Application.PASSED))
+                        {
+                        @Html.DisplayFor(modelItem => item.Inclinations.First(t => t.Status == SCUTClubManager.Models.Application.PASSED).Branch.BranchName)
+                        }
+                        else if (item.Inclinations.Any(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED))
                         {
                         @Html.DisplayFor(modelItem => item.Inclinations.First(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED).Branch.BranchName)
                         }
+                        else if (item.Status == SCUTClubManager.Models.Application.FAILED)
+                        {
+                        @Html.DisplayFor(modelItem => item.Inclinations.First().Branch.BranchName)
+                        }
+                        else if (item.Status == SCUTClubManager.Models.Application.PASSED)
+                        {
+                            @Html.Raw("被调剂")
+                        }
                         else
                         {
-                        @Html.Raw("待审批")
+                            @Html.Raw("待调剂")
                         }
                     }
                     else
@@ -218,6 +233,10 @@
     
     <div>
         对选中的申请进行审批
+    </div>
+    
+    <div>
+        <input type="hidden" name="is_passed" />
     </div>
     
     <div>

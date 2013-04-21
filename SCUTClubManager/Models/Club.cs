@@ -26,6 +26,22 @@ namespace SCUTClubManager.Models
         [Display(Name = "本学年新增人数")]
         public int NewMemberCount { get; set; }
 
+        public ClubBranch MemberBranch
+        {
+            get
+            {
+                foreach (var branch in Branches)
+                {
+                    if (branch.BranchName == "会员部")
+                    {
+                        return branch;
+                    }
+                }
+
+                return null;
+            }
+        }
+
         public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
         public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
         public virtual ICollection<FundDetails> FundDetails { get; set; }

@@ -1233,13 +1233,13 @@ namespace SCUTClubManager.DAL
                         {
                             Branch = branches[7],
                             Order = 1,
-                            Status = Application.NOT_VERIFIED
+                            Status = Application.FAILED
                         },
                         new ClubApplicationInclination
                         {
                             Branch = branches[8],
                             Order = 2,
-                            Status = Application.NOT_VERIFIED
+                            Status = Application.FAILED
                         }
                     }
                 },
@@ -1281,15 +1281,6 @@ namespace SCUTClubManager.DAL
                     RoleId = 3,
                     RejectReason = null,
                     IsFlexible = true,
-                    Inclinations = new List<ClubApplicationInclination>
-                    {
-                        new ClubApplicationInclination
-                        {
-                            Branch = branches[7],
-                            Order = 1,
-                            Status = Application.NOT_VERIFIED
-                        }
-                    }
                 }
             };
             #endregion
