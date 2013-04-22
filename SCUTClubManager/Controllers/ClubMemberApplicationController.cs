@@ -262,7 +262,7 @@ namespace SCUTClubManager.Controllers
                 ViewBag.RoleSelectList = new SelectList(role_list, "Value", "Key");
 
                 ViewBag.Club = club;
-                ViewBag.MemberBranchId = member_branch.Id;
+                ViewBag.MemberRoleId = member_role;
                 
                 return View();
             }

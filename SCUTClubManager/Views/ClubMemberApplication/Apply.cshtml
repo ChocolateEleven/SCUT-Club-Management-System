@@ -3,44 +3,19 @@
     ViewBag.Title = "申请加入" + ViewBag.Club.MajorInfo.Name;
 }
 
+@Html.Partial("_Confirmation")
+
 <script type="text/javascript">
-    function dropDownListFor(name, id, class_name, items, default_item_index, options) {
-        var drop_down_list = "<select ";
-        var is_validation_required = false;
-
-        if (name != null) {
-            drop_down_list += "name='" + name + "' ";
+    function enableExecutorOnlySections(is_enabled) {
+        if (is_enabled) {
+            $(".ExecutorOnly").find('input').removeAttr("disabled");
+            $(".ExecutorOnly").find('button').removeAttr("disabled");
+            $(".ExecutorOnly").find('select').removeAttr("disabled");
+        } else {
+            $(".ExecutorOnly").find('input').attr("disabled", "true");
+            $(".ExecutorOnly").find('button').attr("disabled", "true");
+            $(".ExecutorOnly").find('select').attr("disabled", "true");
         }
-        if (id != null) {
-            drop_down_list += "id='" + id + "' ";
-        }
-        if (class_name != null) {
-            drop_down_list += "class='" + class_name + "' ";
-        }
-        if (default_item_index != null) {
-            drop_down_list += "value='" + items[default_item_index].value + "' ";
-        }
-        if (options != null) {
-            if (options.required != null && options.required) {
-                is_validation_required = true;
-                drop_down_list += "data-val-required='" + options.required_msg + "' ";
-            }
-            if (is_validation_required) {
-                drop_down_list += "data-val='true' ";
-            }
-        }
-
-        drop_down_list += ">";
-
-        if (items != null) {
-            for (var i = 0; i < items.length; ++i) {
-                drop_down_list += "<option value='" + items[i].value + "'>" + items[i].key + "</option>";
-            }
-        }
-
-        drop_down_list += "</select>"
-
-        return drop_down_list;
     }
 
     $(function () {
@@ -54,15 +29,28 @@
             }
         }
 
-        var item_contents = new Array(
+        var item_contents = new Array(  
             dropDownListFor("Inclinations[0].BranchId", null, null, branch_list, null, null));
 
-        var branch_list = new DynamicList(item_contents, "#inclinations", null, null);
+        var branch_list = new DynamicList(item_contents, "#inclinations", null, null, null, "li", '@ConfigurationManager.InclinationsPerPerson');
 
-        $("#RoleSelectList").change(function () {
-            var val = $(this).val();
-            debugger;
+        $("#RoleId").change(function () {
+            var is_enabled = $(this).val() != '@ViewBag.MemberRoleId';
+            enableExecutorOnlySections(is_enabled);
         });
+
+        $('form').ajaxForm({
+            success: notify,
+            error: function (e) {
+                debugger;
+            }
+        });
+
+        confirm("#submit", "确定要提交吗？", function () {
+            $("form").submit();
+        });
+
+        enableExecutorOnlySections(false);
     })
 </script>
 
@@ -87,7 +75,7 @@
         </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset class="ExecutorOnly">
         <legend>申请志愿（以下内容只有干事才需要填写）</legend>
         <div class="editor-label">
             @Html.LabelFor(model => model.IsFlexible)
@@ -96,12 +84,11 @@
             @Html.CheckBoxFor(model => model.IsFlexible)
             @Html.ValidationMessageFor(model => model.IsFlexible)
         </div>
-
-        <div id="inclinations">
-        </div>
+        <ol id="inclinations">
+        </ol>
     </fieldset>
     
-    <fieldset>
+    <fieldset class="ExecutorOnly">
         <legend>个人简介（以下内容只有干事才需要填写）</legend>
         <div class="editor-label">
             @Html.LabelFor(model => model.Details.Reason)

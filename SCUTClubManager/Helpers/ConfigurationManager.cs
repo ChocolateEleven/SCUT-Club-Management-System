@@ -11,6 +11,7 @@ namespace SCUTClubManager.Helpers
     {
         private static bool isRecruitEnabled = false;
         private static string clubSplashPanelFolder = "~/Content/Images/ClubSplashPanels/";
+        private static int inclinationsPerPerson = 3;
         private static XmlWriterSettings settings = null;
 
         public static string ConfigFile
@@ -34,6 +35,7 @@ namespace SCUTClubManager.Helpers
 
                     xml.WriteElementString("IsRecruitEnabled", isRecruitEnabled.ToString());
                     xml.WriteElementString("ClubSplashPanelFolder", clubSplashPanelFolder.ToString());
+                    xml.WriteElementString("InclinationsPerPerson", inclinationsPerPerson.ToString());
 
                     xml.WriteEndElement();
 
@@ -60,6 +62,10 @@ namespace SCUTClubManager.Helpers
                         Directory.CreateDirectory(mapped_path);
                     }
                 }
+                if (reader.ReadToFollowing("InclinationsPerPerson"))
+                {
+                    inclinationsPerPerson = reader.ReadElementContentAsInt();
+                }
             }
         }
 
@@ -82,6 +88,29 @@ namespace SCUTClubManager.Helpers
                     }
 
                     isRecruitEnabled = value;
+                }
+            }
+        }
+
+        public static int InclinationsPerPerson
+        {
+            get
+            {
+                return inclinationsPerPerson;
+            }
+            set
+            {
+                if (inclinationsPerPerson != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("InclinationsPerPerson", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    inclinationsPerPerson = value;
                 }
             }
         }

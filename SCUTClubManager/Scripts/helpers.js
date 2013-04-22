@@ -137,6 +137,10 @@ function dynamicList_DeleteItem(itemToDelete, caller) {
     // 移除被删除元素
     $(itemToDelete).remove();
     caller.itemCount--;
+
+    if (caller.itemCount < caller.capacity) {
+        $('#dynamic_list_add_item').removeAttr('disabled');
+    }
 }
 
 function dynamicList_AddItem(values) {
@@ -146,8 +150,13 @@ function dynamicList_AddItem(values) {
         should_add = this.onInsert(this.itemContents, values);
     }
 
+    if (this.capacity != -1 && this.itemCount >= this.capacity) {
+        should_add = false;
+    }
+
     if (should_add) {
-        var item = $('<div class="DynamicListItem" id="dynamic_list_item[' + this.itemCount + ']"></div>');
+        var item = $('<' + this.itemTag + ' class="DynamicListItem" id="dynamic_list_item[' +
+            this.itemCount + ']"></' + this.itemTag + '>');
         $(this.container).append(item);
 
         for (var i = 0; i < this.itemContents.length; ++i) {
@@ -178,6 +187,10 @@ function dynamicList_AddItem(values) {
 
         this.itemCount++;
 
+        if (this.capacity != -1 && this.itemCount >= this.capacity) {
+            $('#dynamic_list_add_item').attr('disabled', 'true');
+        }
+
         var children = this.insertPanel.children(".DynamicListInsertValue");
 
         children.each(function (index, element) {
@@ -189,7 +202,7 @@ function dynamicList_AddItem(values) {
     }
 }
 
-function DynamicList(item_contents, container, insert_contents, on_insert, on_remove) {
+function DynamicList(item_contents, container, insert_contents, on_insert, on_remove, item_tag, capacity) {
     if (item_contents == null) {
         throw new Error("Parameter items cannot be null.");
     }
@@ -209,6 +222,8 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
     this.itemCount = 0;
     this.add = dynamicList_AddItem;
     this.container = container;
+    this.itemTag = item_tag == null ? "div" : item_tag;
+    this.capacity = capacity == null ? -1 : capacity;
 
     var insert_panel = $('<form class="DynamicListInsertPanel"></form>');
     this.insertPanel = insert_panel;
