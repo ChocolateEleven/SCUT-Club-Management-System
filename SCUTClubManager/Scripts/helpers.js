@@ -56,7 +56,7 @@ function textboxFor(name, default_msg, class_name, options) {
     var is_validation_required = false;
 
     if (options != null) {
-        if (options.required) {
+        if (options.required != null && options.required) {
             is_validation_required = true;
             textbox += "data-val-required='" + options.required_msg + "' ";
         }
@@ -79,7 +79,7 @@ function textareaFor(name, default_msg, class_name, options) {
     var textarea = "<textarea name='" + name + "' class='" + class_name + "' ";
     var is_validation_required = false;
 
-    if (options.required) {
+    if (options.required != null && options.required) {
         is_validation_required = true;
         textarea += "data-val-required='" + options.required_msg + "' ";
     }
@@ -217,13 +217,15 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
 
     var button = $('<button type="button" id="dynamic_list_add_item">增加</button>');
 
-    for (var i = 0; i < insert_contents.length; ++i) {
-        var content = $(insert_contents[i]);
+    if (insert_contents != null) {
+        for (var i = 0; i < insert_contents.length; ++i) {
+            var content = $(insert_contents[i]);
 
-        content.addClass("DynamicListInsertValue");
-        insert_panel.append(content);
+            content.addClass("DynamicListInsertValue");
+            insert_panel.append(content);
 
-        placeHolder(content, "PlaceHolder", "data-defaultVal", button);
+            placeHolder(content, "PlaceHolder", "data-defaultVal", button);
+        }
     }
 
     refreshFormValidations();
@@ -248,4 +250,43 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
             $(element).removeAttr("data-val");
         });
     });
+}
+
+function dropDownListFor(name, id, class_name, items, default_item_index, options) {
+    var drop_down_list = "<select ";
+    var is_validation_required = false;
+
+    if (name != null) {
+        drop_down_list += "name='" + name + "' ";
+    }
+    if (id != null) {
+        drop_down_list += "id='" + id + "' ";
+    }
+    if (class_name != null) {
+        drop_down_list += "class='" + class_name + "' ";
+    }
+    if (default_item_index != null) {
+        drop_down_list += "value='" + items[default_item_index].value + "' ";
+    }
+    if (options != null) {
+        if (options.required != null && options.required) {
+            is_validation_required = true;
+            drop_down_list += "data-val-required='" + options.required_msg + "' ";
+        }
+        if (is_validation_required) {
+            drop_down_list += "data-val='true' ";
+        }
+    }
+
+    drop_down_list += ">";
+
+    if (items != null) {
+        for (var i = 0; i < items.length; ++i) {
+            drop_down_list += "<option value='" + items[i].value + "'>" + items[i].key + "</option>";
+        }
+    }
+
+    drop_down_list += "</select>"
+
+    return drop_down_list;
 }

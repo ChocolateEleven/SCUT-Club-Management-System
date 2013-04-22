@@ -135,8 +135,11 @@
         {
             <tr>
                 <td>
-                    <input class="ItemSelector" type="checkbox" />
-                    <input name="member_ids" type="hidden" value="@item.Id" disabled="disabled" />
+                    @if (item.UserName != User.Identity.Name)
+                    {
+                        <input class="ItemSelector" type="checkbox" />
+                        <input name="member_ids" type="hidden" value="@item.Id" disabled="disabled" />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)

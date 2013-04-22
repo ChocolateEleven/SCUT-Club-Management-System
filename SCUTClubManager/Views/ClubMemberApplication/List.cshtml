@@ -31,28 +31,7 @@
         });
 
         $('form').ajaxForm({
-            success: function (data) {
-                notify(data);
-
-                if (data.role != null || data.operation != 'update') {
-                    var checkboxes = $("input.ItemSelector[name!='all_in']");
-
-                    if (((data.role != "会员" && data.role != "会长") || ("@ViewBag.BranchName" == "" || "@ViewBag.BranchName" == "会员部")) &&
-                            (data.role == "@ViewBag.RoleName" || "@ViewBag.RoleName" == "全部成员") && (data.operation == "update")) {
-                        checkboxes.each(function (index, element) {
-                            if (this.checked) {
-                                $(this).parent().parent().find(".ClubRoleName").text(data.role);
-                            }
-                        });
-                    } else {
-                        checkboxes.each(function (index, element) {
-                            if (this.checked) {
-                                $(this).parent().parent().fadeOut();
-                            }
-                        });
-                    }
-                }
-            },
+            success: notify,
             error: function (e) {
                 debugger;
             }
@@ -64,11 +43,11 @@
 
         confirm("#pass", "确定要通过选中的申请吗？", function () {
             $("input[name='is_passed']").val(true);
-            form.submit();
+            $("form").submit();
         });
         confirm("#reject", "确定要拒绝选中的申请吗？", function () {
             $("input[name='is_passed']").val(false);
-            form.submit();
+            $("form").submit();
         });
     })
 </script>

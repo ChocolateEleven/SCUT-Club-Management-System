@@ -372,6 +372,7 @@
     <Content Include="Views\Location\Index.cshtml" />
     <Content Include="Views\Location\Calendar.cshtml" />
     <Content Include="Views\ClubMemberApplication\List.cshtml" />
+    <Content Include="Views\ClubMemberApplication\Apply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

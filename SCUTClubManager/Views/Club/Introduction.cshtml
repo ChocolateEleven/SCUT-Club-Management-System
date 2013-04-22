@@ -24,7 +24,7 @@
             {
                 if (User.IsInRole("学生") && ConfigurationManager.IsRecruitEnabled)
                 {
-            <td class="PanelButton">@Html.ActionLink("申请加入", "Apply", "ClubMemberApplication", new { club_id = Model.Id })</td>
+            <td class="PanelButton">@Html.ActionLink("申请加入", "Apply", "ClubMemberApplication", new { club_id = Model.Id }, null)</td>
                 }
             }
             else

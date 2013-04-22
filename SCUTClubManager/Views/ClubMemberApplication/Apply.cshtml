@@ -1,0 +1,123 @@
+﻿@model SCUTClubManager.Models.ClubApplication
+@{
+    ViewBag.Title = "申请加入" + ViewBag.Club.MajorInfo.Name;
+}
+
+<script type="text/javascript">
+    function dropDownListFor(name, id, class_name, items, default_item_index, options) {
+        var drop_down_list = "<select ";
+        var is_validation_required = false;
+
+        if (name != null) {
+            drop_down_list += "name='" + name + "' ";
+        }
+        if (id != null) {
+            drop_down_list += "id='" + id + "' ";
+        }
+        if (class_name != null) {
+            drop_down_list += "class='" + class_name + "' ";
+        }
+        if (default_item_index != null) {
+            drop_down_list += "value='" + items[default_item_index].value + "' ";
+        }
+        if (options != null) {
+            if (options.required != null && options.required) {
+                is_validation_required = true;
+                drop_down_list += "data-val-required='" + options.required_msg + "' ";
+            }
+            if (is_validation_required) {
+                drop_down_list += "data-val='true' ";
+            }
+        }
+
+        drop_down_list += ">";
+
+        if (items != null) {
+            for (var i = 0; i < items.length; ++i) {
+                drop_down_list += "<option value='" + items[i].value + "'>" + items[i].key + "</option>";
+            }
+        }
+
+        drop_down_list += "</select>"
+
+        return drop_down_list;
+    }
+
+    $(function () {
+        var branch_list = new Array();
+
+        @{
+            SelectList list = ViewBag.BranchSelectList as SelectList;
+            foreach (var item in list)
+            {
+                @:branch_list.push({ key: '@item.Text', value: '@item.Value' });
+            }
+        }
+
+        var item_contents = new Array(
+            dropDownListFor("Inclinations[0].BranchId", null, null, branch_list, null, null));
+
+        var branch_list = new DynamicList(item_contents, "#inclinations", null, null);
+
+        $("#RoleSelectList").change(function () {
+            var val = $(this).val();
+            debugger;
+        });
+    })
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>基本信息</legend>
+
+        <div>
+            <input type="hidden" value ="@ViewBag.Club.Id" name="ClubId" />
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoleId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("RoleId", ViewBag.RoleSelectList as SelectList)
+            @Html.ValidationMessageFor(model => model.RoleId)
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>申请志愿（以下内容只有干事才需要填写）</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsFlexible)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.IsFlexible)
+            @Html.ValidationMessageFor(model => model.IsFlexible)
+        </div>
+
+        <div id="inclinations">
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>个人简介（以下内容只有干事才需要填写）</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Details.Reason)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Details.Reason)
+            @Html.ValidationMessageFor(model => model.Details.Reason)
+        </div>
+    </fieldset>
+    
+    <p>
+        <button type="button" id="submit">提交</button>
+    </p>
+    
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

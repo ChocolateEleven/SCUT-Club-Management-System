@@ -167,10 +167,21 @@ namespace SCUTClubManager.Controllers
                 {
                     application.Status = Application.PASSED;
                     ClubApplicationInclination not_verified_inclination = application.Inclinations.FirstOrDefault(t => t.Status == Application.NOT_VERIFIED);
+                    ClubBranch joining_branch = null;
 
+                    // 先判断是否为非待调剂的干事，再判断是否为待调剂的干事或会员
                     if (not_verified_inclination != null)
                     {
                         not_verified_inclination.Status = Application.PASSED;
+                        joining_branch = club.Branches.First(t => t.Id == not_verified_inclination.BranchId);
+                    }
+                    else if (application.RoleId == member_role_id || my_membership.BranchId == member_branch.Id)
+                    {
+                        joining_branch = member_branch;
+                    }
+                    else
+                    {
+                        joining_branch = my_membership.Branch;
                     }
 
                     ClubMember adding_member = new ClubMember
@@ -184,6 +195,10 @@ namespace SCUTClubManager.Controllers
                     };
 
                     club.Members.Add(adding_member);
+                    club.MemberCount++;
+                    club.NewMemberCount++;
+                    joining_branch.MemberCount++;
+                    joining_branch.NewMemberCount++;
                 }
             }
             else // 处理拒绝加入
@@ -212,6 +227,69 @@ namespace SCUTClubManager.Controllers
             db.SaveChanges();
 
             return Json(new { success = false, msg = "操作成功" });
+        }
+
+        [Authorize]
+        public ActionResult Apply(int club_id)
+        {
+            Club club = db.Clubs.Include(t => t.MajorInfo).Include(t => t.Branches).Find(club_id);
+
+            if (club != null)
+            {
+                ClubBranch member_branch = club.MemberBranch;
+
+                // 部门选项下拉框
+                List<KeyValuePair<string, int>> branch_list = new List<KeyValuePair<string, int>>();
+                foreach (var branch in club.Branches)
+                {
+                    if (branch.Id != member_branch.Id) // 不能作为干事加入会员部
+                    {
+                        branch_list.Add(new KeyValuePair<string, int>(branch.BranchName, branch.Id));
+                    }
+                }
+                
+                ViewBag.BranchSelectList = new SelectList(branch_list, "Value", "Key");
+
+                // 角色选项下拉框
+                List<KeyValuePair<string, int>> role_list = new List<KeyValuePair<string, int>>();
+                int member_role = ScmRoleProvider.GetRoleIdByName("会员");
+                role_list.Add(new KeyValuePair<string, int>("会员", member_role));
+                if (branch_list.Count > 0) // 有非会员部的社团才能作为干事加入
+                {
+                    int executor_role = ScmRoleProvider.GetRoleIdByName("干事");
+                    role_list.Add(new KeyValuePair<string, int>("干事", executor_role));
+                }
+                ViewBag.RoleSelectList = new SelectList(role_list, "Value", "Key");
+
+                ViewBag.Club = club;
+                ViewBag.MemberBranchId = member_branch.Id;
+                
+                return View();
+            }
+            else
+            {
+                return View("ClubNotFoundError");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Apply(ClubApplication application)
+        {
+            if (ModelState.IsValid)
+            {
+                application.Date = DateTime.Now;
+                application.ApplicantUserName = User.Identity.Name;
+                application.Status = Application.NOT_VERIFIED;
+                application.Id = db.GenerateIdFor("Application");
+
+                db.ClubApplications.Add(application);
+                db.SaveChanges();
+
+                return RedirectToAction("List", new { club_id = application.ClubId });
+            }
+
+            return View(application);
         }
 
         //

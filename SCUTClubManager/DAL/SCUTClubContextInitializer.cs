@@ -398,6 +398,7 @@ namespace SCUTClubManager.DAL
             {
                 new ClubBranch
                 {
+                    Id = 1,
                     Club = clubs[0],
                     MemberCount = 2,
                     NewMemberCount = 0,
@@ -405,6 +406,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 2,
                     Club = clubs[0],
                     MemberCount = 0,
                     NewMemberCount = 0,
@@ -412,6 +414,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 3,
                     Club = clubs[1],
                     MemberCount = 1,
                     NewMemberCount = 1,
@@ -419,6 +422,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 4,
                     Club = clubs[2],
                     MemberCount = 1,
                     NewMemberCount = 0,
@@ -426,6 +430,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 5,
                     Club = clubs[2],
                     MemberCount = 0,
                     NewMemberCount = 0,
@@ -433,6 +438,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 6,
                     Club = clubs[2],
                     MemberCount = 2,
                     NewMemberCount = 1,
@@ -440,6 +446,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 7,
                     Club = clubs[3],
                     MemberCount = 1,
                     NewMemberCount = 1,
@@ -447,6 +454,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 8,
                     Club = clubs[3],
                     MemberCount = 0,
                     NewMemberCount = 0,
@@ -454,6 +462,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 9,
                     Club = clubs[3],
                     MemberCount = 0,
                     NewMemberCount = 0,
@@ -461,10 +470,19 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubBranch
                 {
+                    Id = 10,
                     Club = clubs[3],
                     MemberCount = 0,
                     NewMemberCount = 0,
                     BranchName = "考古部"
+                },
+                new ClubBranch
+                {
+                    Id = 11,
+                    Club = clubs[1],
+                    MemberCount = 0,
+                    NewMemberCount = 0,
+                    BranchName = "爆破部"
                 }
             };
             #endregion
@@ -500,7 +518,7 @@ namespace SCUTClubManager.DAL
             {
                 new ClubMember
                 {
-                    BranchId = 1,
+                    Branch = branches[0],
                     ClubId = 1,
                     ClubRoleId = 3,
                     JoinDate = DateTime.Now,
@@ -508,7 +526,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubMember
                 {
-                    BranchId = 1,
+                    Branch = branches[0],
                     ClubId = 1,
                     ClubRoleId = 5,
                     JoinDate = DateTime.Now,
@@ -516,7 +534,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubMember
                 {
-                    BranchId = 3,
+                    Branch = branches[2],
                     ClubId = 2,
                     ClubRoleId = 5,
                     JoinDate = DateTime.Now.AddDays(20),
@@ -524,7 +542,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubMember
                 {
-                    BranchId = 4,
+                    Branch = branches[3],
                     ClubId = 3,
                     ClubRoleId = 5,
                     JoinDate = DateTime.Parse("2009-10-20"),
@@ -532,7 +550,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubMember
                 {
-                    BranchId = 6,
+                    Branch = branches[5],
                     ClubId = 3,
                     ClubRoleId = 6,
                     JoinDate = DateTime.Parse("2010-3-3"),
@@ -540,7 +558,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubMember
                 {
-                    BranchId = 6,
+                    Branch = branches[5],
                     ClubId = 3,
                     ClubRoleId = 4,
                     JoinDate = DateTime.Now,
@@ -548,7 +566,7 @@ namespace SCUTClubManager.DAL
                 },
                 new ClubMember
                 {
-                    BranchId = 7,
+                    Branch = branches[6],
                     ClubId = 4,
                     ClubRoleId = 5,
                     JoinDate = DateTime.Parse("2012-11-11"),

@@ -11,6 +11,7 @@ namespace SCUTClubManager.Models
         [Key]
         public int ApplicationId { get; set; }
 
+        [Display(Name = "个人简介")]
         [MaxLength(600)]
         public string Reason { get; set; }
     }
