@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SCUTClubManager.Models.View_Models.AssignedLocationViewModel>
+
+@{
+    ViewBag.Title = "AssignedLocation";
+}
+
+<h2>AssignedLocation</h2>
+
+@Html.ActionLink("查看未借出","AvailableLocation",new { date = @ViewBag.date, timeId = @ViewBag.timeId})
+
+<table>
+    <tr>
+        <th>
+            名称
+        </th>
+        <th>
+            借用社团
+        </th>
+        <th>
+            联系人
+        </th>
+    </tr>
+
+    
+@foreach (var item in Model) {
+    
+    
+    <tr>
+        <td class="ItemName">
+            @Html.DisplayFor(modelItem => item.Location.Name)
+            <input class="ItemId" type="hidden" value ="@item.Location.Id"/>
+        </td>
+        <td class="BorrowClub">
+            @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Applicant.Name)
+        </td>
+    </tr>
+}
+    
+
+</table>

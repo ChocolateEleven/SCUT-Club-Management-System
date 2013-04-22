@@ -9,6 +9,7 @@ using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
 using PagedList;
+using SCUTClubManager.Models.View_Models;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -151,16 +152,23 @@ namespace SCUTClubManager.Controllers
         public ActionResult AssignedLocation(DateTime date, int timeId)
         {
             var assignments = unitOfWork.LocationAssignments.ToList().Where(s => s.Date == date && s.TimeId == timeId);
-            List<Location> locations = new List<Location>();
+            //List<Location> locations = new List<Location>();
+            List<AssignedLocationViewModel> assignedLocation = new List<AssignedLocationViewModel>();
             foreach(var location_assignment in assignments)
             {
                 foreach(var location in location_assignment.Locations)
                 {
-                    locations.Add(location);
+                    assignedLocation.Add(new AssignedLocationViewModel{
+                        Location = location,
+                        Club = location_assignment.Club,
+                        Applicant = location_assignment.Applicant
+                    });
                 }
             }
 
-            IEnumerable<Location> list = locations.OrderBy(s => s.Name);
+
+
+            IEnumerable<AssignedLocationViewModel> list = assignedLocation.OrderBy(s => s.Location.Name);
 
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");

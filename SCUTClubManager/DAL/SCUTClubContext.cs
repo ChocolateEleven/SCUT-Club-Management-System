@@ -188,5 +188,9 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<AssetApplication>().HasMany(t => t.ApplicatedAssets).WithRequired().WillCascadeOnDelete(true);
             model_builder.Entity<AssetAssignment>().HasMany(t => t.AssignedAssets).WithRequired(t => t.AssetAssignment).WillCascadeOnDelete(true);
         }
+
+        public DbSet<LocationApplication> LocationApplications { get; set; }
+
+        public DbSet<Student> Students { get; set; }
     }
 } 
