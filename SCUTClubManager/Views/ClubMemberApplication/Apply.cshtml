@@ -64,37 +64,37 @@
             enableExecutorOnlySections(is_enabled);
         });
 
-        //$('form').ajaxForm({
-        //    success: null,
-        //    error: function (e) {
-        //        debugger;
-        //    }
-        //});
+        $('form').ajaxForm({
+            success: notify,
+            error: function (e) {
+                debugger;
+            }
+        });
 
-        confirm("#sb", "确定要提交吗？", function () {
-            ////var inclinations = $(".DynamicListItemContent");
+        confirm("#submit", "确定要提交吗？", function () {
+            var inclinations = $(".DynamicListItemContent");
 
-            ////// 检查是否有重复志愿
-            ////for (var i = 0; i < inclinations.length; ++i) {
-            ////    for (var j = i + 1; j < inclinations.length; ++j) {
-            ////        if ($(inclinations[i]).val() == $(inclinations[j]).val()) {
-            ////            $("#inclinationsErrorMsg").text("志愿不能重复");
-            ////            $("#inclinationsErrorMsg").addClass("Error");
-            ////            $(inclinations[i]).addClass("Error");
-            ////            $(inclinations[j]).addClass("Error");
-            ////            $(inclinations[i]).data("conflict-obj", j);
-            ////            $(inclinations[j]).data("conflict-obj", i);
-            ////            return;
-            ////        }
-            ////    }
-            ////}
+            // 检查是否有重复志愿
+            for (var i = 0; i < inclinations.length; ++i) {
+                for (var j = i + 1; j < inclinations.length; ++j) {
+                    if ($(inclinations[i]).val() == $(inclinations[j]).val()) {
+                        $("#inclinationsErrorMsg").text("志愿不能重复");
+                        $("#inclinationsErrorMsg").addClass("Error");
+                        $(inclinations[i]).addClass("Error");
+                        $(inclinations[j]).addClass("Error");
+                        $(inclinations[i]).data("conflict-obj", j);
+                        $(inclinations[j]).data("conflict-obj", i);
+                        return;
+                    }
+                }
+            }
 
-            ////if ($("#inclinationsErrorMsg").hasClass("Error")) {
-            ////    $("#inclinationsErrorMsg").removeClass("Error");
-            ////    $("#inclinationsErrorMsg").text("");
-            ////}
+            if ($("#inclinationsErrorMsg").hasClass("Error")) {
+                $("#inclinationsErrorMsg").removeClass("Error");
+                $("#inclinationsErrorMsg").text("");
+            }
 
-            $("form").submit();
+            $("#applicationForm").submit();
         });
 
         enableExecutorOnlySections(false);
@@ -103,7 +103,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Apply", "ClubMemberApplication"))
+@using (Html.BeginForm("Apply", "ClubMemberApplication", FormMethod.Post, new { id = "applicationForm" }))
 {
     @Html.ValidationSummary(true)
     <fieldset>
@@ -148,7 +148,7 @@
     </fieldset>
     
     <p>
-        <button type="button" id="sb">提交</button>
+        <button type="button" id="submit">提交</button>
     </p>
     
 }

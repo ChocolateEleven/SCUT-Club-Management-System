@@ -143,8 +143,13 @@ namespace SCUTClubManager.Controllers
         [Authorize]
         [HttpPost]
         public ActionResult Verify(int[] application_ids, bool all_in, bool is_passed, int club_id, int branch_filter, int role_filter, 
-            string search, string search_option)
+            string search, string search_option, string order)
         {
+            if (!all_in && (application_ids == null || application_ids.Length == 0))
+            {
+                return Json(new { success = false, msg = "没有选中任何申请" });
+            }
+
             IQueryable<ClubApplication> applications = db.ClubApplications.Include(t => t.Applicant).
                 Include(t => t.Inclinations.Select(s => s.Branch)).ToList().Where(t => t.Status == Application.NOT_VERIFIED);
             ClubMember my_membership = ScmRoleProvider.GetRoleInClub(club_id);
@@ -226,14 +231,17 @@ namespace SCUTClubManager.Controllers
 
             db.SaveChanges();
 
-            return Json(new { success = false, msg = "操作成功" });
+            string return_url = "List?club_id=" + club_id + "&branch_filter=" + branch_filter + "&role_filter=" + role_filter + "&search=" + search +
+                "&search_option=" + search_option + "&order=" + order;
+
+            return Json(new { success = true, msg = "操作成功", url = return_url });
         }
 
         [Authorize]
         public ActionResult Apply(int club_id)
         {
             Club club = db.Clubs.Include(t => t.MajorInfo).Include(t => t.Branches).Find(club_id);
-
+            
             if (club != null)
             {
                 ClubBranch member_branch = club.MemberBranch;
@@ -282,6 +290,14 @@ namespace SCUTClubManager.Controllers
                 application.ApplicantUserName = User.Identity.Name;
                 application.Status = Application.NOT_VERIFIED;
                 application.Id = db.GenerateIdFor("Application");
+                
+                int order = 1;
+                foreach (var inclination in application.Inclinations)
+                {
+                    inclination.ApplicationId = application.Id;
+                    inclination.Status = Application.NOT_VERIFIED;
+                    inclination.Order = order++;
+                }
 
                 db.ClubApplications.Add(application);
                 db.SaveChanges();
@@ -403,7 +419,7 @@ namespace SCUTClubManager.Controllers
             if (club_id != 0) // 社团*长们查看自己社团当前被战状况
             {
                 // 社团*长们只能查看未被审批的加入申请
-                applications = QueryProcessor.FilterApplication(applications, Application.NOT_VERIFIED) as IQueryable<ClubApplication>;
+                applications = applications.Where(t => t.Status == Application.NOT_VERIFIED);
 
                 if (branch_filter != Application.ALL)
                 {

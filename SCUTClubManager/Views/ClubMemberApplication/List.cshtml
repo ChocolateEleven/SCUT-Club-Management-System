@@ -49,6 +49,29 @@
             $("input[name='is_passed']").val(false);
             $("form").submit();
         });
+
+        $(".ReasonBox").dialog({
+            autoOpen: false,
+            show: {
+                effect: "puff",
+                duration: 500
+            },
+            hide: {
+                effect: "puff",
+                duration: 500
+            },
+            close: function (event, ui) {
+                var box_id = $(this).data("box-id");
+
+                $(".ShowReasonBoxBtn[data-box-id='" + box_id + "']").removeAttr("disabled");
+            }
+        });
+        $(".ShowReasonBoxBtn").click(function () {
+            var box_id = $(this).data("box-id");
+
+            $(".ReasonBox[data-box-id='" + box_id + "']").dialog("open");
+            $(this).attr("disabled", "true");
+        });
     })
 </script>
 
@@ -63,6 +86,7 @@
     <input type="hidden" name="search" value="@ViewBag.Search" />
     <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
     <input type="hidden" name="club_id" value="@ViewBag.ClubId" />
+    <input type="hidden" name="order" value="@ViewBag.CurrentOrder" />
     
     <table>
         <tr>
@@ -145,6 +169,9 @@
                pass_filter = ViewBag.PassFilter
            })
             </th>
+            <th>
+                自我简介
+            </th>
         </tr>
 
         @foreach (var item in Model)
@@ -204,6 +231,17 @@
                 </td>
                 <td>
                     @LabelHelpers.GetStatus(item.Status)
+                </td>
+                <td>
+                    @if (item.Details != null && !String.IsNullOrWhiteSpace(item.Details.Reason))
+                    {
+                        <div class="ReasonBox" data-box-id="@item.Id">
+                            <p>
+                                @Html.DisplayFor(modelItem => item.Details.Reason)
+                            </p>
+                        </div>
+                        <button type="button" class="ShowReasonBoxBtn" data-box-id="@item.Id">查看</button>
+                    }
                 </td>
             </tr>
         }
