@@ -178,7 +178,7 @@ function dynamicList_AddItem(values) {
         }
 
         var caller = this;
-        var button = $('<button type="button">删除</button>');
+        var button = $('<button class="DynamicListItemDelete" type="button">删除</button>');
 
         button.click(function () {
             dynamicList_DeleteItem(item, caller);
@@ -267,7 +267,7 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
     });
 }
 
-function dropDownListFor(name, id, class_name, items, default_item_index, options) {
+function dropDownListFor(name, id, class_name, items, default_item_index, options, callback) {
     var drop_down_list = "<select ";
     var is_validation_required = false;
 
@@ -291,6 +291,9 @@ function dropDownListFor(name, id, class_name, items, default_item_index, option
         if (is_validation_required) {
             drop_down_list += "data-val='true' ";
         }
+    }
+    if (callback != null) {
+        drop_down_list += "onchange='" + callback + "' ";
     }
 
     drop_down_list += ">";

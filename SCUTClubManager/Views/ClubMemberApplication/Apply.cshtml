@@ -11,10 +11,35 @@
             $(".ExecutorOnly").find('input').removeAttr("disabled");
             $(".ExecutorOnly").find('button').removeAttr("disabled");
             $(".ExecutorOnly").find('select').removeAttr("disabled");
+            $(".ExecutorOnly").find('textarea').removeAttr("disabled");
         } else {
             $(".ExecutorOnly").find('input').attr("disabled", "true");
             $(".ExecutorOnly").find('button').attr("disabled", "true");
             $(".ExecutorOnly").find('select').attr("disabled", "true");
+            $(".ExecutorOnly").find('textarea').attr("disabled", "true");
+        }
+    }
+
+    function deleteDynamicListItem(item) {
+        inclinationChange(item);
+    }
+
+    function inclinationChange(item) {
+        if ($(item).hasClass("Error")) {
+            $(item).removeClass("Error");
+
+            var conflict_obj = $(inclinations[$(item).data("conflict-obj")]);
+            if (conflict_obj.hasClass("Error")) {
+                conflict_obj.removeClass("Error");
+                conflict_obj.removeData("conflict-obj");
+            }
+
+            $(item).removeData("conflict-obj");
+
+            if ($("#inclinationsErrorMsg").hasClass("Error")) {
+                $("#inclinationsErrorMsg").removeClass("Error");
+                $("#inclinationsErrorMsg").text("");
+            }
         }
     }
 
@@ -30,23 +55,45 @@
         }
 
         var item_contents = new Array(  
-            dropDownListFor("Inclinations[0].BranchId", null, null, branch_list, null, null));
+            dropDownListFor("Inclinations[0].BranchId", null, null, branch_list, null, null, "inclinationChange($(this))"));
 
-        var branch_list = new DynamicList(item_contents, "#inclinations", null, null, null, "li", '@ConfigurationManager.InclinationsPerPerson');
+        var branch_list = new DynamicList(item_contents, "#inclinations", null, null, deleteDynamicListItem, "li", '@ConfigurationManager.InclinationsPerPerson');
 
         $("#RoleId").change(function () {
             var is_enabled = $(this).val() != '@ViewBag.MemberRoleId';
             enableExecutorOnlySections(is_enabled);
         });
 
-        $('form').ajaxForm({
-            success: notify,
-            error: function (e) {
-                debugger;
-            }
-        });
+        //$('form').ajaxForm({
+        //    success: null,
+        //    error: function (e) {
+        //        debugger;
+        //    }
+        //});
 
-        confirm("#submit", "确定要提交吗？", function () {
+        confirm("#sb", "确定要提交吗？", function () {
+            ////var inclinations = $(".DynamicListItemContent");
+
+            ////// 检查是否有重复志愿
+            ////for (var i = 0; i < inclinations.length; ++i) {
+            ////    for (var j = i + 1; j < inclinations.length; ++j) {
+            ////        if ($(inclinations[i]).val() == $(inclinations[j]).val()) {
+            ////            $("#inclinationsErrorMsg").text("志愿不能重复");
+            ////            $("#inclinationsErrorMsg").addClass("Error");
+            ////            $(inclinations[i]).addClass("Error");
+            ////            $(inclinations[j]).addClass("Error");
+            ////            $(inclinations[i]).data("conflict-obj", j);
+            ////            $(inclinations[j]).data("conflict-obj", i);
+            ////            return;
+            ////        }
+            ////    }
+            ////}
+
+            ////if ($("#inclinationsErrorMsg").hasClass("Error")) {
+            ////    $("#inclinationsErrorMsg").removeClass("Error");
+            ////    $("#inclinationsErrorMsg").text("");
+            ////}
+
             $("form").submit();
         });
 
@@ -56,7 +103,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Apply", "ClubMemberApplication"))
 {
     @Html.ValidationSummary(true)
     <fieldset>
@@ -86,6 +133,7 @@
         </div>
         <ol id="inclinations">
         </ol>
+        <span id="inclinationsErrorMsg" class="ErrorMessage"></span>
     </fieldset>
     
     <fieldset class="ExecutorOnly">
@@ -94,13 +142,13 @@
             @Html.LabelFor(model => model.Details.Reason)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Details.Reason)
+            @Html.TextAreaFor(model => model.Details.Reason)
             @Html.ValidationMessageFor(model => model.Details.Reason)
         </div>
     </fieldset>
     
     <p>
-        <button type="button" id="submit">提交</button>
+        <button type="button" id="sb">提交</button>
     </p>
     
 }

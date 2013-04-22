@@ -286,10 +286,10 @@ namespace SCUTClubManager.Controllers
                 db.ClubApplications.Add(application);
                 db.SaveChanges();
 
-                return RedirectToAction("List", new { club_id = application.ClubId });
+                return Json(new { success = true, msg = "提交成功", url = "List" });
             }
 
-            return View(application);
+            return Json(new { success = false, msg = "提交失败" });
         }
 
         //

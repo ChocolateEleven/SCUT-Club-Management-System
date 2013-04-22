@@ -21,7 +21,7 @@ namespace SCUTClubManager.DAL
                 new IdentityForTPC
                 {
                     BaseName = "Application",
-                    Identity = 10
+                    Identity = 13
                 },
                 new IdentityForTPC
                 {
@@ -483,6 +483,14 @@ namespace SCUTClubManager.DAL
                     MemberCount = 0,
                     NewMemberCount = 0,
                     BranchName = "爆破部"
+                },
+                new ClubBranch
+                {
+                    Id = 12,
+                    Club = clubs[1],
+                    MemberCount = 0,
+                    NewMemberCount = 0,
+                    BranchName = "XX部"
                 }
             };
             #endregion
