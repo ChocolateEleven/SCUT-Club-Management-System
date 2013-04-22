@@ -56,7 +56,7 @@
 
         var item_contents = new Array(  
             dropDownListFor("Inclinations[0].BranchId", null, null, branch_list, null, null, "inclinationChange($(this))"));
-
+       
         var branch_list = new DynamicList(item_contents, "#inclinations", null, null, deleteDynamicListItem, "li", '@ConfigurationManager.InclinationsPerPerson');
 
         $("#RoleId").change(function () {

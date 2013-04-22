@@ -63,7 +63,9 @@ namespace SCUTClubManager.Controllers
 
             return View(location);
         }
+
         
+
         //
         // GET: /Location/Edit/5
  
