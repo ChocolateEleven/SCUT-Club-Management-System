@@ -119,6 +119,7 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PollController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\Repository.cs" />
     <Compile Include="DAL\SCUTClubContext.cs" />
@@ -381,6 +382,8 @@
     <Content Include="Views\LocationApplication\Create.cshtml" />
     <Content Include="Views\LocationApplication\Edit.cshtml" />
     <Content Include="Views\LocationApplication\Delete.cshtml" />
+    <Content Include="Views\Shared\InvalidFilterError.cshtml" />
+    <Content Include="Views\User\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

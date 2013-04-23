@@ -9,17 +9,6 @@ namespace SCUTClubManager.Models
     public class Student : User
     {
         //[Required]
-        //[RegularExpression(@"^\w{1,10}$",ErrorMessage = "请输入正确的字符")]
-        //[MaxLength(10,ErrorMessage = "姓氏的长度不能超过10个字符")]
-        //public string LastName { get; set; }
-
-        ////[Required]
-        //[RegularExpression(@"^\w{1,10}$", ErrorMessage = "请输入正确的字符")]
-        //[MaxLength(10, ErrorMessage = "名字的长度不能超过10个字符")]
-        //public string FirstName { get; set; }
-
-
-        //[Required]
         [StringLength(1)]
         public string Gender { get; set; }
 
@@ -44,7 +33,6 @@ namespace SCUTClubManager.Models
         //"b"表示本科 "m"表示硕士 "p"表示博士
         public string Degree { get; set; }
 
-
         [RegularExpression(@"^[a-zA-Z]{1}$", ErrorMessage = "政治面貌由字母表示")]
         [MaxLength(1)]
         //"q"表示群众 "d"表示共产党员 "y"表示预备党员 "t"表示共青团员 "o"表示其他党派
@@ -62,5 +50,7 @@ namespace SCUTClubManager.Models
         public virtual ICollection<Application> Applications { get; set; }
         public virtual ICollection<ClubMember> MemberShips { get; set; }
         public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
+        public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
     }
 }

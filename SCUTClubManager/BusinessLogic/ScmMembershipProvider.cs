@@ -11,7 +11,7 @@ namespace SCUTClubManager.BusinessLogic
 {
     public class ScmMembershipProvider : MembershipProvider
     {
-        private UnitOfWork context = new UnitOfWork();
+        private static UnitOfWork context = new UnitOfWork();
 
         /**
          *  检查当前用户和给定用户是否为同一人。
@@ -67,7 +67,7 @@ namespace SCUTClubManager.BusinessLogic
             return true;
         }
 
-        public void CreateUser(string user_name, string password, string role_id)
+        public static void CreateUser(string user_name, string password, string role_id)
         {
             var users = context.Users;
             UserRole role = context.UserRoles.Find(role_id);
@@ -86,7 +86,7 @@ namespace SCUTClubManager.BusinessLogic
             }
         }
 
-        public void AddUser(User user, bool save = true)
+        public static void AddUser(User user, bool save = true)
         {
             user.Password = PasswordProcessor.ProcessWithMD5(user.Password);
             context.Users.Add(user);

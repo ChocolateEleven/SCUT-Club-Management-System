@@ -1069,7 +1069,7 @@ namespace SCUTClubManager.DAL
                     Time = times[5],
                     Club = clubs[1],
                     Status = "p",
-                    Applicant = students[0] as Student,
+                    Applicant = students[2] as Student,
                     Date = new DateTime(2013,04,10),
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>
@@ -1172,7 +1172,7 @@ namespace SCUTClubManager.DAL
                     Id = 7,
                     Status = "n",
                     Club = clubs[0],
-                    Applicant = students[0] as Student,
+                    Applicant = students[3] as Student,
                     Date = new DateTime(2013,1,3),
                     Time = times[0],
                     Location = new List<Location>
@@ -1217,21 +1217,21 @@ namespace SCUTClubManager.DAL
                     Date = new DateTime(2013,4,17),
                     Club = clubs[0],
                     Time = times[0],
-                    Applicant = students[0] as Student
+                    Applicant = students[1] as Student
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,18),
                     Club = clubs[2],
                     Time = times[4],
-                    Applicant = students[0] as Student
+                    Applicant = students[1] as Student
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,10),
                     Club = clubs[1],
                     Time = times[2],
-                    Applicant = students[0] as Student
+                    Applicant = students[1] as Student
                 }
             };
             #endregion

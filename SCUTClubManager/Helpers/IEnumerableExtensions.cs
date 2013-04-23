@@ -34,42 +34,56 @@ namespace SCUTClubManager.Helpers
 
         public static IOrderedEnumerable<TSource> OrderBy<TSource>(this IEnumerable<TSource> collection, string order_by) where TSource : class
         {
-            if (orderByMethod == null)
+            try
             {
-                // Get the ORZ desired generic method.
-                var members = typeof(Enumerable).GetMember("OrderBy");
+                if (orderByMethod == null)
+                {
+                    // Get the ORZ desired generic method.
+                    var members = typeof(Enumerable).GetMember("OrderBy");
 
-                orderByMethod = (from s in members
-                                 where s is MethodInfo && (s as MethodInfo).GetParameters().Count() == 2
-                                 select s as MethodInfo).Single();
+                    orderByMethod = (from s in members
+                                     where s is MethodInfo && (s as MethodInfo).GetParameters().Count() == 2
+                                     select s as MethodInfo).Single();
+                }
+
+                LambdaExpression lambda_expr = GetPropertyExpr<TSource>(order_by);
+                var generic_method = orderByMethod.MakeGenericMethod(typeof(TSource), lambda_expr.Body.Type);
+                var compiled_expr = lambda_expr.Compile();
+                var result = generic_method.Invoke(null, new object[] { collection, compiled_expr });
+
+                return result as IOrderedEnumerable<TSource>;
             }
-
-            LambdaExpression lambda_expr = GetPropertyExpr<TSource>(order_by);
-            var generic_method = orderByMethod.MakeGenericMethod(typeof(TSource), lambda_expr.Body.Type);
-            var compiled_expr = lambda_expr.Compile();
-            var result = generic_method.Invoke(null, new object[] { collection, compiled_expr });
-
-            return result as IOrderedEnumerable<TSource>;
+            catch
+            {
+                return collection as IOrderedEnumerable<TSource>;
+            }
         }
 
         public static IOrderedEnumerable<TSource> OrderByDescending<TSource>(this IEnumerable<TSource> collection, string order_by) where TSource : class
         {
-            if (orderByDescendingMethod == null)
+            try
             {
-                // Get the ORZ desired generic method.
-                var members = typeof(Enumerable).GetMember("OrderByDescending");
+                if (orderByDescendingMethod == null)
+                {
+                    // Get the ORZ desired generic method.
+                    var members = typeof(Enumerable).GetMember("OrderByDescending");
 
-                orderByDescendingMethod = (from s in members
-                                 where s is MethodInfo && (s as MethodInfo).GetParameters().Count() == 2
-                                 select s as MethodInfo).Single();
+                    orderByDescendingMethod = (from s in members
+                                               where s is MethodInfo && (s as MethodInfo).GetParameters().Count() == 2
+                                               select s as MethodInfo).Single();
+                }
+
+                LambdaExpression lambda_expr = GetPropertyExpr<TSource>(order_by);
+                var generic_method = orderByDescendingMethod.MakeGenericMethod(typeof(TSource), lambda_expr.Body.Type);
+                var compiled_expr = lambda_expr.Compile();
+                var result = generic_method.Invoke(null, new object[] { collection, compiled_expr });
+
+                return result as IOrderedEnumerable<TSource>;
             }
-
-            LambdaExpression lambda_expr = GetPropertyExpr<TSource>(order_by);
-            var generic_method = orderByDescendingMethod.MakeGenericMethod(typeof(TSource), lambda_expr.Body.Type);
-            var compiled_expr = lambda_expr.Compile();
-            var result = generic_method.Invoke(null, new object[] { collection, compiled_expr });
-
-            return result as IOrderedEnumerable<TSource>;
+            catch
+            {
+                return collection as IOrderedEnumerable<TSource>;
+            }
         }
     }
 }

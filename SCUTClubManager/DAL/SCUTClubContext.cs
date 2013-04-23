@@ -142,12 +142,15 @@ namespace SCUTClubManager.DAL
             // Id生成器的主键无需自动生成
             model_builder.Entity<IdentityForTPC>().Property(t => t.BaseName).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
+            model_builder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
             // 表之间的关系。
-            model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal();
-            model_builder.Entity<Application>().HasOptional(t => t.RejectReason).WithRequired();
-            model_builder.Entity<SubEvent>().HasRequired(t => t.Description).WithRequiredPrincipal();
-            model_builder.Entity<SubEvent>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.SubEvent);
-            model_builder.Entity<ClubApplication>().HasRequired(t => t.Details).WithRequiredPrincipal();
+            model_builder.Entity<ClubMember>().HasRequired(t => t.Branch).WithMany(t => t.Members);
+            model_builder.Entity<Student>().HasRequired(t => t.ContactInfo).WithRequiredPrincipal().WillCascadeOnDelete(true);
+            model_builder.Entity<Application>().HasOptional(t => t.RejectReason).WithRequired().WillCascadeOnDelete(true);
+            model_builder.Entity<SubEvent>().HasRequired(t => t.Description).WithRequiredPrincipal().WillCascadeOnDelete(true);
+            model_builder.Entity<SubEvent>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.SubEvent).WillCascadeOnDelete(true);
+            model_builder.Entity<ClubApplication>().HasRequired(t => t.Details).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<Student>().HasMany(t => t.Events).WithMany(t => t.Organizers).Map(
                 m =>
                 {
@@ -156,17 +159,19 @@ namespace SCUTClubManager.DAL
                     m.ToTable("EventOrganizer");
                 }
             );
-            model_builder.Entity<ClubRegisterApplication>().HasMany(t => t.Branches).WithRequired().HasForeignKey(t => t.ApplicationId);
-            model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithRequired().HasForeignKey(t => t.ApplicationId);
-            model_builder.Entity<ClubRegisterApplicant>().HasRequired(t => t.Description).WithRequiredPrincipal();
-            model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal();
+            model_builder.Entity<ClubRegisterApplication>().HasMany(t => t.Branches).WithRequired().HasForeignKey(t => t.ApplicationId).WillCascadeOnDelete(true);
+            model_builder.Entity<ClubRegisterApplication>().HasMany(t => t.Applicants).WithRequired(t => t.Application).WillCascadeOnDelete(true);
+            model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithRequired().
+                HasForeignKey(t => t.ApplicationId).WillCascadeOnDelete(true);
+            model_builder.Entity<ClubRegisterApplicant>().HasRequired(t => t.Description).WithRequiredPrincipal().WillCascadeOnDelete(true);
+            model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<FundApplication>().HasOptional(t => t.SubEvent).WithOptionalDependent(t => t.FundApplication).Map(m => m.MapKey("SubEventId"));
-            model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal();
+            model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<User>().HasMany(t => t.SentMessages).WithRequired(t => t.Sender);
-            model_builder.Entity<User>().HasMany(t => t.ReceivedMessages).WithOptional(t => t.Receiver);
-
-            model_builder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
+            model_builder.Entity<User>().HasMany(t => t.ReceivedMessages).WithOptional(t => t.Receiver).WillCascadeOnDelete(true);
+            model_builder.Entity<User>().HasMany(t => t.Polls).WithRequired(t => t.Author).WillCascadeOnDelete(true);
+            model_builder.Entity<User>().HasMany(t => t.Threads).WithOptional(t => t.Author).WillCascadeOnDelete(false);
+            model_builder.Entity<User>().HasMany(t => t.Replies).WithOptional(t => t.Author).WillCascadeOnDelete(false);
             model_builder.Entity<Club>().HasMany(t => t.Branches).WithRequired(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.Members).WithRequired(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasRequired(t => t.MajorInfo).WithRequiredDependent().WillCascadeOnDelete(true);
@@ -175,7 +180,7 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<Club>().HasMany(t => t.Applications).WithOptional(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.AssetAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.LocationAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
-
+            
             //model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.MajorInfo).WithRequiredDependent();
             //model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.SubInfo).WithRequiredDependent();
 
@@ -187,8 +192,15 @@ namespace SCUTClubManager.DAL
 
             model_builder.Entity<AssetApplication>().HasMany(t => t.ApplicatedAssets).WithRequired().WillCascadeOnDelete(true);
             model_builder.Entity<AssetAssignment>().HasMany(t => t.AssignedAssets).WithRequired(t => t.AssetAssignment).WillCascadeOnDelete(true);
-        }
 
+            model_builder.Entity<Student>().HasMany(t => t.MemberShips).WithRequired(t => t.Student).WillCascadeOnDelete(true);
+            model_builder.Entity<Student>().HasMany(t => t.Applications).WithRequired(t => t.Applicant).WillCascadeOnDelete(true);
+            model_builder.Entity<Student>().HasMany(t => t.LocationAssignments).WithRequired(t => t.Applicant).WillCascadeOnDelete(true);
+            model_builder.Entity<Student>().HasMany(t => t.AssetAssignments).WithRequired(t => t.Applicant).WillCascadeOnDelete(true);
+
+            model_builder.Entity<ClubApplication>().HasMany(t => t.Inclinations).WithRequired(t => t.Application).WillCascadeOnDelete(true);
+        }
+        
         public DbSet<LocationApplication> LocationApplications { get; set; }
 
         public DbSet<Student> Students { get; set; }

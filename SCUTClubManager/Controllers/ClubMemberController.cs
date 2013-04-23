@@ -127,20 +127,23 @@ namespace SCUTClubManager.Controllers
 
                         foreach (var member in members)
                         {
-                            member.ClubRoleId = role_id;
-
-                            if (branch_changed)
+                            if (!ScmMembershipProvider.IsMe(member.UserName))
                             {
-                                member.Branch.MemberCount--;
-                                member_branch.MemberCount++;
+                                member.ClubRoleId = role_id;
 
-                                if (member.IsNewMember)
+                                if (branch_changed)
                                 {
-                                    member.Branch.NewMemberCount--;
-                                    member_branch.NewMemberCount++;
-                                }
+                                    member.Branch.MemberCount--;
+                                    member_branch.MemberCount++;
 
-                                member.BranchId = member_branch.Id;
+                                    if (member.IsNewMember)
+                                    {
+                                        member.Branch.NewMemberCount--;
+                                        member_branch.NewMemberCount++;
+                                    }
+
+                                    member.BranchId = member_branch.Id;
+                                }
                             }
                         }
 
@@ -204,17 +207,19 @@ namespace SCUTClubManager.Controllers
 
                     foreach (var member in members)
                     {
-
-                        member.Branch.MemberCount--;
-                        club.MemberCount--;
-
-                        if (member.IsNewMember)
+                        if (!ScmMembershipProvider.IsMe(member.UserName))
                         {
-                            member.Branch.NewMemberCount--;
-                            club.NewMemberCount--;
-                        }
+                            member.Branch.MemberCount--;
+                            club.MemberCount--;
 
-                        db.ClubMembers.Delete(member);
+                            if (member.IsNewMember)
+                            {
+                                member.Branch.NewMemberCount--;
+                                club.NewMemberCount--;
+                            }
+
+                            db.ClubMembers.Delete(member);
+                        }
                     }
 
                     message = "已将当前搜索/过滤条件下所有成员移除出本社团";

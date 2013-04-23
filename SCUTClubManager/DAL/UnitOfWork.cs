@@ -579,6 +579,19 @@ namespace SCUTClubManager.DAL
             }
         }
 
+        private IRepository<RoleBase> roleBases;
+        public IRepository<RoleBase> RoleBases
+        {
+            get
+            {
+                if (this.roleBases == null)
+                {
+                    this.roleBases = new Repository<RoleBase>(context);
+                }
+                return roleBases;
+            }
+        }
+
         public void SaveChanges()
         {
             context.SaveChanges();

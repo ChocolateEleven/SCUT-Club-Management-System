@@ -1,0 +1,230 @@
+﻿@model IPagedList<SCUTClubManager.Models.User>
+@{
+    ViewBag.Title = ViewBag.RoleName + "列表";
+}
+
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        $("input.ItemSelector[name='all_in']").change(function () {
+            var all_in_box = this;
+
+            $("input.ItemSelector[name!='all_in']").each(function (index) {
+                this.checked = all_in_box.checked;
+                $(this).change();
+            });
+        });
+
+        $("input.ItemSelector[name!='all_in']").change(function () {
+            var checkbox = $(this);
+            var id_field = checkbox.siblings("input[name='user_names']");
+
+            if (checkbox[0].checked) {
+                id_field.removeAttr("disabled");
+            } else {
+                $("input.ItemSelector[name='all_in']")[0].checked = false;
+                id_field.attr("disabled", "true");
+            }
+        });
+
+        $('form').ajaxForm({
+            success: function (data) {
+                notify(data);
+                var checkboxes = $("input.ItemSelector[name!='all_in']");
+
+                if (data.operation == "delete") {
+                    if (data.success) {
+                        checkboxes.each(function (index, element) {
+                            if (this.checked) {
+                                $(this).parent().parent().fadeOut();
+                            }
+                        });
+                    }
+                }
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+
+        $("input[name='all_in']").tooltip();
+        $("#remove").tooltip();
+        $("#add").tooltip();
+        $("#addRange").tooltip();
+
+        confirm("#remove", "确定要删除选中的用户吗？", function () {
+            $('form').attr('action', 'Delete');
+            $('form').submit();
+        });
+    })
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@if (User.IsInRole("社联"))
+{
+    <div>
+        @Html.ActionLink("学生", "List", new
+           {
+               role_filter = 1
+           })
+    </div>
+    <div>
+        @Html.ActionLink("管理员", "List", new
+           {
+
+               role_filter = 2
+           })
+    </div>
+}
+
+@Html.Partial("_SearchBar")
+
+@using (Html.BeginForm())
+{
+    bool is_student_list = ViewBag.RoleName == "学生";
+
+    <input type="hidden" name="role_filter" value="@ViewBag.RoleFilter" />
+    <input type="hidden" name="search" value="@ViewBag.Search" />
+    <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
+    <input type="hidden" name="order" value="@ViewBag.CurrentOrder" />
+    
+    <table>
+        <tr>
+            @if (User.IsInRole("社联"))
+            {
+                <th>
+                    <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部用户" />
+                    <input type="hidden" name="all_in" value="false" />
+                </th>
+            }
+            <th>
+                @Html.ActionLink("用户名", "List", new
+           {
+               order = ViewBag.UserNameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               role_filter = ViewBag.RoleFilter,
+           })
+            </th>
+            <th>
+                @Html.ActionLink("姓名", "List", new
+           {
+               order = ViewBag.NameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               role_filter = ViewBag.RoleFilter,
+           })
+            </th>
+            @if (is_student_list)
+            {
+                <th>
+                    @Html.ActionLink("学院", "List", new
+           {
+               order = ViewBag.DepartmentOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               role_filter = ViewBag.RoleFilter,
+           })
+                </th>
+                <th>
+                    @Html.ActionLink("年级", "List", new
+           {
+               order = ViewBag.GradeOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               role_filter = ViewBag.RoleFilter,
+           })
+                </th>
+            }
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (User.IsInRole("社联"))
+                {
+                    <td>
+                        @if (!SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(item.UserName))
+                        {
+                            <input class="ItemSelector" type="checkbox" />
+                            <input name="user_names" type="hidden" value="@item.UserName" disabled="disabled" />
+                        }
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                @if (is_student_list)
+                {
+                    SCUTClubManager.Models.Student student = item as SCUTClubManager.Models.Student;
+                    <td>
+                        @Html.DisplayFor(modelItem => student.Department)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => student.Grade)
+                    </td>
+                }
+            </tr>
+        }
+
+    </table>
+    
+        if (User.IsInRole("社联"))
+        {
+    <div>
+        <button id="add" type="button" title="添加新用户">添加</button>
+    </div>
+    <div>
+        <button id="addRange" type="button" title="通过导入的方式批量添加用户">批量添加</button>
+    </div>
+    <div>
+        <button id="remove" type="button" title="将选中的用户删除掉">删除</button>
+    </div>
+        }
+}
+
+@using (Html.BeginForm("Add", "User", FormMethod.Post, new { id = "addUserForm" }))
+{
+    <div>
+        用户名
+    </div>
+    <div>
+        <input id="UserName" value="请在此输入用户名" name="UserName" class="text-box single-line" data-val="true" 
+            data-val-regex="用户名只能是数字和字母的组合，长度不能超过20个字符" 
+            data-val-regex-pattern="^[a-z0-9A-Z]{1,20}$" data-val-required="用户名 字段是必需的。" type="text" />
+        <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+    </div>
+    <div>
+        密码
+    </div>
+    <div>
+        <input class="text-box single-line password" data-val="true" data-val-regex="密码只能是数字和字母的组合且不能超过15个字符"
+            data-val-regex-pattern="^[a-z0-9A-Z]{1,15}$" data-val-required="密码 字段是必需的。" id="Password"
+            name="Password" type="password" value="" />
+        <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+    </div>
+    <div>
+        是否作为管理员
+    </div>
+    <div>
+        <input data-val="true" id="RememberMe" name="is_admin"
+             type="checkbox" value="true" />
+        <input name="is_admin" type="hidden" value="false" />
+    </div>
+    <div>
+        姓名
+    </div>
+    <div>
+        <input id="Name" value="请在此输入姓名" name="Name" class="text-box single-line" data-val="true" 
+            data-val-regex="用户名只能是汉字或字母，且长度不能超过10个字符" 
+            data-val-regex-pattern="^[a-z0-9A-Z]{1,20}$" data-val-required="姓名 字段是必需的。" type="text" />
+        <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+    </div>
+}
+
+@Html.Partial("_PageNavigation", Model)

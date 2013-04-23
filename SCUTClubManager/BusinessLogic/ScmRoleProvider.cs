@@ -14,7 +14,7 @@ namespace SCUTClubManager.BusinessLogic
      */
     public class ScmRoleProvider : RoleProvider
     {
-        private UnitOfWork context = new UnitOfWork();
+        private static UnitOfWork context = new UnitOfWork();
 
         // 以下为社团内部权限管理用。
 
@@ -28,7 +28,6 @@ namespace SCUTClubManager.BusinessLogic
         public static bool HasMembershipIn(int club_id, int? branch_id = null, string[] possible_roles = null)
         {
             var user_identity = HttpContext.Current.User.Identity;
-            UnitOfWork context = new UnitOfWork();
 
             if (user_identity.IsAuthenticated)
             {
@@ -73,7 +72,6 @@ namespace SCUTClubManager.BusinessLogic
         public static ClubMember GetRoleInClub(int club_id)
         {
             var user_identity = HttpContext.Current.User.Identity;
-            UnitOfWork context = new UnitOfWork();
 
             if (user_identity.IsAuthenticated)
             {
@@ -103,8 +101,7 @@ namespace SCUTClubManager.BusinessLogic
          */
         public static int GetRoleIdByName(string role_name)
         {
-            UnitOfWork context = new UnitOfWork();
-            ClubRole role = context.ClubRoles.ToList().SingleOrDefault(t => t.Name == role_name);
+            RoleBase role = context.RoleBases.ToList().SingleOrDefault(t => t.Name == role_name);
 
             if (role != null)
             {
