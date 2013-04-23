@@ -4,7 +4,36 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<script>
+    $(function () {
+        var weekdays = new Array({ key: "星期一", value: 1 }, { key: "星期二", value: 2 }, { key: "星期三", value: 3 }, { key: "星期四", value: 4 }, { key: "星期五", value: 5 }, { key: "星期六", value: 6 }, { key: "星期天", value: 7 });
+        var times = new Array();
+
+        @foreach (var time in ViewBag.Time as SelectList)
+        {
+            @:times.push({ key: '@time.Text', value: '@time.Value' });
+        }
+
+        var item_contents = new Array(
+            dropDownListFor("weekday[0]", null, null, weekdays),
+            dropDownListFor("time_id[0]", null, null, times));
+        
+        var unavailable_time_list = new DynamicList(item_contents, "#unavailableTimes", null, null);
+
+        @foreach (var unavailable_time in ViewBag.UnAvailableTimes)
+        {
+            @:var temp_item = new Array("@unavailable_time.WeekDayId" ,"@unavailable_time.Time.Id");
+            @:unavailable_time_list.add(temp_item);
+        }
+            
+
+    })
+
+    function showDate(item)
+    {
+        item.datepicker();
+    }
+</script>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
@@ -22,6 +51,9 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <div class="editor-field" id="unavailableTimes">
+
         </div>
 
         <p>

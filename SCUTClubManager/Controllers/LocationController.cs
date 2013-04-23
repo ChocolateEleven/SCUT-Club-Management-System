@@ -52,10 +52,24 @@ namespace SCUTClubManager.Controllers
         // POST: /Location/Create
 
         [HttpPost]
-        public ActionResult Create(Location location)
+        public ActionResult Create( Location location,int[] weekday, int[] time_id)
         {
             if (ModelState.IsValid)
             {
+                if (weekday != null)
+                {
+                    location.UnAvailableTimes = new List<LocationUnavailableTime>();
+                    int i=0;
+                    foreach (var week_day in weekday)
+                    {
+                        location.UnAvailableTimes.Add(new LocationUnavailableTime
+                        {
+                            Time = unitOfWork.Times.Find(time_id[i]),
+                            WeekDayId = week_day
+                        });
+                    i++;
+                    }
+                }
                 unitOfWork.Locations.Add(location);
                 unitOfWork.SaveChanges();
                 return RedirectToAction("Index");  
@@ -72,6 +86,8 @@ namespace SCUTClubManager.Controllers
         public ActionResult Edit(int id)
         {
             Location location = unitOfWork.Locations.Find(id);
+            ViewBag.Time = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
+            ViewBag.UnavailableTimes = location.UnAvailableTimes;
             return View(location);
         }
 
@@ -79,14 +95,38 @@ namespace SCUTClubManager.Controllers
         // POST: /Location/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Location location)
+        public ActionResult Edit(Location location,int[] time_id, int[] weekday)
         {
+            location = unitOfWork.Locations.Find(location.Id);
+
             if (ModelState.IsValid)
             {
+
+                if (time_id != null)
+                {
+                    for (int i = 0; i < time_id.Length; ++i)
+                    {
+                        if (location.UnAvailableTimes.All(t => t.TimeId != time_id[i] || t.WeekDayId != weekday[i]))
+                        {
+                            var temp_time = new LocationUnavailableTime
+                                {
+                                    WeekDayId = weekday[i],
+                                    Time = unitOfWork.Times.Find(time_id[i])
+                                };
+
+                            location.UnAvailableTimes.Add(temp_time);
+                        }
+                    }
+                    
+                }
                 unitOfWork.Locations.Update(location);
                 unitOfWork.SaveChanges();
+
+                ViewBag.Time = unitOfWork.Times.ToList();
                 return RedirectToAction("Index");
             }
+            ViewBag.Time = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
+            ViewBag.UnavailableTimes = location.UnAvailableTimes;
             return View(location);
         }
 
@@ -127,7 +167,36 @@ namespace SCUTClubManager.Controllers
         {
             var assigned_locations = unitOfWork.LocationAssignments.ToList().Where(s => s.Date == date && s.TimeId == timeId);
             List<Location> locations = unitOfWork.Locations.ToList().ToList();
+            var weekdayOfDate = date.DayOfWeek.ToString();
+            int weekday = 0;
+            switch (weekdayOfDate.ToLower())
+            {
+                case "monday":
+                    weekday = 1;
+                    break;
+                case "tuesday":
+                    weekday = 2;
+                    break;
+                case "wednesday":
+                    weekday = 3;
+                    break;
+                case "thursday":
+                    weekday = 4;
+                    break;
+                case "friday":
+                    weekday = 5;
+                    break;
+                case "saturday":
+                    weekday = 6;
+                    break;
+                case "sunday":
+                    weekday = 7;
+                    break;
+                default:
+                    break;
+            }
 
+            //删除被占用的场地
             foreach (var assigned_location in assigned_locations)
             {
                 foreach (var location in locations)
@@ -135,6 +204,18 @@ namespace SCUTClubManager.Controllers
                     if (location.Id == assigned_location.Id)
                     {
                         locations.Remove(locations.Find(s => s.Id == location.Id));
+                    }
+                }
+            }
+
+            //删除当天当时间段不可用的场地
+            foreach (var location in locations)
+            {
+                foreach(var unavailabletime in location.UnAvailableTimes)
+                {
+                    if (unavailabletime.TimeId == timeId && unavailabletime.WeekDayId == weekday)
+                    {
+                        locations.Remove(location);
                     }
                 }
             }
@@ -168,8 +249,6 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-
-
             IEnumerable<AssignedLocationViewModel> list = assignedLocation.OrderBy(s => s.Location.Name);
 
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
@@ -181,7 +260,6 @@ namespace SCUTClubManager.Controllers
 
             return View(list.ToPagedList(1,10));
         }
-
 
         protected override void Dispose(bool disposing)
         {

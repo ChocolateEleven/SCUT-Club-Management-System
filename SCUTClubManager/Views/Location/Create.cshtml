@@ -12,48 +12,6 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 <script>
-    function dropDownListFor(name, id, class_name, items, default_item_index, options, callback) {
-        var drop_down_list = "<select ";
-        var is_validation_required = false;
-
-        if (name != null) {
-            drop_down_list += "name='" + name + "' ";
-        }
-        if (id != null) {
-            drop_down_list += "id='" + id + "' ";
-        }
-        if (class_name != null) {
-            drop_down_list += "class='" + class_name + "' ";
-        }
-        if (default_item_index != null) {
-            drop_down_list += "value='" + items[default_item_index].value + "' ";
-        }
-        if (options != null) {
-            if (options.required != null && options.required) {
-                is_validation_required = true;
-                drop_down_list += "data-val-required='" + options.required_msg + "' ";
-            }
-            if (is_validation_required) {
-                drop_down_list += "data-val='true' ";
-            }
-        }
-        if (callback != null) {
-            drop_down_list += "onchange='" + callback + "' ";
-        }
-
-        drop_down_list += ">";
-
-        if (items != null) {
-            for (var i = 0; i < items.length; ++i) {
-                drop_down_list += "<option value='" + items[i].value + "'>" + items[i].key + "</option>";
-            }
-        }
-
-        drop_down_list += "</select>"
-
-        return drop_down_list;
-    }
-
     $(function () {
         var weekdays = new Array({ key: "星期一", value: 1 }, { key: "星期二", value: 2 }, { key: "星期三", value: 3 }, { key: "星期四", value: 4 }, { key: "星期五", value: 5 }, { key: "星期六", value: 6 }, { key: "星期天", value: 7 });
         var times = new Array();
@@ -102,9 +60,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-<div hidden="hidden" id="hiddenList">
-    @Html.DropDownList("Time",String.Empty)
+    @Html.ActionLink("返回", "Index")
 </div>

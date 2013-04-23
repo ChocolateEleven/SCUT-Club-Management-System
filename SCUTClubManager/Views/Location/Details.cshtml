@@ -4,17 +4,49 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 
 <fieldset>
-    <legend>Location</legend>
+    <legend>场地信息</legend>
 
-    <div class="display-label">Name</div>
+    <div class="display-label">场地名称</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
+    <div class="display-label">不可借用时间段</div>
+    <div class="display-field">
+        @foreach (var item in Model.UnAvailableTimes)
+        {
+            switch (item.WeekDayId)
+            {
+                case 1:
+                    <p>星期一 @item.Time.TimeName</p>
+                    break;
+                case 2:
+                    <p>星期二 @item.Time.TimeName</p>
+                    break;
+                case 3:
+                    <p>星期三 @item.Time.TimeName</p>
+                    break;
+                case 4:
+                    <p>星期四 @item.Time.TimeName</p>
+                    break;
+                case 5:
+                    <p>星期五 @item.Time.TimeName</p>
+                    break;
+                case 6:
+                    <p>星期六 @item.Time.TimeName</p>
+                    break;
+                case 7:
+                    <p>星期日 @item.Time.TimeName</p>
+                    break;
+                default:
+                    break; 
+            }
+        }
+    </div>
+    
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("编辑", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("返回", "Index")
 </p>
