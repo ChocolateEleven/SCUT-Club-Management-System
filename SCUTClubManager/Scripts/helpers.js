@@ -193,18 +193,20 @@ function dynamicList_AddItem(values) {
 
             content.addClass("DynamicListItemContent").appendTo(item);
 
-            if (i < values.length) {
+            if (values != null && i < values.length) {
                 content.val(values[i]);
             }
         }
 
-        var caller = this;
-        var button = $('<button class="DynamicListItemDelete" type="button">删除</button>');
+        if (this.itemCount >= this.minElementNum) {
+            var caller = this;
+            var button = $('<button class="DynamicListItemDelete" type="button">删除</button>');
 
-        button.click(function () {
-            dynamicList_DeleteItem(item, caller);
-        });
-        button.appendTo(item);
+            button.click(function () {
+                dynamicList_DeleteItem(item, caller);
+            });
+            button.appendTo(item);
+        }
 
         this.itemCount++;
 
@@ -222,7 +224,7 @@ function dynamicList_AddItem(values) {
     }
 }
 
-function DynamicList(item_contents, container, insert_contents, on_insert, on_remove, item_tag, capacity) {
+function DynamicList(item_contents, container, insert_contents, on_insert, on_remove, item_tag, capacity, min_element_num) {
     if (item_contents == null) {
         throw new Error("Parameter items cannot be null.");
     }
@@ -244,6 +246,7 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
     this.container = container;
     this.itemTag = item_tag == null ? "div" : item_tag;
     this.capacity = capacity == null ? -1 : capacity;
+    this.minElementNum = min_element_num == null ? 0 : min_element_num;
 
     var insert_panel = $('<form class="DynamicListInsertPanel"></form>');
     this.insertPanel = insert_panel;
@@ -285,6 +288,10 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
             $(element).removeAttr("data-val");
         });
     });
+    
+    for (var i = 0; i < this.minElementNum; ++i) {
+        this.add();
+    }
 }
 
 function dropDownListFor(name, id, class_name, items, default_item_index, options, callback) {

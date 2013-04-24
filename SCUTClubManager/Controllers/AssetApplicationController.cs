@@ -74,9 +74,12 @@ namespace SCUTClubManager.Controllers
                 ApplicantUserName = User.Identity.Name,
                 Date = Date,
                 Status = "n",
-                Time = unitOfWork.Times.Find(TimeId),
+                //Time = unitOfWork.Times.Find(TimeId),
                 ApplicatedAssets = new List<ApplicatedAsset>()
             };
+            asset_application.Times = new List<Time>();
+            asset_application.Times.Add(unitOfWork.Times.Find(TimeId));
+
             int i = 0;
             foreach(int s in item_id)
             {
@@ -131,7 +134,7 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", assetapplication.ClubId);
             ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", assetapplication.ApplicantUserName);
             ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason", assetapplication.Id);
-            ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetapplication.TimeId);
+            //ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetapplication.TimeId);
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", assetapplication.SubEventId);
             return View(assetapplication);
         }
@@ -151,7 +154,7 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", assetapplication.ClubId);
             ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", assetapplication.ApplicantUserName);
             ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason", assetapplication.Id);
-            ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetapplication.TimeId);
+            //ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetapplication.TimeId);
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", assetapplication.SubEventId);
             return View(assetapplication);
         }

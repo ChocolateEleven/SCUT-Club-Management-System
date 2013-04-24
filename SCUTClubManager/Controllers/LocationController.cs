@@ -117,7 +117,22 @@ namespace SCUTClubManager.Controllers
                             location.UnAvailableTimes.Add(temp_time);
                         }
                     }
-                    
+                    foreach(var item in location.UnAvailableTimes.ToList())
+                    {
+                        bool del_mark = true;
+                        for (int i = 0; i < time_id.Length; ++i)
+                        {
+                            if (item.TimeId == time_id[i] && item.WeekDayId == weekday[i])
+                            {
+                                del_mark = false;
+                            }
+                        }
+                        if (del_mark == true)
+                        {
+                            unitOfWork.LocationUnAvailableTimes.Delete(item);
+                        }
+
+                    }
                 }
                 unitOfWork.Locations.Update(location);
                 unitOfWork.SaveChanges();
@@ -153,20 +168,13 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Calendar()
         {
-            ViewBag.timeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
+            ViewBag.Times = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Calendar(DateTime date, int timeId)
-        {
-            return RedirectToAction("AvailableLocation", new { date, timeId });
-        }
 
-        public ActionResult AvailableLocation(DateTime date, int timeId)
+        public ActionResult AvailableLocation(DateTime date, int[] time_ids)
         {
-            var assigned_locations = unitOfWork.LocationAssignments.ToList().Where(s => s.Date == date && s.TimeId == timeId);
-            List<Location> locations = unitOfWork.Locations.ToList().ToList();
             var weekdayOfDate = date.DayOfWeek.ToString();
             int weekday = 0;
             switch (weekdayOfDate.ToLower())
@@ -196,28 +204,47 @@ namespace SCUTClubManager.Controllers
                     break;
             }
 
-            //删除被占用的场地
-            foreach (var assigned_location in assigned_locations)
-            {
-                foreach (var location in locations)
-                {
-                    if (location.Id == assigned_location.Id)
-                    {
-                        locations.Remove(locations.Find(s => s.Id == location.Id));
-                    }
-                }
-            }
 
-            //删除当天当时间段不可用的场地
-            foreach (var location in locations)
+            List<Location> locations = unitOfWork.Locations.ToList().ToList();
+
+            foreach (var time_id in time_ids)
             {
-                foreach(var unavailabletime in location.UnAvailableTimes)
+                var assigned_locations = unitOfWork.LocationAssignments.ToList().Where(s => s.Date == date && s.Times.Any( t => t.Id == time_id));
+                //删除被占用的场地
+                foreach (var assigned_location in assigned_locations)
                 {
-                    if (unavailabletime.TimeId == timeId && unavailabletime.WeekDayId == weekday)
+                    foreach (var location in assigned_location.Locations)
                     {
-                        locations.Remove(location);
+                        if (locations.Contains(location))
+                        {
+                            locations.Remove(location);
+                        }
                     }
                 }
+
+                //删除当天当时间段不可用的场地
+                foreach (var location_unavailable_time in unitOfWork.LocationUnAvailableTimes.ToList())
+                {
+                    if (location_unavailable_time.TimeId == time_id)
+                    {
+                        if(locations.Contains(location_unavailable_time.Location))
+                       {
+                          locations.Remove(location_unavailable_time.Location);
+                        }
+                    }
+
+                }
+
+                //foreach (var location in locations)
+                //{
+                //    foreach (var unavailabletime in location.UnAvailableTimes)
+                //    {
+                //        if (unavailabletime.TimeId == time_id && unavailabletime.WeekDayId == weekday)
+                //        {
+                //            locations.Remove(location);
+                //        }
+                //    }
+                //}
             }
 
             IEnumerable<Location> available_locations = locations.OrderBy(s => s.Name);
@@ -225,27 +252,37 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
             ViewBag.Date = date.ToString("yyyy年MM月dd日");
-            var time = unitOfWork.Times.Find(timeId);
-            ViewBag.Time = time.TimeName;
-            ViewBag.TimeId = time.Id;
+            List<Time> times = new List<Time>();
+            foreach (var time_id in time_ids)
+            {
+                times.Add(unitOfWork.Times.Find(time_id));
+            }
+            ViewBag.Times = times;
+            ViewBag.time_ids = time_ids;
 
             return View(available_locations.ToPagedList(1,10));
         }
 
-        public ActionResult AssignedLocation(DateTime date, int timeId)
+        //不正确！！！
+        
+        public ActionResult AssignedLocation(DateTime date, int[] time_ids)
         {
-            var assignments = unitOfWork.LocationAssignments.ToList().Where(s => s.Date == date && s.TimeId == timeId);
-            //List<Location> locations = new List<Location>();
             List<AssignedLocationViewModel> assignedLocation = new List<AssignedLocationViewModel>();
-            foreach(var location_assignment in assignments)
+            foreach (var time_id in time_ids)
             {
-                foreach(var location in location_assignment.Locations)
+                var assignments = unitOfWork.LocationAssignments.ToList().Where(s => s.Date == date && s.Times.Any(t => t.Id == time_id));
+                //List<Location> locations = new List<Location>();
+                foreach (var location_assignment in assignments)
                 {
-                    assignedLocation.Add(new AssignedLocationViewModel{
-                        Location = location,
-                        Club = location_assignment.Club,
-                        Applicant = location_assignment.Applicant
-                    });
+                    foreach (var location in location_assignment.Locations)
+                    {
+                        assignedLocation.Add(new AssignedLocationViewModel
+                        {
+                            Location = location,
+                            Club = location_assignment.Club,
+                            Applicant = location_assignment.Applicant
+                        });
+                    }
                 }
             }
 
@@ -254,9 +291,13 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
             ViewBag.Date = date.ToString("yyyy年MM月dd日");
-            var time = unitOfWork.Times.Find(timeId);
-            ViewBag.Time = time.TimeName;
-            ViewBag.TimeId = time.Id;
+            List<Time> times = new List<Time>();
+            foreach (var time_id in time_ids)
+            {
+                times.Add(unitOfWork.Times.Find(time_id));
+            }
+            ViewBag.Times = times;
+            ViewBag.time_ids = time_ids;
 
             return View(list.ToPagedList(1,10));
         }

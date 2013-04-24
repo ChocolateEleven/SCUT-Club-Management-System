@@ -4,7 +4,7 @@
     ViewBag.Title = "AvailableAsset";
 }
 
-@Html.ActionLink("查看已借出", "AssignedAsset", new { date = @ViewBag.date, timeId = @ViewBag.timeId})
+@Html.ActionLink("查看已借出", "AssignedAsset", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
 
 
 <script>
@@ -50,8 +50,12 @@
     }
 </script>
 
-<h2>@ViewBag.Date @ViewBag.Time 的可借物资</h2>
-
+<p>@ViewBag.Date</p>
+@foreach( var time in ViewBag.Times)
+{
+    <p>@time.TimeName</p>
+}
+<p>的可借物资</p>
 
 
 <table>

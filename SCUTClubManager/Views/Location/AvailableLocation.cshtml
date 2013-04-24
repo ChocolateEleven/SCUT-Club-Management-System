@@ -4,7 +4,15 @@
     ViewBag.Title = "AvailableLocation";
 }
 
-@Html.ActionLink("查看已借出", "AssignedLocation", new { date = @ViewBag.date, timeId = @ViewBag.timeId})
+<p>@ViewBag.Date</p>
+@foreach( var time in ViewBag.Times)
+{
+    <p>@time.TimeName</p>
+}
+<p>的可借场地</p>
+
+
+@Html.ActionLink("查看被占用场地", "AssignedLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
 
 <script>
     function funBorrow(item,id)

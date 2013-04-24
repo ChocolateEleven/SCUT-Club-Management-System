@@ -924,7 +924,7 @@ namespace SCUTClubManager.DAL
                 {
                     Date = new DateTime(2013,4,11),
                     Club = clubs[0],
-                    Time = times[0],
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Applicant = students[1] as Student,
                     AssignedAssets = new List<AssignedAsset>
                     {
@@ -950,9 +950,9 @@ namespace SCUTClubManager.DAL
                 },
                 new AssetAssignment
                 {
-                    Date = new DateTime(2013,3,19),
+                    Date = new DateTime(2013,4,12),
                     Club = clubs[1],
-                    Time = times[5],
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Applicant = students[1] as Student,
                     AssignedAssets = new List<AssignedAsset>
                     {
@@ -978,9 +978,9 @@ namespace SCUTClubManager.DAL
                 },
                 new AssetAssignment
                 {
-                    Date = new DateTime(2014,5,17),
+                    Date = new DateTime(2014,4,13),
                     Club = clubs[0],
-                    Time = times[9],
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Applicant = students[2] as Student,
                     AssignedAssets = new List<AssignedAsset>
                     {
@@ -1013,10 +1013,10 @@ namespace SCUTClubManager.DAL
                 new AssetApplication
                 {
                     Id = 4,
-                    Time = times[0],
+                    Times = new List<Time>{times[0]},
                     Status = "n",
                     Applicant = students[1] as Student,
-                    Date = new DateTime(2013,04,12),
+                    Date = new DateTime(2013,04,11),
                     Club = clubs[0],
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>()
@@ -1039,11 +1039,11 @@ namespace SCUTClubManager.DAL
                 new AssetApplication
                 {
                     Id = 5,
-                    Time = times[1],
+                    Times = new List<Time>{times[1]},
                     Club = clubs[1],
                     Status = "f",
                     Applicant = students[3] as Student,
-                    Date = new DateTime(2013,04,15),
+                    Date = new DateTime(2013,04,12),
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>()
                     {
@@ -1066,11 +1066,16 @@ namespace SCUTClubManager.DAL
                 new AssetApplication
                 {
                     Id = 6,
-                    Time = times[5],
+                    Times = new List<Time>{times[2]},
                     Club = clubs[1],
                     Status = "p",
+<<<<<<< HEAD
                     Applicant = students[2] as Student,
                     Date = new DateTime(2013,04,10),
+=======
+                    Applicant = students[0] as Student,
+                    Date = new DateTime(2013,04,13),
+>>>>>>> 继续更改 times
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>
                     {
@@ -1174,7 +1179,7 @@ namespace SCUTClubManager.DAL
                     Club = clubs[0],
                     Applicant = students[3] as Student,
                     Date = new DateTime(2013,1,3),
-                    Time = times[0],
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Location = new List<Location>
                     {
                         locations[0],locations[1]
@@ -1187,7 +1192,7 @@ namespace SCUTClubManager.DAL
                     Club = clubs[1],
                     Applicant = students[1] as Student,
                     Date = new DateTime(2013,1,4),
-                    Time = times[0],
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Location = new List<Location>
                     {
                         locations[2],locations[1],locations[0]
@@ -1200,7 +1205,7 @@ namespace SCUTClubManager.DAL
                     Club = clubs[2],
                     Applicant = students[2] as Student,
                     Date = new DateTime(2013,1,5),
-                    Time = times[0],
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Location = new List<Location>
                     {
                         locations[0]
@@ -1216,22 +1221,40 @@ namespace SCUTClubManager.DAL
                 {
                     Date = new DateTime(2013,4,17),
                     Club = clubs[0],
+<<<<<<< HEAD
                     Time = times[0],
                     Applicant = students[1] as Student
+=======
+                    Times = new List<Time>{times[0],times[1],times[2]},
+                    Locations = new List<Location>{locations[0],locations[1]},
+                   Applicant = students[0] as Student
+>>>>>>> 继续更改 times
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,18),
                     Club = clubs[2],
+<<<<<<< HEAD
                     Time = times[4],
                     Applicant = students[1] as Student
+=======
+                     Times = new List<Time>{times[0],times[1],times[2]},
+                    Locations = new List<Location>{locations[0],locations[1],locations[2]},
+                  Applicant = students[0] as Student
+>>>>>>> 继续更改 times
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,10),
                     Club = clubs[1],
+<<<<<<< HEAD
                     Time = times[2],
                     Applicant = students[1] as Student
+=======
+                     Times = new List<Time>{times[0],times[1],times[2]},
+                    Locations = new List<Location>{locations[1],locations[2]},
+                   Applicant = students[0] as Student
+>>>>>>> 继续更改 times
                 }
             };
             #endregion

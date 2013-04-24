@@ -112,25 +112,31 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Calendar()
         {
-            ViewBag.timeId = new SelectList(unitOfWork.Times.ToList(),"Id","TimeName");
+            ViewBag.Times = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Calendar(DateTime date,int timeId)
-        {
-            return RedirectToAction("AvailableAsset", new { date, timeId });
-        }
+        //[HttpPost]
+        //public ActionResult Calendar(DateTime date,int[] time_ids)
+        //{
+        //    ViewBag.Times = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
+        //    return RedirectToAction("AvailableAsset", new { date, });
+        //}
 
-        public ActionResult AssignedAsset(DateTime date, int timeId)
+        public ActionResult AssignedAsset(DateTime date, int[] time_ids)
         {
-            var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.TimeId == timeId);
+
             List<AssignedAsset> assigned_assets = new List<AssignedAsset>();
-            foreach(var assignment in assignments)
+            foreach (var time_id in time_ids)
             {
-                foreach(var assigned_asset in assignment.AssignedAssets)
+                var a = unitOfWork.AssetAssignments.ToList().ToList();
+                var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.Times.Any(s => s.Id == time_id)).ToList();
+                foreach (var assignment in assignments)
                 {
-                    assigned_assets.Add(assigned_asset);
+                    foreach (var assigned_asset in assignment.AssignedAssets)
+                    {
+                        assigned_assets.Add(assigned_asset);
+                    }
                 }
             }
 
@@ -138,25 +144,61 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
             ViewBag.Date = date.ToString("yyyy年MM月dd日");
-            var time = unitOfWork.Times.Find(timeId);
-            ViewBag.Time = time.TimeName;
-            ViewBag.TimeId = time.Id;
+
+            List<Time> temp_time = new List<Time>();
+            foreach (var time_id in time_ids)
+            {
+                temp_time.Add(unitOfWork.Times.Find(time_id));
+            }
+            ViewBag.Times = temp_time;
+            ViewBag.time_ids = time_ids;
 
             return View(list.ToPagedList(1, 10));
         }
 
-        public ActionResult AvailableAsset(DateTime date,int timeId)
+        public ActionResult AvailableAsset(DateTime date,int[] time_ids)
         {
-            var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.TimeId == timeId);
-            List<Asset> assets = unitOfWork.Assets.ToList().ToList();
-
-            foreach (var assignment in assignments)
+            
+            Dictionary<int,int> min_avail_asset_count = new Dictionary<int,int>(); //能用的物资数量
+            Dictionary<int, int> asset_count = new Dictionary<int, int>();
+            foreach(var item in unitOfWork.Assets.ToList())
             {
-                foreach (var assigned in assignment.AssignedAssets)
+                min_avail_asset_count.Add(item.Id,Int32.MaxValue);
+                asset_count.Add(item.Id, item.Count);
+            }
+            List<Asset> assets = unitOfWork.Assets.ToList().ToList();
+            foreach (var time_id in time_ids)
+            {
+                foreach (var asset in assets)
                 {
-                    var asset = assets.Find(s => s.Id == assigned.AssetId);
-                    asset.Count -= assigned.Count;
+                    asset.Count = asset_count[asset.Id];
                 }
+                var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.Times.Any(s => s.Id == time_id));
+                
+
+                foreach (var assignment in assignments)
+                {
+                    foreach (var assigned in assignment.AssignedAssets)
+                    {
+                        var asset = assets.Find(s => s.Id == assigned.AssetId);
+                        asset.Count -= assigned.Count;
+                    }
+                }
+
+
+                foreach (var asset in assets)
+                {
+                    if (asset.Count < min_avail_asset_count[asset.Id])
+                    {
+                        min_avail_asset_count[asset.Id] = asset.Count;
+                    }
+                }
+            }
+
+            assets = unitOfWork.Assets.ToList().ToList();
+            foreach (var asset in assets)
+            {
+                asset.Count = min_avail_asset_count[asset.Id];
             }
 
             IEnumerable<Asset> available_assets = assets.OrderBy(s => s.Name);
@@ -164,9 +206,15 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
             ViewBag.Date = date.ToString("yyyy年MM月dd日");
-            var time = unitOfWork.Times.Find(timeId);
-            ViewBag.Time = time.TimeName;
-            ViewBag.TimeId = time.Id;
+
+
+            List<Time> temp_time = new List<Time>();
+            foreach (var time_id in time_ids)
+            {
+                temp_time.Add(unitOfWork.Times.Find(time_id));
+            }
+            ViewBag.Times = temp_time;
+            ViewBag.time_ids = time_ids;
 
             return View(available_assets.ToPagedList(1, 10));
         }

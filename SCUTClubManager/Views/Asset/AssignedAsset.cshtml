@@ -4,10 +4,14 @@
     ViewBag.Title = "AssignedAsset";
 }
 
-<h2>AssignedAsset</h2>
+<p>@ViewBag.Date</p>
+@foreach( var time in ViewBag.Times)
+{
+    <p>@time.TimeName</p>
+}
+<p>已借出的物资</p>
 
-
-@Html.ActionLink("查看未借出","AvailableAsset",new { date = @ViewBag.date, timeId = @ViewBag.timeId})
+@Html.ActionLink("查看未借出","AvailableAsset",new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
 
 <table>
     <tr>

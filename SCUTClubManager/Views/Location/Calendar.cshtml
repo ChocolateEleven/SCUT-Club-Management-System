@@ -6,6 +6,22 @@
 }
 
 <script>
+
+    $(function () {
+        var times = new Array();
+        @foreach (var time in ViewBag.Times as SelectList)
+        {
+            @:times.push({ key: '@time.Text', value: '@time.Value' });
+        }
+
+        var item_contents = new Array(
+            dropDownListFor("time_ids[0]", null, null, times));
+
+        var unavailable_time_list = new DynamicList(item_contents, "#times", "", null, null, null, null, 1);
+
+    })
+
+
     $(document).ready(function () {
         $("#cal").datepicker()
     });
@@ -14,13 +30,14 @@
 <h2>按日期借用场地</h2>
 
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("AvailableLocation", "Location"))
+{
 <div>
     请输入日期:  <input id="cal" name="date" type="text"/>
 </div>
-<div>
-    请选择时间段: @Html.DropDownList("timeId", String.Empty) 
+<div id="times">
+    请选择时间段:  
 </div>
 
 <input type="submit" value="查询" />
-}
+                         }

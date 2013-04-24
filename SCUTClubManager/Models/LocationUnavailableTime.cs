@@ -11,10 +11,10 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        //[Required]
         public int LocationId { get; set; }
 
-        [Required]
+        //[Required]
         public int TimeId { get; set; }
 
         [Required]

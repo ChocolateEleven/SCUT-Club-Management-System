@@ -70,7 +70,7 @@ namespace SCUTClubManager.Controllers
             ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id");
             ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name");
             ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason");
-            ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
+            ViewBag.Times = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
             return View();
         } 
@@ -79,10 +79,13 @@ namespace SCUTClubManager.Controllers
         // POST: /LocationApplication/Create
 
         [HttpPost]
-        public ActionResult Create(int TimeId, DateTime date ,int[] locationId,int ClubId, int? SubEventId)
+        public ActionResult Create(int[] time_ids, DateTime date ,int[] locationId,int ClubId, int? SubEventId)
         {
             LocationApplication location_application = new LocationApplication();
-            location_application.Time = unitOfWork.Times.Find(TimeId);
+            foreach (var time_id in time_ids)
+            {
+                location_application.Times.Add(unitOfWork.Times.Find(time_id));
+            }
             location_application.Date = date;
             if (SubEventId != null)
                 location_application.SubEvent = unitOfWork.SubEvents.Find(SubEventId);
@@ -102,36 +105,36 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /LocationApplication/Edit/5
  
-        public ActionResult Edit(int id)
-        {
-            LocationApplication locationapplication = unitOfWork.Applications.Find(id) as LocationApplication;
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", locationapplication.ClubId);
-            ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", locationapplication.ApplicantUserName);
-            ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason", locationapplication.Id);
-            ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", locationapplication.TimeId);
-            ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", locationapplication.SubEventId);
-            return View(locationapplication);
-        }
+        //public ActionResult Edit(int id)
+        //{
+        //    LocationApplication locationapplication = unitOfWork.Applications.Find(id) as LocationApplication;
+        //    ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", locationapplication.ClubId);
+        //    ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", locationapplication.ApplicantUserName);
+        //    ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason", locationapplication.Id);
+        //    ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", locationapplication.TimeId);
+        //    ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", locationapplication.SubEventId);
+        //    return View(locationapplication);
+        //}
 
         //
         // POST: /LocationApplication/Edit/5
 
-        [HttpPost]
-        public ActionResult Edit(LocationApplication locationapplication)
-        {
-            if (ModelState.IsValid)
-            {
-                unitOfWork.LocationApplications.Update(locationapplication);
-                unitOfWork.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", locationapplication.ClubId);
-            ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", locationapplication.ApplicantUserName);
-            ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason", locationapplication.Id);
-            ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", locationapplication.TimeId);
-            ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", locationapplication.SubEventId);
-            return View(locationapplication);
-        }
+        //[HttpPost]
+        //public ActionResult Edit(LocationApplication locationapplication)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        unitOfWork.LocationApplications.Update(locationapplication);
+        //        unitOfWork.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", locationapplication.ClubId);
+        //    ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", locationapplication.ApplicantUserName);
+        //    ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason", locationapplication.Id);
+        //    ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", locationapplication.TimeId);
+        //    ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", locationapplication.SubEventId);
+        //    return View(locationapplication);
+        //}
 
         //
         // GET: /LocationApplication/Delete/5

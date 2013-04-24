@@ -67,19 +67,43 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Add(int id)
         {
+            Dictionary<int,int> min_avail_asset_count = new Dictionary<int,int>(); //能用的物资数量
+            foreach(var item in unitOfWork.Assets.ToList())
+            {
+                min_avail_asset_count.Add(item.Id,Int32.MaxValue);
+            }
             var asset_application = unitOfWork.AssetApplications.Find(id);
             var date = asset_application.Date;
-            var time = asset_application.Time;
-            var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.TimeId == time.Id);
             List<Asset> assets = unitOfWork.Assets.ToList().ToList();
-            foreach(var assignment in assignments)
+            foreach (var apptime in asset_application.Times)
             {
-                foreach(var assigned_asset in assignment.AssignedAssets)
+                //所有跟申请时间相关的assingment
+                var assignments = unitOfWork.AssetAssignments.ToList().Where(t => t.Date == date && t.Times.Contains(apptime));
+                assets = unitOfWork.Assets.ToList().ToList();
+                foreach (var assignment in assignments)
                 {
-                    var asset = assets.Find(s => s.Id == assigned_asset.AssetId);
-                    asset.Count -= assigned_asset.Count;
+                    foreach (var assigned_asset in assignment.AssignedAssets)
+                    {
+                        var asset = assets.Find(s => s.Id == assigned_asset.AssetId);
+                        asset.Count -= assigned_asset.Count;
+                    }
+                }
+                foreach (var asset in assets)
+                {
+                    if (asset.Count < min_avail_asset_count[asset.Id])
+                    {
+                        min_avail_asset_count[asset.Id] = asset.Count;
+                    }
                 }
             }
+            assets = unitOfWork.Assets.ToList().ToList();
+            foreach (var asset in assets)
+            {
+                asset.Count = min_avail_asset_count[asset.Id];
+            }
+
+
+
             List<int> app_asset_count_error = new List<int>();
             bool no_error_mark = true;
             foreach(var applicated_asset in asset_application.ApplicatedAssets)
@@ -96,10 +120,13 @@ namespace SCUTClubManager.Controllers
             {
                 Date = date,
                 Club = asset_application.Club,
-                Time = asset_application.Time,
                 Applicant = asset_application.Applicant,
                 AssignedAssets = new List<AssignedAsset>()
             };
+            foreach (var time in asset_application.Times)
+            {
+                asset_assignment.Times.Add(time);
+            }
 
             foreach (var item in asset_application.ApplicatedAssets)
             {
@@ -152,32 +179,32 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /AssetAssignment/Edit/5
  
-        public ActionResult Edit(int id)
-        {
-            AssetAssignment assetassignment = unitOfWork.AssetAssignments.Find(id);
-            ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetassignment.TimeId);
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", assetassignment.ClubId);
-            ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", assetassignment.ApplicantUserName);
-            return View(assetassignment);
-        }
+        //public ActionResult Edit(int id)
+        //{
+        //    AssetAssignment assetassignment = unitOfWork.AssetAssignments.Find(id);
+        //    ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetassignment.TimeId);
+        //    ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", assetassignment.ClubId);
+        //    ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", assetassignment.ApplicantUserName);
+        //    return View(assetassignment);
+        //}
 
         //
         // POST: /AssetAssignment/Edit/5
 
-        [HttpPost]
-        public ActionResult Edit(AssetAssignment assetassignment)
-        {
-            if (ModelState.IsValid)
-            {
-                unitOfWork.AssetAssignments.Update(assetassignment);
-                unitOfWork.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetassignment.TimeId);
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", assetassignment.ClubId);
-            ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", assetassignment.ApplicantUserName);
-            return View(assetassignment);
-        }
+        //[HttpPost]
+        //public ActionResult Edit(AssetAssignment assetassignment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        unitOfWork.AssetAssignments.Update(assetassignment);
+        //        unitOfWork.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    ViewBag.TimeId = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName", assetassignment.TimeId);
+        //    ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id", assetassignment.ClubId);
+        //    ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name", assetassignment.ApplicantUserName);
+        //    return View(assetassignment);
+        //}
 
         //
         // GET: /AssetAssignment/Delete/5
