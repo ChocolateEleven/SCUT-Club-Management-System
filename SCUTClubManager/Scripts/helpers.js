@@ -9,6 +9,17 @@ function removePlaceHolder(element, class_name) {
     }
 }
 
+function resetForm(form) {
+    $(form)
+        .find('.field-validation-error')
+        .removeClass('field-validation-error')
+        .addClass('field-validation-valid');
+
+    $(form)
+        .find('.input-validation-error')
+        .removeClass('input-validation-error')
+}
+
 function refreshFormValidations() {
     $("form").removeData("validator");
     $("form").removeData("unobtrusiveValidation");
@@ -16,31 +27,41 @@ function refreshFormValidations() {
     $('form').validate();
 }
 
-function placeHolder(element, class_name, default_val_field, additional_submit) {
-    element.addClass(class_name);
+function placeHolder(element, class_name, additional_submit) {
+    var e = $(element);
 
-    if (default_val_field == null) {
-        element.attr("data-defaultVal", element.val());
-    } else {
-        element.attr(default_val_field, element.val());
-    }
+    e.addClass(class_name);
+    e.data("place-holder-default-val", e.val());
+    e.data("place-holder-class", class_name);
 
     $('input[type="submit"]').click(function (eventobject) {
-        removePlaceHolder(element, class_name);
+        removePlaceHolder(e, class_name);
     });
 
     $('button[type="submit"]').click(function (eventobject) {
-        removePlaceHolder(element, class_name);
+        removePlaceHolder(e, class_name);
     });
 
-    element.click(function () {
-        removePlaceHolder(element, class_name);
+    element.focus(function () {
+        removePlaceHolder(e, class_name);
     });
 
     if (additional_submit != null) {
         $(additional_submit).click(function () {
-            removePlaceHolder(element, class_name);
+            removePlaceHolder(e, class_name);
         });
+    }
+}
+
+function resetPlaceHolder(element) {
+    var e = $(element);
+    var class_name = e.data("place-holder-class");
+
+    if (class_name != null) {
+        if (!e.hasClass(class_name)) {
+            e.addClass(class_name);
+            e.val(e.data("place-holder-default-val"));
+        }
     }
 }
 
@@ -194,8 +215,7 @@ function dynamicList_AddItem(values) {
         var children = this.insertPanel.children(".DynamicListInsertValue");
 
         children.each(function (index, element) {
-            $(element).val($(element).attr("data-defaultVal"));
-            $(element).addClass("PlaceHolder");
+            resetPlaceHolder(element);
         });
 
         refreshFormValidations();
@@ -239,7 +259,7 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
             content.addClass("DynamicListInsertValue");
             insert_panel.append(content);
 
-            placeHolder(content, "PlaceHolder", "data-defaultVal", button);
+            placeHolder(content, "PlaceHolder", button);
         }
     }
 

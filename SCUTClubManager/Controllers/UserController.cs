@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 using SCUTClubManager.Models;
 using SCUTClubManager.BusinessLogic;
 using SCUTClubManager.DAL;
+using SCUTClubManager.Helpers;
 
 namespace SCUTClubManager.Controllers
 {
@@ -69,10 +71,12 @@ namespace SCUTClubManager.Controllers
         //
         // POST: /User/Add
 
-        [Authorize(Roles = "社团")]
+        [Authorize(Roles = "社联")]
         [HttpPost]
         public ActionResult Add(User user, bool is_admin)
         {
+            string operation = "add";
+
             if (ModelState.IsValid)
             {
                 int role_id;
@@ -102,12 +106,54 @@ namespace SCUTClubManager.Controllers
 
                 ScmMembershipProvider.AddUser(user);
 
+                return Json(new { success = true, msg = "添加成功", operation = operation });
+            }
+
+            return Json(new { success = false, msg = "参数错误", operation = operation });
+        }
+
+        [Authorize(Roles = "社联")]
+        [HttpPost]
+        public ActionResult AddRange(HttpPostedFileBase file)
+        {
+            if (file != null && file.ContentLength > 0)
+            {
+                string guid = Guid.NewGuid().ToString();
+                string extension = "";
+
+                if (Path.HasExtension(file.FileName))
+                {
+                    extension = Path.GetExtension(file.FileName);
+                }
+
+                string file_name = guid + extension;
+                string path = Path.Combine(Server.MapPath(ConfigurationManager.ClubSplashPanelFolder), file_name);
+
+                file.SaveAs(path);
+
+                ExcelProcessor excel = new ExcelProcessor(ConfigurationManager.MaxRangeForRangeAdding, path);
+                excel.Init();
+
+                //while (!excel.IsEnd())
+                //{
+                //    IEnumerable<User> users = excel.FetchMoreUsers();
+
+                //    foreach (User user in users)
+                //    {
+                //        ScmMembershipProvider.AddUser(user, false);
+                //    }
+
+                //    ScmMembershipProvider.SaveChanges();
+                //}
+
+                excel.Dispose();
+
                 return Json(new { success = true, msg = "添加成功" });
             }
 
-            return Json(new { success = false, msg = "参数错误" });
+            return Json(new { success = false, msg = "上传失败" });
         }
-        
+
         //
         // GET: /User/Edit/5
  

@@ -12,7 +12,7 @@ namespace SCUTClubManager.Models
         [StringLength(1)]
         public string Gender { get; set; }
 
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
 
         //[Required]
         [MaxLength(20,ErrorMessage = "长度不能超过20个字符")]

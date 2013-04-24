@@ -30,6 +30,7 @@
 
         $('form').ajaxForm({
             success: function (data) {
+                debugger;
                 notify(data);
                 var checkboxes = $("input.ItemSelector[name!='all_in']");
 
@@ -41,6 +42,18 @@
                             }
                         });
                     }
+                } else if (data.operation == "add") {
+                    if (data.success) {
+                        $("#addUserForm").find("input").each(function (index, element) {
+                            resetPlaceHolder(element);
+                        });
+
+                        resetForm("#addUserForm");
+
+                        $("#addUserForm").dialog("close");
+                    }
+                } else if (data.operation == "add_range") {
+                    $("#addUserInRangeForm").dialog("close");
                 }
             },
             error: function (e) {
@@ -54,8 +67,79 @@
         $("#addRange").tooltip();
 
         confirm("#remove", "确定要删除选中的用户吗？", function () {
-            $('form').attr('action', 'Delete');
-            $('form').submit();
+            $('#deleteUserForm').submit();
+        });
+
+        $("#is_admin").change(function () {
+            if (this.checked) {
+                $("#Name").attr("disabled", "true");
+            } else {
+                $("#Name").removeAttr("disabled");
+            }
+        });
+
+        $("#addUserForm").dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: true,
+            buttons: [
+                {
+                    text: "添加",
+                    id: "addUserSubmit",
+                    click: function () {}
+                },
+                {
+                    text: "取消",
+                    id: "addUserCancel",
+                    click: function () {
+                        $("#addUserForm").find("input").each(function (index, element) {
+                            resetPlaceHolder(element);
+                        });
+
+                        resetForm("#addUserForm");
+
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+        $("#addUserInRangeForm").dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: true,
+            buttons: [
+                {
+                    text: "添加",
+                    click: function () {
+                        $("#addUserInRangeForm").submit();
+                    }
+                },
+                {
+                    text: "取消",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+        $("#add").click(function () {
+            $("#addUserForm").dialog("open");
+        });
+
+        $("#addRange").click(function () {
+            $("#addUserInRangeForm").dialog("open");
+        });
+
+        placeHolder($("#UserName"), "PlaceHolder", $("#addUserSubmit"));
+        placeHolder($("#Password"), "PlaceHolder", $("#addUserSubmit"));
+        placeHolder($("#Name"), "PlaceHolder", $("#addUserSubmit"));
+
+        $("#addUserSubmit").click(function () {
+            $("#addUserForm").submit();
         });
     })
 </script>
@@ -81,7 +165,7 @@
 
 @Html.Partial("_SearchBar")
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Delete", "User", FormMethod.Post, new { id = "deleteUserForm" }))
 {
     bool is_student_list = ViewBag.RoleName == "学生";
 
@@ -205,16 +289,17 @@
     <div>
         <input class="text-box single-line password" data-val="true" data-val-regex="密码只能是数字和字母的组合且不能超过15个字符"
             data-val-regex-pattern="^[a-z0-9A-Z]{1,15}$" data-val-required="密码 字段是必需的。" id="Password"
-            name="Password" type="password" value="" />
+            name="Password" type="password" value="请在此输入密码" />
         <span class="field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
     </div>
     <div>
         是否作为管理员
     </div>
     <div>
-        <input data-val="true" id="RememberMe" name="is_admin"
+        <input data-val="true" id="is_admin" name="is_admin"
              type="checkbox" value="true" />
         <input name="is_admin" type="hidden" value="false" />
+        <span class="field-validation-valid" data-valmsg-for="is_admin" data-valmsg-replace="true"></span>
     </div>
     <div>
         姓名
@@ -222,8 +307,26 @@
     <div>
         <input id="Name" value="请在此输入姓名" name="Name" class="text-box single-line" data-val="true" 
             data-val-regex="用户名只能是汉字或字母，且长度不能超过10个字符" 
-            data-val-regex-pattern="^[a-z0-9A-Z]{1,20}$" data-val-required="姓名 字段是必需的。" type="text" />
-        <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+            data-val-regex-pattern="^[\u2E80-\u9FFFa-zA-Z]{1,10}$" data-val-required="姓名 字段是必需的。" type="text" />
+        <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+    </div>
+}
+
+@using (Html.BeginForm("AddRange", "User", FormMethod.Post, new { id = "addUserInRangeForm" }))
+{
+    <div>
+        <p>
+            请选择一个包含了用户信息的Excel文件上传，该文件每一行的格式如下：
+        </p>
+        <p>
+            <span>姓名</span>
+            <span>用户名</span>
+            <span>密码</span>
+            <span>角色ID</span>
+        </p>
+    </div>
+    <div>
+        <input type="file" name="file" />
     </div>
 }
 

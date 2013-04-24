@@ -12,6 +12,8 @@ namespace SCUTClubManager.Helpers
         private static bool isRecruitEnabled = false;
         private static string clubSplashPanelFolder = "~/Content/Images/ClubSplashPanels/";
         private static int inclinationsPerPerson = 3;
+        private static string temporaryFilesFolder = "~/Content/Temp/";
+        private static int maxRangeForRangeAdding = 100;
         private static XmlWriterSettings settings = null;
 
         public static string ConfigFile
@@ -36,6 +38,8 @@ namespace SCUTClubManager.Helpers
                     xml.WriteElementString("IsRecruitEnabled", isRecruitEnabled.ToString());
                     xml.WriteElementString("ClubSplashPanelFolder", clubSplashPanelFolder.ToString());
                     xml.WriteElementString("InclinationsPerPerson", inclinationsPerPerson.ToString());
+                    xml.WriteElementString("TemporaryFilesFolder", temporaryFilesFolder.ToString());
+                    xml.WriteElementString("MaxRangeForRangeAdding", maxRangeForRangeAdding.ToString());
 
                     xml.WriteEndElement();
 
@@ -65,6 +69,21 @@ namespace SCUTClubManager.Helpers
                 if (reader.ReadToFollowing("InclinationsPerPerson"))
                 {
                     inclinationsPerPerson = reader.ReadElementContentAsInt();
+                }
+                if (reader.ReadToFollowing("TemporaryFilesFolder"))
+                {
+                    string str = reader.ReadElementContentAsString().ToLower();
+                    temporaryFilesFolder = str;
+                    string mapped_path = HttpContext.Current.Server.MapPath(str);
+
+                    if (!Directory.Exists(mapped_path))
+                    {
+                        Directory.CreateDirectory(mapped_path);
+                    }
+                }
+                if (reader.ReadToFollowing("MaxRangeForRangeAdding"))
+                {
+                    maxRangeForRangeAdding = reader.ReadElementContentAsInt();
                 }
             }
         }
@@ -134,6 +153,52 @@ namespace SCUTClubManager.Helpers
                     }
 
                     clubSplashPanelFolder = value;
+                }
+            }
+        }
+
+        public static int MaxRangeForRangeAdding
+        {
+            get
+            {
+                return maxRangeForRangeAdding;
+            }
+            set
+            {
+                if (maxRangeForRangeAdding != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("MaxRangeForRangeAdding", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    maxRangeForRangeAdding = value;
+                }
+            }
+        }
+
+        public static string TemporaryFilesFolder
+        {
+            get
+            {
+                return temporaryFilesFolder;
+            }
+            set
+            {
+                if (temporaryFilesFolder != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("TemporaryFilesFolder", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    temporaryFilesFolder = value;
                 }
             }
         }

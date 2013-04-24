@@ -62,7 +62,7 @@ namespace SCUTClubManager.BusinessLogic
 
             user.Password = hash;
 
-            context.SaveChanges();
+            SaveChanges();
 
             return true;
         }
@@ -93,8 +93,13 @@ namespace SCUTClubManager.BusinessLogic
 
             if (save)
             {
-                context.SaveChanges();
+                SaveChanges();
             }
+        }
+
+        public static void SaveChanges()
+        {
+            context.SaveChanges();
         }
 
         public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion, string newPasswordAnswer)

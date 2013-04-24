@@ -1,1 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?><IsRecruitEnabled>True</IsRecruitEnabled>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SCUTClubManagerConfigFile>
+  <IsRecruitEnabled>False</IsRecruitEnabled>
+  <ClubSplashPanelFolder>~/Content/Images/ClubSplashPanels/</ClubSplashPanelFolder>
+  <InclinationsPerPerson>3</InclinationsPerPerson>
+  <TemporaryFilesFolder>~/Content/Temp/</TemporaryFilesFolder>
+  <MaxRangeForRangeAdding>100</MaxRangeForRangeAdding>
+</SCUTClubManagerConfigFile>
