@@ -14,8 +14,8 @@ namespace SCUTClubManager.Models
         public string TimeName { get; set; }
 
         //public virtual ICollection<AssetApplication> AssetApplications { get; set; }
-        public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
-        public virtual ICollection<LocationApplication> LocationApplications { get; set; }
-        public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
+        //public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
+        //public virtual ICollection<LocationApplication> LocationApplications { get; set; }
+        //public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
     }
 }

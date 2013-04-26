@@ -24,11 +24,18 @@ namespace SCUTClubManager.Controllers
             return View();
         }
 
-        public ActionResult List(int page_number = 1, string search = "")
+        public ActionResult List(int page_number = 1, string search = "", string search_option = "Name", string order = "Name")
         {
-             ViewBag.Search = search;
+            List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string, string>>();
+            select_list.Add(new KeyValuePair<string, string>("物资名", "Name"));
+            ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Name");
+            ViewBag.Search = search;
+            ViewBag.CurrentOrder = order;
+            ViewBag.CloseDateOrderOpt = order == "Name" ? "NameDesc" : "Name";
+            var polls = unitOfWork.Assets.ToList();
+
            var  asset =  QueryProcessor.Query<Asset>(unitOfWork.Assets.ToList(),
-               filter: t => t.Name.Contains(search), order_by: "Name", page_number: page_number, items_per_page: 2);
+               filter: t => t.Name.Contains(search), order_by: order, page_number: page_number, items_per_page: 2);
             return View(asset);
         }
 

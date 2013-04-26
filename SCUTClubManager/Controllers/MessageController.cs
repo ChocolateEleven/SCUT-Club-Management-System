@@ -20,41 +20,39 @@ namespace SCUTClubManager.Controllers
 
         //
         // GET: /Message/
-       
-        public ViewResult Index(string receivers = null)
+
+        public ViewResult Index(int page_number = 1, string search = "", string search_option = "Title", string order = "Date")
         {
            // var messages = db.Messages.Include(m => m.Sender).Include(m => m.Receiver);
-            IEnumerable<Message> messages = unitOfWork.Messages.ToList();
 
+            List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string, string>>();
+            select_list.Add(new KeyValuePair<string, string>("标题", "Title"));
+            select_list.Add(new KeyValuePair<string, string>("标题", "SenderUserName"));
+            ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Title");
+            ViewBag.Search = search;
+            ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
 
-            if (receivers != null)
+            var messages_list = unitOfWork.Messages.ToList();
+
+            if (!String.IsNullOrWhiteSpace(search))
             {
-                var user = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList(), filter: t => t.UserName == receivers)
-                    .Single();
-
-                messages = QueryProcessor.Query<Message>(collection: messages, filter: t => t.Receiver.UserName == user.UserName);
-                
-                if (User.IsInRole("社联"))
+                switch (search_option)
                 {
+                    case "SenderUserName":
+                        messages_list = messages_list.Where(s => s.Sender.Name.Contains(search));
+                        break;
+                    case "Title":
+                        messages_list = messages_list.Where(s => s.Title.Contains(search));
+                        break;
+                    default:
+                        break;
                 }
-                else
-                {
-                    if (user is Student)
-                    {
-                        Student student = user as Student;
-                        ViewBag.userName = student.Name;
-                    }
-                }
-            }
-            else
-            {
-                
-                ViewBag.userName = "";
-            }
 
-            ViewBag.receivers = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName"); 
+            }
+            var list = QueryProcessor.Query(messages_list, order_by: order, page_number: page_number, items_per_page: 2);
+           
 
-            return View(messages.ToList());
+            return View(list);
         }
 
         //[HttpPost]
@@ -86,11 +84,11 @@ namespace SCUTClubManager.Controllers
 
            // ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
 
-            var sender = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
-            ViewBag.SenderId = new SelectList(sender, "UserName", "UserName");
+           // var sender = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
+            ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
 
-            var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
-            ViewBag.ReceiverId = new SelectList(receiver, "UserName", "UserName");
+            //var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
+            ViewBag.ReceiverId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
             return View();
         } 
 
@@ -104,7 +102,8 @@ namespace SCUTClubManager.Controllers
             {
                // db.Messages.Add(message);
                // db.SaveChanges();
-                message.Sender = unitOfWork.Users.Find(message.SenderId);
+
+                message.Sender = unitOfWork.Users.ToList().Where(t => t.UserName == User.Identity.Name).Single();
                 message.Receiver = unitOfWork.Users.Find(message.ReceiverId);
                 message.Date = DateTime.Now;
                 message.ReadMark = false;
@@ -152,22 +151,23 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Message/Delete/5
  
-        public ActionResult Delete(int id)
-        {
-            Message message = unitOfWork.Messages.Find(id);
-            return View(message);
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    Message message = unitOfWork.Messages.Find(id);
+        //    return View(message);
+        //}
 
         //
         // POST: /Message/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public ActionResult Delete(int id)
         {
             Message message = unitOfWork.Messages.Find(id);
             unitOfWork.Messages.Delete(message);
             unitOfWork.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { idToDelete = id, success = true });
+            //return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

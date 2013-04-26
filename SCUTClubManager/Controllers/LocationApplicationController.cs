@@ -65,15 +65,15 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /LocationApplication/Create
 
-        public ActionResult Create()
-        {
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id");
-            ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name");
-            ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason");
-            ViewBag.Times = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
-            ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
-            return View();
-        } 
+        //public ActionResult Create()
+        //{
+        //    ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "Id");
+        //    ViewBag.ApplicantUserName = new SelectList(unitOfWork.Users.ToList(), "UserName", "Name");
+        //    ViewBag.Id = new SelectList(unitOfWork.ApplicationRejectReasons.ToList(), "ApplicationId", "Reason");
+        //    ViewBag.Times = new SelectList(unitOfWork.Times.ToList(), "Id", "TimeName");
+        //    ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
+        //    return View();
+        //} 
 
         //
         // POST: /LocationApplication/Create
@@ -82,9 +82,11 @@ namespace SCUTClubManager.Controllers
         public ActionResult Create(int[] time_ids, DateTime date ,int[] locationId,int ClubId, int? SubEventId)
         {
             LocationApplication location_application = new LocationApplication();
+            location_application.Times = new List<Time>();
             foreach (var time_id in time_ids)
             {
-                location_application.Times.Add(unitOfWork.Times.Find(time_id));
+                var t = unitOfWork.Times.Find(time_id);
+                location_application.Times.Add(t);
             }
             location_application.Date = date;
             if (SubEventId != null)
@@ -99,6 +101,9 @@ namespace SCUTClubManager.Controllers
             location_application.Status = Application.NOT_VERIFIED;
             unitOfWork.Applications.Add(location_application);
             unitOfWork.SaveChanges();
+
+            //////弹出“操作成功”
+
             return RedirectToAction("Index", "Location");
         }
         

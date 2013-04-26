@@ -16,7 +16,10 @@
     
     <div class="display-label">时间段</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Time.TimeName)
+            @foreach(var time in Model.Times)
+            {
+                <p>@time.TimeName</p>
+            }
     </div>
 
     <div class="display-label">申请社团</div>

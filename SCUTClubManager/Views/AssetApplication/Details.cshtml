@@ -21,14 +21,17 @@
         }
     </div>
     
-    <div class="display-label">locationapplication日期</div>
+    <div class="display-label">日期</div>
     <div class="display-field">
         @Model.Date.ToString("yyyy年MM月dd日")
     </div>
 
     <div class="display-label">时间段</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Time.TimeName)
+            @foreach(var time in Model.Times)
+            {
+                <p>@time.TimeName</p>
+            }
     </div>
 
     <div class="display-label">申请社团</div>

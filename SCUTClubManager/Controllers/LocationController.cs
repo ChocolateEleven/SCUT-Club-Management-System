@@ -25,9 +25,20 @@ namespace SCUTClubManager.Controllers
         }
 
 
-        public ActionResult List()
+        public ActionResult List(int page_number = 1, string search = "", string search_option = "Name", string order = "Name")
         {
-            return View(unitOfWork.Locations.ToList());
+            List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string, string>>();
+            select_list.Add(new KeyValuePair<string, string>("场地名", "Name"));
+            ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Name");
+            ViewBag.Search = search;
+            ViewBag.CurrentOrder = order;
+            ViewBag.NameOrderOpt = order == "Name" ? "NameDesc" : "Name";
+
+
+            var polls = unitOfWork.Locations.ToList();
+            var list = QueryProcessor.Query(polls, order_by: order, page_number: page_number, items_per_page: 2);
+
+            return View(list);
         }
 
         //
@@ -146,24 +157,24 @@ namespace SCUTClubManager.Controllers
         }
 
         //
-        // GET: /Location/Delete/5
+        //// GET: /Location/Delete/5
  
-        public ActionResult Delete(int id)
-        {
-            Location location = unitOfWork.Locations.Find(id);
-            return View(location);
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    Location location = unitOfWork.Locations.Find(id);
+        //    return View(location);
+        //}
 
         //
         // POST: /Location/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public ActionResult Delete(int id)
         {            
             Location location = unitOfWork.Locations.Find(id);
             unitOfWork.Locations.Delete(location);
-            unitOfWork.SaveChanges();
-            return RedirectToAction("Index");
+            unitOfWork.SaveChanges(); 
+            return Json(new { idToDelete = id, success = true });
         }
 
         public ActionResult Calendar()
@@ -222,10 +233,11 @@ namespace SCUTClubManager.Controllers
                     }
                 }
 
+
                 //删除当天当时间段不可用的场地
                 foreach (var location_unavailable_time in unitOfWork.LocationUnAvailableTimes.ToList())
                 {
-                    if (location_unavailable_time.TimeId == time_id)
+                    if (location_unavailable_time.TimeId == time_id && location_unavailable_time.WeekDayId == weekday)
                     {
                         if(locations.Contains(location_unavailable_time.Location))
                        {
@@ -265,14 +277,40 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult UnAvailableLocation(DateTime date, int[] time_ids)
         {
-
+            int weekday = 0;
+            switch (date.DayOfWeek.ToString().ToLower())
+            {
+                case "monday":
+                    weekday = 1;
+                    break;
+                case "tuesday":
+                    weekday = 2;
+                    break;
+                case "wednesday":
+                    weekday = 3;
+                    break;
+                case "thursday":
+                    weekday = 4;
+                    break;
+                case "friday":
+                    weekday = 5;
+                    break;
+                case "saturday":
+                    weekday = 6;
+                    break;
+                case "sunday":
+                    weekday = 7;
+                    break;
+                default:
+                    break;
+            }
             List<Location> locations = new List<Location>();
             foreach (var time_id in time_ids)
             {
                 //当天当时间段不可用的场地
                 foreach (var location_unavailable_time in unitOfWork.LocationUnAvailableTimes.ToList())
                 {
-                    if (location_unavailable_time.TimeId == time_id)
+                    if (location_unavailable_time.TimeId == time_id && location_unavailable_time.WeekDayId == weekday)
                     {
                         if (!locations.Contains(location_unavailable_time.Location))
                         {

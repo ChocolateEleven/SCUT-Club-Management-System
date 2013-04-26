@@ -1316,6 +1316,42 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
+            #region FundDetails
+            var fund_details = new List<FundDetails>() 
+            {
+                new FundDetails
+                {
+                    Date = new DateTime(2013,02,02),
+                    Applicant = students[2] as Student,
+                    Quantity = 100,
+                    Club = clubs[0]
+                },
+                new FundDetails
+                {
+                    Date = new DateTime(2013,04,11),
+                    Applicant = students[2] as Student,
+                    Quantity = 200,
+                    Club = clubs[0]
+                },
+                new FundDetails
+                {
+                    Date = new DateTime(2013,04,12),
+                    Applicant = students[2] as Student,
+                    Quantity = 300,
+                    Club = clubs[0]
+                },
+                new FundDetails
+                {
+                    Date = new DateTime(2013,04,13),
+                    Applicant = students[2] as Student,
+                    Quantity = 400,
+                    Club = clubs[0]
+                }
+            };
+            #endregion
+
+
+
             ids.ForEach(s => context.Identities.Add(s));
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
             sub_infos.ForEach(s => context.ClubSubInfos.Add(s));

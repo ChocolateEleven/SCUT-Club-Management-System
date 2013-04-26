@@ -17,7 +17,10 @@
 
     <div class="display-label">Time</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Time.TimeName)
+       @foreach(var time in Model.Times)
+            {
+                <p>@time.TimeName</p>
+            }
     </div>
 
     <div class="display-label">Club</div>

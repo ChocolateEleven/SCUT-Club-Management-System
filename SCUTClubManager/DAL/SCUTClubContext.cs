@@ -193,8 +193,7 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<AssetApplication>().HasMany(t => t.ApplicatedAssets).WithRequired().WillCascadeOnDelete(true);
             model_builder.Entity<AssetAssignment>().HasMany(t => t.AssignedAssets).WithRequired(t => t.AssetAssignment).WillCascadeOnDelete(true);
 
-
-            model_builder.Entity<LocationUnavailableTime>().HasRequired(t => t.Location).WithMany(t => t.UnAvailableTimes).WillCascadeOnDelete(false);
+            //model_builder.Entity<LocationUnavailableTime>().HasRequired(t => t.Location).WithMany(t => t.UnAvailableTimes).WillCascadeOnDelete(false);
         
 
             model_builder.Entity<Student>().HasMany(t => t.MemberShips).WithRequired(t => t.Student).WillCascadeOnDelete(true);
@@ -203,6 +202,16 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<Student>().HasMany(t => t.AssetAssignments).WithRequired(t => t.Applicant).WillCascadeOnDelete(true);
 
             model_builder.Entity<ClubApplication>().HasMany(t => t.Inclinations).WithRequired(t => t.Application).WillCascadeOnDelete(true);
+
+            model_builder.Entity<Location>().HasMany(t => t.UnAvailableTimes).WithRequired(t => t.Location).WillCascadeOnDelete(true);
+            model_builder.Entity<Asset>().HasMany(t => t.Applications).WithRequired(t => t.Asset).WillCascadeOnDelete(true);
+            model_builder.Entity<Asset>().HasMany(t => t.Assignments).WithRequired(t => t.Asset).WillCascadeOnDelete(true);
+
+            model_builder.Entity<AssetAssignment>().HasMany(t => t.Times).WithMany();
+            model_builder.Entity<LocationApplication>().HasMany(t => t.Times).WithMany();
+            model_builder.Entity<SubEvent>().HasMany(t => t.Times).WithMany();
+            model_builder.Entity<LocationAssignment>().HasMany(t => t.Times).WithMany();
+            model_builder.Entity<AssetApplication>().HasMany(t => t.Times).WithMany();
         }
         
         public DbSet<LocationApplication> LocationApplications { get; set; }

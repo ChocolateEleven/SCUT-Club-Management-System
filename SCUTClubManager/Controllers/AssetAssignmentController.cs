@@ -209,22 +209,22 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /AssetAssignment/Delete/5
  
-        public ActionResult Delete(int id)
-        {
-            AssetAssignment assetassignment = unitOfWork.AssetAssignments.Find(id);
-            return View(assetassignment);
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    AssetAssignment assetassignment = unitOfWork.AssetAssignments.Find(id);
+        //    return View(assetassignment);
+        //}
 
         //
         // POST: /AssetAssignment/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public ActionResult Delete(int id)
         {            
             AssetAssignment assetassignment = unitOfWork.AssetAssignments.Find(id);
             unitOfWork.AssetAssignments.Delete(assetassignment);
             unitOfWork.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { idToDelete = id, success = true });
         }
 
         protected override void Dispose(bool disposing)

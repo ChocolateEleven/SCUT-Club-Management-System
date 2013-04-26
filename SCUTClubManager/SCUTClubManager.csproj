@@ -134,6 +134,7 @@
     <Compile Include="Controllers\ClubMemberApplicationController.cs" />
     <Compile Include="Controllers\ClubMemberController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
+    <Compile Include="Controllers\FundController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationApplicationController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
@@ -405,6 +406,11 @@
     <Content Include="Views\Shared\InvalidFilterError.cshtml" />
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\Location\UnAvailableLocation.cshtml" />
+    <Content Include="Views\Fund\Index.cshtml" />
+    <Content Include="Views\Fund\Details.cshtml" />
+    <Content Include="Views\Fund\Create.cshtml" />
+    <Content Include="Views\Fund\Edit.cshtml" />
+    <Content Include="Views\Fund\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

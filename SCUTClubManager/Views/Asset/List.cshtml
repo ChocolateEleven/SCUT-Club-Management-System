@@ -4,6 +4,16 @@
     ViewBag.Title = "Index";
 }
 
+
+@Html.Partial("_Confirmation")
+
+
+<script>
+    $(document).ready(function () {
+        deleteConfirmAjax(".deleteLink", "确认删除？", "/Location/Delete");
+    });
+</script>
+
 <h2>物资一览</h2>
 
 <p>
@@ -13,7 +23,7 @@
 <table>
     <tr>
         <th>
-            物资
+            @Html.ActionLink("物资名", "List", new { order = ViewBag.NameOrderOpt })
         </th>
         <th>
             数量
@@ -22,7 +32,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="row-@item.Id">
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
@@ -31,7 +41,7 @@
         </td>
         <td>
             @Html.ActionLink("编辑", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("删除", "Delete", new { id=item.Id })
+            <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
         </td>
     </tr>
 }

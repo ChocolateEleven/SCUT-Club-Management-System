@@ -178,22 +178,28 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /AssetApplication/Delete/5
  
-        public ActionResult Delete(int id)
-        {
-            AssetApplication assetapplication = unitOfWork.Applications.Find(id) as AssetApplication;
-            return View(assetapplication);
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    AssetApplication assetapplication = unitOfWork.Applications.Find(id) as AssetApplication;
+        //    return View(assetapplication);
+        //}
 
-        //
+        // 
         // POST: /AssetApplication/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public ActionResult Delete(int id)
         {
             AssetApplication assetapplication = unitOfWork.Applications.Find(id) as AssetApplication;
             unitOfWork.Applications.Delete(assetapplication);
             unitOfWork.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { idToDelete = id, success = true });
+
+
+            //Location location = unitOfWork.Locations.Find(id);
+            //unitOfWork.Locations.Delete(location);
+            //unitOfWork.SaveChanges();
+            //return Json(new { idToDelete = id, success = true });
         }
 
         protected override void Dispose(bool disposing)
