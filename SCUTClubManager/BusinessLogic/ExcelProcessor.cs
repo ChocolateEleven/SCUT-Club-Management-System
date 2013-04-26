@@ -68,21 +68,22 @@ namespace SCUTClubManager.BusinessLogic
                 excel.DatabaseEngine = LinqToExcel.Domain.DatabaseEngine.Ace;
 
                 totalRows = (from r in excel.WorksheetNoHeader()
-                        select r).Count();
+                             select r).Count();
             }
         }
 
         public IEnumerable<User> FetchMoreUsers()
         {
             List<User> users = new List<User>(rowsPerRun);
-            int admin_role_id = ScmRoleProvider.GetRoleIdByName("社联");
-            int index_to_read_to = (rowsRead + rowsPerRun) > totalRows ? totalRows : (rowsRead + rowsPerRun);
-            string start = "A" + (rowsRead + 1);
-            string end = "D" + index_to_read_to;
 
             // 已经读完
             if (totalRows <= rowsRead)
                 return users;
+
+            int admin_role_id = ScmRoleProvider.GetRoleIdByName("社联");
+            int index_to_read_to = (rowsRead + rowsPerRun) > totalRows ? totalRows : (rowsRead + rowsPerRun);
+            string start = "A" + (rowsRead + 1);
+            string end = "D" + index_to_read_to;
 
             users.AddRange(from r in excel.WorksheetRange<User>(start, end)
                            where r.RoleId == admin_role_id
@@ -90,6 +91,8 @@ namespace SCUTClubManager.BusinessLogic
             users.AddRange(from r in excel.WorksheetRange<Student>(start, end)
                            where r.RoleId != admin_role_id
                            select r);
+
+            rowsRead = index_to_read_to;
 
             return users;
         }
@@ -105,7 +108,7 @@ namespace SCUTClubManager.BusinessLogic
             {
                 if (disposing)
                 {
-                    
+
                 }
             }
 

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.IO;
 using System.Data.Entity;
 using SCUTClubManager.Models;
 using System.Web.Security;
 using SCUTClubManager.BusinessLogic;
+using SCUTClubManager.Helpers;
 
 namespace SCUTClubManager.DAL
 {
@@ -14,7 +16,7 @@ namespace SCUTClubManager.DAL
         protected override void Seed(SCUTClubContext context)
         {
             base.Seed(context);
-
+            
             #region Ids
             var ids = new List<IdentityForTPC>
             {
@@ -1360,6 +1362,21 @@ namespace SCUTClubManager.DAL
             location_assignments.ForEach(s => context.LocationAssignments.Add(s));
 
             context.SaveChanges();
+
+            string poster_path = HttpContext.Current.Server.MapPath(ConfigurationManager.ClubSplashPanelFolder);
+            string temp_path = HttpContext.Current.Server.MapPath(ConfigurationManager.TemporaryFilesFolder);
+
+            if (System.IO.Directory.Exists(poster_path))
+            {
+                System.IO.Directory.Delete(poster_path, true);
+                System.IO.Directory.CreateDirectory(poster_path);
+            }
+
+            if (System.IO.Directory.Exists(temp_path))
+            {
+                System.IO.Directory.Delete(temp_path, true);
+                System.IO.Directory.CreateDirectory(temp_path);
+            }
         }
     }
 }

@@ -38,6 +38,7 @@ namespace SCUTClubManager.Controllers
             ViewBag.Search = search;
             ViewBag.SearchOption = search_option;
             ViewBag.RoleFilter = role_filter;
+            ViewBag.ProgressProfileInterval = ConfigurationManager.ProgressProfileInterval;
 
             IEnumerable<User> users = FilterUsers(role_filter, search, search_option);
             users = QueryProcessor.Query(users, null, order, null, page_number, 20);
@@ -114,10 +115,16 @@ namespace SCUTClubManager.Controllers
 
         [Authorize(Roles = "社联")]
         [HttpPost]
-        public ActionResult AddRange(HttpPostedFileBase file)
+        public ActionResult AddRange(HttpPostedFileBase file, int role_filter, string search, string search_option, string order)
         {
+            Session["HasStarted"] = false;
+
             if (file != null && file.ContentLength > 0)
             {
+                // 开始记录处理进度
+                Session["HasStarted"] = true;
+                Session["Progress"] = 0.0f;
+
                 string guid = Guid.NewGuid().ToString();
                 string extension = "";
 
@@ -127,31 +134,46 @@ namespace SCUTClubManager.Controllers
                 }
 
                 string file_name = guid + extension;
-                string path = Path.Combine(Server.MapPath(ConfigurationManager.ClubSplashPanelFolder), file_name);
+                string path = Path.Combine(Server.MapPath(ConfigurationManager.TemporaryFilesFolder), file_name);
 
                 file.SaveAs(path);
 
-                ExcelProcessor excel = new ExcelProcessor(ConfigurationManager.MaxRangeForRangeAdding, path);
-                excel.Init();
+                using (ExcelProcessor excel = new ExcelProcessor(ConfigurationManager.MaxRangeForRangeAdding, path))
+                {
+                    excel.Init();
 
-                //while (!excel.IsEnd())
-                //{
-                //    IEnumerable<User> users = excel.FetchMoreUsers();
+                    while (!excel.IsEnd())
+                    {
+                        IEnumerable<User> users = excel.FetchMoreUsers();
 
-                //    foreach (User user in users)
-                //    {
-                //        ScmMembershipProvider.AddUser(user, false);
-                //    }
+                        foreach (User user in users)
+                        {
+                            ScmMembershipProvider.AddUser(user, false);
+                        }
 
-                //    ScmMembershipProvider.SaveChanges();
-                //}
+                        ScmMembershipProvider.SaveChanges();
 
-                excel.Dispose();
+                        Session["Progress"] = (float)excel.RowsRead / excel.TotalRows;
+                    }
+                }
 
-                return Json(new { success = true, msg = "添加成功" });
+                string return_url = "List?role_filter=" + role_filter + "&search=" + search +
+                "&search_option=" + search_option + "&order=" + order;
+
+                System.IO.File.Delete(path);
+
+                return Json(new { success = true, msg = "添加成功", url = return_url });
             }
 
             return Json(new { success = false, msg = "上传失败" });
+        }
+
+        public ActionResult CurrentProgress()
+        {
+            bool has_started = Session["HasStarted"] == null ? false : (bool)Session["HasStarted"];
+            float progress = Session["Progress"] == null ? 0.0f : (float)Session["Progress"];
+            
+            return Json(new { has_started = has_started, progress = progress }, JsonRequestBehavior.AllowGet);
         }
 
         //
@@ -194,7 +216,7 @@ namespace SCUTClubManager.Controllers
         [Authorize(Roles = "社联")]
         [HttpPost]
         public ActionResult Delete(string[] user_names, bool all_in,
-            int role_filter, string search, string search_option)
+            int role_filter, string search, string search_option, string order)
         {
             string operation = "delete";
             UserRole student_role = db.UserRoles.ToList().Single(t => t.Name == "学生");
@@ -254,7 +276,13 @@ namespace SCUTClubManager.Controllers
 
                 db.SaveChanges();
 
-                return Json(new { success = true, msg = message, operation = operation });
+                string return_url = "List?role_filter=" + role_filter + "&search=" + search +
+                "&search_option=" + search_option + "&order=" + order;
+
+                if (!all_in)
+                    return Json(new { success = true, msg = message, operation = operation });
+                else
+                    return Json(new { success = true, msg = message, operation = operation, url = return_url });
             }
 
             return Json(new { success = false, msg = "没有选择任何用户", operation = operation });

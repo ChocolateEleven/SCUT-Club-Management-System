@@ -4,8 +4,27 @@
 }
 
 @Html.Partial("_Confirmation")
-
+ <style>
+  .progress-label {
+    float: left;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+  }
+  </style>
 <script type="text/javascript">
+    var progress_interval;
+
+    function progress() {
+        $.get("CurrentProgress", function (data) {
+            if (data.has_started) {
+                $("#processProgressbar").progressbar("value", data.progress * 100);
+            }
+            if (data.progress >= 1.0) {
+                clearInterval(progress_interval);
+            }
+        });
+    }
+
     $(function () {
         $("input.ItemSelector[name='all_in']").change(function () {
             var all_in_box = this;
@@ -29,8 +48,14 @@
         });
 
         $('form').ajaxForm({
+            uploadProgress: function (event, position, total, percentComplete) {
+                $("#uploadProgressbar").progressbar("value", percentComplete);
+                
+                if (percentComplete == 100) {
+                    progress_interval = setInterval(progress, '@ViewBag.ProgressProfileInterval');
+                }
+            },
             success: function (data) {
-                debugger;
                 notify(data);
                 var checkboxes = $("input.ItemSelector[name!='all_in']");
 
@@ -115,6 +140,7 @@
                     text: "添加",
                     click: function () {
                         $("#addUserInRangeForm").submit();
+                        $("#progressDialog").dialog("open");
                     }
                 },
                 {
@@ -124,6 +150,10 @@
                     }
                 }
             ]
+        });
+
+        $("#progressDialog").dialog({
+            autoOpen: false
         });
 
         $("#add").click(function () {
@@ -141,6 +171,25 @@
         $("#addUserSubmit").click(function () {
             $("#addUserForm").submit();
         });
+
+        $("#processProgressbar").progressbar({
+            value: false,
+            change: function () {
+                $("#processProgressLabel").text($("#processProgressbar").progressbar("value") + "%");
+            },
+            complete: function () {
+                $("#processProgressLabel").text("完成");
+            }
+        });
+        $("#uploadProgressbar").progressbar({
+            value: false,
+            change: function () {
+                $("#uploadProgressLabel").text($("#uploadProgressbar").progressbar("value") + "%");
+            },
+            complete: function () {
+                $("#uploadProgressLabel").text("完成");
+            }
+        });
     })
 </script>
 
@@ -150,16 +199,16 @@
 {
     <div>
         @Html.ActionLink("学生", "List", new
-           {
-               role_filter = 1
-           })
+   {
+       role_filter = 1
+   })
     </div>
     <div>
         @Html.ActionLink("管理员", "List", new
-           {
+   {
 
-               role_filter = 2
-           })
+       role_filter = 2
+   })
     </div>
 }
 
@@ -205,21 +254,21 @@
             {
                 <th>
                     @Html.ActionLink("学院", "List", new
-           {
-               order = ViewBag.DepartmentOrderOpt,
-               search = ViewBag.Search,
-               search_option = ViewBag.SearchOption,
-               role_filter = ViewBag.RoleFilter,
-           })
+               {
+                   order = ViewBag.DepartmentOrderOpt,
+                   search = ViewBag.Search,
+                   search_option = ViewBag.SearchOption,
+                   role_filter = ViewBag.RoleFilter,
+               })
                 </th>
                 <th>
                     @Html.ActionLink("年级", "List", new
-           {
-               order = ViewBag.GradeOrderOpt,
-               search = ViewBag.Search,
-               search_option = ViewBag.SearchOption,
-               role_filter = ViewBag.RoleFilter,
-           })
+               {
+                   order = ViewBag.GradeOrderOpt,
+                   search = ViewBag.Search,
+                   search_option = ViewBag.SearchOption,
+                   role_filter = ViewBag.RoleFilter,
+               })
                 </th>
             }
         </tr>
@@ -314,6 +363,11 @@
 
 @using (Html.BeginForm("AddRange", "User", FormMethod.Post, new { id = "addUserInRangeForm" }))
 {
+    <input type="hidden" name="role_filter" value="@ViewBag.RoleFilter" />
+    <input type="hidden" name="search" value="@ViewBag.Search" />
+    <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
+    <input type="hidden" name="order" value="@ViewBag.CurrentOrder" />
+    
     <div>
         <p>
             请选择一个包含了用户信息的Excel文件上传，该文件每一行的格式如下：
@@ -329,5 +383,10 @@
         <input type="file" name="file" />
     </div>
 }
+
+<div id="progressDialog">
+    <div id="uploadProgressbar"><div id="uploadProgressLabel" class="progress-label">加载中......</div></div>
+    <div id="processProgressbar"><div id="processProgressLabel" class="progress-label">上传中......</div></div>
+</div>
 
 @Html.Partial("_PageNavigation", Model)

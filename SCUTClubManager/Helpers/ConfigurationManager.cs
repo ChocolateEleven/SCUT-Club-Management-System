@@ -14,6 +14,7 @@ namespace SCUTClubManager.Helpers
         private static int inclinationsPerPerson = 3;
         private static string temporaryFilesFolder = "~/Content/Temp/";
         private static int maxRangeForRangeAdding = 100;
+        private static int progressProfileInterval = 500;
         private static XmlWriterSettings settings = null;
 
         public static string ConfigFile
@@ -40,6 +41,7 @@ namespace SCUTClubManager.Helpers
                     xml.WriteElementString("InclinationsPerPerson", inclinationsPerPerson.ToString());
                     xml.WriteElementString("TemporaryFilesFolder", temporaryFilesFolder.ToString());
                     xml.WriteElementString("MaxRangeForRangeAdding", maxRangeForRangeAdding.ToString());
+                    xml.WriteElementString("ProgressProfileInterval", progressProfileInterval.ToString());
 
                     xml.WriteEndElement();
 
@@ -84,6 +86,10 @@ namespace SCUTClubManager.Helpers
                 if (reader.ReadToFollowing("MaxRangeForRangeAdding"))
                 {
                     maxRangeForRangeAdding = reader.ReadElementContentAsInt();
+                }
+                if (reader.ReadToFollowing("ProgressProfileInterval"))
+                {
+                    progressProfileInterval = reader.ReadElementContentAsInt();
                 }
             }
         }
@@ -199,6 +205,29 @@ namespace SCUTClubManager.Helpers
                     }
 
                     temporaryFilesFolder = value;
+                }
+            }
+        }
+
+        public static int ProgressProfileInterval
+        {
+            get
+            {
+                return progressProfileInterval;
+            }
+            set
+            {
+                if (progressProfileInterval != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("ProgressProfileInterval", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    progressProfileInterval = value;
                 }
             }
         }

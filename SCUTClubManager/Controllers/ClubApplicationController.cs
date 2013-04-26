@@ -18,7 +18,7 @@ namespace SCUTClubManager.Controllers
 
         //
         // GET: /ClubApplication/
-
+        
         public ActionResult Index()
         {
             return RedirectToAction("List");
@@ -67,7 +67,7 @@ namespace SCUTClubManager.Controllers
                         break;
                 }
             }
-
+            
             applications = QueryProcessor.FilterApplication(applications, pass_filter, type_filter, club_id);
 
             var club_list = QueryProcessor.Query<Application>(applications, filter: filter,
@@ -329,6 +329,28 @@ namespace SCUTClubManager.Controllers
                     {
                         Reason = reject_reason
                     };
+
+                    // 清除遗产
+                    if (application is ClubRegisterApplication)
+                    {
+                        ClubRegisterApplication register_application = application as ClubRegisterApplication;
+                        string path = Path.Combine(Server.MapPath(ConfigurationManager.ClubSplashPanelFolder), register_application.SubInfo.PosterUrl);
+
+                        if (!String.IsNullOrWhiteSpace(register_application.SubInfo.PosterUrl) && System.IO.File.Exists(path))
+                        {
+                            System.IO.File.Delete(path);
+                        }
+                    }
+                    else if (application is ClubUnregisterApplication)
+                    {
+                        Club club = db.Clubs.Include(t => t.SubInfo).Find(application.ClubId);
+                        string path = Path.Combine(Server.MapPath(ConfigurationManager.ClubSplashPanelFolder), club.SubInfo.PosterUrl);
+
+                        if (!String.IsNullOrWhiteSpace(club.SubInfo.PosterUrl) && System.IO.File.Exists(path))
+                        {
+                            System.IO.File.Delete(path);
+                        }
+                    }
                 }
 
                 db.SaveChanges();
