@@ -404,6 +404,7 @@
     <Content Include="Views\LocationApplication\Delete.cshtml" />
     <Content Include="Views\Shared\InvalidFilterError.cshtml" />
     <Content Include="Views\User\List.cshtml" />
+    <Content Include="Views\Location\UnAvailableLocation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

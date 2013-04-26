@@ -192,12 +192,10 @@ namespace SCUTClubManager.DAL
 
             model_builder.Entity<AssetApplication>().HasMany(t => t.ApplicatedAssets).WithRequired().WillCascadeOnDelete(true);
             model_builder.Entity<AssetAssignment>().HasMany(t => t.AssignedAssets).WithRequired(t => t.AssetAssignment).WillCascadeOnDelete(true);
-<<<<<<< HEAD
-=======
+
 
             model_builder.Entity<LocationUnavailableTime>().HasRequired(t => t.Location).WithMany(t => t.UnAvailableTimes).WillCascadeOnDelete(false);
-        }
->>>>>>> 继续更改 times
+        
 
             model_builder.Entity<Student>().HasMany(t => t.MemberShips).WithRequired(t => t.Student).WillCascadeOnDelete(true);
             model_builder.Entity<Student>().HasMany(t => t.Applications).WithRequired(t => t.Applicant).WillCascadeOnDelete(true);

@@ -263,8 +263,39 @@ namespace SCUTClubManager.Controllers
             return View(available_locations.ToPagedList(1,10));
         }
 
-        //不正确！！！
-        
+        public ActionResult UnAvailableLocation(DateTime date, int[] time_ids)
+        {
+
+            List<Location> locations = new List<Location>();
+            foreach (var time_id in time_ids)
+            {
+                //当天当时间段不可用的场地
+                foreach (var location_unavailable_time in unitOfWork.LocationUnAvailableTimes.ToList())
+                {
+                    if (location_unavailable_time.TimeId == time_id)
+                    {
+                        if (!locations.Contains(location_unavailable_time.Location))
+                        {
+                            locations.Add(location_unavailable_time.Location);
+                        }
+                    }
+
+                }
+            }
+
+            IEnumerable<Location> list = locations.OrderBy(s => s.Name);
+            List<Time> times = new List<Time>();
+            foreach (var time_id in time_ids)
+            {
+                var t = unitOfWork.Times.Find(time_id);
+                times.Add(t);
+            }
+            ViewBag.Date = date.ToString("yyyy年MM月dd日");
+            ViewBag.Times = times;
+            ViewBag.time_ids = time_ids;
+            return View(list.ToPagedList(1, 10));
+        }
+
         public ActionResult AssignedLocation(DateTime date, int[] time_ids)
         {
             List<AssignedLocationViewModel> assignedLocation = new List<AssignedLocationViewModel>();

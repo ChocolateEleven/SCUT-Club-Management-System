@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SCUTClubManager.Models.Location>
+
+@{
+    ViewBag.Title = "AvailableLocation";
+}
+
+<p>@ViewBag.Date</p>
+@foreach( var time in ViewBag.Times)
+{
+    <p>@time.TimeName</p>
+}
+<p>的不可借场地</p>
+
+
+@Html.ActionLink("查看可借场地", "AvailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0] })
+@Html.ActionLink("查看被占用场地", "AssignedLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
+
+<table>
+    <tr>
+        <th>
+            名称
+        </th>
+    </tr>
+
+    
+@foreach (var item in Model) {
+    <tr>
+        <td class="ItemName">
+            @Html.DisplayFor(modelItem => item.Name)
+            <input class="ItemId" type="hidden" value ="@item.Id"/>
+        </td>
+    </tr>
+}
+    
+
+</table>

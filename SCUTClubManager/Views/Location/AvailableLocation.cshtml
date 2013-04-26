@@ -13,6 +13,7 @@
 
 
 @Html.ActionLink("查看被占用场地", "AssignedLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
+@Html.ActionLink("查看不可借用场地", "UnavailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
 
 <script>
     function funBorrow(item,id)
@@ -80,7 +81,7 @@
     </table>
         
     <input type="hidden" name="date" value="@ViewBag.Date" />
-    <input type="hidden" name="TimeId" value="@ViewBag.TimeId" />
+    <input type="hidden" name="time_ids" value="@ViewBag.time_ids[0]" />
     <input type="submit" value="提交"/>
 }
 

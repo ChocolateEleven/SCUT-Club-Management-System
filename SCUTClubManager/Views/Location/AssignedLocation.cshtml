@@ -6,14 +6,15 @@
 
 
 <p>@ViewBag.Date</p>
-@foreach( var time in ViewBag.Times)
+@foreach (var time in ViewBag.Times)
 {
     <p>@time.TimeName</p>
 }
 <p>的被占用场地</p>
 
 
-@Html.ActionLink("查看可借场地","AvailableLocation",new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
+@Html.ActionLink("查看可借场地", "AvailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0] })
+@Html.ActionLink("查看不可借用场地", "UnavailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
 
 <table>
     <tr>
@@ -29,7 +30,8 @@
     </tr>
 
     
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     
     
     <tr>

@@ -1071,13 +1071,8 @@ namespace SCUTClubManager.DAL
                     Times = new List<Time>{times[2]},
                     Club = clubs[1],
                     Status = "p",
-<<<<<<< HEAD
                     Applicant = students[2] as Student,
                     Date = new DateTime(2013,04,10),
-=======
-                    Applicant = students[0] as Student,
-                    Date = new DateTime(2013,04,13),
->>>>>>> 继续更改 times
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>
                     {
@@ -1223,40 +1218,25 @@ namespace SCUTClubManager.DAL
                 {
                     Date = new DateTime(2013,4,17),
                     Club = clubs[0],
-<<<<<<< HEAD
-                    Time = times[0],
-                    Applicant = students[1] as Student
-=======
                     Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>{locations[0],locations[1]},
-                   Applicant = students[0] as Student
->>>>>>> 继续更改 times
+                   Applicant = students[1] as Student
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,18),
                     Club = clubs[2],
-<<<<<<< HEAD
-                    Time = times[4],
-                    Applicant = students[1] as Student
-=======
+                    Applicant = students[1] as Student,
                      Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>{locations[0],locations[1],locations[2]},
-                  Applicant = students[0] as Student
->>>>>>> 继续更改 times
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,10),
                     Club = clubs[1],
-<<<<<<< HEAD
-                    Time = times[2],
-                    Applicant = students[1] as Student
-=======
+                    Applicant = students[1] as Student,
                      Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>{locations[1],locations[2]},
-                   Applicant = students[0] as Student
->>>>>>> 继续更改 times
                 }
             };
             #endregion
