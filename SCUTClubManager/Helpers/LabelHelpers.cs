@@ -122,5 +122,27 @@ namespace SCUTClubManager.Helpers
                     return "未知";
             }
         }
+
+        public static string GetEventStatus(Event e)
+        {
+            string status_code = e.Status.ToLower();
+
+            switch (status_code)
+            {
+                case Application.FAILED:
+                    return "被驳回";
+                case Application.NOT_VERIFIED:
+                    return "未审批";
+                case Application.PASSED:
+                    if (e.Date.Date > DateTime.Now.Date)
+                        return "未开始";
+                    else if (e.SubEvents.Any(t => t.Date.Date == DateTime.Now.Date))
+                        return "进行中";
+                    else
+                        return "已结束";
+                default:
+                    return "未知";
+            }
+        }
     }
 }

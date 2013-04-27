@@ -10,6 +10,7 @@ using SCUTClubManager.BusinessLogic;
 using SCUTClubManager.DAL;
 using SCUTClubManager.Models;
 using SCUTClubManager.Helpers;
+using PagedList;
 
 namespace SCUTClubManager.Controllers
 {
@@ -59,11 +60,45 @@ namespace SCUTClubManager.Controllers
             return Json(new { success = false });
         }
 
+        [Authorize]
+        public ActionResult List(int page_number = 1, string search = "", string search_option = "Title", string order = "Title", 
+            string pass_filter = "Passed", int club_id = Application.ALL)
+        {
+            IEnumerable<Event> events = db.Events.ToList();
+
+            if (club_id != Application.ALL)
+            {
+                Club club = db.Clubs.Include(t => t.MajorInfo).Find(club_id);
+                ViewBag.ClubName = club.MajorInfo.Name;
+            }
+
+            ViewBag.IsAdminMode = User.IsInRole("社联") || club_id != Application.ALL && ScmRoleProvider.HasMembershipIn(club_id);
+
+            if (!ViewBag.IsAdminMode)
+            {
+                if (pass_filter == "NotVerified" || pass_filter == "Verified" || pass_filter == "Failed" || String.IsNullOrWhiteSpace(pass_filter))
+                    pass_filter = "Passed";
+            }
+
+            events = FilterEvents(events as IQueryable<Event>, page_number, order, search, search_option, pass_filter, club_id);
+
+            return View(events);
+        }
+
+        [Authorize(Roles = "社联")]
+        public ActionResult Applications(int page_number = 1, string search = "", string search_option = "Title", string order = "Title")
+        {
+            IEnumerable<Event> events = (IQueryable<Event>)db.Events.ToList();
+            events = FilterEvents(events as IQueryable<Event>, page_number, order, search, search_option, "NotVerified");
+
+            return View(events);
+        }
+
         [Authorize(Roles = "社联")]
         public ActionResult Scoring(int page_number = 1, string search = "", string search_option = "Title", string order = "Title")
         {
             IEnumerable<Event> events = db.Events.ToList().Where(t => t.Score == null);
-            events = FilterEvents(events, page_number, order, search, search_option, Application.PASSED);
+            events = FilterEvents(events as IQueryable<Event>, page_number, order, search, search_option, "Passed");
 
             return View(events);
         }
@@ -182,9 +217,11 @@ namespace SCUTClubManager.Controllers
             }
         }
 
-        private IEnumerable<Event> FilterEvents(IEnumerable<Event> collection, int page_number = 1,
+        private IEnumerable<Event> FilterEvents(IQueryable<Event> collection, int page_number = 1,
             string order = "Title", string search = "", string search_option = "", string pass_filter = "", int club_id = Application.ALL)
         {
+            IPagedList<Event> list = null;
+
             ViewBag.CurrentOrder = order;
             ViewBag.TitleOrderOpt = order == "Title" ? "TitleDesc" : "Title";
             ViewBag.ClubNameOrderOpt = order == "Club.MajorInfo.Name" ? "Club.MajorInfo.NameDesc" : "Club.MajorInfo.Name";
@@ -247,14 +284,26 @@ namespace SCUTClubManager.Controllers
                         case "Verified":
                             collection = collection.Where(s => s.Status == Application.PASSED || s.Status == Application.FAILED);
                             break;
+
+                        case "NotStarted":
+                            collection = collection.Where(s => s.Status == Application.PASSED && s.Date.Date > DateTime.Now.Date);
+                            break;
+
+                        case "Active":
+                            collection = collection.Where(s => s.Status == Application.PASSED && s.SubEvents.Any(t => t.Date.Date == DateTime.Now.Date));
+                            break;
+
+                        case "Finished":
+                            collection = collection.Where(s => s.Status == Application.PASSED && s.SubEvents.All(t => t.Date.Date < DateTime.Now.Date));
+                            break;
                     }
                 }
 
-                string[] includes = { "Club.MajorInfo", "ChiefEventOrganizer" };
-                collection = QueryProcessor.Query(collection, null, order, includes, page_number, 20);
+                string[] includes = { "Club.MajorInfo", "ChiefEventOrganizer", "SubEvents" };
+                list = QueryProcessor.Query(collection, null, order, includes, page_number, 20);
             }
 
-            return collection;
+            return list;
         }
 
     }

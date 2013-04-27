@@ -1,0 +1,97 @@
+﻿<div class="EventStatusFilterBar">
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("未开始", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "NotStarted",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("进行中", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "Active",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("全部", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = ViewBag.IsAdminMode ? "" : "Passed",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("已结束", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "Finished",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+
+    @if (ViewBag.IsAdminMode)
+    {
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("被驳回", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "Finished",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("未审批", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "NotVerified",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("已通过", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "Passed",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+        <div class="EventStatusFilterBtn">
+        @Html.ActionLink("已审批", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "Verified",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+    }
+</div>

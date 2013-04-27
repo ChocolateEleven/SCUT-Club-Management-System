@@ -419,6 +419,9 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\Scoring.cshtml" />
+    <Content Include="Views\Event\Applications.cshtml" />
+    <Content Include="Views\Event\List.cshtml" />
+    <Content Include="Views\Shared\_EventStatusFilterBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

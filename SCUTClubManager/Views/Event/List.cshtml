@@ -1,0 +1,93 @@
+﻿@model IPagedList<SCUTClubManager.Models.Event>
+
+@{
+    ViewBag.Title = ViewBag.ClubName + "活动列表";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.Partial("_EventStatusFilterBar")
+@Html.Partial("_SearchBar")
+
+<table>
+    <tr>
+        <th>
+            @Html.ActionLink("活动名", "List", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.TitleOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
+           })
+        </th>
+        <th>
+            @Html.ActionLink("举办日期", "List", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.DateOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
+           })
+        </th>
+        <th>
+            @Html.ActionLink("举办社团", "List", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.ClubNameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
+           })
+        </th>
+        <th>
+            @Html.ActionLink("负责人", "List", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.OrganizerOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
+           })
+        </th>
+        <th>
+            @Html.ActionLink("状态", "List", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.StatusOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
+           })
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChiefEventOrganizer.Name)
+        </td>
+        <td>
+            @LabelHelpers.GetEventStatus(item)
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.Partial("_PageNavigation")
