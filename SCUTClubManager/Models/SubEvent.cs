@@ -10,20 +10,20 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        //[Required]
         public int EventId { get; set; }
 
         [MaxLength(40)]
         public string Title { get; set; }
 
-        [Required]
+        //[Required]
         public DateTime Date { get; set; }
 
         public virtual SubEventDescription Description { get; set; }
         public virtual ICollection<Time> Times { get; set; }
         public virtual Event Event { get; set; }
         public virtual ICollection<LocationApplication> LocationApplications { get; set; }
-        //public virtual ICollection<AssetApplication> AssetApplications { get; set; }
+        public virtual ICollection<AssetApplication> AssetApplications { get; set; }
         public virtual FundApplication FundApplication { get; set; }
     }
 }

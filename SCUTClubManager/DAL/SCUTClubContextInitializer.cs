@@ -23,7 +23,7 @@ namespace SCUTClubManager.DAL
                 new IdentityForTPC
                 {
                     BaseName = "Application",
-                    Identity = 13
+                    Identity = 14
                 },
                 new IdentityForTPC
                 {
@@ -1348,7 +1348,66 @@ namespace SCUTClubManager.DAL
             };
             #endregion
 
-
+            #region Events
+            var events = new List<Event>
+            {
+                new Event
+                {
+                    Date = DateTime.Now,
+                    ChiefEventOrganizer = students[1] as Student,
+                    Club = clubs[3],
+                    PlanUrl = "",
+                    PosterUrl = "",
+                    Title = "涙の物語",
+                    Status = Application.PASSED,
+                    Description = new EventDescription
+                    {
+                        Description = "Sounds like a plan."
+                    },
+                    Organizers = new List<Student>
+                    {
+                        students[1] as Student,
+                        students[2] as Student
+                    },
+                    SubEvents = new List<SubEvent>
+                    {
+                        new SubEvent
+                        {
+                            Date = DateTime.Now,
+                            Description = new SubEventDescription
+                            {
+                                Description = "SubEvent1 of Event 涙の物語"
+                            },
+                            Title = "涙の物語1",
+                            LocationApplications = new List<LocationApplication>
+                            {
+                                location_applications[0],
+                                location_applications[1]
+                            },
+                            AssetApplications = new List<AssetApplication>
+                            {
+                                asset_applications[0],
+                                asset_applications[1]
+                            },
+                            Times = new List<Time>
+                            {
+                                times[0],
+                                times[1]
+                            },
+                            FundApplication = new FundApplication
+                            {
+                                Id = 13,
+                                Applicant = students[1] as Student,
+                                Date = DateTime.Now,
+                                Club = clubs[3],
+                                Quantity = 100,
+                                Status = Application.PASSED
+                            }
+                        }
+                    }
+                }
+            };
+            #endregion
 
             ids.ForEach(s => context.Identities.Add(s));
             major_infos.ForEach(s => context.ClubMajorInfos.Add(s));
@@ -1374,6 +1433,8 @@ namespace SCUTClubManager.DAL
             locations.ForEach(s => context.Locations.Add(s));
             location_applications.ForEach(s => context.Applications.Add(s));
             location_assignments.ForEach(s => context.LocationAssignments.Add(s));
+
+            events.ForEach(s => context.Events.Add(s));
 
             context.SaveChanges();
 

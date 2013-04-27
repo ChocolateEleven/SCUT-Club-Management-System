@@ -1,0 +1,108 @@
+﻿@model IPagedList<SCUTClubManager.Models.Event>
+@{
+    ViewBag.Title = "活动评分";
+}
+
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        $('form').ajaxForm({
+            success: function (data) {
+                debugger;
+                notify(data)
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+
+        @if (Model.Count == 0)
+        {
+            @:$('input[type="submit"]').attr("disabled", "true");
+        }
+    })
+</script>
+
+<h2>活动评分</h2>
+
+@Html.Partial("_SearchBar")
+
+@using (Html.BeginForm())
+{
+    <input name="search" type="hidden" value="@ViewBag.Search" />
+    <input name="search_option" type="hidden" value="@ViewBag.SearchOption" />
+    <input name="order" type="hidden" value="@ViewBag.CurrentOrder" />
+    
+    <table>
+        <tr>
+            <th>
+                @Html.ActionLink("活动名", "Scoring", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.TitleOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption
+           })
+            </th>
+            <th>
+                @Html.ActionLink("举办日期", "Scoring", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.DateOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption
+           })
+            </th>
+            <th>
+                @Html.ActionLink("举办社团", "Scoring", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.ClubNameOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption
+           })
+            </th>
+            <th>
+                @Html.ActionLink("负责人", "Scoring", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.OrganizerOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption
+           })
+            </th>
+            <th>评分
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                    <input type="hidden" name="ids" value="@item.Id" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChiefEventOrganizer.Name)
+                </td>
+                <td>
+                    <input type="text" id='scores[@item.Id]' name="scores" data-val="true" data-val-regex="请输入0~100之间的数字" data-val-regex-pattern="^([1-9][0-9]|100|[0-9])$" />
+                    <span data-valmsg-for='scores' data-valmsg-replace='true'></span>
+                </td>
+            </tr>
+        }
+
+    </table>
+    
+    <div>在对每页的活动评分之后请提交再选择下一页，否则对当前页活动的评分将不被采用</div>
+    <input type="submit" value="提交" />
+}
+
+@Html.Partial("_PageNavigation")

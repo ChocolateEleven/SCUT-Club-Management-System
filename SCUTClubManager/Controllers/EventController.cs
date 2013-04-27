@@ -59,9 +59,41 @@ namespace SCUTClubManager.Controllers
             return Json(new { success = false });
         }
 
-        public ActionResult Scoring(int page_number = 1, string search = "", string search_option = "Title")
+        [Authorize(Roles = "社联")]
+        public ActionResult Scoring(int page_number = 1, string search = "", string search_option = "Title", string order = "Title")
         {
-            return null;
+            IEnumerable<Event> events = db.Events.ToList().Where(t => t.Score == null);
+            events = FilterEvents(events, page_number, order, search, search_option, Application.PASSED);
+
+            return View(events);
+        }
+
+        [Authorize(Roles = "社联")]
+        [HttpPost]
+        public ActionResult Scoring(int[] ids, string[] scores, string search, string search_option, string order)
+        {
+            if (ids.Length != scores.Length)
+                return Json(new { success = false, msg = "活动数和评分数不一致，评分失败" });
+
+            var events = db.Events.ToList().Where(t => ids.Contains(t.Id)).ToList();
+
+            for (int i = 0; i < ids.Length; ++i)
+            {
+                int id = ids[i];
+                string score = scores[i];
+
+                Event e = events.Find(t => t.Id == id);
+                
+                if (e != null && !String.IsNullOrWhiteSpace(score))
+                {
+                    e.Score = Int32.Parse(score);
+                }
+            }
+            db.SaveChanges();
+
+            string return_url = "Scoring?search=" + search + "&search_option=" + search_option + "&order=" + order;
+
+            return Json(new { success = true, msg = "评分成功", url = return_url });
         }
 
         //
@@ -153,6 +185,26 @@ namespace SCUTClubManager.Controllers
         private IEnumerable<Event> FilterEvents(IEnumerable<Event> collection, int page_number = 1,
             string order = "Title", string search = "", string search_option = "", string pass_filter = "", int club_id = Application.ALL)
         {
+            ViewBag.CurrentOrder = order;
+            ViewBag.TitleOrderOpt = order == "Title" ? "TitleDesc" : "Title";
+            ViewBag.ClubNameOrderOpt = order == "Club.MajorInfo.Name" ? "Club.MajorInfo.NameDesc" : "Club.MajorInfo.Name";
+            ViewBag.OrganizerOrderOpt = order == "ChiefEventOrganizer.Name" ? "ChiefEventOrganizer.NameDesc" : "ChiefEventOrganizer.Name";
+            ViewBag.ScoreOrderOpt = order == "Score" ? "ScoreDesc" : "Score";
+            ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
+            ViewBag.StatusOrderOpt = order == "Status" ? "StatusDesc" : "Status";
+            ViewBag.PageNumber = page_number;
+            ViewBag.Search = search;
+            ViewBag.SearchOption = search_option;
+            ViewBag.PassFilter = pass_filter;
+            ViewBag.ClubId = club_id;
+
+            List<KeyValuePair<string, string>> search_option_list = new List<KeyValuePair<string, string>>();
+            search_option_list.Add(new KeyValuePair<string, string>("活动名", "Title"));
+            search_option_list.Add(new KeyValuePair<string, string>("举办社团", "ClubName"));
+            search_option_list.Add(new KeyValuePair<string, string>("负责人", "Organizer"));
+
+            ViewBag.SearchOptions = new SelectList(search_option_list, "Value", "Key", search_option);
+
             if (collection != null)
             {
                 if (!String.IsNullOrWhiteSpace(search) && !String.IsNullOrWhiteSpace(search_option))

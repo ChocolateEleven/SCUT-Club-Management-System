@@ -418,6 +418,7 @@
     <Content Include="Views\Shared\DisplayTemplates\ContactInfo.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
+    <Content Include="Views\Event\Scoring.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

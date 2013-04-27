@@ -369,14 +369,14 @@ namespace SCUTClubManager.DAL
         }
 
 
-        private IRepository<EventArgs> events;
-        public IRepository<EventArgs> Events
+        private IRepository<Event> events;
+        public IRepository<Event> Events
         {
             get
             {
                 if (this.events == null)
                 {
-                    this.events = new Repository<EventArgs>(context);
+                    this.events = new Repository<Event>(context);
                 }
                 return events;
             }

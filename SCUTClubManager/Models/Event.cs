@@ -15,14 +15,14 @@ namespace SCUTClubManager.Models
         [MaxLength(40)]
         public string Title { get; set; }
 
-        [Required]
+        //[Required]
         public int ClubId { get; set; }
 
-        [Required]
+        //[Required]
         public string ChiefEventOrganizerId { get; set; }
 
         [Range(0,100)]
-        public int Score { get; set; }
+        public int? Score { get; set; }
 
         [MaxLength(256)]
         public string PosterUrl { get; set; }
