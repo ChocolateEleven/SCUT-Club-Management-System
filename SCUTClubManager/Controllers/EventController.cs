@@ -59,7 +59,7 @@ namespace SCUTClubManager.Controllers
             return Json(new { success = false });
         }
 
-        public ActionResult Scoring(int page_number = 1, string search = "", string search_option = "EventName")
+        public ActionResult Scoring(int page_number = 1, string search = "", string search_option = "Title")
         {
             return null;
         }
@@ -78,7 +78,7 @@ namespace SCUTClubManager.Controllers
         public ActionResult Create()
         {
             return View();
-        } 
+        }
 
         //
         // POST: /Event/Create
@@ -97,10 +97,10 @@ namespace SCUTClubManager.Controllers
                 return View();
             }
         }
-        
+
         //
         // GET: /Event/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             return View();
@@ -115,7 +115,7 @@ namespace SCUTClubManager.Controllers
             try
             {
                 // TODO: Add update logic here
- 
+
                 return RedirectToAction("Index");
             }
             catch
@@ -126,7 +126,7 @@ namespace SCUTClubManager.Controllers
 
         //
         // GET: /Event/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
             return View();
@@ -141,7 +141,7 @@ namespace SCUTClubManager.Controllers
             try
             {
                 // TODO: Add delete logic here
- 
+
                 return RedirectToAction("Index");
             }
             catch
@@ -151,9 +151,58 @@ namespace SCUTClubManager.Controllers
         }
 
         private IEnumerable<Event> FilterEvents(IEnumerable<Event> collection, int page_number = 1,
-            string order = "Title", string search = "", string search_option = "Title", string pass_filter = Application.NOT_VERIFIED)
+            string order = "Title", string search = "", string search_option = "", string pass_filter = "", int club_id = Application.ALL)
         {
-            return null;
+            if (collection != null)
+            {
+                if (!String.IsNullOrWhiteSpace(search) && !String.IsNullOrWhiteSpace(search_option))
+                {
+                    switch (search_option)
+                    {
+                        case "Title":
+                            collection = collection.Where(t => t.Title.Contains(search));
+                            break;
+                        case "ClubName":
+                            collection = collection.Where(t => t.Club.MajorInfo.Name.Contains(search));
+                            break;
+                        case "Organizer":
+                            collection = collection.Where(t => t.ChiefEventOrganizer.Name.Contains(search));
+                            break;
+                    }
+                }
+
+                if (club_id != Application.ALL)
+                {
+                    collection = collection.Where(t => t.ClubId == club_id);
+                }
+
+                if (!String.IsNullOrWhiteSpace(pass_filter))
+                {
+                    switch (pass_filter)
+                    {
+                        case "Passed":
+                            collection = collection.Where(s => s.Status == Application.PASSED);
+                            break;
+
+                        case "Failed":
+                            collection = collection.Where(s => s.Status == Application.FAILED);
+                            break;
+
+                        case "NotVerified":
+                            collection = collection.Where(s => s.Status == Application.NOT_VERIFIED);
+                            break;
+
+                        case "Verified":
+                            collection = collection.Where(s => s.Status == Application.PASSED || s.Status == Application.FAILED);
+                            break;
+                    }
+                }
+
+                string[] includes = { "Club.MajorInfo", "ChiefEventOrganizer" };
+                collection = QueryProcessor.Query(collection, null, order, includes, page_number, 20);
+            }
+
+            return collection;
         }
 
     }
