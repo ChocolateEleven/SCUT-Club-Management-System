@@ -15,6 +15,8 @@ namespace SCUTClubManager.Helpers
         private static string temporaryFilesFolder = "~/Content/Temp/";
         private static int maxRangeForRangeAdding = 100;
         private static int progressProfileInterval = 500;
+        private static string templateFolder = "~/Content/TemplateFiles/";
+        private static string eventApplicationTemplateFile = "EventApplicationTemplate";
         private static XmlWriterSettings settings = null;
 
         public static string ConfigFile
@@ -42,6 +44,8 @@ namespace SCUTClubManager.Helpers
                     xml.WriteElementString("TemporaryFilesFolder", temporaryFilesFolder.ToString());
                     xml.WriteElementString("MaxRangeForRangeAdding", maxRangeForRangeAdding.ToString());
                     xml.WriteElementString("ProgressProfileInterval", progressProfileInterval.ToString());
+                    xml.WriteElementString("TemplateFolder", templateFolder.ToString());
+                    xml.WriteElementString("EventApplicationTemplateFile", eventApplicationTemplateFile.ToString());
 
                     xml.WriteEndElement();
 
@@ -90,6 +94,21 @@ namespace SCUTClubManager.Helpers
                 if (reader.ReadToFollowing("ProgressProfileInterval"))
                 {
                     progressProfileInterval = reader.ReadElementContentAsInt();
+                }       
+                if (reader.ReadToFollowing("TemplateFolder"))
+                {
+                    string str = reader.ReadElementContentAsString().ToLower();
+                    templateFolder = str;
+                    string mapped_path = HttpContext.Current.Server.MapPath(str);
+
+                    if (!Directory.Exists(mapped_path))
+                    {
+                        Directory.CreateDirectory(mapped_path);
+                    }
+                }
+                if (reader.ReadToFollowing("EventApplicationTemplateFile"))
+                {
+                    eventApplicationTemplateFile = reader.ReadElementContentAsString();
                 }
             }
         }
@@ -228,6 +247,52 @@ namespace SCUTClubManager.Helpers
                     }
 
                     progressProfileInterval = value;
+                }
+            }
+        }
+
+        public static string TemplateFolder
+        {
+            get
+            {
+                return templateFolder;
+            }
+            set
+            {
+                if (templateFolder != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("TemplateFolder", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    templateFolder = value;
+                }
+            }
+        }
+
+        public static string EventApplicationTemplateFile
+        {
+            get
+            {
+                return eventApplicationTemplateFile;
+            }
+            set
+            {
+                if (eventApplicationTemplateFile != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("EventApplicationTemplateFile", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    eventApplicationTemplateFile = value;
                 }
             }
         }

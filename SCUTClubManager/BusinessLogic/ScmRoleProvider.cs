@@ -113,6 +113,23 @@ namespace SCUTClubManager.BusinessLogic
             }
         }
 
+        /**
+         *  查看两名给定用户是否属于同一社团。
+         *  @param user_name1 第一名用户的用户名。
+         *  @param user_name2 第二名用户的用户名。
+         *  @returns 这两名用户是否属于同一社团。
+         */
+        public static bool InSameClub(string user_name1, string user_name2)
+        {
+            if (String.IsNullOrWhiteSpace(user_name1) || String.IsNullOrWhiteSpace(user_name2))
+                return false;
+
+            var memberships1 = context.ClubMembers.ToList().Where(t => t.UserName == user_name1).ToList();
+            var memberships2 = context.ClubMembers.ToList().Where(t => t.UserName == user_name2).ToList();
+
+            return memberships1.Any(t => memberships2.Any(s => t.ClubId == s.ClubId));
+        }
+
         // 以下为对用户全局权限的管理用。用于区分系统管理员和一般用户。
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)

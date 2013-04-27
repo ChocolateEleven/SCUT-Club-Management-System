@@ -40,6 +40,17 @@ namespace SCUTClubManager.Controllers
             ViewBag.RoleFilter = role_filter;
             ViewBag.ProgressProfileInterval = ConfigurationManager.ProgressProfileInterval;
 
+            List<KeyValuePair<string, string>> search_option_list = new List<KeyValuePair<string, string>>();
+            search_option_list.Add(new KeyValuePair<string, string>("姓名", "Name"));
+            search_option_list.Add(new KeyValuePair<string, string>("用户名", "UserName"));
+
+            if (role_filter == student_role.Id)
+            {
+                search_option_list.Add(new KeyValuePair<string, string>("学院", "Department"));
+            }
+
+            ViewBag.SearchOptions = new SelectList(search_option_list, "Value", "Key", search_option);
+
             IEnumerable<User> users = FilterUsers(role_filter, search, search_option);
             users = QueryProcessor.Query(users, null, order, null, page_number, 20);
 
@@ -56,25 +67,33 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /User/Details/5
 
-        public ActionResult Details(int id)
+        [Authorize]
+        public ActionResult Details(string user_name, int page_number, string order, string search, string search_option, int role_filter)
         {
-            return View();
+            Student student = db.Students.Include(t => t.ContactInfo).Find(user_name);
+
+            ViewBag.PageNumber = page_number;
+            ViewBag.Order = order;
+            ViewBag.Search = search;
+            ViewBag.SearchOption = search_option;
+            ViewBag.RoleFilter = role_filter;
+
+            if (student != null)
+            {
+                return View(student);
+            }
+            else
+            {
+                return View("UserNotFoundError");
+            }
         }
-
-        //
-        // GET: /User/Add
-
-        public ActionResult Add()
-        {
-            return View();
-        } 
 
         //
         // POST: /User/Add
 
         [Authorize(Roles = "社联")]
         [HttpPost]
-        public ActionResult Add(User user, bool is_admin)
+        public ActionResult Add(User user, bool is_admin, int role_filter, string search, string search_option, string order)
         {
             string operation = "add";
 
@@ -107,7 +126,10 @@ namespace SCUTClubManager.Controllers
 
                 ScmMembershipProvider.AddUser(user);
 
-                return Json(new { success = true, msg = "添加成功", operation = operation });
+                string return_url = "List?role_filter=" + role_filter + "&search=" + search +
+                "&search_option=" + search_option + "&order=" + order;
+
+                return Json(new { success = true, msg = "添加成功", url = return_url, operation = operation });
             }
 
             return Json(new { success = false, msg = "参数错误", operation = operation });
@@ -162,10 +184,10 @@ namespace SCUTClubManager.Controllers
 
                 System.IO.File.Delete(path);
 
-                return Json(new { success = true, msg = "添加成功", url = return_url });
+                return Json(new { success = true, msg = "添加成功", url = return_url, operation = "add_range" });
             }
 
-            return Json(new { success = false, msg = "上传失败" });
+            return Json(new { success = false, msg = "上传失败", operation = "add_range" });
         }
 
         public ActionResult CurrentProgress()
@@ -179,35 +201,58 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /User/Edit/5
  
-        public ActionResult Edit(int id)
+        [Authorize]
+        public ActionResult Edit(string user_name, int page_number, string order, string search, string search_option, int role_filter)
         {
-            return View();
+            if (ScmMembershipProvider.IsMe(user_name))
+            {
+                Student student = db.Students.Include(t => t.ContactInfo).Find(user_name);
+
+                if (student != null)
+                {
+                    List<KeyValuePair<string, string>> political_role_list = new List<KeyValuePair<string, string>>();
+                    political_role_list.Add(new KeyValuePair<string, string>("群众", "q"));
+                    political_role_list.Add(new KeyValuePair<string, string>("共产党员", "d"));
+                    political_role_list.Add(new KeyValuePair<string, string>("预备党员", "y"));
+                    political_role_list.Add(new KeyValuePair<string, string>("共青团员", "t"));
+                    political_role_list.Add(new KeyValuePair<string, string>("其他党派", "o"));
+
+                    ViewBag.PoliticalId = new SelectList(political_role_list, "Value", "Key", student.PoliticalId);
+                    ViewBag.PageNumber = page_number;
+                    ViewBag.Order = order;
+                    ViewBag.Search = search;
+                    ViewBag.SearchOption = search_option;
+                    ViewBag.RoleFilter = role_filter;
+
+                    return View(student);
+                }
+                else
+                {
+                    return View("UserNotFoundError");
+                }
+            }
+            else
+            {
+                return View("PermissionDeniedError");
+            }
         }
 
         //
         // POST: /User/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Student student, int page_number, string order, string search, string search_option, int role_filter)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                db.Students.Update(student);
+                string return_url = "List?role_filter=" + role_filter + "&search=" + search +
+                "&search_option=" + search_option + "&order=" + order + "&page_number=" + page_number;
 
-        //
-        // GET: /User/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
+                return Json(new { success = true, msg = "修改成功", url = return_url });
+            }
+
+            return Json(new { success = false, msg = "修改失败" });
         }
 
         //

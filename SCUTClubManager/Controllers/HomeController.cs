@@ -23,7 +23,6 @@ namespace SCUTClubManager.Controllers
             return View();
         }
 
-        // TODO: 使用自定义的Membership和Authentication来验证用户并记录登录信息。
         [HttpPost]
         public ActionResult Login(LogInModel model, string returnUrl)
         {
@@ -48,11 +47,9 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-        // TODO: 使用自定义的Membership和Authentication来验证用户并消去登录信息。
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
@@ -61,21 +58,18 @@ namespace SCUTClubManager.Controllers
         }
 
         [Authorize]
-        public ActionResult ChangePassword()
+        public ActionResult ChangePassword(string return_url = "")
         {
+            ViewBag.ReturnUrl = return_url;
             return View();
         }
 
-        // TODO: 使用自定义的Membership和Authentication来验证用户。
         [Authorize]
         [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordModel model)
+        public ActionResult ChangePassword(ChangePasswordModel model, string return_url)
         {
             if (ModelState.IsValid)
             {
-
-                // ChangePassword will throw an exception rather
-                // than return false in certain failure scenarios.
                 bool changePasswordSucceeded;
                 try
                 {
@@ -89,16 +83,11 @@ namespace SCUTClubManager.Controllers
 
                 if (changePasswordSucceeded)
                 {
-                    return View("ChangePasswordSuccess");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                    return Json(new { success = true, msg = "修改密码成功", url = return_url });
                 }
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            return Json(new { success = true, msg = "修改密码成功, 新密码不符合要求或者原密码输入错误" });
         }
     }
 }

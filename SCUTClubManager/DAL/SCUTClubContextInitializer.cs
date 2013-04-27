@@ -70,12 +70,12 @@ namespace SCUTClubManager.DAL
                     Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     Name = "张一",
-                    Gender = "M",
+                    Gender = Student.MALE,
                     Birthday = new DateTime(1990,01,01),
                     Department = "软件学院",
                     Major = "软件工程",
-                    Grade = "3",
-                    Degree = "b",
+                    Grade = "09级",
+                    Degree = Student.BACHELOR,
                     PoliticalId = "t",
                     ContactInfo = new ContactInfo
                     {
@@ -83,7 +83,7 @@ namespace SCUTClubManager.DAL
                         QQ = "10086",
                         Phone = "12580",
                         Room = "C1-101",
-                        Visibility = "s"
+                        Visibility = "a"
                     }
                 },
 
@@ -92,12 +92,12 @@ namespace SCUTClubManager.DAL
                     Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     Name = "张二",
-                    Gender = "M",
+                    Gender = Student.MALE,
                     Birthday = new DateTime(1990,01,01),
                     Department = "计算机学院",
                     Major = "计算机软件",
-                    Grade = "3",
-                    Degree = "b",
+                    Grade = "10级",
+                    Degree = Student.BACHELOR,
                     PoliticalId = "t",
                     ContactInfo = new ContactInfo
                     {
@@ -105,7 +105,7 @@ namespace SCUTClubManager.DAL
                         QQ = "10086",
                         Phone = "12580",
                         Room = "C1-101",
-                        Visibility = "s"
+                        Visibility = "c"
                     }
                 },
 
@@ -114,12 +114,12 @@ namespace SCUTClubManager.DAL
                     Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     Name = "张三",
-                    Gender = "M",
+                    Gender = Student.MALE,
                     Birthday = new DateTime(1990,01,01),
                     Department = "生物学院",
                     Major = "生物工程",
-                    Grade = "3",
-                    Degree = "b",
+                    Grade = "11级",
+                    Degree = Student.BACHELOR,
                     PoliticalId = "t",
                     ContactInfo = new ContactInfo
                     {
@@ -127,7 +127,7 @@ namespace SCUTClubManager.DAL
                         QQ = "10086",
                         Phone = "12580",
                         Room = "C1-101",
-                        Visibility = "s"
+                        Visibility = "c"
                     }
                 },
 
@@ -136,12 +136,12 @@ namespace SCUTClubManager.DAL
                     Password = PasswordProcessor.ProcessWithMD5("123456"),
                     RoleId = 1,
                     Name = "张四",
-                    Gender = "M",
+                    Gender = Student.MALE,
                     Birthday = new DateTime(1990,01,01),
                     Department = "生物学院",
                     Major = "生物工程",
-                    Grade = "3",
-                    Degree = "b",
+                    Grade = "12级",
+                    Degree = Student.BACHELOR,
                     PoliticalId = "t",
                     ContactInfo = new ContactInfo
                     {
@@ -149,11 +149,9 @@ namespace SCUTClubManager.DAL
                         QQ = "10086",
                         Phone = "12580",
                         Room = "C1-101",
-                        Visibility = "s"
+                        Visibility = "c"
                     }
                 }
-
-
             };
             #endregion
 
@@ -1220,23 +1218,23 @@ namespace SCUTClubManager.DAL
                     Club = clubs[0],
                     Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>{locations[0],locations[1]},
-                   Applicant = students[1] as Student
+                    Applicant = students[1] as Student
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,18),
                     Club = clubs[2],
-                    Applicant = students[1] as Student,
-                     Times = new List<Time>{times[0],times[1],times[2]},
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>{locations[0],locations[1],locations[2]},
+                    Applicant = students[1] as Student
                 },
                  new LocationAssignment
                 {
                     Date = new DateTime(2013,4,10),
                     Club = clubs[1],
-                    Applicant = students[1] as Student,
-                     Times = new List<Time>{times[0],times[1],times[2]},
+                    Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>{locations[1],locations[2]},
+                    Applicant = students[1] as Student
                 }
             };
             #endregion

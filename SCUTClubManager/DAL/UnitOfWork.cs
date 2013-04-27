@@ -594,7 +594,14 @@ namespace SCUTClubManager.DAL
 
         public void SaveChanges()
         {
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                var a = e;
+            }
         }
 
         private bool disposed = false;

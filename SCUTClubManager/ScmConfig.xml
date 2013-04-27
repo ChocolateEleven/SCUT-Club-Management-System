@@ -5,4 +5,7 @@
   <InclinationsPerPerson>3</InclinationsPerPerson>
   <TemporaryFilesFolder>~/Content/Temp/</TemporaryFilesFolder>
   <MaxRangeForRangeAdding>100</MaxRangeForRangeAdding>
+  <ProgressProfileInterval>500</ProgressProfileInterval>
+  <TemplateFolder>~/Content/TemplateFiles/</TemplateFolder>
+  <EventApplicationTemplateFile>EventApplicationTemplate</EventApplicationTemplateFile>
 </SCUTClubManagerConfigFile>

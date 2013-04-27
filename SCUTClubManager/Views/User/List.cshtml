@@ -56,10 +56,11 @@
                 }
             },
             success: function (data) {
-                notify(data);
                 var checkboxes = $("input.ItemSelector[name!='all_in']");
 
                 if (data.operation == "delete") {
+                    notify(data);
+
                     if (data.success) {
                         checkboxes.each(function (index, element) {
                             if (this.checked) {
@@ -68,6 +69,8 @@
                         });
                     }
                 } else if (data.operation == "add") {
+                    notify(data);
+
                     if (data.success) {
                         $("#addUserForm").find("input").each(function (index, element) {
                             resetPlaceHolder(element);
@@ -78,7 +81,15 @@
                         $("#addUserForm").dialog("close");
                     }
                 } else if (data.operation == "add_range") {
-                    $("#addUserInRangeForm").dialog("close");
+                    if (data.success) {
+                        $("#addUserInRangeForm").dialog("close");
+                        $("#progressDialog").dialog("option", "buttons", [{
+                            text: "关闭", click: function () {
+                                $("#progressDialog").dialog("close");
+                                location = data.url;
+                            }
+                        }]);
+                    }
                 }
             },
             error: function (e) {
@@ -153,7 +164,8 @@
         });
 
         $("#progressDialog").dialog({
-            autoOpen: false
+            autoOpen: false,
+            modal: true
         });
 
         $("#add").click(function () {
@@ -188,6 +200,7 @@
             },
             complete: function () {
                 $("#uploadProgressLabel").text("完成");
+                $("#processProgressbar").progressbar("value", 0);
             }
         });
     })
@@ -270,6 +283,9 @@
                    role_filter = ViewBag.RoleFilter,
                })
                 </th>
+                <th>
+                    详细信息
+                </th>
             }
         </tr>
 
@@ -301,6 +317,17 @@
                     <td>
                         @Html.DisplayFor(modelItem => student.Grade)
                     </td>
+                    <td>
+                        @Html.ActionLink("查看", "Details", new
+                   {
+                       user_name = item.UserName,
+                       order = ViewBag.CurrentOrder,
+                       search = ViewBag.Search,
+                       search_option = ViewBag.SearchOption,
+                       role_filter = ViewBag.RoleFilter,
+                       page_number = Model.PageNumber
+                   })
+                    </td>
                 }
             </tr>
         }
@@ -323,6 +350,11 @@
 
 @using (Html.BeginForm("Add", "User", FormMethod.Post, new { id = "addUserForm" }))
 {
+    <input type="hidden" name="role_filter" value="@ViewBag.RoleFilter" />
+    <input type="hidden" name="search" value="@ViewBag.Search" />
+    <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
+    <input type="hidden" name="order" value="@ViewBag.CurrentOrder" />
+    
     <div>
         用户名
     </div>

@@ -1,0 +1,222 @@
+﻿@model SCUTClubManager.Models.Student
+@using SCUTClubManager.BusinessLogic;
+@using SCUTClubManager.Models;
+
+@{
+    ViewBag.Title = "编辑" + Model.Name + "的信息";
+}
+
+@Html.Partial("_Confirmation")
+
+<script type="text/javascript">
+    $(function () {
+        $("#Birthday").datepicker();
+
+        @if (Model.Gender == Student.MALE)
+        {
+            @:$("#male").attr("checked", "checked");
+        }
+        else if (Model.Gender == Student.FEMALE)
+        {
+            @:$("#female").attr("checked", "checked");
+                }
+
+        @if (Model.Degree == Student.BACHELOR)
+        {
+            @:$("#bachelor").attr("checked", "checked");
+        }
+        else if (Model.Degree == Student.MASTER)
+        {
+            @:$("#master").attr("checked", "checked");
+        }
+        else if (Model.Degree == Student.PHD)
+        {
+            @:$("#phd").attr("checked", "checked");
+                }
+
+        @if (Model.ContactInfo.Visibility == ContactInfo.VISIBLE_TO_ALL)
+        {
+            @:$("#visibleToAll").attr("checked", "checked");
+        }
+        else if (Model.ContactInfo.Visibility == ContactInfo.VISIBLE_TO_CLUB)
+        {
+            @:$("#visibleToClub").attr("checked", "checked");
+                }
+
+        $('form').ajaxForm({
+            success: notify,
+            error: function (e) {
+                debugger;
+            }
+        });
+    })
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    <input type="hidden" name="role_filter" value="@ViewBag.RoleFilter" />
+    <input type="hidden" name="search" value="@ViewBag.Search" />
+    <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
+    <input type="hidden" name="order" value="@ViewBag.Order" />
+    <input type="hidden" name="page_number" value="@ViewBag.PageNumber" />
+    <input type="hidden" name="Password" value="@Model.Password" />
+    <input type="hidden" name="RoleId" value="@Model.RoleId"
+    
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>基本信息</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UserName)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.UserName)
+            @Html.HiddenFor(model => model.UserName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Password)
+        </div>
+        <div class="editor-field">
+            @Html.ActionLink("修改密码", "ChangePassword", "Home", new
+       {
+           return_url = "/User/Edit?role_filter=" + ViewBag.RoleFilter + "&search=" + ViewBag.Search + "&user_name=" + Model.UserName +
+               "&search_option=" + ViewBag.SearchOption + "&order=" + ViewBag.Order + "&page_number=" + ViewBag.PageNumber
+       }, null)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Gender)
+        </div>
+        <div class="editor-field">
+            <div class="Radio">
+                <input type="radio" id="male" name="Gender" value="@Student.MALE" />
+                <label for="male">@LabelHelpers.GetGender(Student.MALE)</label>
+                <input type="radio" id="female" name="Gender" value="@Student.FEMALE" />
+                <label for="female">@LabelHelpers.GetGender(Student.FEMALE)</label>
+            </div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Birthday)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Birthday)
+            @Html.ValidationMessageFor(model => model.Birthday)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PoliticalId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("PoliticalId")
+            @Html.ValidationMessageFor(model => model.PoliticalId)
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>教育信息</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Degree)
+        </div>
+        <div class="editor-field">
+            <div class="Radio">
+                <input type="radio" id="bachelor" name="Degree" value="@Student.BACHELOR" />
+                <label for="bachelor">@LabelHelpers.GetDegree(Student.BACHELOR)</label>
+                <input type="radio" id="master" name="Degree" value="@Student.MASTER" />
+                <label for="master">@LabelHelpers.GetDegree(Student.MASTER)</label>
+                <input type="radio" id="phd" name="Degree" value="@Student.PHD" />
+                <label for="phd">@LabelHelpers.GetDegree(Student.PHD)</label>
+            </div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Department)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Department)
+            @Html.ValidationMessageFor(model => model.Department)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Major)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Major)
+            @Html.ValidationMessageFor(model => model.Major)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Grade)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Grade)
+            @Html.ValidationMessageFor(model => model.Grade)
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>联系方式</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactInfo.Phone)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactInfo.Phone)
+            @Html.ValidationMessageFor(model => model.ContactInfo.Phone)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactInfo.EMailAddress)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactInfo.EMailAddress)
+            @Html.ValidationMessageFor(model => model.ContactInfo.EMailAddress)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactInfo.QQ)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactInfo.QQ)
+            @Html.ValidationMessageFor(model => model.ContactInfo.QQ)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactInfo.Room)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContactInfo.Room)
+            @Html.ValidationMessageFor(model => model.ContactInfo.Room)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContactInfo.Visibility)
+        </div>
+        <div class="editor-field">
+            <div class="Radio">
+                <input type="radio" id="visibleToClub" name="ContactInfo.Visibility" value="@ContactInfo.VISIBLE_TO_CLUB" />
+                <label for="visibleToClub">仅对社团成员可见</label>
+                <input type="radio" id="visibleToAll" name="ContactInfo.Visibility" value="@ContactInfo.VISIBLE_TO_ALL" />
+                <label for="visibleToAll">完全公开</label>
+            </div>
+        </div>
+    </fieldset>
+
+    <p>
+        <input type="submit" value="提交" />
+    </p>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

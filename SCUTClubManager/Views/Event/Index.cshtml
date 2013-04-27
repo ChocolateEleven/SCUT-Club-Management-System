@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "活动管理";
+}
+
+<h2>活动管理</h2>
+
+@Html.Partial("_Confirmation")
+
+<style>
+  .invisible {
+    display: none
+  }
+  </style>
+
+<script type="text/javascript">
+    $(function () {
+        $('form').ajaxForm({
+            success: function (data) {
+                if (!$("#loading").hasClass("invisible")) {
+                    $("#loading").addClass("invisible");
+                }
+                if ($("#close").hasClass("invisible")) {
+                    $("#close").removeClass("invisible");
+                }
+
+                if (data.success) {
+                    if ($("#done").hasClass("invisible")) {
+                        $("#done").removeClass("invisible");
+                    }
+                } else {
+                    if ($("#failed").hasClass("invisible")) {
+                        $("#failed").removeClass("invisible");
+                    }
+                }
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+
+        $("#uploadAppTemplateForm").dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: true
+        });
+
+        $("#loadingDialog").dialog({
+            autoOpen: false,
+            modal: true
+        });
+
+        $("#uploadAppTemplate").click(function () {
+            $("#uploadAppTemplateForm").dialog("open");
+        });
+
+        $("form").submit(function () {
+            $("#uploadAppTemplateForm").dialog("close");
+
+            if ($("#loading").hasClass("invisible")) {
+                $("#loading").removeClass("invisible");
+            }
+            if (!$("#done").hasClass("invisible")) {
+                $("#done").addClass("invisible");
+            }
+            if (!$("#close").hasClass("invisible")) {
+                $("#close").addClass("invisible");
+            }
+
+            $("#loadingDialog").dialog("open");
+        });
+
+        $("#close").click(function () {
+            $("#loadingDialog").dialog("close");
+        });
+    })
+</script>
+
+@Html.ActionLink("活动审批", "Applications")
+@Html.ActionLink("活动评分", "Scoring")
+@Html.ActionLink("活动列表", "List")
+<button type="button" id="uploadAppTemplate">上传活动申请表</button>
+
+@using (Html.BeginForm("UploadAppTemplate", "Event", FormMethod.Post, new { id = "uploadAppTemplateForm" }))
+{
+    <div>
+        请选择活动申请表文件上传
+    </div>
+    <input type="file" name="application_template" />
+    <input type="submit" />
+}
+
+<div id="loadingDialog">
+    <img id="loading" width="64" height="64" src="../../Content/themes/base/images/loading.gif" class="invisible" />
+    <img id="done" width="64" height="64" src="../../Content/themes/base/images/done.gif" class="invisible" />
+    <img id="failed" width="64" height="64" src="../../Content/themes/base/images/failed.gif" class="invisible" />
+    <button id="close" type="button">关闭</button>
+</div>

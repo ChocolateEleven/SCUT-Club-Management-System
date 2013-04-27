@@ -1,0 +1,84 @@
+﻿@model SCUTClubManager.Models.Student
+@{
+    ViewBag.Title = Model.Name + "的详细信息";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    <legend>基本信息</legend>
+
+    <div class="display-label">用户名</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserName)
+    </div>
+
+    <div class="display-label">姓名</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">性别</div>
+    <div class="display-field">
+        @LabelHelpers.GetGender(Model.Gender)
+    </div>
+
+    <div class="display-label">出生日期</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Birthday)
+    </div>
+
+    <div class="display-label">政治面目</div>
+    <div class="display-field">
+        @LabelHelpers.GetPoliticalRole(Model.PoliticalId)
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>教育信息</legend>
+    <div class="display-label">学位</div>
+    <div class="display-field">
+        @LabelHelpers.GetDegree(Model.Degree)
+    </div>
+
+    <div class="display-label">学院</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Department)
+    </div>
+
+    <div class="display-label">专业</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Major)
+    </div>
+
+    <div class="display-label">年级</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Grade)
+    </div>
+</fieldset>
+
+@Html.DisplayFor(t => t.ContactInfo)
+
+<p>
+    @if (SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(Model.UserName))
+    {
+        @Html.ActionLink("编辑", "Edit", new
+   {
+       user_name = Model.UserName,
+       page_number = ViewBag.PageNumber,
+       role_filter = ViewBag.RoleFilter,
+       order = ViewBag.Order,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption
+   })
+        <span>|</span>
+    }
+    @Html.ActionLink("返回", "List", new
+{
+    page_number = ViewBag.PageNumber,
+    role_filter = ViewBag.RoleFilter,
+    order = ViewBag.Order,
+    search = ViewBag.Search,
+    search_option = ViewBag.SearchOption
+})
+</p>

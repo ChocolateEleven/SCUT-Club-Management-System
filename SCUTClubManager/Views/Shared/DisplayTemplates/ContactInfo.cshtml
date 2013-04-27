@@ -1,0 +1,42 @@
+﻿@model SCUTClubManager.Models.ContactInfo
+@{
+    bool is_visible = false;
+    if (SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(Model.UserName) ||
+        Model.Visibility == "a" || Model.Visibility == "c" &&
+        SCUTClubManager.BusinessLogic.ScmRoleProvider.InSameClub(User.Identity.Name, Model.UserName))
+    {
+        is_visible = true;
+    }
+    
+    <fieldset>
+        <legend>联系方式</legend>
+
+        @if (is_visible)
+        {
+            <div class="display-label">电话</div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Phone)
+            </div>
+
+            <div class="display-label">E-Mail</div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.EMailAddress)
+            </div>
+
+            <div class="display-label">QQ</div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.QQ)
+            </div>
+
+            <div class="display-label">宿舍</div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Room)
+            </div>
+        }
+        else
+        {
+            <div class="display-label">您无权查看该用户的联系方式</div>
+        }
+
+    </fieldset>
+}

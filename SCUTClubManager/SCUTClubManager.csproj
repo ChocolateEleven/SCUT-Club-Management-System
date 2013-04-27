@@ -29,7 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -133,6 +133,7 @@
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\ClubMemberApplicationController.cs" />
     <Compile Include="Controllers\ClubMemberController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\FundController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -211,6 +212,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\images\done.gif" />
+    <Content Include="Content\themes\base\images\loading.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -315,7 +318,6 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\ChangePassword.cshtml" />
-    <Content Include="Views\Home\ChangePasswordSuccess.cshtml" />
     <Content Include="Views\Home\LogIn.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -411,6 +413,11 @@
     <Content Include="Views\Fund\Create.cshtml" />
     <Content Include="Views\Fund\Edit.cshtml" />
     <Content Include="Views\Fund\Delete.cshtml" />
+    <Content Include="Views\Shared\UserNotFoundError.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ContactInfo.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Event\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

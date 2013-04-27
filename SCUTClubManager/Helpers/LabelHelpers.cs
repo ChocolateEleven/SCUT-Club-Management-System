@@ -33,6 +33,8 @@ namespace SCUTClubManager.Helpers
 
         public static string GetStatus(string status_code)
         {
+            status_code = status_code.ToLower();
+
             switch (status_code)
             {
                 case Application.NOT_VERIFIED:
@@ -66,6 +68,59 @@ namespace SCUTClubManager.Helpers
             }
 
             return new HtmlString(result);
+        }
+
+        public static string GetGender(string gender_id)
+        {
+            gender_id = gender_id.ToLower();
+
+            switch (gender_id)
+            {
+                case "m":
+                    return "男";
+                case "f":
+                    return "女";
+                default:
+                    return "未知";
+            }
+        }
+
+        public static string GetPoliticalRole(string political_id)
+        {
+            political_id = political_id.ToLower();
+
+            switch (political_id)
+            {
+                case "q":
+                    return "群众";
+                case "d":
+                    return "共产党员";
+                case "y":
+                    return "预备党员";
+                case "t":
+                    return "共青团员";
+                case "o":
+                    return "其他党派";
+                default:
+                    return "未知";
+            }
+        }
+
+        public static string GetDegree(string degree_id)
+        {
+            degree_id = degree_id.ToLower();
+
+            switch (degree_id)
+            {
+                case "b":
+                    return "本科";
+                case "m":
+                    return "硕士";
+                case "p":
+                    return "博士";
+                default:
+                    return "未知";
+            }
         }
     }
 }
