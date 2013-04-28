@@ -61,8 +61,8 @@ namespace SCUTClubManager.Controllers
         }
 
         [Authorize]
-        public ActionResult List(int page_number = 1, string search = "", string search_option = "Title", string order = "Title", 
-            string pass_filter = "Passed", int club_id = Application.ALL)
+        public ActionResult List(int page_number = 1, string search = "", string search_option = "Title", string order = "Title",
+            string pass_filter = "", int club_id = Application.ALL)
         {
             IEnumerable<Event> events = db.Events.ToList();
 
@@ -118,7 +118,7 @@ namespace SCUTClubManager.Controllers
                 string score = scores[i];
 
                 Event e = events.Find(t => t.Id == id);
-                
+
                 if (e != null && !String.IsNullOrWhiteSpace(score))
                 {
                     e.Score = Int32.Parse(score);
@@ -129,6 +129,131 @@ namespace SCUTClubManager.Controllers
             string return_url = "Scoring?search=" + search + "&search_option=" + search_option + "&order=" + order;
 
             return Json(new { success = true, msg = "评分成功", url = return_url });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Cancel(int id)
+        {
+            Event e = db.Events.Include(t => t.SubEvents.Select(s => s.LocationApplications.Select(f => f.Assignment)))
+                .Include(t => t.SubEvents.Select(s => s.AssetApplications.Select(f => f.Assignment))).Include(t => t.SubEvents.Select(s => s.FundApplication)).Find(id);
+            string msg;
+            bool success = false;
+            string operation = "";
+
+            if (e != null)
+            {
+                msg = e.Title;
+
+                // 作为发起人取消活动的时候，若申请未审批则直接删除该申请，若申请已通过但未结束则将活动的状态修改为已取消。
+                if (ScmMembershipProvider.IsMe(e.ChiefEventOrganizerId))
+                {
+                    if (e.Status == Application.NOT_VERIFIED)
+                    {
+                        // 由于会和Club与Application之间的级联删除产生冲突，因此SubEvent和Application之间的级联删除只能反人类地手动了。。。
+                        foreach (SubEvent sub_event in e.SubEvents)
+                        {
+                            List<LocationApplication> loc_apps = sub_event.LocationApplications.ToList();
+                            loc_apps.ForEach(t => db.LocationApplications.Delete(t));
+
+                            List<AssetApplication> ass_apps = sub_event.AssetApplications.ToList();
+                            ass_apps.ForEach(t => db.AssetApplications.Delete(t));
+
+                            if (sub_event.FundApplication != null)
+                            {
+                                db.FundApplications.Delete(sub_event.FundApplication);
+                            }
+                        }
+
+                        db.Events.Delete(e);
+                        msg += "的申请已撤回";
+                        success = true;
+                        operation = "undo";
+                    }
+                    else if (e.Status == Application.PASSED && e.SubEvents.Any(t => t.Date.Date >= DateTime.Now.Date))
+                    {
+                        foreach (SubEvent sub_event in e.SubEvents)
+                        {
+                            foreach (LocationApplication loc_app in sub_event.LocationApplications)
+                            {
+                                var ass = loc_app.Assignment;
+
+                                if (ass != null)
+                                {
+                                    db.LocationAssignments.Delete(ass);
+                                }
+                            }
+                            foreach (AssetApplication ass_app in sub_event.AssetApplications)
+                            {
+                                var ass = ass_app.Assignment;
+
+                                if (ass != null)
+                                {
+                                    db.AssetAssignments.Delete(ass);
+                                }
+                            }
+                        }
+
+                        e.Status = Application.CANCELED;
+                        msg += "已取消";
+                        success = true;
+                        operation = "cancel";
+                    }
+                    else
+                    {
+                        msg += "无法取消";
+                    }
+                }
+                else if (User.IsInRole("社联")) // 作为管理员终止活动的时候，将申请已通过但未结束的活动的状态修改为已终止
+                {
+                    if (e.Status == Application.PASSED && e.SubEvents.Any(t => t.Date.Date >= DateTime.Now.Date))
+                    {
+                        foreach (SubEvent sub_event in e.SubEvents)
+                        {
+                            foreach (LocationApplication loc_app in sub_event.LocationApplications)
+                            {
+                                var ass = loc_app.Assignment;
+
+                                if (ass != null)
+                                {
+                                    db.LocationAssignments.Delete(ass);
+                                }
+                            }
+                            foreach (AssetApplication ass_app in sub_event.AssetApplications)
+                            {
+                                var ass = ass_app.Assignment;
+
+                                if (ass != null)
+                                {
+                                    db.AssetAssignments.Delete(ass);
+                                }
+                            }
+                        }
+
+                        e.Status = Application.TERMINATED;
+                        msg += "已终止";
+                        success = true;
+                        operation = "terminate";
+                    }
+                    else
+                    {
+                        msg += "无法终止";
+                    }
+                }
+                else
+                {
+                    msg = "您没有权限取消" + e.Title;
+                }
+
+                db.SaveChanges();
+
+            }
+            else
+            {
+                msg = "该活动不存在";
+            }
+
+            return Json(new { success = success, msg = msg, operation = operation });
         }
 
         //
@@ -295,6 +420,14 @@ namespace SCUTClubManager.Controllers
 
                         case "Finished":
                             collection = collection.Where(s => s.Status == Application.PASSED && s.SubEvents.All(t => t.Date.Date < DateTime.Now.Date));
+                            break;
+
+                        case "Canceled":
+                            collection = collection.Where(s => s.Status == Application.CANCELED);
+                            break;
+                            
+                        case "Terminated":
+                            collection = collection.Where(s => s.Status == Application.TERMINATED);
                             break;
                     }
                 }

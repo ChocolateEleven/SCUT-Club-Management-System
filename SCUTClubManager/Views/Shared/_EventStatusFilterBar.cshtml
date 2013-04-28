@@ -24,13 +24,37 @@
     </div>
 
     <div class="EventStatusFilterBtn">
-        @Html.ActionLink("全部", "List", new
+        @Html.ActionLink("已取消", "List", new
    {
        page_number = Model.PageNumber,
        order = ViewBag.CurrentOrder,
        search = ViewBag.Search,
        search_option = ViewBag.SearchOption,
+       pass_filter = "Canceled",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("已终止", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "Terminated",
+       club_id = ViewBag.ClubId
+   })
+    </div>
+
+    <div class="EventStatusFilterBtn">
+        @Html.ActionLink("全部", "List", new
+   {
        pass_filter = ViewBag.IsAdminMode ? "" : "Passed",
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
        club_id = ViewBag.ClubId
    })
     </div>

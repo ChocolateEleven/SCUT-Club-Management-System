@@ -126,7 +126,7 @@ namespace SCUTClubManager.Helpers
         public static string GetEventStatus(Event e)
         {
             string status_code = e.Status.ToLower();
-
+            
             switch (status_code)
             {
                 case Application.FAILED:
@@ -140,6 +140,10 @@ namespace SCUTClubManager.Helpers
                         return "进行中";
                     else
                         return "已结束";
+                case Application.CANCELED:
+                    return "已取消";
+                case Application.TERMINATED:
+                    return "已终止";
                 default:
                     return "未知";
             }

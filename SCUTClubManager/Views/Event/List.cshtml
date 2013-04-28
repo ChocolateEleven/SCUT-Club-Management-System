@@ -6,8 +6,42 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.Partial("_Confirmation")
+
 @Html.Partial("_EventStatusFilterBar")
 @Html.Partial("_SearchBar")
+
+<script type="text/javascript">
+    $(function () {
+        $(".CancelBtn").each(function (index, element) {
+            confirmAjax(element, "确定要" + $(element).text() + "吗？", "Cancel", "id", function (data) {
+                if (data.success) {
+                    switch (data.operation) {
+                        case "undo":
+                            $(element).parent().parent().fadeOut();
+                            break;
+                        case "cancel":
+                            if ("@ViewBag.PassFilter" != '') {
+                                $(element).parent().parent().fadeOut();
+                            } else {
+                                $(element).parent().siblings(".EventStatus").text("已取消");
+                                $(element).fadeOut();
+                            }
+                            break;
+                        case "terminate":
+                            if ("@ViewBag.PassFilter" != '') {
+                                $(element).parent().parent().fadeOut();
+                            } else {
+                                $(element).parent().siblings(".EventStatus").text("已终止");
+                                $(element).fadeOut();
+                            }
+                            break;
+                    }
+                }
+            });
+        });
+    })
+</script>
 
 <table>
     <tr>
@@ -66,6 +100,7 @@
                club_id = ViewBag.ClubId
            })
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -82,8 +117,28 @@
         <td>
             @Html.DisplayFor(modelItem => item.ChiefEventOrganizer.Name)
         </td>
-        <td>
+        <td class="EventStatus">
             @LabelHelpers.GetEventStatus(item)
+        </td>
+        <td>
+            @{
+    if (SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(item.ChiefEventOrganizerId) &&
+        item.Status == SCUTClubManager.Models.Application.NOT_VERIFIED)
+    {
+                <button type="button" class="CancelBtn" data-id="@item.Id">撤销</button>
+    }
+    else if (SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(item.ChiefEventOrganizerId) && 
+    item.Status == SCUTClubManager.Models.Application.PASSED &&
+    item.SubEvents.Any(t => t.Date.Date >= DateTime.Now.Date))
+    {
+                <button type="button" class="CancelBtn" data-id="@item.Id">取消</button>
+    }
+    else if (User.IsInRole("社联") && item.Status == SCUTClubManager.Models.Application.PASSED &&
+item.SubEvents.Any(t => t.Date.Date >= DateTime.Now.Date))
+    {
+                <button type="button" class="CancelBtn" data-id="@item.Id">终止</button>
+    }
+            }
         </td>
     </tr>
 }

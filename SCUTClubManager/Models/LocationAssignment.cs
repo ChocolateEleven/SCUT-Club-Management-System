@@ -11,6 +11,8 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
+        public int LocationApplicationId { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
 
@@ -24,6 +26,8 @@ namespace SCUTClubManager.Models
         public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<Time> Times { get; set; }
         public virtual Club Club { get; set; }
+
+        public virtual LocationApplication LocationApplication { get; set; }
 
         [ForeignKey("ApplicantName")]
         public virtual Student Applicant { get; set; }

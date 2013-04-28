@@ -10,6 +10,7 @@ namespace SCUTClubManager.Models
     {
         public int? SubEventId { get; set; }
 
+        public virtual AssetAssignment Assignment { get; set; }
         public virtual ICollection<Time> Times { get; set; }
         public virtual SubEvent SubEvent { get; set; }
         public virtual ICollection<ApplicatedAsset> ApplicatedAssets { get; set; }

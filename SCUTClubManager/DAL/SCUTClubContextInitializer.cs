@@ -23,7 +23,7 @@ namespace SCUTClubManager.DAL
                 new IdentityForTPC
                 {
                     BaseName = "Application",
-                    Identity = 14
+                    Identity = 15
                 },
                 new IdentityForTPC
                 {
@@ -1402,6 +1402,59 @@ namespace SCUTClubManager.DAL
                                 Club = clubs[3],
                                 Quantity = 100,
                                 Status = Application.PASSED
+                            }
+                        }
+                    }
+                },
+                new Event
+                {
+                    Date = DateTime.Now.AddDays(5),
+                    ChiefEventOrganizer = students[1] as Student,
+                    Club = clubs[3],
+                    PlanUrl = "",
+                    PosterUrl = "",
+                    Title = "BioShock",
+                    Status = Application.NOT_VERIFIED,
+                    Description = new EventDescription
+                    {
+                        Description = "All beauty is sad opera."
+                    },
+                    Organizers = new List<Student>
+                    {
+                        students[1] as Student,
+                        students[2] as Student
+                    },
+                    SubEvents = new List<SubEvent>
+                    {
+                        new SubEvent
+                        {
+                            Date = DateTime.Now.AddDays(5),
+                            Description = new SubEventDescription
+                            {
+                                Description = "SubEvent1 of Event BioShock"
+                            },
+                            Title = "BioShock1",
+                            LocationApplications = new List<LocationApplication>
+                            {
+                                location_applications[2]
+                            },
+                            AssetApplications = new List<AssetApplication>
+                            {
+                                asset_applications[2]
+                            },
+                            Times = new List<Time>
+                            {
+                                times[0],
+                                times[1]
+                            },
+                            FundApplication = new FundApplication
+                            {
+                                Id = 14,
+                                Applicant = students[1] as Student,
+                                Date = DateTime.Now.AddDays(5),
+                                Club = clubs[3],
+                                Quantity = 103,
+                                Status = Application.NOT_VERIFIED
                             }
                         }
                     }
