@@ -48,7 +48,6 @@
         <th>
             @Html.ActionLink("活动名", "List", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.TitleOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption,
@@ -59,7 +58,6 @@
         <th>
             @Html.ActionLink("举办日期", "List", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.DateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption,
@@ -70,7 +68,6 @@
         <th>
             @Html.ActionLink("举办社团", "List", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.ClubNameOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption,
@@ -81,7 +78,6 @@
         <th>
             @Html.ActionLink("负责人", "List", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.OrganizerOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption,
@@ -92,8 +88,17 @@
         <th>
             @Html.ActionLink("状态", "List", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.StatusOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
+           })
+        </th>
+        <th>
+            @Html.ActionLink("活动评分", "List", new
+           {
+               order = ViewBag.ScoreOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
@@ -106,7 +111,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @Html.ActionLink(item.Title, "Details", new { id = item.Id })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
@@ -121,9 +126,12 @@
             @LabelHelpers.GetEventStatus(item)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Score)
+        </td>
+        <td>
             @{
     if (SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(item.ChiefEventOrganizerId) &&
-        item.Status == SCUTClubManager.Models.Application.NOT_VERIFIED)
+        item.Status == SCUTClubManager.Models.Application.NOT_VERIFIED || item.Status == SCUTClubManager.Models.Application.NOT_SUBMITTED)
     {
                 <button type="button" class="CancelBtn" data-id="@item.Id">撤销</button>
     }

@@ -68,7 +68,8 @@ namespace SCUTClubManager.Controllers
         // GET: /User/Details/5
 
         [Authorize]
-        public ActionResult Details(string user_name, int page_number, string order, string search, string search_option, int role_filter)
+        public ActionResult Details(string user_name, int page_number = 1, string order = "UserName", 
+            string search = "", string search_option = "Name", int role_filter = 1)
         {
             Student student = db.Students.Include(t => t.ContactInfo).Find(user_name);
 

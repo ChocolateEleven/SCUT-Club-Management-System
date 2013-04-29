@@ -73,11 +73,18 @@ namespace SCUTClubManager.Controllers
             }
 
             ViewBag.IsAdminMode = User.IsInRole("社联") || club_id != Application.ALL && ScmRoleProvider.HasMembershipIn(club_id);
+            ViewBag.IsPresident = club_id != Application.ALL && ScmRoleProvider.HasMembershipIn(club_id, null, new string[] { "会长" });
 
             if (!ViewBag.IsAdminMode)
             {
-                if (pass_filter == "NotVerified" || pass_filter == "Verified" || pass_filter == "Failed" || String.IsNullOrWhiteSpace(pass_filter))
+                if (pass_filter == "NotVerified" || pass_filter == "Verified" || pass_filter == "Failed" 
+                    || String.IsNullOrWhiteSpace(pass_filter) || pass_filter == "NotSubmitted" || pass_filter == "All")
                     pass_filter = "Passed";
+            }
+
+            if ((pass_filter == "NotSubmitted" || pass_filter == "All") && !ViewBag.IsPresident)
+            {
+                pass_filter = "";
             }
 
             events = FilterEvents(events as IQueryable<Event>, page_number, order, search, search_option, pass_filter, club_id);
@@ -136,7 +143,7 @@ namespace SCUTClubManager.Controllers
         public ActionResult Cancel(int id)
         {
             Event e = db.Events.Include(t => t.SubEvents.Select(s => s.LocationApplications.Select(f => f.Assignment)))
-                .Include(t => t.SubEvents.Select(s => s.AssetApplications.Select(f => f.Assignment))).Include(t => t.SubEvents.Select(s => s.FundApplication)).Find(id);
+                .Include(t => t.SubEvents.Select(s => s.AssetApplications.Select(f => f.Assignment))).Include(t => t.FundApplication).Find(id);
             string msg;
             bool success = false;
             string operation = "";
@@ -145,10 +152,10 @@ namespace SCUTClubManager.Controllers
             {
                 msg = e.Title;
 
-                // 作为发起人取消活动的时候，若申请未审批则直接删除该申请，若申请已通过但未结束则将活动的状态修改为已取消。
+                // 作为负责人取消活动的时候，若申请未审批则直接删除该申请，若申请已通过但未结束则将活动的状态修改为已取消。
                 if (ScmMembershipProvider.IsMe(e.ChiefEventOrganizerId))
                 {
-                    if (e.Status == Application.NOT_VERIFIED)
+                    if (e.Status == Application.NOT_VERIFIED || e.Status == Application.NOT_SUBMITTED)
                     {
                         // 由于会和Club与Application之间的级联删除产生冲突，因此SubEvent和Application之间的级联删除只能反人类地手动了。。。
                         foreach (SubEvent sub_event in e.SubEvents)
@@ -158,11 +165,11 @@ namespace SCUTClubManager.Controllers
 
                             List<AssetApplication> ass_apps = sub_event.AssetApplications.ToList();
                             ass_apps.ForEach(t => db.AssetApplications.Delete(t));
+                        }
 
-                            if (sub_event.FundApplication != null)
-                            {
-                                db.FundApplications.Delete(sub_event.FundApplication);
-                            }
+                        if (e.FundApplication != null)
+                        {
+                            db.FundApplications.Delete(e.FundApplication);
                         }
 
                         db.Events.Delete(e);
@@ -259,9 +266,29 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Event/Details/5
 
+        [Authorize]
         public ActionResult Details(int id)
         {
-            return View();
+            Event e = db.Events.Include(t => t.ChiefEventOrganizer).Include(t => t.Club.MajorInfo).Include(t => t.SubEvents).Find(id);
+
+            if (e != null)
+            {
+                if (ScmRoleProvider.HasMembershipIn(e.ClubId) || User.IsInRole("社联") || e.Status != Application.NOT_VERIFIED && e.Status != Application.FAILED)
+                {
+                    if (e.Status != Application.NOT_SUBMITTED)
+                    {
+                        ViewBag.HasAccessToCriticalSections = HasAccessToCriticalDetails(e);
+
+                        return View(e);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Edit");
+                    }
+                }
+            }
+
+            return View("EventNotFoundError");
         }
 
         //
@@ -288,6 +315,104 @@ namespace SCUTClubManager.Controllers
             {
                 return View();
             }
+        }
+
+        [Authorize]
+        public ActionResult SubEvents(int id)
+        {
+            Event e = db.Events.Include(t => t.SubEvents.Select(s => s.LocationApplications.Select(f => f.Locations)))
+                .Include(t => t.SubEvents.Select(s => s.AssetApplications.Select(f => f.ApplicatedAssets.Select(p => p.Asset))))
+                .Include(t => t.SubEvents.Select(s => s.LocationApplications.Select(f => f.Times))).Include(t => t.Description)
+                .Include(t => t.SubEvents.Select(s => s.AssetApplications.Select(f => f.Times))).Find(id);
+
+            if (e != null)
+            {
+                return View(e);
+            }
+
+            return View("EventNotFoundError");
+        }
+
+        [Authorize]
+        public ActionResult Organizers(int id)
+        {
+            Event e = db.Events.Include(t => t.Organizers).Include(t => t.ChiefEventOrganizer).Find(id);
+
+            if (e != null)
+            {
+                if (HasAccessToCriticalDetails(e))
+                {
+                    return View(e);
+                }
+                else
+                {
+                    return View("PermissionDeniedError");
+                }
+            }
+
+            return View("EventNotFoundError");
+        }
+
+        [Authorize]
+        public ActionResult Funds(int id)
+        {
+            Event e = db.Events.Include(t => t.Club).Include(t => t.FundApplication).Find(id);
+
+            if (e != null)
+            {
+                if (HasAccessToCriticalDetails(e))
+                {
+                    return View(e);
+                }
+                else
+                {
+                    return View("PermissionDeniedError");
+                }
+            }
+
+            return View("EventNotFoundError");
+        }
+
+        [Authorize]
+        public ActionResult EventDescription(int id)
+        {
+            Event e = db.Events.Include(t => t.Description).Find(id);
+
+            if (e != null)
+            {
+                return View(e);
+            }
+
+            return View("EventNotFoundError");
+        }
+
+        [Authorize]
+        public ActionResult DownloadPlan(int id)
+        {
+            Event e = db.Events.Find(id);
+
+            if (e != null)
+            {
+                if (HasAccessToCriticalDetails(e))
+                {
+                    string path = Path.Combine(Server.MapPath(ConfigurationManager.EventPlanFolder), e.PlanUrl);
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        return File(path, MimeMapping.GetMimeMapping(e.PlanUrl));
+                    }
+                    else
+                    {
+                        return View("FileNotFoundError");
+                    }
+                }
+                else
+                {
+                    return View("PermissionDeniedError");
+                }
+            }
+
+            return View("EventNotFoundError");
         }
 
         //
@@ -342,8 +467,14 @@ namespace SCUTClubManager.Controllers
             }
         }
 
+        private bool HasAccessToCriticalDetails(Event e)
+        {
+            return User.IsInRole("社联") ||
+                            ScmRoleProvider.HasMembershipIn(e.ClubId, null, new string[] { "会长" }) || ScmRoleProvider.IsOrganizerOf(e.Id);
+        }
+
         private IEnumerable<Event> FilterEvents(IQueryable<Event> collection, int page_number = 1,
-            string order = "Title", string search = "", string search_option = "", string pass_filter = "", int club_id = Application.ALL)
+            string order = "Title", string search = "", string search_option = "", string pass_filter = "", int club_id = Application.ALL, string user_name = "")
         {
             IPagedList<Event> list = null;
 
@@ -390,46 +521,67 @@ namespace SCUTClubManager.Controllers
                     collection = collection.Where(t => t.ClubId == club_id);
                 }
 
-                if (!String.IsNullOrWhiteSpace(pass_filter))
+                if (!String.IsNullOrWhiteSpace(user_name))
                 {
-                    switch (pass_filter)
-                    {
-                        case "Passed":
-                            collection = collection.Where(s => s.Status == Application.PASSED);
-                            break;
+                    collection = collection.Where(t => t.Organizers.Any(s => s.UserName == user_name));
+                }
 
-                        case "Failed":
-                            collection = collection.Where(s => s.Status == Application.FAILED);
-                            break;
+                switch (pass_filter)
+                {
+                    case "Passed":
+                        collection = collection.Where(s => s.Status == Application.PASSED || s.Status == Application.CANCELED || s.Status == Application.TERMINATED);
+                        break;
 
-                        case "NotVerified":
-                            collection = collection.Where(s => s.Status == Application.NOT_VERIFIED);
-                            break;
+                    case "Failed":
+                        collection = collection.Where(s => s.Status == Application.FAILED);
+                        break;
 
-                        case "Verified":
-                            collection = collection.Where(s => s.Status == Application.PASSED || s.Status == Application.FAILED);
-                            break;
+                    case "NotVerified":
+                        collection = collection.Where(s => s.Status == Application.NOT_VERIFIED);
+                        break;
 
-                        case "NotStarted":
-                            collection = collection.Where(s => s.Status == Application.PASSED && s.Date.Date > DateTime.Now.Date);
-                            break;
+                    case "Verified":
+                        collection = collection.Where(s => s.Status == Application.PASSED || s.Status == Application.FAILED);
+                        break;
 
-                        case "Active":
-                            collection = collection.Where(s => s.Status == Application.PASSED && s.SubEvents.Any(t => t.Date.Date == DateTime.Now.Date));
-                            break;
+                    case "NotStarted":
+                        collection = collection.Where(s => s.Status == Application.PASSED && 
+                            (s.Date.Year > DateTime.Now.Year || s.Date.Year == DateTime.Now.Year && s.Date.Month > DateTime.Now.Month ||
+                            s.Date.Year == DateTime.Now.Year && s.Date.Month == DateTime.Now.Month && s.Date.Day > DateTime.Now.Day));
+                        break;
 
-                        case "Finished":
-                            collection = collection.Where(s => s.Status == Application.PASSED && s.SubEvents.All(t => t.Date.Date < DateTime.Now.Date));
-                            break;
+                    case "Active":
+                        collection = collection.Where(s => s.Status == Application.PASSED && s.SubEvents.Any(t => t.Date.Year >= DateTime.Now.Year
+                            || t.Date.Year == DateTime.Now.Year && t.Date.Month >= DateTime.Now.Month ||
+                            t.Date.Year == DateTime.Now.Year && t.Date.Month == DateTime.Now.Month && t.Date.Day >= DateTime.Now.Day) &&
+                            s.Date.Year <= DateTime.Now.Year || s.Date.Year == DateTime.Now.Year && s.Date.Month <= DateTime.Now.Month ||
+                            s.Date.Year == DateTime.Now.Year && s.Date.Month == DateTime.Now.Month && s.Date.Day <= DateTime.Now.Day);
+                        break;
 
-                        case "Canceled":
-                            collection = collection.Where(s => s.Status == Application.CANCELED);
-                            break;
-                            
-                        case "Terminated":
-                            collection = collection.Where(s => s.Status == Application.TERMINATED);
-                            break;
-                    }
+                    case "Finished":
+                        collection = collection.Where(s => s.Status == Application.PASSED && s.SubEvents.All(t => t.Date.Year < DateTime.Now.Year 
+                            || t.Date.Year == DateTime.Now.Year && t.Date.Month < DateTime.Now.Month ||
+                            t.Date.Year == DateTime.Now.Year && t.Date.Month == DateTime.Now.Month && t.Date.Day < DateTime.Now.Day));
+                        break;
+
+                    case "Canceled":
+                        collection = collection.Where(s => s.Status == Application.CANCELED);
+                        break;
+
+                    case "Terminated":
+                        collection = collection.Where(s => s.Status == Application.TERMINATED);
+                        break;
+
+                    case "NotSubmitted":
+                        collection = collection.Where(s => s.Status == Application.NOT_SUBMITTED);
+                        break;
+
+                    case "All":
+                        break;
+
+                    default:
+                        collection = collection.Where(s => s.Status != Application.NOT_SUBMITTED);
+                        break;
                 }
 
                 string[] includes = { "Club.MajorInfo", "ChiefEventOrganizer", "SubEvents" };

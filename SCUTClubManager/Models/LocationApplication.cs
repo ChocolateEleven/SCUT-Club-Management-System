@@ -11,7 +11,7 @@ namespace SCUTClubManager.Models
         public int? SubEventId { get; set; }
 
         public virtual LocationAssignment Assignment { get; set; }
-        public virtual ICollection<Location> Location { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<Time> Times { get; set; }
         public virtual SubEvent SubEvent { get; set; }
     }

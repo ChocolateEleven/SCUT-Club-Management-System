@@ -13,6 +13,7 @@ namespace SCUTClubManager.Models
         public const string FAILED = "f";
         public const string CANCELED = "c";
         public const string TERMINATED = "t";
+        public const string NOT_SUBMITTED = "s";
         public const int ALL = 0;
         public const int FLEXIBLE = -1;
 

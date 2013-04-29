@@ -1,0 +1,34 @@
+﻿@model SCUTClubManager.Models.Event
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+</head>
+<body>
+    <div class="display-label">
+        组长
+    </div>
+    <div class="display-field">
+        @Html.ActionLink(Model.ChiefEventOrganizer.Name, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)
+    </div>
+
+    <div class="display-label">
+        组员
+    </div>
+    <div class="display-field">
+        @foreach (var organizer in Model.Organizers)
+        {
+            if (organizer.UserName != Model.ChiefEventOrganizerId)
+            {
+            <div>
+                @Html.ActionLink(organizer.Name, "Details", "User", new { user_name = organizer.UserName }, null)
+            </div>
+            }
+        }
+    </div>
+</body>
+</html>

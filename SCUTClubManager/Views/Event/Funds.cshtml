@@ -1,0 +1,48 @@
+﻿@model SCUTClubManager.Models.Event
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+</head>
+<body>
+    <div class="display-label">
+        社团总可用资金：
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Club.Fund)
+    </div>
+
+    <div class="display-label">
+        申请活动经费的金额：
+    </div>
+    <div class="display-field">
+        @if (Model.FundApplication != null)
+        {
+            @Html.DisplayFor(model => model.FundApplication.Quantity)
+        }
+        else
+        {
+            @Html.Raw("0")
+        }
+    </div>
+
+    <div class="display-label">
+        剩余金额：
+    </div>
+    <div class="display-field">
+        @if (Model.FundApplication != null)
+        {
+            @Html.Raw((Model.Club.Fund - Model.FundApplication.Quantity).ToString())
+        }
+        else
+        {
+            @Html.DisplayFor(model => model.Club.Fund)
+        }
+    </div>
+</body>
+</html>

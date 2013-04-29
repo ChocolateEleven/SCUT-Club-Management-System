@@ -11,8 +11,6 @@ namespace SCUTClubManager.Models
     {
         public int Id { get; set; }
 
-        public int? AssetApplicationId { get; set; }
-
         [Required]
         //[DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }

@@ -1,0 +1,118 @@
+﻿@model SCUTClubManager.Models.Event
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<script type="text/javascript">
+    $(function () {
+        $("#subEvents").accordion({
+            collapsible: true
+        });
+    })
+</script>
+
+<html>
+<head>
+</head>
+<body>
+    <div id="subEvents">
+        @foreach (var item in Model.SubEvents)
+        {
+            <h3>@item.Title</h3>
+            <div>
+                <fieldset>
+                    <legend>基本信息</legend>
+
+                    <div class="display-label">
+                        时间与日期
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </div>
+
+                    <div class="display-label">
+                        描述
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(modelItem => item.Description.Description)
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>场地</legend>
+
+                    @foreach (var loc_app in item.LocationApplications)
+                    {
+                        string times_str = "";
+                        List<SCUTClubManager.Models.Time> times = loc_app.Times.ToList();
+                        
+                        for (int i = 0; i < times.Count; ++i)
+                        {
+                            times_str += times[i].TimeName;
+                            
+                            if (i < times.Count - 1)
+                            {
+                                times_str += "、";
+                            }
+                        }
+                        
+                        <div class="TimeSection">
+                            <div class="display-field">
+                                @Html.Raw(times_str)
+                            </div>
+                            @foreach (var location in loc_app.Locations)
+                            {
+                                <div class="display-field">
+                                    @Html.DisplayFor(modelItem => location.Name)
+                                </div>
+                            }
+                        </div>
+                    }
+                </fieldset>
+
+                <fieldset>
+                    <legend>物资</legend>
+
+                    @foreach (var ass_app in item.AssetApplications)
+                    {
+                        string times_str = "";
+                        List<SCUTClubManager.Models.Time> times = ass_app.Times.ToList();
+                        
+                        for (int i = 0; i < times.Count; ++i)
+                        {
+                            times_str += times[i].TimeName;
+                            
+                            if (i < times.Count - 1)
+                            {
+                                times_str += "、";
+                            }
+                        }
+                        
+                        <div class="TimeSection">
+                            <div class="display-field">
+                                @Html.Raw(times_str)
+                            </div>
+                            @foreach (var asset in ass_app.ApplicatedAssets)
+                            {
+                                <div class="display-field">
+                                    <span>
+                                        @Html.DisplayFor(modelItem => asset.Asset.Name)
+                                    </span>
+                                    <span>
+                                        数量：
+                                    </span>
+                                    <span>
+                                        @Html.DisplayFor(modelItem => asset.Count)
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    }
+                </fieldset>
+            </div>
+        }
+    </div>
+</body>
+</html>

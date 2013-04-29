@@ -8,4 +8,6 @@
   <ProgressProfileInterval>500</ProgressProfileInterval>
   <TemplateFolder>~/Content/TemplateFiles/</TemplateFolder>
   <EventApplicationTemplateFile>EventApplicationTemplate</EventApplicationTemplateFile>
+  <EventPosterFolder>~/Content/Images/EventPosters/</EventPosterFolder>
+  <EventPlanFolder>~/Content/EventPlans/</EventPlanFolder>
 </SCUTClubManagerConfigFile>

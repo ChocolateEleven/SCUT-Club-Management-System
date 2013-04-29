@@ -92,10 +92,10 @@ namespace SCUTClubManager.Controllers
             if (SubEventId != null)
                 location_application.SubEvent = unitOfWork.SubEvents.Find(SubEventId);
             location_application.Club = unitOfWork.Clubs.Find(ClubId);
-            location_application.Location = new List<Location>();
+            location_application.Locations = new List<Location>();
             foreach (var id in locationId)
             {
-                location_application.Location.Add(unitOfWork.Locations.Find(id));
+                location_application.Locations.Add(unitOfWork.Locations.Find(id));
             }
             location_application.ApplicantUserName = User.Identity.Name;
             location_application.Status = Application.NOT_VERIFIED;

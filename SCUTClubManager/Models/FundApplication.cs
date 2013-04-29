@@ -12,6 +12,6 @@ namespace SCUTClubManager.Models
         [Required]
         public Decimal Quantity { get; set; }
 
-        public virtual SubEvent SubEvent { get; set; }
+        public virtual Event Event { get; set; }
     }
 }

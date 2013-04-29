@@ -17,6 +17,8 @@ namespace SCUTClubManager.Helpers
         private static int progressProfileInterval = 500;
         private static string templateFolder = "~/Content/TemplateFiles/";
         private static string eventApplicationTemplateFile = "EventApplicationTemplate";
+        private static string eventPosterFolder = "~/Content/Images/EventPosters/";
+        private static string eventPlanFolder = "~/Content/EventPlans/";
         private static XmlWriterSettings settings = null;
 
         public static string ConfigFile
@@ -46,6 +48,8 @@ namespace SCUTClubManager.Helpers
                     xml.WriteElementString("ProgressProfileInterval", progressProfileInterval.ToString());
                     xml.WriteElementString("TemplateFolder", templateFolder.ToString());
                     xml.WriteElementString("EventApplicationTemplateFile", eventApplicationTemplateFile.ToString());
+                    xml.WriteElementString("EventPosterFolder", eventPosterFolder.ToString());
+                    xml.WriteElementString("EventPlanFolder", eventPlanFolder.ToString());
 
                     xml.WriteEndElement();
 
@@ -109,6 +113,28 @@ namespace SCUTClubManager.Helpers
                 if (reader.ReadToFollowing("EventApplicationTemplateFile"))
                 {
                     eventApplicationTemplateFile = reader.ReadElementContentAsString();
+                }
+                if (reader.ReadToFollowing("EventPosterFolder"))
+                {
+                    string str = reader.ReadElementContentAsString().ToLower();
+                    eventPosterFolder = str;
+                    string mapped_path = HttpContext.Current.Server.MapPath(str);
+
+                    if (!Directory.Exists(mapped_path))
+                    {
+                        Directory.CreateDirectory(mapped_path);
+                    }
+                }
+                if (reader.ReadToFollowing("EventPlanFolder"))
+                {
+                    string str = reader.ReadElementContentAsString().ToLower();
+                    eventPlanFolder = str;
+                    string mapped_path = HttpContext.Current.Server.MapPath(str);
+
+                    if (!Directory.Exists(mapped_path))
+                    {
+                        Directory.CreateDirectory(mapped_path);
+                    }
                 }
             }
         }
@@ -293,6 +319,52 @@ namespace SCUTClubManager.Helpers
                     }
 
                     eventApplicationTemplateFile = value;
+                }
+            }
+        }
+
+        public static string EventPosterFolder
+        {
+            get
+            {
+                return eventPosterFolder;
+            }
+            set
+            {
+                if (eventPosterFolder != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("EventPosterFolder", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    eventPosterFolder = value;
+                }
+            }
+        }
+
+        public static string EventPlanFolder
+        {
+            get
+            {
+                return eventPlanFolder;
+            }
+            set
+            {
+                if (eventPlanFolder != value)
+                {
+                    using (XmlWriter xml = XmlWriter.Create(AppDomain.CurrentDomain.BaseDirectory + ConfigFile, settings))
+                    {
+                        xml.WriteElementString("EventPlanFolder", value.ToString());
+
+                        xml.Flush();
+                        xml.Close();
+                    }
+
+                    eventPlanFolder = value;
                 }
             }
         }

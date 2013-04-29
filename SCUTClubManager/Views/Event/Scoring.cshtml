@@ -80,7 +80,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.ActionLink(item.Title, "Details", new { id = item.Id })
                     <input type="hidden" name="ids" value="@item.Id" />
                 </td>
                 <td>

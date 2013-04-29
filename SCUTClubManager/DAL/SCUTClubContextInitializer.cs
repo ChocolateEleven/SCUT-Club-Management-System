@@ -16,7 +16,7 @@ namespace SCUTClubManager.DAL
         protected override void Seed(SCUTClubContext context)
         {
             base.Seed(context);
-            
+
             #region Ids
             var ids = new List<IdentityForTPC>
             {
@@ -1175,7 +1175,7 @@ namespace SCUTClubManager.DAL
                     Applicant = students[3] as Student,
                     Date = new DateTime(2013,1,3),
                     Times = new List<Time>{times[0],times[1],times[2]},
-                    Location = new List<Location>
+                    Locations = new List<Location>
                     {
                         locations[0],locations[1]
                     }
@@ -1188,7 +1188,7 @@ namespace SCUTClubManager.DAL
                     Applicant = students[1] as Student,
                     Date = new DateTime(2013,1,4),
                     Times = new List<Time>{times[0],times[1],times[2]},
-                    Location = new List<Location>
+                    Locations = new List<Location>
                     {
                         locations[2],locations[1],locations[0]
                     }
@@ -1201,7 +1201,7 @@ namespace SCUTClubManager.DAL
                     Applicant = students[2] as Student,
                     Date = new DateTime(2013,1,5),
                     Times = new List<Time>{times[0],times[1],times[2]},
-                    Location = new List<Location>
+                    Locations = new List<Location>
                     {
                         locations[0]
                     }
@@ -1356,7 +1356,7 @@ namespace SCUTClubManager.DAL
                     Date = DateTime.Now,
                     ChiefEventOrganizer = students[1] as Student,
                     Club = clubs[3],
-                    PlanUrl = "",
+                    PlanUrl = "1.txt",
                     PosterUrl = "",
                     Title = "涙の物語",
                     Status = Application.PASSED,
@@ -1393,17 +1393,17 @@ namespace SCUTClubManager.DAL
                             {
                                 times[0],
                                 times[1]
-                            },
-                            FundApplication = new FundApplication
-                            {
-                                Id = 13,
-                                Applicant = students[1] as Student,
-                                Date = DateTime.Now,
-                                Club = clubs[3],
-                                Quantity = 100,
-                                Status = Application.PASSED
                             }
                         }
+                    },
+                    FundApplication = new FundApplication
+                    {
+                        Id = 13,
+                        Applicant = students[1] as Student,
+                        Date = DateTime.Now,
+                        Club = clubs[3],
+                        Quantity = 100,
+                        Status = Application.PASSED
                     }
                 },
                 new Event
@@ -1411,7 +1411,7 @@ namespace SCUTClubManager.DAL
                     Date = DateTime.Now.AddDays(5),
                     ChiefEventOrganizer = students[1] as Student,
                     Club = clubs[3],
-                    PlanUrl = "",
+                    PlanUrl = "1.docx",
                     PosterUrl = "",
                     Title = "BioShock",
                     Status = Application.NOT_VERIFIED,
@@ -1446,17 +1446,17 @@ namespace SCUTClubManager.DAL
                             {
                                 times[0],
                                 times[1]
-                            },
-                            FundApplication = new FundApplication
-                            {
-                                Id = 14,
-                                Applicant = students[1] as Student,
-                                Date = DateTime.Now.AddDays(5),
-                                Club = clubs[3],
-                                Quantity = 103,
-                                Status = Application.NOT_VERIFIED
                             }
                         }
+                    },
+                    FundApplication = new FundApplication
+                    {
+                        Id = 14,
+                        Applicant = students[1] as Student,
+                        Date = DateTime.Now.AddDays(5),
+                        Club = clubs[3],
+                        Quantity = 103,
+                        Status = Application.NOT_VERIFIED
                     }
                 }
             };

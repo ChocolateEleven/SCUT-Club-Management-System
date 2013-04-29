@@ -50,7 +50,7 @@
     <div class="EventStatusFilterBtn">
         @Html.ActionLink("全部", "List", new
    {
-       pass_filter = ViewBag.IsAdminMode ? "" : "Passed",
+       pass_filter = ViewBag.IsAdminMode ? (ViewBag.IsMe == true || ViewBag.IsPresident == true) ? "All" : "" : "Passed",
        page_number = Model.PageNumber,
        order = ViewBag.CurrentOrder,
        search = ViewBag.Search,
@@ -117,5 +117,20 @@
        club_id = ViewBag.ClubId
    })
     </div>
+    }
+
+    @if (ViewBag.IsMe == true || ViewBag.IsPresident == true)
+    {
+        <div class="EventStatusFilterBtn">
+            @Html.ActionLink("未提交", "List", new
+   {
+       page_number = Model.PageNumber,
+       order = ViewBag.CurrentOrder,
+       search = ViewBag.Search,
+       search_option = ViewBag.SearchOption,
+       pass_filter = "NotSubmitted",
+       club_id = ViewBag.ClubId
+   })
+        </div>
     }
 </div>

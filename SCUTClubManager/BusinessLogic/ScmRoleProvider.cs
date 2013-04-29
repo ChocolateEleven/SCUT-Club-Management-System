@@ -130,6 +130,21 @@ namespace SCUTClubManager.BusinessLogic
             return memberships1.Any(t => memberships2.Any(s => t.ClubId == s.ClubId));
         }
 
+        /**
+         *  检查当前用户是否为给定活动的组织者之一。
+         *  @param event_id 给定活动的Id。
+         *  @returns 检查结果。
+         */
+        public static bool IsOrganizerOf(int event_id)
+        {
+            Event e = context.Events.Include(t => t.Organizers).Find(event_id);
+
+            if (e != null && e.Organizers.Any(t => t.UserName == HttpContext.Current.User.Identity.Name))
+                return true;
+
+            return false;
+        }
+
         // 以下为对用户全局权限的管理用。用于区分系统管理员和一般用户。
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)

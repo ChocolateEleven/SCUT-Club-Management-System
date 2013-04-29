@@ -32,13 +32,18 @@ namespace SCUTClubManager.Models
 
         [MaxLength(1)]
         public string Status { get; set; }
+
+        
+        public DateTime Date { get; set; }
+
         public virtual Club Club { get; set; }
         public virtual EventDescription Description { get; set; }
         public virtual ICollection<Student> Organizers { get; set; }
         public virtual ICollection<SubEvent> SubEvents { get; set; }
 
+        public virtual FundApplication FundApplication { get; set; }
+
         [ForeignKey("ChiefEventOrganizerId")]
         public virtual Student ChiefEventOrganizer { get; set; }
-        public virtual DateTime Date { get; set; }
     }
 }

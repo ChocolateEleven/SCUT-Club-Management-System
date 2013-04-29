@@ -1,0 +1,69 @@
+﻿@model SCUTClubManager.Models.Event
+@{
+    ViewBag.Title = Model.Title + "详情";
+}
+
+<script>
+    $(function () {
+        $("#tabs").tabs({
+            beforeLoad: function (event, ui) {
+                ui.jqXHR.error(function () {
+                    ui.panel.html(
+                      "内容加载失败，请重试。");
+                });
+            }
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title @LabelHelpers.GetEventStatus(Model)</h2>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">基本信息</a></li>
+        <li><a href="/Event/EventDescription?id=@Model.Id">详细介绍</a></li>
+        <li><a href="/Event/SubEvents?id=@Model.Id">具体安排</a></li>
+
+        @if (ViewBag.HasAccessToCriticalSections)
+        {
+            <li><a href="/Event/Organizers?id=@Model.Id">组织人员</a></li>
+            <li><a href="#tabs-2">活动策划</a></li>
+            <li><a href="/Event/Funds?id=@Model.Id">活动资金</a></li>
+        }
+    </ul>
+
+    <div id="tabs-1">
+        <div class="display-field">
+            <img src="@Path.Combine(Server.MapPath(ConfigurationManager.EventPosterFolder), Model.PosterUrl)" />
+        </div>
+
+        <div class="display-label">举办社团</div>
+        <div class="display-field">@Html.ActionLink(Model.Club.MajorInfo.Name, "Details", "Club", new { id = Model.ClubId }, null)</div>
+
+        <div class="display-label">负责人</div>
+        <div class="display-field">@Html.ActionLink(Model.ChiefEventOrganizer.Name, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)</div>
+
+        <div class="display-label">开始日期</div>
+        <div class="display-field">@Html.DisplayFor(model => model.Date)</div>
+
+        <div class="display-label">活动评分</div>
+        <div class="display-field">@Html.DisplayFor(model => model.Score)</div>
+    </div>
+
+    @if (ViewBag.HasAccessToCriticalSections)
+    {
+        <div id="tabs-2">
+            <div>
+                点击下面按钮即可下载该活动的活动策划书
+            </div>
+            <div>
+                @Html.ActionLink("下载活动策划书", "DownloadPlan", new { id = Model.Id })
+            </div>
+        </div>
+    }
+</div>
+
+@if (User.IsInRole("社联") && Model.Status == SCUTClubManager.Models.Application.NOT_VERIFIED)
+{
+    @Html.Partial("_VerifyBar", Model.Id)
+}

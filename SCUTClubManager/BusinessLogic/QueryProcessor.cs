@@ -97,7 +97,7 @@ namespace SCUTClubManager.BusinessLogic
         }
 
         /** 过滤应用程序，哦不，申请才对。
-         *  @param pass_filter 为""时表示不过滤，"Passed"表示只留下通过的，"Failed"表示只留下悲剧掉的，"NotVerified"表示只留下未审批的。"Verified"表示只留下审批过的。
+         *  @param pass_filter 为"All"时表示不过滤，"Passed"表示只留下通过的，"Failed"表示只留下悲剧掉的，"NotVerified"表示只留下未审批的。"Verified"表示只留下审批过的，为""时表示只留下已提交的。
          *  @param type_filter 为""时表示不过滤，"ClubTransaction"表示只留下社团事物相关的三巨头——成立、注销和修改。其余自行YY。
          */
         public static IQueryable<Application> FilterApplication(IQueryable<Application> collection, string pass_filter = "", 
@@ -108,7 +108,7 @@ namespace SCUTClubManager.BusinessLogic
             switch (pass_filter)
             {
                 case "Passed":
-                    applications = applications.Where(s => s.Status == Application.PASSED);
+                    applications = applications.Where(s => s.Status == Application.PASSED || s.Status == Application.CANCELED || s.Status == Application.TERMINATED);
                     break;
 
                 case "Failed":
@@ -123,7 +123,11 @@ namespace SCUTClubManager.BusinessLogic
                     applications = applications.Where(s => s.Status == Application.PASSED || s.Status == Application.FAILED);
                     break;
 
+                case "All":
+                    break;
+
                 default:
+                    applications = applications.Where(s => s.Status != Application.NOT_SUBMITTED);
                     break;
             }
 

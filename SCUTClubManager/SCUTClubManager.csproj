@@ -422,6 +422,13 @@
     <Content Include="Views\Event\Applications.cshtml" />
     <Content Include="Views\Event\List.cshtml" />
     <Content Include="Views\Shared\_EventStatusFilterBar.cshtml" />
+    <Content Include="Views\Shared\EventNotFoundError.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Shared\FileNotFoundError.cshtml" />
+    <Content Include="Views\Event\EventDescription.cshtml" />
+    <Content Include="Views\Event\Funds.cshtml" />
+    <Content Include="Views\Event\Organizers.cshtml" />
+    <Content Include="Views\Event\SubEvents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
