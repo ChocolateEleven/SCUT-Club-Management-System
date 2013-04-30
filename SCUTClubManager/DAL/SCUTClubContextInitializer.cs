@@ -22,17 +22,17 @@ namespace SCUTClubManager.DAL
             {
                 new IdentityForTPC
                 {
-                    BaseName = "Application",
+                    BaseName = IdentityForTPC.APPLICATION,
                     Identity = 15
                 },
                 new IdentityForTPC
                 {
-                    BaseName = "AssetBase",
+                    BaseName = IdentityForTPC.ASSET_BASE,
                     Identity = 20
                 },
                 new IdentityForTPC
                 {
-                    BaseName = "RoleBase",
+                    BaseName = IdentityForTPC.ROLE_BASE,
                     Identity = 7
                 }
             };
@@ -1017,6 +1017,7 @@ namespace SCUTClubManager.DAL
                     Status = "n",
                     Applicant = students[1] as Student,
                     Date = new DateTime(2013,04,11),
+                    ApplicatedDate = DateTime.Now,
                     Club = clubs[0],
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>()
@@ -1044,6 +1045,7 @@ namespace SCUTClubManager.DAL
                     Status = "f",
                     Applicant = students[3] as Student,
                     Date = new DateTime(2013,04,12),
+                    ApplicatedDate = DateTime.Now,
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>()
                     {
@@ -1071,6 +1073,7 @@ namespace SCUTClubManager.DAL
                     Status = "p",
                     Applicant = students[2] as Student,
                     Date = new DateTime(2013,04,10),
+                    ApplicatedDate = DateTime.Now,
                     RejectReason = null,
                     ApplicatedAssets = new List<ApplicatedAsset>
                     {
@@ -1174,6 +1177,7 @@ namespace SCUTClubManager.DAL
                     Club = clubs[0],
                     Applicant = students[3] as Student,
                     Date = new DateTime(2013,1,3),
+                    ApplicatedDate = DateTime.Now,
                     Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>
                     {
@@ -1187,6 +1191,7 @@ namespace SCUTClubManager.DAL
                     Club = clubs[1],
                     Applicant = students[1] as Student,
                     Date = new DateTime(2013,1,4),
+                    ApplicatedDate = DateTime.Now,
                     Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>
                     {
@@ -1200,6 +1205,7 @@ namespace SCUTClubManager.DAL
                     Club = clubs[2],
                     Applicant = students[2] as Student,
                     Date = new DateTime(2013,1,5),
+                    ApplicatedDate = DateTime.Now,
                     Times = new List<Time>{times[0],times[1],times[2]},
                     Locations = new List<Location>
                     {
@@ -1354,6 +1360,8 @@ namespace SCUTClubManager.DAL
                 new Event
                 {
                     Date = DateTime.Now,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddDays(1),
                     ChiefEventOrganizer = students[1] as Student,
                     Club = clubs[3],
                     PlanUrl = "1.txt",
@@ -1409,6 +1417,8 @@ namespace SCUTClubManager.DAL
                 new Event
                 {
                     Date = DateTime.Now.AddDays(5),
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddDays(1),
                     ChiefEventOrganizer = students[1] as Student,
                     Club = clubs[3],
                     PlanUrl = "1.docx",

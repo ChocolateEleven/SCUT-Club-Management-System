@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SCUTClubManager.Models
 {
-    public class ApplicationRejectReason
+    public class EventRejectReason
     {
         [Key]
-        public int ApplicationId { get; set; }
+        public int EventId { get; set; }
 
         public string Reason { get; set; }
     }

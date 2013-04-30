@@ -15,9 +15,6 @@ namespace SCUTClubManager.Controllers
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
 
-
-
-
         //
         // GET: /Forum/
         public ActionResult Index()

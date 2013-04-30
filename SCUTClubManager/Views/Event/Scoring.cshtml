@@ -46,10 +46,19 @@
            })
             </th>
             <th>
-                @Html.ActionLink("举办日期", "Scoring", new
+                @Html.ActionLink("开始日期", "Scoring", new
            {
                page_number = Model.PageNumber,
-               order = ViewBag.DateOrderOpt,
+               order = ViewBag.StartDateOrderOpt,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption
+           })
+            </th>
+            <th>
+                @Html.ActionLink("结束日期", "Scoring", new
+           {
+               page_number = Model.PageNumber,
+               order = ViewBag.EndDateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
            })
@@ -80,11 +89,25 @@
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.Title, "Details", new { id = item.Id })
+                    <td>
+                        @Html.ActionLink(item.Title, "Details", new
+           {
+               page_number = ViewBag.PageNumber,
+               id = item.Id,
+               order = ViewBag.CurrentOrder,
+               search = ViewBag.Search,
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
+           })
+                    </td>
                     <input type="hidden" name="ids" value="@item.Id" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)

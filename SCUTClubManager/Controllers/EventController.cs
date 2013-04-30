@@ -35,6 +35,62 @@ namespace SCUTClubManager.Controllers
         }
 
         [Authorize(Roles = "社联")]
+        [HttpPost]
+        public ActionResult Verify(int id, bool is_passed, string reject_reason, int page_number = 1, string search = "", string search_option = "Title", string order = "Title",
+            string pass_filter = "")
+        {
+            Event e = db.Events.Include(t => t.FundApplication).Include(t => t.SubEvents.Select(s => s.LocationApplications)).
+                Include(t => t.SubEvents.Select(s => s.AssetApplications)).ToList().SingleOrDefault(t => t.Id == id && t.Status == Application.NOT_VERIFIED);
+
+            if (e != null)
+            {
+                LocationHelpers loc_hlp = new LocationHelpers(db);
+                AssetHelpers ass_hlp = new AssetHelpers(db);
+
+                foreach (SubEvent sub_event in e.SubEvents)
+                {
+                    foreach (LocationApplication loc_app in sub_event.LocationApplications)
+                    {
+                        loc_hlp.VerifyLocationApplication(loc_app, is_passed, false);
+                    }
+
+                    foreach (AssetApplication ass_app in sub_event.AssetApplications)
+                    {
+                        ass_hlp.VerifyAssetApplication(ass_app, is_passed, false);
+                    }
+
+                    e.Status = is_passed ? Application.PASSED : Application.FAILED;
+
+                    if (e.FundApplication != null)
+                    {
+                        e.FundApplication.Status = is_passed ? Application.PASSED : Application.FAILED;
+                    }
+
+                    if (!is_passed)
+                    {
+                        e.RejectReason = new EventRejectReason
+                        {
+                            Reason = reject_reason
+                        };
+                    }
+                }
+
+                db.SaveChanges();
+
+                return RedirectToAction("Applications", new
+                {
+                    page_number = page_number,
+                    order = order,
+                    pass_filter = pass_filter,
+                    search = search,
+                    search_option = search_option
+                });
+            }
+
+            return View("InvalidOperationError");
+        }
+
+        [Authorize(Roles = "社联")]
         public ActionResult UploadAppTemplate(HttpPostedFileBase application_template)
         {
             if (application_template != null && application_template.ContentLength > 0)
@@ -267,9 +323,10 @@ namespace SCUTClubManager.Controllers
         // GET: /Event/Details/5
 
         [Authorize]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, int page_number = 1, string search = "", string search_option = "Title", string order = "Title",
+            string pass_filter = "")
         {
-            Event e = db.Events.Include(t => t.ChiefEventOrganizer).Include(t => t.Club.MajorInfo).Include(t => t.SubEvents).Find(id);
+            Event e = db.Events.Include(t => t.ChiefEventOrganizer).Include(t => t.Club.MajorInfo).Include(t => t.SubEvents).Include(t => t.RejectReason).Find(id);
 
             if (e != null)
             {
@@ -278,6 +335,11 @@ namespace SCUTClubManager.Controllers
                     if (e.Status != Application.NOT_SUBMITTED)
                     {
                         ViewBag.HasAccessToCriticalSections = HasAccessToCriticalDetails(e);
+                        ViewBag.CurrentOrder = order;
+                        ViewBag.PageNumber = page_number;
+                        ViewBag.Search = search;
+                        ViewBag.SearchOption = search_option;
+                        ViewBag.PassFilter = pass_filter;
 
                         return View(e);
                     }
@@ -485,6 +547,8 @@ namespace SCUTClubManager.Controllers
             ViewBag.ScoreOrderOpt = order == "Score" ? "ScoreDesc" : "Score";
             ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
             ViewBag.StatusOrderOpt = order == "Status" ? "StatusDesc" : "Status";
+            ViewBag.StartDateOrderOpt = order == "StartDate" ? "StartDateDesc" : "StartDate";
+            ViewBag.EndDateOrderOpt = order == "EndDate" ? "EndDateDesc" : "EndDate";
             ViewBag.PageNumber = page_number;
             ViewBag.Search = search;
             ViewBag.SearchOption = search_option;

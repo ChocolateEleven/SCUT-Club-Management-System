@@ -121,7 +121,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogic\AssetHelpers.cs" />
     <Compile Include="BusinessLogic\ExcelProcessor.cs" />
+    <Compile Include="BusinessLogic\LocationHelpers.cs" />
     <Compile Include="BusinessLogic\PasswordProcessor.cs" />
     <Compile Include="BusinessLogic\ScmRoleProvider.cs" />
     <Compile Include="BusinessLogic\ScmMembershipProvider.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Models\BranchDeletion.cs" />
     <Compile Include="Models\BranchUpdate.cs" />
     <Compile Include="Models\ClubMajorInfo.cs" />
+    <Compile Include="Models\EventRejectReason.cs" />
     <Compile Include="Models\IdentityForTPC.cs" />
     <Compile Include="Models\RoleBase.cs" />
     <Compile Include="Models\UserRole.cs" />

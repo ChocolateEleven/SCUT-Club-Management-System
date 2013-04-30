@@ -289,7 +289,7 @@ namespace SCUTClubManager.Controllers
                 application.Date = DateTime.Now;
                 application.ApplicantUserName = User.Identity.Name;
                 application.Status = Application.NOT_VERIFIED;
-                application.Id = db.GenerateIdFor("Application");
+                application.Id = db.GenerateIdFor(IdentityForTPC.APPLICATION);
                 
                 int order = 1;
                 foreach (var inclination in application.Inclinations)

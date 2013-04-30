@@ -33,8 +33,14 @@ namespace SCUTClubManager.Models
         [MaxLength(1)]
         public string Status { get; set; }
 
-        
+        // 这里的Date为活动的申请日期
         public DateTime Date { get; set; }
+
+        // 这里的StartDate为活动的开始日期
+        public DateTime StartDate { get; set; }
+
+        // 这里的EndDate为活动的结束日期
+        public DateTime EndDate { get; set; }
 
         public virtual Club Club { get; set; }
         public virtual EventDescription Description { get; set; }
@@ -45,5 +51,7 @@ namespace SCUTClubManager.Models
 
         [ForeignKey("ChiefEventOrganizerId")]
         public virtual Student ChiefEventOrganizer { get; set; }
+
+        public virtual EventRejectReason RejectReason { get; set; }
     }
 }

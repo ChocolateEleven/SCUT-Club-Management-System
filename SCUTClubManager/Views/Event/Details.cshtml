@@ -18,6 +18,12 @@
 
 <h2>@ViewBag.Title @LabelHelpers.GetEventStatus(Model)</h2>
 
+@if (Model.Status == SCUTClubManager.Models.Application.FAILED && Model.RejectReason != null)
+{
+    <div class="display-label">拒绝理由</div>
+    <div class="display-field">@Model.RejectReason.Reason</div>
+}
+
 <div id="tabs">
     <ul>
         <li><a href="#tabs-1">基本信息</a></li>
@@ -37,6 +43,12 @@
             <img src="@Path.Combine(Server.MapPath(ConfigurationManager.EventPosterFolder), Model.PosterUrl)" />
         </div>
 
+        @if (ViewBag.HasAccessToCriticalSections)
+        {
+            <div class="display-label">申请日期</div>
+            <div class="display-field">@Html.DisplayFor(model => model.Date)</div>
+        }
+
         <div class="display-label">举办社团</div>
         <div class="display-field">@Html.ActionLink(Model.Club.MajorInfo.Name, "Details", "Club", new { id = Model.ClubId }, null)</div>
 
@@ -44,7 +56,10 @@
         <div class="display-field">@Html.ActionLink(Model.ChiefEventOrganizer.Name, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)</div>
 
         <div class="display-label">开始日期</div>
-        <div class="display-field">@Html.DisplayFor(model => model.Date)</div>
+        <div class="display-field">@Html.DisplayFor(model => model.StartDate)</div>
+
+        <div class="display-label">结束日期</div>
+        <div class="display-field">@Html.DisplayFor(model => model.EndDate)</div>
 
         <div class="display-label">活动评分</div>
         <div class="display-field">@Html.DisplayFor(model => model.Score)</div>

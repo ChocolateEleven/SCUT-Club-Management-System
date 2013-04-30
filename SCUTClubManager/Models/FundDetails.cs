@@ -16,7 +16,6 @@ namespace SCUTClubManager.Models
         [Required]
         public DateTime Date { get; set; }
 
-
         [RegularExpression(@"^[a-z0-9A-Z]{1,20}$", ErrorMessage = "只能是数字和字母的组合，长度不能超过20个字符")]
         [MaxLength(20)]
         public string ApplicantUserName { get; set; }

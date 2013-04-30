@@ -8,6 +8,10 @@ namespace SCUTClubManager.Models
 {
     public class IdentityForTPC
     {
+        public const string APPLICATION = "Application";
+        public const string ASSET_BASE = "AssetBase";
+        public const string ROLE_BASE = "RoleBase";
+
         [Key]
         [MaxLength(30)]
         public string BaseName { get; set; }

@@ -10,6 +10,10 @@ namespace SCUTClubManager.Models
     {
         public int? SubEventId { get; set; }
 
+        public DateTime ApplicatedDate { get; set; }
+
+        public int? AssignmentId { get; set; }
+
         public virtual LocationAssignment Assignment { get; set; }
         public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<Time> Times { get; set; }

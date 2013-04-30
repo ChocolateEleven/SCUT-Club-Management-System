@@ -46,6 +46,7 @@ namespace SCUTClubManager.DAL
         public DbSet<UserPoll> UserPolls { get; set; }
         public DbSet<ApplicationRejectReason> ApplicationRejectReasons { get; set; }
         public DbSet<IdentityForTPC> Identities { get; set; }
+        public DbSet<EventRejectReason> EventRejectReasons { get; set; }
 
         public SCUTClubContext() : base("DefaultConnection") { }
 
@@ -168,6 +169,7 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<Event>().HasMany(t => t.SubEvents).WithRequired(t => t.Event).WillCascadeOnDelete(true);
             model_builder.Entity<Event>().HasOptional(t => t.FundApplication).WithOptionalPrincipal(t => t.Event).Map(m => m.MapKey("EventId")).WillCascadeOnDelete(false);
+            model_builder.Entity<Event>().HasOptional(t => t.RejectReason).WithRequired().WillCascadeOnDelete(true);
             model_builder.Entity<Message>().HasRequired(t => t.Content).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<User>().HasMany(t => t.SentMessages).WithRequired(t => t.Sender);
             model_builder.Entity<User>().HasMany(t => t.ReceivedMessages).WithOptional(t => t.Receiver).WillCascadeOnDelete(true);
@@ -193,7 +195,7 @@ namespace SCUTClubManager.DAL
             //model_builder.Entity<Time>().HasMany(t => t.AssetApplications).WithRequired(t => t.Time);
 
             model_builder.Entity<AssetApplication>().HasMany(t => t.ApplicatedAssets).WithRequired(t => t.AssetApplication).WillCascadeOnDelete(true);
-            model_builder.Entity<AssetApplication>().HasOptional(t => t.Assignment).WithOptionalPrincipal(t => t.AssetApplication).Map(m => m.MapKey("AssetApplicationId"));
+            //model_builder.Entity<AssetApplication>().HasOptional(t => t.Assignment).WithRequired(t => t.AssetApplication);
             model_builder.Entity<AssetAssignment>().HasMany(t => t.AssignedAssets).WithRequired(t => t.AssetAssignment).WillCascadeOnDelete(true);
 
             model_builder.Entity<Student>().HasMany(t => t.MemberShips).WithRequired(t => t.Student).WillCascadeOnDelete(true);
@@ -209,7 +211,7 @@ namespace SCUTClubManager.DAL
 
             model_builder.Entity<AssetAssignment>().HasMany(t => t.Times).WithMany();
             model_builder.Entity<LocationApplication>().HasMany(t => t.Times).WithMany();
-            model_builder.Entity<LocationApplication>().HasOptional(t => t.Assignment).WithOptionalPrincipal(t => t.LocationApplication).Map(m => m.MapKey("LocationApplicationId"));
+            //model_builder.Entity<LocationApplication>().HasOptional(t => t.Assignment).WithRequired(t => t.LocationApplication);
             model_builder.Entity<SubEvent>().HasMany(t => t.Times).WithMany();
             model_builder.Entity<LocationAssignment>().HasMany(t => t.Times).WithMany();
             model_builder.Entity<AssetApplication>().HasMany(t => t.Times).WithMany();

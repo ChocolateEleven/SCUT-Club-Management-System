@@ -5,35 +5,32 @@
 <script type="text/javascript">
     $(function () {
         var form = $("#verifyForm");
+        var verify_dialog = form.parent();
+
+        placeHolder($("#rejectReasonBox"), "PlaceHolder");
+
+        verify_dialog.dialog({
+            autoOpen: false,
+            resizable: false,
+            height: 350,
+            modal: true,
+            buttons: {
+                "确认": function () {
+                    $("#is_passed").val(false);
+                    form.submit();
+                },
+                "取消": function () {
+                    form.parent().dialog("close");
+                }
+            }
+        });
 
         confirm("#pass", "确定要通过这个申请吗？", function () {
             $("#is_passed").val(true);
             form.submit();
         });
         confirm("#reject", "确定要驳回这个申请吗？", function () {
-            var reason_box = $("<textarea name='reject_reason' data-val-required='驳回理由不能为空' data-val='true'>请在此输入驳回理由</textarea>");
-            var validation_msg = $("<span data-valmsg-for='reject_reason' data-valmsg-replace='true'></span>");
-
-            placeHolder(reason_box, "PlaceHolder");
-            form.append(reason_box);
-            form.append(validation_msg);
-
-            form.parent().dialog({
-                resizable: false,
-                height: 350,
-                modal: true,
-                buttons: {
-                    "确认": function () {
-                        $("#is_passed").val(false);
-                        form.submit();
-                        $("#confirmWnd").dialog("close");
-                        form.parent().dialog("close");
-                    },
-                    "取消": function () {
-                        form.parent().dialog("close");
-                    }
-                }
-            });
+            verify_dialog.dialog("open");
         });
     })
 </script>
@@ -51,8 +48,20 @@
 
     <div class="HiddenData" hidden>
         <form id="verifyForm" action="Verify" method="post">
+            <input type="hidden" name="pass_filter" value="@ViewBag.PassFilter" />
+            <input type="hidden" name="page_number" value="@ViewBag.PageNumber" />
+            <input type="hidden" name="order" value="@ViewBag.CurrentOrder" />
+            <input type="hidden" name="search" value="@ViewBag.Search" />
+            <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
+            <input type="hidden" name="club_id" value="@ViewBag.ClubId" />
+            <input type="hidden" name="type_filter" value="@ViewBag.TypeFilter" />
+            <input type="hidden" name="branch_filter" value="@ViewBag.BranchFilter" />
+            <input type="hidden" name="role_filter" value="@ViewBag.RoleFilter" />
             <input name="id" type="hidden" value="@Model"/>
             <input name="is_passed" id="is_passed" type="hidden" />
+            <div>请输入驳回理由</div>
+            <textarea name='reject_reason' id="rejectReasonBox" data-val-required='驳回理由不能为空' data-val='true'>请在此输入驳回理由</textarea>
+            <span data-valmsg-for='reject_reason' data-valmsg-replace='true'></span>
         </form>
     </div>
 }

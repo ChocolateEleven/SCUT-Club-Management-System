@@ -123,7 +123,8 @@ namespace SCUTClubManager.Controllers
 
         [HttpPost]
         [Authorize(Roles = "社联")]
-        public ActionResult Verify(int id, bool is_passed, string reject_reason)
+        public ActionResult Verify(int id, bool is_passed, string reject_reason, int club_id = 0, int page_number = 1, string order = "Date", string pass_filter = "", string search = "",
+            string search_option = "", string type_filter = "")
         {
             Application application = db.Applications.Find(id);
 
@@ -355,7 +356,16 @@ namespace SCUTClubManager.Controllers
 
                 db.SaveChanges();
 
-                return RedirectToAction("List");
+                return RedirectToAction("List", new
+                {
+                    club_id = club_id,
+                    page_number = page_number,
+                    order = order,
+                    pass_filter = pass_filter,
+                    search = search,
+                    search_option = search_option,
+                    type_filter = type_filter
+                });
             }
 
             return View("InvalidOperationError");
@@ -390,7 +400,7 @@ namespace SCUTClubManager.Controllers
 
             if (ModelState.IsValid)
             {
-                int id = db.GenerateIdFor("Application");
+                int id = db.GenerateIdFor(IdentityForTPC.APPLICATION);
 
                 if (poster != null && poster.ContentLength > 0)
                 {
@@ -461,7 +471,7 @@ namespace SCUTClubManager.Controllers
                 Club club = db.Clubs.Include(t => t.Branches).Find(modified_club.Id);
 
                 ClubInfoModificationApplication application = new ClubInfoModificationApplication();
-                int id = db.GenerateIdFor("Application");
+                int id = db.GenerateIdFor(IdentityForTPC.APPLICATION);
                 bool has_changed = false;
 
                 application.Id = id;
@@ -564,7 +574,7 @@ namespace SCUTClubManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                int id = db.GenerateIdFor("Application");
+                int id = db.GenerateIdFor(IdentityForTPC.APPLICATION);
 
                 application.ApplicantUserName = User.Identity.Name;
                 application.Date = DateTime.Now;
