@@ -63,6 +63,33 @@ namespace SCUTClubManager.Controllers
             return View(locationapplication);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "社联")]
+        public ActionResult Verify(int id, bool is_passed, string reject_reason)
+        {
+            LocationHelpers helper = new LocationHelpers(unitOfWork);
+            LocationApplication application = unitOfWork.LocationApplications.Find(id);
+
+            if (application != null)
+            {
+                helper.VerifyLocationApplication(application, is_passed, false);
+
+                if (!is_passed)
+                {
+                    application.RejectReason = new ApplicationRejectReason
+                    {
+                        Reason = reject_reason
+                    };
+                }
+
+                unitOfWork.SaveChanges();
+
+                return RedirectToAction("List");
+            }
+
+            return View("InvalidOperationError");
+        }
+
         //
         // GET: /LocationApplication/Create
 

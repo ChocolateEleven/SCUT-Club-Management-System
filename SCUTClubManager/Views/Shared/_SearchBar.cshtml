@@ -46,22 +46,24 @@
     </div>
 }
 
+<div>
 @if (ViewBag.SearchOptions != null)
 {
-    <div class="OperationBtn">
+    <span class="OperationBtn">
         @Html.DropDownList("SearchOptions")
-    </div>
+    </span>
 }
 
-<div class="OperationBtn">
+<span class="OperationBtn">
     @Html.TextBox("searchBox", "请输入搜索内容")
     <a id="searchBtn" href="#">搜索</a>
-</div>
+</span>
 
 @if (!String.IsNullOrEmpty(ViewBag.Search))
 {
-    <div class="OperationBtn">
+    <span class="OperationBtn">
         @Html.ActionLink("返回", "List", new { page_number = 1, order = ViewBag.CurrentOrder, pass_filter = ViewBag.PassFilter, type_filter = ViewBag.TypeFilter,
        club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
-    </div>
+    </span>
 }
+</div>
