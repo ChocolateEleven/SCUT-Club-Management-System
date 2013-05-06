@@ -129,17 +129,14 @@ namespace SCUTClubManager.Helpers
             
             switch (status_code)
             {
+                case Application.NOT_SUBMITTED:
+                    return "未提交";
                 case Application.FAILED:
                     return "被驳回";
                 case Application.NOT_VERIFIED:
                     return "未审批";
                 case Application.PASSED:
-                    if (e.Date.Date > DateTime.Now.Date)
-                        return "未开始";
-                    else if (e.SubEvents.Any(t => t.Date.Date == DateTime.Now.Date))
-                        return "进行中";
-                    else
-                        return "已结束";
+                    return GetStatus(e.StartDate, e.EndDate);
                 case Application.CANCELED:
                     return "已取消";
                 case Application.TERMINATED:

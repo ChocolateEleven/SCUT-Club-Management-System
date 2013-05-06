@@ -46,7 +46,6 @@ namespace SCUTClubManager.DAL
 
         public void Update(T instance)
         {
-            table.Attach(instance);
             context.Entry(instance).State = System.Data.EntityState.Modified;
         }
 

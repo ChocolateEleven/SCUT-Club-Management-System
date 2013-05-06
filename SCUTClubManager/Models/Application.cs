@@ -29,6 +29,8 @@ namespace SCUTClubManager.Models
         public string Status { get; set; }
 
         [Display(Name = "申请社团")]
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual Club Club { get; set; }
 
         [Display(Name = "申请人")]

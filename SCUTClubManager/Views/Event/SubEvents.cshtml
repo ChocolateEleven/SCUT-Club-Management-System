@@ -20,18 +20,34 @@
     <div id="subEvents">
         @foreach (var item in Model.SubEvents)
         {
-            <h3>@item.Title</h3>
+            <h3><span>@item.Title</span><span>@item.Date</span></h3>
             <div>
                 <fieldset>
                     <legend>基本信息</legend>
 
                     <div class="display-label">
-                        时间与日期
+                        开始时间
                     </div>
                     <div class="display-field">
-                        @Html.DisplayFor(modelItem => item.Date)
+                        @Html.DisplayFor(modelItem => item.StartTime)
                     </div>
-
+                    <div class="display-label">
+                        结束时间
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </div>
+                    <div class="display-label">
+                        占用时间段
+                    </div>
+                    <div class="displayfield">
+                        @foreach (var time in item.Times)
+                        {
+                            <div>
+                                @Html.DisplayFor(t => time.TimeName)
+                            </div>
+                        }
+                    </div>
                     <div class="display-label">
                         描述
                     </div>
@@ -43,73 +59,52 @@
                 <fieldset>
                     <legend>场地</legend>
 
-                    @foreach (var loc_app in item.LocationApplications)
-                    {
-                        string times_str = "";
-                        List<SCUTClubManager.Models.Time> times = loc_app.Times.ToList();
-                        
-                        for (int i = 0; i < times.Count; ++i)
+                    <div class="display-field">
+                        @if (item.LocationApplications != null)
                         {
-                            times_str += times[i].TimeName;
-                            
-                            if (i < times.Count - 1)
+                            foreach (var loc_app in item.LocationApplications)
                             {
-                                times_str += "、";
+                                if (loc_app.Locations != null)
+                                {
+                                    foreach (var location in loc_app.Locations)
+                                    {
+                            @Html.Raw("<div>")
+                            @Html.DisplayFor(modelItem => location.Name)
+                            @Html.Raw("</div>")
+                            }
                             }
                         }
-                        
-                        <div class="TimeSection">
-                            <div class="display-field">
-                                @Html.Raw(times_str)
-                            </div>
-                            @foreach (var location in loc_app.Locations)
-                            {
-                                <div class="display-field">
-                                    @Html.DisplayFor(modelItem => location.Name)
-                                </div>
-                            }
-                        </div>
-                    }
+                        }
+                    </div>
                 </fieldset>
 
                 <fieldset>
                     <legend>物资</legend>
-
-                    @foreach (var ass_app in item.AssetApplications)
-                    {
-                        string times_str = "";
-                        List<SCUTClubManager.Models.Time> times = ass_app.Times.ToList();
-                        
-                        for (int i = 0; i < times.Count; ++i)
+                    <div class="display-field">
+                        @if (item.AssetApplications != null)
                         {
-                            times_str += times[i].TimeName;
-                            
-                            if (i < times.Count - 1)
+                            foreach (var ass_app in item.AssetApplications)
                             {
-                                times_str += "、";
+                                if (ass_app.ApplicatedAssets != null)
+                                {
+                                    foreach (var asset in ass_app.ApplicatedAssets)
+                                    {
+                            @Html.Raw("<div>")
+                            @Html.Raw("<span>")
+                            @Html.DisplayFor(modelItem => asset.Asset.Name)
+                            @Html.Raw("</span>")
+                            @Html.Raw("<span>")
+                            @:数量：
+                            @Html.Raw("</span>")
+                            @Html.Raw("<span>")
+                            @Html.DisplayFor(modelItem => asset.Count)
+                            @Html.Raw("</span>")
+                            @Html.Raw("</div>")
+                            }
                             }
                         }
-                        
-                        <div class="TimeSection">
-                            <div class="display-field">
-                                @Html.Raw(times_str)
-                            </div>
-                            @foreach (var asset in ass_app.ApplicatedAssets)
-                            {
-                                <div class="display-field">
-                                    <span>
-                                        @Html.DisplayFor(modelItem => asset.Asset.Name)
-                                    </span>
-                                    <span>
-                                        数量：
-                                    </span>
-                                    <span>
-                                        @Html.DisplayFor(modelItem => asset.Count)
-                                    </span>
-                                </div>
-                            }
-                        </div>
-                    }
+                        }
+                    </div>
                 </fieldset>
             </div>
         }

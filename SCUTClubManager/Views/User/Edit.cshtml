@@ -10,7 +10,9 @@
 
 <script type="text/javascript">
     $(function () {
-        $("#Birthday").datepicker();
+        $("#Birthday").datepicker({
+            dateFormat: "yy/m/d"
+        });
 
         @if (Model.Gender == Student.MALE)
         {

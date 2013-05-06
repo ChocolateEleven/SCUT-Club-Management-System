@@ -89,5 +89,10 @@ namespace SCUTClubManager.Controllers
 
             return Json(new { success = true, msg = "修改密码成功, 新密码不符合要求或者原密码输入错误" });
         }
+
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }

@@ -176,5 +176,19 @@ namespace SCUTClubManager.BusinessLogic
 
             return applications;
         }
+
+        /** 根据给定的精准时间段（几点到几点）查询抽象时间段（1、2节课什么的）。
+         *  @param collection 抽象时间段集合。
+         *  @param start_time 精准起始时间。
+         *  @param end_time 精准结束时间。
+         *  @returns 查询结果。
+         */
+        public static IEnumerable<Time> FilterTime(IEnumerable<Time> collection, TimeSpan start_time, TimeSpan end_time)
+        {
+            List<Time> times = collection.ToList();
+            times = times.Where(t => t.IsCoveredBy(start_time, end_time)).ToList();
+
+            return times;
+        }
     }
 }

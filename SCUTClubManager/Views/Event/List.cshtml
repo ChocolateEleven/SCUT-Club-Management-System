@@ -42,6 +42,14 @@
     })
 </script>
 
+@if (ViewBag.ClubId != SCUTClubManager.Models.Application.ALL && 
+    SCUTClubManager.BusinessLogic.ScmRoleProvider.HasMembershipIn(ViewBag.ClubId, null, new string[] { "会长" }))
+{
+    <div>
+        @Html.ActionLink("创建新活动", "Create", new { club_id = ViewBag.ClubId })
+    </div>
+}
+
 <table>
     <tr>
         <th>
@@ -57,19 +65,21 @@
         <th>
             @Html.ActionLink("开始日期", "Scoring", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.StartDateOrderOpt,
                search = ViewBag.Search,
-               search_option = ViewBag.SearchOption
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
            })
         </th>
         <th>
             @Html.ActionLink("结束日期", "Scoring", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.EndDateOrderOpt,
                search = ViewBag.Search,
-               search_option = ViewBag.SearchOption
+               search_option = ViewBag.SearchOption,
+               pass_filter = ViewBag.PassFilter,
+               club_id = ViewBag.ClubId
            })
         </th>
         <th>
@@ -157,12 +167,12 @@
         }
         else if (SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(item.ChiefEventOrganizerId) &&
         item.Status == SCUTClubManager.Models.Application.PASSED &&
-        item.SubEvents.Any(t => t.Date.Date >= DateTime.Now.Date))
+        item.EndDate >= DateTime.Now)
         {
                     <button type="button" class="CancelBtn" data-id="@item.Id">取消</button>
         }
         else if (User.IsInRole("社联") && item.Status == SCUTClubManager.Models.Application.PASSED &&
-    item.SubEvents.Any(t => t.Date.Date >= DateTime.Now.Date))
+    item.EndDate >= DateTime.Now)
         {
                     <button type="button" class="CancelBtn" data-id="@item.Id">终止</button>
         }

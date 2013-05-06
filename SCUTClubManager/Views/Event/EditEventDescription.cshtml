@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+
+@model SCUTClubManager.Models.Event
+
+<!DOCTYPE html>
+
+<script>
+    $(function () {
+        refreshFormValidations();
+
+        @if (Model.Description == null || String.IsNullOrEmpty(Model.Description.Description))
+        {
+            @:$("#Description_Description").val("在此输入活动描述");
+            @:placeHolder("#Description_Description", "PlaceHolder", "#save");
+        }
+
+        setFieldsAvailabilities();
+    })
+</script>
+
+<html>
+<head>
+</head>
+<body>
+    <div>
+        请在下面输入对活动的具体描述信息。
+    </div>
+    <div class="editor-field ChiefField">
+        @Html.TextAreaFor(model => model.Description.Description)
+        @Html.ValidationMessageFor(model => model.Description.Description)
+    </div>
+</body>
+</html>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace SCUTClubManager.Models
 {
@@ -13,6 +14,7 @@ namespace SCUTClubManager.Models
 
         public virtual Asset Asset { get; set; }
         [ForeignKey("AssetApplicationId")]
+        [JsonIgnore]
         public virtual AssetApplication AssetApplication { get; set; }
     }
 }

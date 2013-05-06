@@ -1,0 +1,56 @@
+﻿@model SCUTClubManager.Models.Event
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<script type="text/javascript">
+    function addOrganizer(fields, values) {
+        if (values.length == 2) {
+            return true;
+        } else if (values.length == 1) {
+            $(fields[1]).text(values[0]);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $(function () {
+        var item_contents = new Array("<input type='hidden' name='event_organizers' />", "<span class='display-field'></span>");
+        var inset_contents = new Array(textboxFor("", "在此输入用户名", "editor-field", null));
+
+        var organizer_list = new DynamicList(item_contents, "#organizers", inset_contents, addOrganizer);
+
+        @foreach (var organizer in Model.Organizers)
+        {
+            @:var values = new Array("@organizer.UserName", "@organizer.CompleteName");
+            @:organizer_list.add(values);
+        }
+
+        setFieldsAvailabilities();
+    })
+</script>
+
+<html>
+<head>
+</head>
+<body>
+    <input type="hidden" name="has_modified_organizers" value="true" />
+
+    <fieldset>
+        <legend>组长</legend>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.ChiefEventOrganizer.CompleteName)
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>组员</legend>
+        <div class="editor-field ChiefField" id="organizers"></div>
+    </fieldset>
+</body>
+</html>

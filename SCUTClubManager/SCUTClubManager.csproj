@@ -52,6 +52,9 @@
     </Reference>
     <Reference Include="MySql.Data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="MySql.Data.Entity, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.15.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -122,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\AssetHelpers.cs" />
+    <Compile Include="BusinessLogic\EventHelpers.cs" />
     <Compile Include="BusinessLogic\ExcelProcessor.cs" />
     <Compile Include="BusinessLogic\LocationHelpers.cs" />
     <Compile Include="BusinessLogic\PasswordProcessor.cs" />
@@ -153,6 +157,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConfigurationManager.cs" />
+    <Compile Include="Helpers\HtmlHelpersExtensions.cs" />
+    <Compile Include="Helpers\JsonNetResult.cs" />
     <Compile Include="Helpers\LabelHelpers.cs" />
     <Compile Include="Helpers\IEnumerableExtensions.cs" />
     <Compile Include="Models\ApplicatedAsset.cs" />
@@ -209,6 +215,8 @@
     <Compile Include="Models\UserPoll.cs" />
     <Compile Include="Models\View_Models\AssignedLocationViewModel.cs" />
     <Compile Include="Models\View_Models\AuthenticationModel.cs" />
+    <Compile Include="Models\View_Models\AvailableAsset.cs" />
+    <Compile Include="Models\View_Models\AvailableLocation.cs" />
     <Compile Include="Models\View_Models\ClubApplicationViewModel.cs" />
     <Compile Include="Models\View_Models\ClubScopedAuthenticationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -293,6 +301,7 @@
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Scripts\jquery-ui-1.10.2.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery.form.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -432,6 +441,12 @@
     <Content Include="Views\Event\Funds.cshtml" />
     <Content Include="Views\Event\Organizers.cshtml" />
     <Content Include="Views\Event\SubEvents.cshtml" />
+    <Content Include="Views\Event\Create.cshtml" />
+    <Content Include="Views\Event\Edit.cshtml" />
+    <Content Include="Views\Event\EditSubEvents.cshtml" />
+    <Content Include="Views\Event\EditOrganizers.cshtml" />
+    <Content Include="Views\Event\EditFunds.cshtml" />
+    <Content Include="Views\Event\EditEventDescription.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

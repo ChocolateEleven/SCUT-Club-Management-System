@@ -20,6 +20,14 @@ namespace SCUTClubManager.Models
         [Required(ErrorMessage = "请输入姓名")]
         public string Name { get; set; }
 
+        public string CompleteName
+        {
+            get
+            {
+                return Name + "(" + UserName + ")";
+            }
+        }
+
         [Required]
         //[RegularExpression(@"^[a-z0-9A-Z]{1,15}$",
         //ErrorMessage = "密码只能是数字和字母的组合")]
@@ -31,10 +39,24 @@ namespace SCUTClubManager.Models
 
         public virtual UserRole Role { get; set; }
 
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<Poll> Polls { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<Thread> Threads { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<Reply> Replies { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<Message> SentMessages { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<Message> ReceivedMessages { get; set; }
     }
 }

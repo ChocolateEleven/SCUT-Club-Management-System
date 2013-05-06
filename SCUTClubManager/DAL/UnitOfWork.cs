@@ -28,6 +28,20 @@ namespace SCUTClubManager.DAL
             throw new ArgumentException("There is no generators named " + base_class_name + ".");
         }
 
+        private IRepository<ApplicatedAsset> applicatedAssets;
+        public IRepository<ApplicatedAsset> ApplicatedAssets
+        {
+            get
+            {
+                if (this.applicatedAssets == null)
+                {
+                    this.applicatedAssets = new Repository<ApplicatedAsset>(context);
+                }
+
+                return applicatedAssets;
+            }
+        }
+
         private IRepository<ClubInfoModificationApplication> clubInfoModificationApplications;
         public IRepository<ClubInfoModificationApplication> ClubInfoModificationApplications
         {

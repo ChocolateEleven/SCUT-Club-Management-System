@@ -1,0 +1,302 @@
+﻿@model String
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<script type="text/javascript">
+    var sub_event_num = 0;
+
+    function addItem(elements, values, assigning_id) {
+        $("#SubEvents").accordion('destroy').accordion();
+
+        return true;
+    }
+
+    function deleteSubEvent(element) {
+        $(element).parent().next().nextAll("h3").each(function (index, e) {
+            var orig_index = $(e).data("id");
+            var new_index = orig_index - 1;
+
+            $(e).data("id", new_index);
+
+            $(e).find("input").each(function (idx, ele) {
+                indexIn("name", $(ele), new_index);
+            });
+
+            $(e).find("span[data-valmsg-replace='true']").each(function (idx, ele) {
+                indexIn("data-valmsg-for", $(ele), new_index);
+            });
+        });
+
+        $(element).parent().next().nextAll("div").each(function (index, e) {
+            var orig_index = $(e).data("id");
+            var new_index = orig_index - 1;
+
+            $(e).data("id", new_index);
+
+            $(e).find("input").each(function (idx, ele) {
+                if ($(ele).attr("type") == "checkbox") {
+                    indexIn("name", $(ele), new_index, "timesets");
+                } else {
+                    indexIn("name", $(ele), new_index, "SubEvents");
+                }
+            });
+
+            $(e).find("textarea").each(function (idx, ele) {
+                indexIn("name", $(ele), new_index, "SubEvents");
+            });
+
+            $(e).find("span[data-valmsg-replace='true']").each(function (idx, ele) {
+                indexIn("data-valmsg-for", $(ele), new_index, "SubEvents");
+            });
+        });
+
+        $(element).parent().next().remove();
+        $(element).parent().remove();
+
+        --sub_event_num;
+    }
+
+    function addSubEvent(sub_event) {
+        var sub_events = $("#SubEvents");
+        var has_value = sub_event != null;
+        var name_sub_event = "SubEvents[" + sub_event_num + "]";
+        var start_date = $("#StartDate");
+        var end_date = $("#EndDate");
+
+        var location_list = null;
+        var asset_list = null;
+        var locations = new Array();
+        var assets = new Array();
+
+        var header = $("<h3 data-id='" + sub_event_num + "'></h3>");
+        var title_textbox = $(textboxFor(name_sub_event + ".Title", has_value ? sub_event.Title : "请在此输入子活动名", "",
+{ required: true, required_msg: "请输入子活动名" }));
+        var date_textbox = $(textboxFor(name_sub_event + ".Date", has_value ? sub_event.Date : "请在此输入子活动日期", "",
+            { required: true, required_msg: "请输入子活动名" }));     
+
+        var delete_btn = $("<button type='button' onclick='deleteSubEvent(this)'>删除</button>");
+
+        if (!has_value) {
+            placeHolder(title_textbox, "PlaceHolder");
+            placeHolder(date_textbox, "PlaceHolder");
+        }
+
+        header.append(title_textbox).append(date_textbox).append(delete_btn).appendTo(sub_events);
+
+        var content = $("<div class='Content' data-id='" + sub_event_num + "'></div>");
+        var basic_info_fieldset = $("<fieldset><legend>基本信息</legend></fieldset>");
+        var id_field = $("<input type='hidden' name='" + name_sub_event + ".Id' value='" + (has_value ? sub_event.Id : "0") + "' />");
+        var start_time_textbox = $(textboxFor(name_sub_event + ".StartTime", has_value ? sub_event.StartTime : "请在此输入开始时间", "",
+{ required: true, required_msg: "请输入开始时间" }));
+        var end_time_textbox = $(textboxFor(name_sub_event + ".EndTime", has_value ? sub_event.EndTime : "请在此输入结束时间", "",
+{ required: true, required_msg: "请输入结束时间" }));
+        var description_area = $(textareaFor(name_sub_event + ".Description.Description", has_value ? sub_event.Description.Description : "请在此输入子活动描述"));
+        var locations_fieldset = $("<fieldset><legend>场地借用</legend></fieldset>");
+        var assets_fieldset = $("<fieldset><legend>物资借用</legend></fieldset>");
+
+        var contents_loc_list = new Array("<input type='hidden' name='" + name_sub_event + ".LocationApplications[0].Locations[0].Id' />", "<span></span>");
+        var contents_asset_list = new Array("<input type='hidden' name='" + name_sub_event + ".AssetApplications[0].ApplicatedAssets[0].AssetId' />",
+            "<input type='hidden' name='" + name_sub_event + ".AssetApplications[0].ApplicatedAssets[0].Count' />", "<input type='hidden' name='" + name_sub_event +
+            ".AssetApplications[0].ApplicatedAssets[0].Id' />", "<span></span>", "<span></span>");
+        var insert_panel_loc_list = new Array(dropDownListFor());
+        var insert_panel_asset_list = new Array(dropDownListFor(),
+            textboxFor(name_sub_event + ".AssetApplications[0].ApplicatedAssets[0].Count", "在此输入申请数量", "",
+{ required: true, required_msg: "请输入申请数量" }));
+
+        location_list = new DynamicList(contents_loc_list, locations_fieldset, insert_panel_loc_list, function (elements, values, assigning_id) {
+            var loc_name;
+            var loc_id = values[0];
+
+            if (values.length < 2) {
+                for (var i = 0; i < locations.length; ++i) {
+                    if (locations[i].Id == loc_id) {
+                        loc_name = locations[i].Name;
+                        break;
+                    }
+                }
+            } else {
+                loc_name = values[1];
+            }
+
+            $(elements[1]).text(loc_name);
+
+            sub_events.accordion("refresh");
+
+            return true;
+        }, function () { sub_events.accordion("refresh"); }, null, null, null, "Locations");
+
+        asset_list = new DynamicList(contents_asset_list, assets_fieldset, insert_panel_asset_list, function (elements, values, assigning_id) {
+            var asset_name;
+            var asset_id = values[0];
+            var applied_count = values[1];
+
+            if (values.length < 3) {
+                for (var i = 0; i < assets.length; ++i) {
+                    if (assets[i].Id == asset_id) {
+                        asset_name = assets[i].Name;
+                        break;
+                    }
+                }
+                $(elements[2]).val(0);
+            } else {
+                $(elements[2]).val(values[3]);
+                asset_name = values[2];
+                $(elements[2]).data("dynamic_list-item-value-preserved", "true");
+                $(elements[3]).data("dynamic_list-item-value-preserved", "true");
+            }
+
+            $(elements[3]).text(asset_name);
+            $(elements[4]).text(" * " + applied_count);
+
+            sub_events.accordion("refresh");
+
+            return true;
+        }, function () { sub_events.accordion("refresh"); }, null, null, null, "ApplicatedAssets");
+
+        location_list.addBtn.attr("disabled", "true");
+        asset_list.addBtn.attr("disabled", "true");
+
+        function dateTimeChanged() {
+            var loc_dropdown = $(location_list.insertPanel).find("select").first();
+            var asset_dropdown = $(asset_list.insertPanel).find("select").first();
+
+            loc_dropdown.children("option").each(function (index, element) {
+                $(element).remove();
+            });
+            asset_dropdown.children("option").each(function (index, element) {
+                $(element).remove();
+            });
+
+            location_list.clear();
+            asset_list.clear();
+            location_list.addBtn.attr("disabled", "true");
+            asset_list.addBtn.attr("disabled", "true");
+
+            locations = new Array();
+            assets = new Array();
+
+            if (date_textbox.val() != "" && start_time_textbox.val() != "" && end_time_textbox.val() != "") {
+                $.get("GetAvailableLocations", { date: date_textbox.val(), start_time: start_time_textbox.val(), end_time: end_time_textbox.val() },
+                    function (data) {
+                        for (var i = 0; i < data.length; ++i) {
+                            locations.push(data[i]);
+                            loc_dropdown.append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>");
+                        }
+
+                        location_list.addBtn.removeAttr("disabled");
+                    });
+
+                $.get("GetAvailableAssets", { date: date_textbox.val(), start_time: start_time_textbox.val(), end_time: end_time_textbox.val() },
+                    function (data) {
+                        for (var i = 0; i < data.length; ++i) {
+                            assets.push(data[i]);
+                            asset_dropdown.append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>");
+                        }
+
+                        asset_list.addBtn.removeAttr("disabled");
+                    });
+            }
+        }
+
+        $(date_textbox[0]).datepicker({
+            minDate: start_date.datepicker("getDate"),
+            maxDate: end_date.datepicker("getDate"),
+            onSelect: dateTimeChanged,
+            dateFormat: "yy/m/d"
+        });
+        $(start_time_textbox[0]).timepicker({
+            onSelect: dateTimeChanged,
+            dateFormat: "yy/m/d"
+        });
+        $(end_time_textbox[0]).timepicker({
+            onSelect: dateTimeChanged,
+            dateFormat: "yy/m/d"
+        });
+
+        if (!has_value) {
+            placeHolder(start_time_textbox, "PlaceHolder");
+            placeHolder(end_time_textbox, "PlaceHolder");
+            placeHolder(description_area, "PlaceHolder");
+        }
+
+        basic_info_fieldset.append(id_field).append(start_time_textbox).append(end_time_textbox).append(description_area);
+
+        content.append(basic_info_fieldset).append(locations_fieldset).append(assets_fieldset);
+
+        sub_events.append(content);
+
+        sub_events.accordion('destroy').accordion();
+
+        if (has_value) {
+            var start_time = $.datepicker.parseTime('HH:mm:ss', $(start_time_textbox[0]).val());
+            var start_date = new Date(2012, 1, 1, start_time.hour, start_time.minute);
+            var end_time = $.datepicker.parseTime('HH:mm:ss', $(end_time_textbox[0]).val());
+            var end_date = new Date(2012, 1, 1, end_time.hour, end_time.minute);
+
+            $(date_textbox[0]).datepicker("setDate", $(date_textbox[0]).datepicker("getDate"));
+            $(start_time_textbox[0]).datetimepicker("setDate", start_date);
+            $(end_time_textbox[0]).datetimepicker("setDate", end_date);
+
+            dateTimeChanged();
+
+            if (sub_event.LocationApplications != null && sub_event.LocationApplications.length > 0) {
+                var locations = sub_event.LocationApplications[0].Locations;
+
+                for (var i = 0; i < locations.length; ++i) {
+                    var values = new Array(locations[i].Id, locations[i].Name);
+
+                    location_list.add(values);
+                }
+            }
+
+            if (sub_event.AssetApplications != null && sub_event.AssetApplications.length > 0) {
+                var assets = sub_event.AssetApplications[0].ApplicatedAssets;
+
+                for (var i = 0; i < assets.length; ++i) {
+                    var values = new Array(assets[i].AssetId, assets[i].Count, assets[i].Asset.Name, assets[i].Id);
+
+                    asset_list.add(values);
+                }
+            }
+        }
+
+        ++sub_event_num;
+
+        refreshFormValidations();
+    }
+
+    $(function () {
+        sub_events = $("#SubEvents");
+        sub_events.accordion();
+
+        $("#addSubEvent").click(function () {
+            addSubEvent();
+        });
+
+        var Model = resolveReferences(@Html.Raw(Model));
+
+        if (Model != null) {
+            for (var i = 0; i < Model.length; ++i) {
+                addSubEvent(Model[i]);
+            }
+        }
+
+        setFieldsAvailabilities();
+    })
+</script>
+
+<html>
+<head>
+</head>
+<body>
+    <div class="editor-field ChiefField">
+        <input type="hidden" name="has_modified_sub_events" value="true" />
+        <div id="SubEvents"></div>
+        <button type="button" id="addSubEvent">增加子活动</button>
+    </div>
+</body>
+</html>

@@ -27,20 +27,20 @@
 <div id="tabs">
     <ul>
         <li><a href="#tabs-1">基本信息</a></li>
-        <li><a href="/Event/EventDescription?id=@Model.Id">详细介绍</a></li>
-        <li><a href="/Event/SubEvents?id=@Model.Id">具体安排</a></li>
+        <li><a href="/Event/EventDescription?id=@Model.Id&public_key=@ViewBag.PublicKey">详细介绍</a></li>
+        <li><a href="/Event/SubEvents?id=@Model.Id&public_key=@ViewBag.PublicKey">具体安排</a></li>
 
         @if (ViewBag.HasAccessToCriticalSections)
         {
-            <li><a href="/Event/Organizers?id=@Model.Id">组织人员</a></li>
+            <li><a href="/Event/Organizers?id=@Model.Id&public_key=@ViewBag.PublicKey">组织人员</a></li>
             <li><a href="#tabs-2">活动策划</a></li>
-            <li><a href="/Event/Funds?id=@Model.Id">活动资金</a></li>
+            <li><a href="/Event/Funds?id=@Model.Id&public_key=@ViewBag.PublicKey">活动资金</a></li>
         }
     </ul>
 
     <div id="tabs-1">
         <div class="display-field">
-            <img src="@Path.Combine(Server.MapPath(ConfigurationManager.EventPosterFolder), Model.PosterUrl)" />
+            <img src="@Path.Combine(ConfigurationManager.EventPosterFolder, Model.PosterUrl ?? "").Substring(1)" />
         </div>
 
         @if (ViewBag.HasAccessToCriticalSections)
@@ -53,7 +53,7 @@
         <div class="display-field">@Html.ActionLink(Model.Club.MajorInfo.Name, "Details", "Club", new { id = Model.ClubId }, null)</div>
 
         <div class="display-label">负责人</div>
-        <div class="display-field">@Html.ActionLink(Model.ChiefEventOrganizer.Name, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)</div>
+        <div class="display-field">@Html.ActionLink(Model.ChiefEventOrganizer.CompleteName, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)</div>
 
         <div class="display-label">开始日期</div>
         <div class="display-field">@Html.DisplayFor(model => model.StartDate)</div>

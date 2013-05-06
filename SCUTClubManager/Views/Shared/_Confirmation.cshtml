@@ -2,8 +2,11 @@
     function confirmAjax(target, msg, url, param_name, callback) {
         $(target).click(function () {
             var source = this;
-            $("#confirmWnd").text(msg);
-            $("#confirmWnd").dialog({
+            var dialog = $("<div></div>");
+            dialog.appendTo($("#confirmWnd"));
+
+            dialog.text(msg);
+            dialog.dialog({
                 resizable: false,
                 height: 140,
                 modal: true,
@@ -13,8 +16,9 @@
                         data[param_name] = $(source).data(param_name);
                         
                         $.post(url, data, function (data) {
-                            callback(data);
-                            $("#confirmWnd").dialog("close");
+                            if (callback != null)
+                                callback(data);
+                            dialog.dialog("close");
                         });
                     },
                     "取消": function () {
@@ -40,16 +44,18 @@
     function confirm(target, msg, callback) {
         $(target).click(function (event) {
             event.preventDefault();
+            var dialog = $("<div></div>");
+            dialog.appendTo($("#confirmWnd"));
 
-            $("#confirmWnd").text(msg);
-            $("#confirmWnd").dialog({
+            dialog.text(msg);
+            dialog.dialog({
                 resizable: false,
                 height: 140,
                 modal: true,
                 buttons: {
                     "确认": function () {
                         callback();
-                        $("#confirmWnd").dialog("close");
+                        dialog.dialog("close");
                     },
                     "取消": function () {
                         $(this).dialog("close");
@@ -62,16 +68,18 @@
     function notify(target, msg, callback) {
         $(target).click(function (event) {
             event.preventDefault();
+            var dialog = $("<div></div>");
+            dialog.appendTo($("#confirmWnd"));
 
-            $("#confirmWnd").text(msg);
-            $("#confirmWnd").dialog({
+            dialog.text(msg);
+            dialog.dialog({
                 resizable: false,
                 height: 140,
                 modal: true,
                 buttons: {
                     "确认": function () {
                         callback();
-                        $("#confirmWnd").dialog("close");
+                        dialog.dialog("close");
                     }
                 }
             });
@@ -79,8 +87,11 @@
     }
 
     function messageBox(msg, callback) {
-        $("#confirmWnd").text(msg);
-        $("#confirmWnd").dialog({
+        var dialog = $("<div></div>");
+        dialog.appendTo($("#confirmWnd"));
+
+        dialog.text(msg);
+        dialog.dialog({
             resizable: false,
             height: 140,
             modal: true,
@@ -96,8 +107,11 @@
     }
 
     function notify(data) {
-        $("#confirmWnd").text(data.msg);
-        $("#confirmWnd").dialog({
+        var dialog = $("<div></div>");
+        dialog.appendTo($("#confirmWnd"));
+
+        dialog.text(data.msg);
+        dialog.dialog({
             resizable: false,
             width: 500,
             height: 200,
@@ -108,7 +122,7 @@
                         document.location = data.url;
                     }
 
-                    $("#confirmWnd").dialog("close");
+                    dialog.dialog("close");
                 }
             }
         });

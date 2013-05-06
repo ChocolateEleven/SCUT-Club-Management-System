@@ -24,17 +24,12 @@
         $(itemToDelete).remove();
     }
 
-    function addBranch() {
-        var name = "new_branches[" + $('.Branch').length + "].BranchName";
+    function addBranch(elements, values) {
+        if (values == null || values.length == 0) {
+            placeHolder($(elements[0]), "PlaceHolder");
+        }
 
-        var textbox = $("<div class='Branch'>" + textboxFor(name, "请在此输入部门名", "",
-{ required: true, required_msg: "请输入部门名", regex: "^[\\u2E80-\\u9FFFa-zA-Z0-9]{1,20}$", regex_msg: "部门名必须在1~20个字之间，且不能有标点符号" }) +
-            "<button class='deleteBranchBtn' onclick='deleteItem($(this).parent())'>删除</button></div>")
-            .insertBefore("#addBranchBtn").children('input');
-
-        placeHolder(textbox, 'PlaceHolder');
-
-        refreshFormValidations();
+        return true;
     }
 
     function asMainApplicant(mainApplicantCheckBox) {
@@ -115,6 +110,21 @@
                 $("#addApplicantErrorMsg").text("");
             }
         });
+
+        var contents = new Array(textboxFor("new_branches[0].BranchName", "请在此输入部门名", "", { 
+            required: true, required_msg: "请输入部门名", regex: "^[\\u2E80-\\u9FFFa-zA-Z0-9]{1,20}$", regex_msg: "部门名必须在1~20个字之间，且不能有标点符号"
+        }));
+
+        var branch_list = new DynamicList(contents, "#branches", null, addBranch);
+
+        @if (Model != null && Model.Branches != null)
+        {
+            foreach (var branch in Model.Branches)
+            {
+                @:var values = new Array("@branch.BranchName");
+                @:branch_list.add(values);
+            }
+        }
     })
 
 </script>
@@ -198,25 +208,7 @@
         <div class="DescriptionText">
             要新增一个部门，请点击“新增”按钮，并输入新部门的名称。要删除一个部门，请点击该部门旁的“删除”按钮。
         </div>
-        @if (Model != null && Model.Branches != null)
-        {
-            int counter = 0;
-
-            foreach (var branch in Model.Branches)
-            {
-                string name = "new_branches[" + counter + "].BranchName";
-                counter++;
-            
-            <div class="Branch">
-                <input type='text' class='BranchName' name='@name' />
-                @Html.ValidationMessage(name)
-                <button class='deleteBranchBtn' onclick='deleteItem(this.parentElement)'>删除</button>
-            </div>
-            }
-        }
-        <div class="editor-field" id="addBranch">
-            <button id="addBranchBtn" onclick="addBranch()" type="button">新增</button>
-        </div>
+        <div id="branches"></div>
     </fieldset>
 
     <fieldset>
@@ -241,11 +233,6 @@
             <button id="addApplicantBtn" onclick="addApplicant()" type="button">新增</button>
             <span id="addApplicantErrorMsg" class="ErrorMessage"></span>
         </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>测试</legend>
-        <div id="test"></div>
     </fieldset>
     
     <p>

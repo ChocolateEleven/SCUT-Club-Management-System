@@ -1,0 +1,71 @@
+﻿@model SCUTClubManager.Models.Event
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<script type="text/javascript">
+    $(function () {
+        var fund_field = $("#FundApplication_Quantity");
+
+        fund_field.data("val", "true");
+        fund_field.data("val-number", "请输入数字");
+        fund_field.data("val-range", "不能申请超过社团总可用资金的活动经费或负经费");
+        fund_field.data("val-range-max", "@Model.Club.Fund");
+        fund_field.data("val-range-min", "0");
+
+        sliderField(fund_field);
+
+        refreshFormValidations();
+
+        @if (Model.FundApplication != null)
+        {
+            @:$("#FundApplication_Id").val("@Model.FundApplication.Id");
+        }
+        else
+        {
+            @:$("#FundApplication_Quantity").val("0");
+        }
+
+        setFieldsAvailabilities();
+    })
+</script>
+
+<html>
+<head>
+</head>
+<body>
+    <input id="FundApplication_Id" name="FundApplication.Id" type="hidden" value="0">
+
+    <div class="display-label">
+        社团总可用资金：
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Club.Fund)
+    </div>
+
+    <div class="display-label">
+        剩余金额：
+    </div>
+    <div class="display-field" id="remaining">
+        @if (Model.FundApplication != null)
+        {
+            @Html.Raw((Model.Club.Fund - Model.FundApplication.Quantity).ToString())
+        }
+        else
+        {
+            @Html.DisplayFor(model => model.Club.Fund)
+        }
+    </div>
+
+    <div class="editor-label">
+        申请活动经费的金额：
+    </div>
+    <div class="editor-field ChiefField">
+        @Html.EditorFor(model => model.FundApplication.Quantity)
+        @Html.ValidationMessageFor(model => model.FundApplication.Quantity)
+    </div>
+</body>
+</html>

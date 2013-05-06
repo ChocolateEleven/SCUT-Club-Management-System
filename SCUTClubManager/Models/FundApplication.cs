@@ -9,9 +9,9 @@ namespace SCUTClubManager.Models
 {
     public class FundApplication : Application
     {
-        [Required]
         public Decimal Quantity { get; set; }
 
+        [System.Web.Script.Serialization.ScriptIgnore]
         public virtual Event Event { get; set; }
     }
 }

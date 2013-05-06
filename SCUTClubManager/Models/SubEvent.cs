@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace SCUTClubManager.Models
 {
@@ -19,10 +20,20 @@ namespace SCUTClubManager.Models
         //[Required]
         public DateTime Date { get; set; }
 
+        public TimeSpan StartTime { get; set; }
+
+        public TimeSpan EndTime { get; set; }
+
         public virtual SubEventDescription Description { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Time> Times { get; set; }
+
+        [JsonIgnore]
         public virtual Event Event { get; set; }
+
         public virtual ICollection<LocationApplication> LocationApplications { get; set; }
+
         public virtual ICollection<AssetApplication> AssetApplications { get; set; }
     }
 }

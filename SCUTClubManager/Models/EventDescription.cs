@@ -13,6 +13,7 @@ namespace SCUTClubManager.Models
         public int EventId { get; set; }
 
         [MaxLength(400)]
+        [Display(Name = "活动描述")]
         public string Description { get; set; }
     }
 }

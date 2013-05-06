@@ -139,7 +139,8 @@ namespace SCUTClubManager.BusinessLogic
         {
             Event e = context.Events.Include(t => t.Organizers).Find(event_id);
 
-            if (e != null && e.Organizers.Any(t => t.UserName == HttpContext.Current.User.Identity.Name))
+            if (e != null && (e.ChiefEventOrganizerId == HttpContext.Current.User.Identity.Name ||
+                e.Organizers.Any(t => t.UserName == HttpContext.Current.User.Identity.Name)))
                 return true;
 
             return false;

@@ -13,7 +13,8 @@
         组长
     </div>
     <div class="display-field">
-        @Html.ActionLink(Model.ChiefEventOrganizer.Name, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)
+        @Html.ActionLink(Model.ChiefEventOrganizer.CompleteName, 
+        "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)
     </div>
 
     <div class="display-label">
@@ -25,7 +26,7 @@
             if (organizer.UserName != Model.ChiefEventOrganizerId)
             {
             <div>
-                @Html.ActionLink(organizer.Name, "Details", "User", new { user_name = organizer.UserName }, null)
+                @Html.ActionLink(organizer.CompleteName, "Details", "User", new { user_name = organizer.UserName }, null)
             </div>
             }
         }

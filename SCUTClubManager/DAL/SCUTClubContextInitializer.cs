@@ -837,49 +837,46 @@ namespace SCUTClubManager.DAL
             {
                 new Time
                 {
-                    TimeName = "上午1、2节课"
+                    TimeName = "上午1、2节课",
+                    StartTime = TimeSpan.FromHours(8.8333),
+                    EndTime = TimeSpan.FromHours(10.4167)
                 },
                 new Time
                 {
-                    TimeName = "上午3、4节课"
+                    TimeName = "上午3、4节课",
+                    StartTime = TimeSpan.FromHours(10.4167),
+                    EndTime = TimeSpan.FromHours(12.1667)
                 },
                 new Time
                 {
-                    TimeName = "中午"
+                    TimeName = "中午",
+                    StartTime = TimeSpan.FromHours(12.1667),
+                    EndTime = TimeSpan.FromHours(14.0)
                 },
                 new Time
                 {
-                    TimeName = "下午5、6节课"
+                    TimeName = "下午5、6节课",
+                    StartTime = TimeSpan.FromHours(14.0),
+                    EndTime = TimeSpan.FromHours(15.5833)
                 },
                 new Time
                 {
-                    TimeName = "下午7、8、9节课"
+                    TimeName = "下午7、8、9节课",
+                    StartTime = TimeSpan.FromHours(15.5833),
+                    EndTime = TimeSpan.FromHours(18.1667)
                 },
                 new Time
                 {
-                    TimeName = "傍晚"
+                    TimeName = "傍晚",
+                    StartTime = TimeSpan.FromHours(18.1667),
+                    EndTime = TimeSpan.FromHours(19.0)
                 },
                 new Time
                 {
-                    TimeName = "晚上10、11、12节课"
-                },
-                new Time
-                {
-                    TimeName = "上午1、2、3、4节课"
-                },
-                new Time
-                {
-                    TimeName = "下午5、6、7、8、9节课"
-                },
-                new Time
-                {
-                    TimeName = "白天（上午、中午、下午）"
-                },
-                new Time
-                {
-                    TimeName = "全天"
+                    TimeName = "晚上10、11、12节课",
+                    StartTime = TimeSpan.FromHours(19.0),
+                    EndTime = TimeSpan.FromHours(21.4167)
                 }
-
             };
             #endregion
 
@@ -1382,6 +1379,8 @@ namespace SCUTClubManager.DAL
                         new SubEvent
                         {
                             Date = DateTime.Now,
+                            StartTime = DateTime.Now.TimeOfDay,
+                            EndTime = DateTime.Now.TimeOfDay,
                             Description = new SubEventDescription
                             {
                                 Description = "SubEvent1 of Event 涙の物語"
@@ -1438,7 +1437,9 @@ namespace SCUTClubManager.DAL
                     {
                         new SubEvent
                         {
-                            Date = DateTime.Now.AddDays(5),
+                            Date = DateTime.Now,
+                            StartTime = DateTime.Now.TimeOfDay,
+                            EndTime = DateTime.Now.TimeOfDay,
                             Description = new SubEventDescription
                             {
                                 Description = "SubEvent1 of Event BioShock"

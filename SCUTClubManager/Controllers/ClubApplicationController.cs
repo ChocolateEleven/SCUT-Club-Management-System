@@ -386,18 +386,8 @@ namespace SCUTClubManager.Controllers
         [HttpPost]
         [Authorize]
         public ActionResult ApplyNewClub(ClubRegisterApplication register_application, BranchCreation[] new_branches,
-            HttpPostedFileBase poster, string[] test)
+            HttpPostedFileBase poster)
         {
-            if (new_branches != null)
-            {
-                register_application.Branches = new List<BranchModification>();
-
-                foreach (var branch in new_branches)
-                {
-                    register_application.Branches.Add(branch);
-                }
-            }
-
             if (ModelState.IsValid)
             {
                 int id = db.GenerateIdFor(IdentityForTPC.APPLICATION);
@@ -423,6 +413,17 @@ namespace SCUTClubManager.Controllers
                 register_application.Date = DateTime.Now;
                 register_application.Status = Application.NOT_VERIFIED;
                 register_application.Id = id;
+
+                if (new_branches != null)
+                {
+                    register_application.Branches = new List<BranchModification>();
+
+                    foreach (var branch in new_branches)
+                    {
+                        branch.ApplicationId = register_application.Id;
+                        register_application.Branches.Add(branch);
+                    }
+                }
 
                 db.Applications.Add(register_application);
                 db.SaveChanges();

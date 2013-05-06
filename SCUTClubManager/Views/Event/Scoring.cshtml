@@ -39,7 +39,6 @@
             <th>
                 @Html.ActionLink("活动名", "Scoring", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.TitleOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
@@ -48,7 +47,6 @@
             <th>
                 @Html.ActionLink("开始日期", "Scoring", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.StartDateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
@@ -57,7 +55,6 @@
             <th>
                 @Html.ActionLink("结束日期", "Scoring", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.EndDateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
@@ -66,7 +63,6 @@
             <th>
                 @Html.ActionLink("举办社团", "Scoring", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.ClubNameOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
@@ -75,7 +71,6 @@
             <th>
                 @Html.ActionLink("负责人", "Scoring", new
            {
-               page_number = Model.PageNumber,
                order = ViewBag.OrganizerOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
@@ -91,15 +86,15 @@
                 <td>
                     <td>
                         @Html.ActionLink(item.Title, "Details", new
-           {
-               page_number = ViewBag.PageNumber,
-               id = item.Id,
-               order = ViewBag.CurrentOrder,
-               search = ViewBag.Search,
-               search_option = ViewBag.SearchOption,
-               pass_filter = ViewBag.PassFilter,
-               club_id = ViewBag.ClubId
-           })
+                        {
+                            page_number = ViewBag.PageNumber,
+                            id = item.Id,
+                            order = ViewBag.CurrentOrder,
+                            search = ViewBag.Search,
+                            search_option = ViewBag.SearchOption,
+                            pass_filter = ViewBag.PassFilter,
+                            club_id = ViewBag.ClubId
+                        })
                     </td>
                     <input type="hidden" name="ids" value="@item.Id" />
                 </td>

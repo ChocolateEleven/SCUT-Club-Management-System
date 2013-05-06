@@ -52,10 +52,25 @@ namespace SCUTClubManager.Models
         public string PoliticalId { get; set; }
 
         public virtual ContactInfo ContactInfo { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<Application> Applications { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<ClubMember> MemberShips { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<Event> Events { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<LocationAssignment> LocationAssignments { get; set; }
+
+        [System.Web.Script.Serialization.ScriptIgnore]
+        [System.Xml.Serialization.XmlIgnore]
         public virtual ICollection<AssetAssignment> AssetAssignments { get; set; }
     }
 }
