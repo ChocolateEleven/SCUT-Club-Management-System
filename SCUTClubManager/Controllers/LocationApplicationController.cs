@@ -10,7 +10,8 @@ using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
-{ 
+{
+    [Authorize]
     public class LocationApplicationController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -19,7 +20,7 @@ namespace SCUTClubManager.Controllers
         {
             return RedirectToAction("List");
         }
-
+        
         //
         // GET: /LocationApplication/
 
@@ -79,8 +80,16 @@ namespace SCUTClubManager.Controllers
         // POST: /LocationApplication/Create
 
         [HttpPost]
+        [Authorize(Roles = "学生")]
         public ActionResult Create(int[] time_ids, DateTime date ,int[] locationId,int ClubId, int? SubEventId)
         {
+            List<Club> club_list = RoleHelper.GetRoleClub(User.Identity.Name, "会长");
+            if (club_list == null)
+            {
+                return View("PermissionDeniedError");
+            }
+            ViewBag.ClubId = new SelectList(club_list, "Id", "Id");
+
             LocationApplication location_application = new LocationApplication();
             location_application.Times = new List<Time>();
             foreach (var time_id in time_ids)
@@ -90,7 +99,9 @@ namespace SCUTClubManager.Controllers
             }
             location_application.Date = date;
             if (SubEventId != null)
+            {
                 location_application.SubEvent = unitOfWork.SubEvents.Find(SubEventId);
+            }
             location_application.Club = unitOfWork.Clubs.Find(ClubId);
             location_application.Locations = new List<Location>();
             foreach (var id in locationId)
@@ -102,7 +113,12 @@ namespace SCUTClubManager.Controllers
             unitOfWork.Applications.Add(location_application);
             unitOfWork.SaveChanges();
 
-            //////弹出“操作成功”
+
+
+            //if (!ScmRoleProvider.HasMembershipIn(ClubId, null, new string[] { "会长" }))
+            //{
+                
+            //}
 
             return RedirectToAction("Index", "Location");
         }
@@ -144,22 +160,33 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /LocationApplication/Delete/5
  
+        //public ActionResult Delete(int id)
+        //{
+        //    LocationApplication locationapplication = unitOfWork.Applications.Find(id) as LocationApplication;
+        //    return View(locationapplication);
+        //}
+
+        ////
+        //// POST: /LocationApplication/Delete/5
+
+        //[HttpPost, ActionName("Delete")]
+        //public ActionResult DeleteConfirmed(int id)
+        //{            
+        //    LocationApplication locationapplication = unitOfWork.Applications.Find(id) as LocationApplication;
+        //    unitOfWork.Applications.Delete(locationapplication);
+        //    unitOfWork.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+
+        [HttpPost]
         public ActionResult Delete(int id)
         {
-            LocationApplication locationapplication = unitOfWork.Applications.Find(id) as LocationApplication;
-            return View(locationapplication);
-        }
-
-        //
-        // POST: /LocationApplication/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {            
-            LocationApplication locationapplication = unitOfWork.Applications.Find(id) as LocationApplication;
-            unitOfWork.Applications.Delete(locationapplication);
+            LocationApplication message = unitOfWork.LocationApplications.Find(id);
+            unitOfWork.LocationApplications.Delete(message);
             unitOfWork.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(new { idToDelete = id, success = true });
+            //return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

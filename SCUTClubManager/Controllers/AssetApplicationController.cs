@@ -10,7 +10,8 @@ using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
-{ 
+{
+    [Authorize]
     public class AssetApplicationController : Controller
     {
         private UnitOfWork unitOfWork = new UnitOfWork();
@@ -57,7 +58,7 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /AssetApplication/Details/5
 
-        public ViewResult Details(int id)
+        public ViewResult Details(int id) 
         {
             AssetApplication assetapplication = unitOfWork.Applications.Find(id) as AssetApplication;
             return View(assetapplication);
@@ -158,21 +159,20 @@ namespace SCUTClubManager.Controllers
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title", assetapplication.SubEventId);
             return View(assetapplication);
         }
-         
-        public ActionResult Handle(bool pass, int id)
+
+        public ActionResult Verify(int id, bool is_passed, string reject_reason)
         {
             var asset_application = unitOfWork.AssetApplications.Find(id);
-            if (pass)
+            if (is_passed)
             {
                 asset_application.Status = "p";
-                unitOfWork.AssetApplications.Update(asset_application);
                 unitOfWork.SaveChanges();
-                return RedirectToAction("Add", "AssetAssignment",new { id = asset_application.Id});
+                return RedirectToAction("Add", "AssetAssignment", new { id = asset_application.Id });
             }
             asset_application.Status = "f";
-            unitOfWork.AssetApplications.Update(asset_application);
+            asset_application.RejectReason = new ApplicationRejectReason { Reason = reject_reason };
             unitOfWork.SaveChanges();
-            return RedirectToAction("SetRejectReason","AssetAssignment", new { enouthAsset = false, application_id = id }); ;
+            return RedirectToAction("List");
         }
 
         //

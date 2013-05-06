@@ -220,5 +220,7 @@ namespace SCUTClubManager.DAL
         public DbSet<LocationApplication> LocationApplications { get; set; }
 
         public DbSet<Student> Students { get; set; }
+
+        public DbSet<FundApplication> FundApplications { get; set; }
     }
 } 

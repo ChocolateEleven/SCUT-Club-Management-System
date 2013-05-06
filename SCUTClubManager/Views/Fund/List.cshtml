@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SCUTClubManager.Models.FundDetails>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.Partial("_SearchBar")
+</p>
+
+
+@Html.Partial("_Confirmation")
+
+<script>
+    $(document).ready(function () {
+        deleteConfirmAjax(".deleteLink", "确认删除？", "/Fund/Delete");
+    });
+</script>
+<table>
+    <tr>
+        <th>
+            金额
+        </th>
+        <th>
+            社团
+        </th>
+        <th>
+            负责人
+        </th>
+        <th>
+            @Html.ActionLink("日期", "List", new { order = ViewBag.DateOrderOpt })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+     <tr id="row-@item.Id">
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Applicant.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            
+            @Html.ActionLink("详情", "Details",new {id = item.Id})
+            <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.Partial("_PageNavigation", Model)s

@@ -528,7 +528,7 @@ namespace SCUTClubManager.DAL
                 {
                     Branch = branches[0],
                     ClubId = 1,
-                    ClubRoleId = 3,
+                    ClubRoleId = 4,
                     JoinDate = DateTime.Now,
                     UserName = "000000001"
                 },
@@ -536,7 +536,7 @@ namespace SCUTClubManager.DAL
                 {
                     Branch = branches[0],
                     ClubId = 1,
-                    ClubRoleId = 5,
+                    ClubRoleId =4,
                     JoinDate = DateTime.Now,
                     UserName = "000000002"
                 },
@@ -563,22 +563,6 @@ namespace SCUTClubManager.DAL
                     ClubRoleId = 6,
                     JoinDate = DateTime.Parse("2010-3-3"),
                     UserName = "000000003"
-                },
-                new ClubMember
-                {
-                    Branch = branches[5],
-                    ClubId = 3,
-                    ClubRoleId = 4,
-                    JoinDate = DateTime.Now,
-                    UserName = "000000001"
-                },
-                new ClubMember
-                {
-                    Branch = branches[6],
-                    ClubId = 4,
-                    ClubRoleId = 5,
-                    JoinDate = DateTime.Parse("2012-11-11"),
-                    UserName = "000000001"
                 }
             };
             #endregion
@@ -1497,6 +1481,7 @@ namespace SCUTClubManager.DAL
             locations.ForEach(s => context.Locations.Add(s));
             location_applications.ForEach(s => context.Applications.Add(s));
             location_assignments.ForEach(s => context.LocationAssignments.Add(s));
+            fund_details.ForEach(s => context.FundDetailses.Add(s));
 
             events.ForEach(s => context.Events.Add(s));
 

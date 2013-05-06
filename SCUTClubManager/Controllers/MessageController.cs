@@ -11,7 +11,8 @@ using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
-{ 
+{
+    [Authorize]
     public class MessageController : Controller
     {
         //private SCUTClubContext db = new SCUTClubContext();

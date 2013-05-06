@@ -1,0 +1,30 @@
+﻿@model SCUTClubManager.Models.LocationAssignment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>LocationAssignment</legend>
+
+    <div class="display-label">Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+
+    <div class="display-label">Club</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Club.Id)
+    </div>
+
+    <div class="display-label">Applicant</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Applicant.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

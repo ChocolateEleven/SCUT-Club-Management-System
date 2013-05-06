@@ -1,10 +1,9 @@
-﻿@model SCUTClubManager.Models.AssetApplication
+﻿@model SCUTClubManager.Models.FundApplication
 
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>新建资金申请</h2>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
@@ -12,30 +11,39 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>AssetApplication</legend>
+        <legend>资金申请</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SubEventId, "子活动")
+            金额
         </div>
         <div class="editor-field">
-            @Html.DropDownList("SubEventId", String.Empty)
-            @Html.ValidationMessageFor(model => model.SubEventId)
+            @Html.EditorFor(model => model.Quantity)
+            @Html.ValidationMessageFor(model => model.Quantity)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ClubId, "社团")
+            社团
         </div>
         <div class="editor-field">
             @Html.DropDownList("ClubId", String.Empty)
             @Html.ValidationMessageFor(model => model.ClubId)
         </div>
 
+        <div class="editor-label">
+            用途
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Purpose)
+            @Html.ValidationMessageFor(model => model.Purpose)
+        </div>
+
+
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="提交" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("返回", "Index")
+    @Html.ActionLink("Back to List", "Index")
 </div>

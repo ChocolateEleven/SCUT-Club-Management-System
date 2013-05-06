@@ -4,32 +4,34 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <fieldset>
-    <legend>FundDetails</legend>
+    <legend>资金分配详情</legend>
 
-    <div class="display-label">Club</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Club.Id)
+    <div class="display-label">社团</div>
+    <div class="display-field">d)
+        @Html.DisplayFor(model => model.Club.MajorInfo.Name)
     </div>
 
-    <div class="display-label">Date</div>
+    <div class="display-label">日期</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Date)
     </div>
 
-    <div class="display-label">Applicant</div>
+    <div class="display-label">负责人</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Applicant.Name)
     </div>
 
-    <div class="display-label">Quantity</div>
+    <div class="display-label">金额</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Quantity)
     </div>
+
+    <div class="display-label">用途</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Purpose)
+    </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("返回", "Index")
 </p>

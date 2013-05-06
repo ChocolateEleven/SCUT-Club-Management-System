@@ -150,13 +150,19 @@ namespace SCUTClubManager.Controllers
             return RedirectToAction("SetRejectReason", new { enouthAsset = false, application_id = id});
         }
 
+        public ActionResult Verify(int id, bool is_passed, string reject_reason, int club_id = 0)
+        {
+
+            return RedirectToAction("List");
+        }
+
         public ActionResult SetRejectReason(int application_id, bool enoughAsset = true)
         {
             ViewBag.application_id = application_id;
             ViewBag.enoughAsset = enoughAsset;
             if (enoughAsset)
             {
-                ViewBag.Reason = ""; 
+                ViewBag.Reason = "";  
             }
             else
             {
@@ -171,7 +177,10 @@ namespace SCUTClubManager.Controllers
         {
             if (Reason != null)
             {
-                unitOfWork.AssetApplications.Find(application_id).RejectReason = Reason;
+                AssetApplication asset_application = unitOfWork.AssetApplications.Find(application_id);
+                asset_application.RejectReason = Reason;
+                unitOfWork.AssetApplications.Update(asset_application);
+                unitOfWork.SaveChanges();
             }
             return RedirectToAction("List","AssetApplication");
         }

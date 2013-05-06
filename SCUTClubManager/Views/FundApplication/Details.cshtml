@@ -1,0 +1,64 @@
+﻿@model SCUTClubManager.Models.FundApplication
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<fieldset>
+    <legend>资金申请详情</legend>
+
+    <div class="display-label">金额</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">申请社团</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Club.MajorInfo.Name)
+    </div>
+
+    <div class="display-label">状态</div>
+    <div class="display-field">
+        @SCUTClubManager.Helpers.LabelHelpers.GetStatus(Model.Status)
+    </div>
+
+    <div class="display-label">申请人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Applicant.Name)
+    </div>
+
+    <div class="display-label">申请日期</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+
+    <div class="display-label">用途</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Purpose)
+    </div>
+
+    @if(Model.Status == "f" )
+    {
+        <div class="display-label">拒绝理由</div>
+        <div class="display-field">
+            @if(Model.RejectReason != null)
+            {
+                @Model.RejectReason.Reason
+            }
+            else
+            {
+                <p>无</p>
+            }
+        </div> 
+    }
+</fieldset>
+
+
+@if (Model.Status == "n")
+{
+    @Html.Partial("_VerifyBar", Model.Id);
+}
+
+<div>
+    @Html.ActionLink("返回", "Index")
+</div>

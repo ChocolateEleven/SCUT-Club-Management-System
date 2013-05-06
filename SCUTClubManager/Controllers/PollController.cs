@@ -10,7 +10,8 @@ using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
 
 namespace SCUTClubManager.Controllers
-{ 
+{
+    [Authorize]
     public class PollController : Controller
     {
         //private SCUTClubContext db = new SCUTClubContext();

@@ -4,42 +4,49 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <fieldset>
-    <legend>LocationApplication</legend>
+    <legend>场地申请详情</legend>
 
-    <div class="display-label">SubEvent</div>
+    <div class="display-label">子活动</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.SubEvent.Title)
     </div>
-
-    <div class="display-label">Time</div>
+    
+    <div class="display-label">日期</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Time.TimeName)
+        @Html.DisplayFor(model => model.Date)
     </div>
 
-    <div class="display-label">Club</div>
+    <div class="display-label">时间段</div>
+    <div class="display-field">
+            @foreach(var time in Model.Times)
+            {
+                <p>@time.TimeName</p>
+            }
+    </div>
+
+    <div class="display-label">申请社团</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Club.Id)
     </div>
 
-    <div class="display-label">Status</div>
+    <div class="display-label">状态</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
+        @SCUTClubManager.Helpers.LabelHelpers.GetStatus(Model.Status)
     </div>
 
-    <div class="display-label">Applicant</div>
+    <div class="display-label">申请人</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Applicant.Name)
     </div>
 
-    <div class="display-label">Date</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Date)
-    </div>
 </fieldset>
+
+
+@if (Model.Status == "n")
+{
+    @Html.Partial("_VerifyBar", Model.Id);
+}
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("返回", "Index")
 </p>

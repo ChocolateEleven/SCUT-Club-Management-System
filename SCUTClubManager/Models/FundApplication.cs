@@ -13,5 +13,8 @@ namespace SCUTClubManager.Models
 
         [System.Web.Script.Serialization.ScriptIgnore]
         public virtual Event Event { get; set; }
+
+        [MaxLength(200)]
+        public string Purpose { get; set; }
     }
 }

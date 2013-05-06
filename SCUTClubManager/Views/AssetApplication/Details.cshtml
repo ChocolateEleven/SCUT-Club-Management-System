@@ -54,7 +54,7 @@
         <div class="display-field">
             @if(Model.RejectReason != null)
             {
-                Html.DisplayFor(model => model.RejectReason);
+                @Model.RejectReason.Reason
             }
             else
             {
@@ -89,12 +89,11 @@
     </div>
 </fieldset>
 <div>
-    @if(Model.Status == "n")
-    {
-        <div>
-            <span>@Html.ActionLink("批准", "Handle", new { pass=true, id=Model.Id })</span> 
-            <span>@Html.ActionLink("驳回","Handle", new { pass=false, id=Model.Id })</span>
-        </div>
-    }
+    
+@if (Model.Status == "n")
+{
+    @Html.Partial("_VerifyBar", Model.Id);
+}
+
     @Html.ActionLink("返回", "Index")
 </div>

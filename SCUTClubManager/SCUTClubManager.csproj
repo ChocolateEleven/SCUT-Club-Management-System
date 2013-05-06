@@ -129,6 +129,7 @@
     <Compile Include="BusinessLogic\ExcelProcessor.cs" />
     <Compile Include="BusinessLogic\LocationHelpers.cs" />
     <Compile Include="BusinessLogic\PasswordProcessor.cs" />
+    <Compile Include="BusinessLogic\RoleHelper.cs" />
     <Compile Include="BusinessLogic\ScmRoleProvider.cs" />
     <Compile Include="BusinessLogic\ScmMembershipProvider.cs" />
     <Compile Include="BusinessLogic\QueryProcessor.cs" />
@@ -141,9 +142,11 @@
     <Compile Include="Controllers\ClubMemberController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\ForumController.cs" />
+    <Compile Include="Controllers\FundApplicationController.cs" />
     <Compile Include="Controllers\FundController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationApplicationController.cs" />
+    <Compile Include="Controllers\LocationAssignmentController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\PollController.cs" />
@@ -420,7 +423,7 @@
     <Content Include="Views\Shared\InvalidFilterError.cshtml" />
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\Location\UnAvailableLocation.cshtml" />
-    <Content Include="Views\Fund\Index.cshtml" />
+    <Content Include="Views\Fund\List.cshtml" />
     <Content Include="Views\Fund\Details.cshtml" />
     <Content Include="Views\Fund\Create.cshtml" />
     <Content Include="Views\Fund\Edit.cshtml" />
@@ -447,6 +450,17 @@
     <Content Include="Views\Event\EditOrganizers.cshtml" />
     <Content Include="Views\Event\EditFunds.cshtml" />
     <Content Include="Views\Event\EditEventDescription.cshtml" />
+    <Content Include="Views\FundApplication\List.cshtml" />
+    <Content Include="Views\FundApplication\Details.cshtml" />
+    <Content Include="Views\FundApplication\Create.cshtml" />
+    <Content Include="Views\FundApplication\Edit.cshtml" />
+    <Content Include="Views\FundApplication\Delete.cshtml" />
+    <Content Include="Views\Fund\SetRejectReason.cshtml" />
+    <Content Include="Views\LocationAssignment\List.cshtml" />
+    <Content Include="Views\LocationAssignment\Details.cshtml" />
+    <Content Include="Views\LocationAssignment\Create.cshtml" />
+    <Content Include="Views\LocationAssignment\Edit.cshtml" />
+    <Content Include="Views\LocationAssignment\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
