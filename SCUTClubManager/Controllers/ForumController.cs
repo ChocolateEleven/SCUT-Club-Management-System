@@ -52,7 +52,7 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-            var list = QueryProcessor.Query(threads, page_number: page_number, items_per_page: 2, order_by: order);
+            var list = QueryProcessor.Query(threads, page_number: page_number, items_per_page: 10, order_by: order);
             return View(list);
         }
 

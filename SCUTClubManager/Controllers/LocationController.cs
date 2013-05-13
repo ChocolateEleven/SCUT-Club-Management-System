@@ -22,7 +22,7 @@ namespace SCUTClubManager.Controllers
         // GET: /Location/
         public ActionResult Index()
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -32,7 +32,7 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult List(int page_number = 1, string search = "", string search_option = "Name", string order = "Name")
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -45,7 +45,7 @@ namespace SCUTClubManager.Controllers
 
 
             var polls = unitOfWork.Locations.ToList();
-            var list = QueryProcessor.Query(polls, order_by: order, page_number: page_number, items_per_page: 2);
+            var list = QueryProcessor.Query(polls, order_by: order, page_number: page_number, items_per_page: 10);
 
             return View(list);
         }
@@ -56,7 +56,7 @@ namespace SCUTClubManager.Controllers
         public ViewResult Details(int id)
         {
             
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -69,7 +69,7 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Create()
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -83,7 +83,7 @@ namespace SCUTClubManager.Controllers
         [HttpPost]
         public ActionResult Create( Location location,int[] weekday, int[] time_id)
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -118,7 +118,7 @@ namespace SCUTClubManager.Controllers
  
         public ActionResult Edit(int id)
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -134,7 +134,7 @@ namespace SCUTClubManager.Controllers
         [HttpPost]
         public ActionResult Edit(Location location,int[] time_id, int[] weekday)
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -202,7 +202,7 @@ namespace SCUTClubManager.Controllers
         [Authorize]
         public ActionResult Delete(int id)
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -214,7 +214,7 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult Calendar()
         {
-            if (!User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0)
+            if (!User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0)
             {
                 return View("PermissionDeniedError");
             }
@@ -225,7 +225,7 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult AvailableLocation(DateTime date, int[] time_ids)
         {
-            if (!User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0)
+            if (!User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0)
             {
                 return View("PermissionDeniedError");
             }
@@ -320,7 +320,7 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult UnAvailableLocation(DateTime date, int[] time_ids)
         {
-            if ( !User.IsInRole("社联") || RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
+            if ( !User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0 )
             {
                 return View("PermissionDeniedError");
             }
@@ -383,8 +383,7 @@ namespace SCUTClubManager.Controllers
 
         public ActionResult AssignedLocation(DateTime date, int[] time_ids)
         {
-            List<Club> club_list = RoleHelper.GetRoleClub(User.Identity.Name, "会长");
-            if (club_list.Count == 0 || !User.IsInRole("社联"))
+            if (!User.IsInRole("社联") && RoleHelper.GetRoleClub(User.Identity.Name, "会长").Count == 0)
             {
                 return View("PermissionDeniedError");
             }

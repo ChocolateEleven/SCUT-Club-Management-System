@@ -54,7 +54,7 @@ namespace SCUTClubManager.Controllers
                 }
             }
 
-            var list = QueryProcessor.Query(polls, order_by: order, page_number: page_number, items_per_page: 2);
+            var list = QueryProcessor.Query(polls, order_by: order, page_number: page_number, items_per_page: 10);
             return View(list);
         }
 

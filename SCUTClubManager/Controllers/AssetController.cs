@@ -35,7 +35,7 @@ namespace SCUTClubManager.Controllers
             var polls = unitOfWork.Assets.ToList();
 
            var  asset =  QueryProcessor.Query<Asset>(unitOfWork.Assets.ToList(),
-               filter: t => t.Name.Contains(search), order_by: order, page_number: page_number, items_per_page: 2);
+               filter: t => t.Name.Contains(search), order_by: order, page_number: page_number, items_per_page: 10);
             return View(asset);
         }
 
