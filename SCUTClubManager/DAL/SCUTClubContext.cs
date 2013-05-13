@@ -13,6 +13,7 @@ namespace SCUTClubManager.DAL
     public class SCUTClubContext : DbContext
     {
         public DbSet<ClubMajorInfo> ClubMajorInfos { get; set; }
+        public DbSet<ClubSubInfo> ClubSubInfos { get; set; }
         public DbSet<BranchModification> BranchModifications { get; set; }
         public DbSet<ClubBranch> ClubBranches { get; set; }
         public DbSet<ClubApplicationInclination> ClubApplicationInclinations { get; set; }
