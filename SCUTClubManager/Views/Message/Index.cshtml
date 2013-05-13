@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.Message>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -21,42 +20,43 @@
 </script>
 
 
-<table>
-    <tr>
-        <th>
-            标题
-        </th>
-        <th>
-            发件人
-        </th>
-        <th>
-            收件人
-        </th>
-        <th>
-            日期
-        </th>
-        <th></th>
-    </tr>
-     
-@foreach (var item in Model) {  
-    <tr id="row-@item.Id">
-        <td>
-             @Html.ActionLink(item.Title,"Details", new { id=item.Id })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sender.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Receiver.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
-        </td>
-    </tr>
-}
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>标题
+            </th>
+            <th>发件人
+            </th>
+            <th>收件人
+            </th>
+            <th>日期
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {  
+            <tr id="row-@item.Id">
+                <td>
+                    @Html.ActionLink(item.Title, "Details", new { id = item.Id }, new { @class = "NotButton" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sender.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Receiver.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 

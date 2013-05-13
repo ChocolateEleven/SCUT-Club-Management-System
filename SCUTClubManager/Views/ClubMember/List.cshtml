@@ -57,7 +57,7 @@
                 debugger;
             }
         });
-        
+
         $("input[name='all_in']").tooltip();
         $("#update").tooltip();
         $("#remove").tooltip();
@@ -86,14 +86,15 @@
     <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
     <input type="hidden" name="club_id" value="@ViewBag.ClubId" />
     
-    <table>
-        <tr>
-            <th>
-                <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部成员" />
-                <input type="hidden" name="all_in" value="false" />
-            </th>
-            <th>
-                @Html.ActionLink("用户名", "List", new
+    <table class="ui-widget">
+        <thead class="ui-widget-header">
+            <tr>
+                <th>
+                    <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部成员" />
+                    <input type="hidden" name="all_in" value="false" />
+                </th>
+                <th>
+                    @Html.ActionLink("用户名", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.UserNameOrderOpt,
@@ -101,10 +102,10 @@
                search_option = ViewBag.SearchOption,
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter
-           })
-            </th>
-            <th>
-                @Html.ActionLink("姓名", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("姓名", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.NameOrderOpt,
@@ -112,10 +113,10 @@
                search_option = ViewBag.SearchOption,
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter
-           })
-            </th>
-            <th>
-                @Html.ActionLink("加入日期", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("加入日期", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.JoinDateOrderOpt,
@@ -123,41 +124,44 @@
                search_option = ViewBag.SearchOption,
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter
-           })
-            </th>
-            <th>部门
-            </th>
-            <th>角色
-            </th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @if (item.UserName != User.Identity.Name)
-                    {
-                        <input class="ItemSelector" type="checkbox" />
-                        <input name="member_ids" type="hidden" value="@item.Id" disabled="disabled" />
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Student.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JoinDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Branch.BranchName)
-                </td>
-                <td>
-                    <span class="ClubRoleName">@Html.DisplayFor(modelItem => item.ClubRole.Name)</span>
-                </td>
+           }, new { @class = "NotButton" })
+                </th>
+                <th>部门
+                </th>
+                <th>角色
+                </th>
             </tr>
-        }
+        </thead>
+
+        <tbody class="ui-widget-content">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.UserName != User.Identity.Name)
+                        {
+                            <input class="ItemSelector" type="checkbox" />
+                            <input name="member_ids" type="hidden" value="@item.Id" disabled="disabled" />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JoinDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Branch.BranchName)
+                    </td>
+                    <td>
+                        <span class="ClubRoleName">@Html.DisplayFor(modelItem => item.ClubRole.Name)</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
 
     </table>
     

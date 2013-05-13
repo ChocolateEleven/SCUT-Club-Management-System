@@ -12,21 +12,21 @@ body {
     color: #696969;
 }
 
-a:link {
-    color: #034af3;
+a:link:not(.NavigationbarItem).NotButton {
+    color: #1d60ff;
     text-decoration: underline;
 }
 
-a:visited {
+a:visited:not(.NavigationbarItem).NotButton {
     color: #505abc;
 }
 
-a:hover {
+a:hover:not(.NavigationbarItem).NotButton {
     color: #1d60ff;
     text-decoration: none;
 }
 
-a:active {
+a:active:not(.NavigationbarItem).NotButton {
     color: #12eb87;
 }
 
@@ -101,16 +101,17 @@ header h1, #header h1 {
 }
 
 #main {
-    padding: 30px 30px 15px 30px;
+    padding: 70px 0px 15px 30px;
     background-color: #fff;
     -webkit-border-radius: 4px 0 0 0;
     -moz-border-radius: 4px 0 0 0;
     border-radius: 4px 0 0 0;
+    position: absolute;
+    margin-top: 50px;
 }
 
 footer, 
 #footer {
-    background-color: #fff;
     color: #999;
     padding: 10px 0;
     text-align: center;
@@ -187,7 +188,8 @@ legend {
 }
 
 textarea {
-    min-height: 75px;
+    height: 350px;
+    width: 1000px;
 }
 
 input[type="text"], 
@@ -213,22 +215,22 @@ input[type="submit"] {
 
 /* TABLE
 ----------------------------------------------------------*/
-
 table {
-    border: solid 1px #e8eef4;
-    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-bottom: 50px;
+    padding-top: 10px;
 }
 
-table td {
-    padding: 5px;
-    border: solid 1px #e8eef4;
+td {
+    padding-left: 30px;
+    padding-right: 30px;
+    text-align: center;
 }
 
-table th {
-    padding: 6px 5px;
-    text-align: left;
-    background-color: #e8eef4;
-    border: solid 1px #e8eef4;
+th {
+    height: 30px;
 }
 
 /* MISC  
@@ -250,6 +252,7 @@ div#title {
     display: block;
     float: left;
     text-align: left;
+    overflow: hidden;
 }
 
 #logindisplay {
@@ -304,6 +307,9 @@ div#title {
 .display-label, 
 .editor-label {
     margin: 1em 0 0 0;
+    background-color: #a6a6a6;
+    width: 25%;
+    color: #fff;
 }
 
 .display-field, 
@@ -321,4 +327,20 @@ div#title {
 
 .tri-state {
     width: 6em;
+}
+
+.OperationBtn {
+    float: right;
+}
+
+.OperationBtn2 {
+    float: left;
+}
+
+.PageNavigationBtn {
+    float: left;
+}
+
+input[type='text'].PageNavigationInput {
+    width: 20px;
 }

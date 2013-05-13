@@ -8,7 +8,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "NotStarted",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
 
     <div class="EventStatusFilterBtn">
@@ -20,7 +20,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "Active",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
 
     <div class="EventStatusFilterBtn">
@@ -32,7 +32,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "Canceled",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
 
     <div class="EventStatusFilterBtn">
@@ -44,7 +44,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "Terminated",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
 
     <div class="EventStatusFilterBtn">
@@ -56,7 +56,7 @@
        search = ViewBag.Search,
        search_option = ViewBag.SearchOption,
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
 
     <div class="EventStatusFilterBtn">
@@ -68,7 +68,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "Finished",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
 
     @if (ViewBag.IsAdminMode)
@@ -82,7 +82,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "Finished",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
     <div class="EventStatusFilterBtn">
         @Html.ActionLink("未审批", "List", new
@@ -93,7 +93,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "NotVerified",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
     <div class="EventStatusFilterBtn">
         @Html.ActionLink("已通过", "List", new
@@ -104,7 +104,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "Passed",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
         <div class="EventStatusFilterBtn">
         @Html.ActionLink("已审批", "List", new
@@ -115,7 +115,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "Verified",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
     }
 
@@ -130,7 +130,7 @@
        search_option = ViewBag.SearchOption,
        pass_filter = "NotSubmitted",
        club_id = ViewBag.ClubId
-   })
+   }, new { @class = "OperationBtn2" })
         </div>
     }
 </div>

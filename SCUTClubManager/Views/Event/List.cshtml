@@ -50,7 +50,8 @@
     </div>
 }
 
-<table>
+<table class="ui-widget">
+    <thead class="ui-widget-header">
     <tr>
         <th>
             @Html.ActionLink("活动名", "List", new
@@ -60,7 +61,7 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
         </th>
         <th>
             @Html.ActionLink("开始日期", "Scoring", new
@@ -70,7 +71,7 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
         </th>
         <th>
             @Html.ActionLink("结束日期", "Scoring", new
@@ -80,7 +81,7 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
         </th>
         <th>
             @Html.ActionLink("举办社团", "List", new
@@ -90,7 +91,7 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
         </th>
         <th>
             @Html.ActionLink("负责人", "List", new
@@ -100,7 +101,7 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
         </th>
         <th>
             @Html.ActionLink("状态", "List", new
@@ -110,7 +111,7 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
         </th>
         <th>
             @Html.ActionLink("活动评分", "List", new
@@ -120,11 +121,13 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
         </th>
         <th></th>
     </tr>
+        </thead>
 
+    <tbody class="ui-widget-content">
     @foreach (var item in Model)
     {
         <tr>
@@ -138,7 +141,7 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
+           }, new { @class = "NotButton" })
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)
@@ -180,6 +183,7 @@
             </td>
         </tr>
     }
+        </tbody>
 
 </table>
 

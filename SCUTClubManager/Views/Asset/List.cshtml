@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.Asset>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -20,31 +19,35 @@
     @Html.ActionLink("增加物资", "Create")
     @Html.Partial("_SearchBar")
 </p>
-<table>
-    <tr>
-        <th>
-            @Html.ActionLink("物资名", "List", new { order = ViewBag.NameOrderOpt })
-        </th>
-        <th>
-            数量
-        </th>
-        <th></th>
-    </tr>
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>
+                @Html.ActionLink("物资名", "List", new { order = ViewBag.NameOrderOpt }, new { @class = "NotButton" })
+            </th>
+            <th>数量
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr id="row-@item.Id">
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Count)
-        </td>
-        <td>
-            @Html.ActionLink("编辑", "Edit", new { id=item.Id }) |
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    @Html.ActionLink("编辑", "Edit", new { id = item.Id }) |
             <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
-        </td>
-    </tr>
-}
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 

@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.LocationAssignment>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -16,39 +15,41 @@
     @Html.ActionLink("Create New", "Create")
     @Html.Partial("_SearchBar")
 </p>
+<<<<<<< HEAD:SCUTClubManager/Views/LocationAssignment/List.cshtml
 
-<table>
-    <tr>
-        <th>
-            Date
-        </th>
-        <th>
-            Club
-        </th>
-        <th>
-            Applicant
-        </th>
-        <th></th>
-    </tr>
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>Date
+            </th>
+            <th>Club
+            </th>
+            <th>Applicant
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model)
-{
-    <tr id="row-@item.Id">
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Club.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Applicant.Name)
-        </td>
-        <td>
-            @Html.ActionLink("详情", "Details", new { id = item.Id }) |
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Applicant.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("详情", "Details", new { id = item.Id }) |
             <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
-        </td>
-    </tr>
-}
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 

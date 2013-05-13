@@ -1,13 +1,1 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<SCUTClubManagerConfigFile>
-  <IsRecruitEnabled>False</IsRecruitEnabled>
-  <ClubSplashPanelFolder>~/Content/Images/ClubSplashPanels/</ClubSplashPanelFolder>
-  <InclinationsPerPerson>3</InclinationsPerPerson>
-  <TemporaryFilesFolder>~/Content/Temp/</TemporaryFilesFolder>
-  <MaxRangeForRangeAdding>100</MaxRangeForRangeAdding>
-  <ProgressProfileInterval>500</ProgressProfileInterval>
-  <TemplateFolder>~/Content/TemplateFiles/</TemplateFolder>
-  <EventApplicationTemplateFile>EventApplicationTemplate</EventApplicationTemplateFile>
-  <EventPosterFolder>~/Content/Images/EventPosters/</EventPosterFolder>
-  <EventPlanFolder>~/Content/EventPlans/</EventPlanFolder>
-</SCUTClubManagerConfigFile>
+﻿<?xml version="1.0" encoding="utf-8"?><IsRecruitEnabled>False</IsRecruitEnabled>

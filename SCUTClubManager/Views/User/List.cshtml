@@ -4,13 +4,13 @@
 }
 
 @Html.Partial("_Confirmation")
- <style>
-  .progress-label {
-    float: left;
-    font-weight: bold;
-    text-shadow: 1px 1px 0 #fff;
-  }
-  </style>
+<style>
+    .progress-label {
+        float: left;
+        font-weight: bold;
+        text-shadow: 1px 1px 0 #fff;
+    }
+</style>
 <script type="text/javascript">
     var progress_interval;
 
@@ -50,10 +50,10 @@
         $('form').ajaxForm({
             uploadProgress: function (event, position, total, percentComplete) {
                 $("#uploadProgressbar").progressbar("value", percentComplete);
-                
+
                 if (percentComplete == 100) {
                     progress_interval = setInterval(progress, '@ViewBag.ProgressProfileInterval');
-                }
+            }
             },
             success: function (data) {
                 var checkboxes = $("input.ItemSelector[name!='all_in']");
@@ -123,7 +123,7 @@
                 {
                     text: "添加",
                     id: "addUserSubmit",
-                    click: function () {}
+                    click: function () { }
                 },
                 {
                     text: "取消",
@@ -214,14 +214,14 @@
         @Html.ActionLink("学生", "List", new
    {
        role_filter = 1
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
     <div>
         @Html.ActionLink("管理员", "List", new
    {
 
        role_filter = 2
-   })
+   }, new { @class = "OperationBtn2" })
     </div>
 }
 
@@ -236,89 +236,91 @@
     <input type="hidden" name="search_option" value="@ViewBag.SearchOption" />
     <input type="hidden" name="order" value="@ViewBag.CurrentOrder" />
     
-    <table>
-        <tr>
-            @if (User.IsInRole("社联"))
-            {
+    <table class="ui-widget">
+        <thead class="ui-widget-header">
+            <tr>
+                @if (User.IsInRole("社联"))
+                {
+                    <th>
+                        <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部用户" />
+                        <input type="hidden" name="all_in" value="false" />
+                    </th>
+                }
                 <th>
-                    <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部用户" />
-                    <input type="hidden" name="all_in" value="false" />
-                </th>
-            }
-            <th>
-                @Html.ActionLink("用户名", "List", new
+                    @Html.ActionLink("用户名", "List", new
            {
                order = ViewBag.UserNameOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption,
                role_filter = ViewBag.RoleFilter,
-           })
-            </th>
-            <th>
-                @Html.ActionLink("姓名", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("姓名", "List", new
            {
                order = ViewBag.NameOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption,
                role_filter = ViewBag.RoleFilter,
-           })
-            </th>
-            @if (is_student_list)
-            {
-                <th>
-                    @Html.ActionLink("学院", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                @if (is_student_list)
+                {
+                    <th>
+                        @Html.ActionLink("学院", "List", new
                {
                    order = ViewBag.DepartmentOrderOpt,
                    search = ViewBag.Search,
                    search_option = ViewBag.SearchOption,
                    role_filter = ViewBag.RoleFilter,
-               })
-                </th>
-                <th>
-                    @Html.ActionLink("年级", "List", new
+               }, new { @class = "NotButton" })
+                    </th>
+                    <th>
+                        @Html.ActionLink("年级", "List", new
                {
                    order = ViewBag.GradeOrderOpt,
                    search = ViewBag.Search,
                    search_option = ViewBag.SearchOption,
                    role_filter = ViewBag.RoleFilter,
-               })
-                </th>
-                <th>
-                    详细信息
-                </th>
-            }
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                @if (User.IsInRole("社联"))
-                {
-                    <td>
-                        @if (!SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(item.UserName))
-                        {
-                            <input class="ItemSelector" type="checkbox" />
-                            <input name="user_names" type="hidden" value="@item.UserName" disabled="disabled" />
-                        }
-                    </td>
+               }, new { @class = "NotButton" })
+                    </th>
+                    <th>详细信息
+                    </th>
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                @if (is_student_list)
-                {
-                    SCUTClubManager.Models.Student student = item as SCUTClubManager.Models.Student;
+            </tr>
+        </thead>
+
+        <tbody class="ui-widget-content">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @if (User.IsInRole("社联"))
+                    {
+                        <td>
+                            @if (!SCUTClubManager.BusinessLogic.ScmMembershipProvider.IsMe(item.UserName))
+                            {
+                                <input class="ItemSelector" type="checkbox" />
+                                <input name="user_names" type="hidden" value="@item.UserName" disabled="disabled" />
+                            }
+                        </td>
+                    }
                     <td>
-                        @Html.DisplayFor(modelItem => student.Department)
+                        @Html.DisplayFor(modelItem => item.UserName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => student.Grade)
+                        @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td>
-                        @Html.ActionLink("查看", "Details", new
+                    @if (is_student_list)
+                    {
+                        SCUTClubManager.Models.Student student = item as SCUTClubManager.Models.Student;
+                        <td>
+                            @Html.DisplayFor(modelItem => student.Department)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => student.Grade)
+                        </td>
+                        <td>
+                            @Html.ActionLink("查看", "Details", new
                    {
                        user_name = item.UserName,
                        order = ViewBag.CurrentOrder,
@@ -327,25 +329,26 @@
                        role_filter = ViewBag.RoleFilter,
                        page_number = Model.PageNumber
                    })
-                    </td>
-                }
-            </tr>
-        }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
 
     </table>
     
-        if (User.IsInRole("社联"))
-        {
+            if (User.IsInRole("社联"))
+            {
     <div>
-        <button id="add" type="button" title="添加新用户">添加</button>
+        <button class="OperationBtn" id="add" type="button" title="添加新用户">添加</button>
     </div>
     <div>
-        <button id="addRange" type="button" title="通过导入的方式批量添加用户">批量添加</button>
+        <button class="OperationBtn" id="addRange" type="button" title="通过导入的方式批量添加用户">批量添加</button>
     </div>
     <div>
-        <button id="remove" type="button" title="将选中的用户删除掉">删除</button>
+        <button class="OperationBtn" id="remove" type="button" title="将选中的用户删除掉">删除</button>
     </div>
-        }
+            }
 }
 
 @using (Html.BeginForm("Add", "User", FormMethod.Post, new { id = "addUserForm" }))
@@ -359,8 +362,8 @@
         用户名
     </div>
     <div>
-        <input id="UserName" value="请在此输入用户名" name="UserName" class="text-box single-line" data-val="true" 
-            data-val-regex="用户名只能是数字和字母的组合，长度不能超过20个字符" 
+        <input id="UserName" value="请在此输入用户名" name="UserName" class="text-box single-line" data-val="true"
+            data-val-regex="用户名只能是数字和字母的组合，长度不能超过20个字符"
             data-val-regex-pattern="^[a-z0-9A-Z]{1,20}$" data-val-required="用户名 字段是必需的。" type="text" />
         <span class="field-validation-valid" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
     </div>
@@ -378,7 +381,7 @@
     </div>
     <div>
         <input data-val="true" id="is_admin" name="is_admin"
-             type="checkbox" value="true" />
+            type="checkbox" value="true" />
         <input name="is_admin" type="hidden" value="false" />
         <span class="field-validation-valid" data-valmsg-for="is_admin" data-valmsg-replace="true"></span>
     </div>
@@ -386,8 +389,8 @@
         姓名
     </div>
     <div>
-        <input id="Name" value="请在此输入姓名" name="Name" class="text-box single-line" data-val="true" 
-            data-val-regex="用户名只能是汉字或字母，且长度不能超过10个字符" 
+        <input id="Name" value="请在此输入姓名" name="Name" class="text-box single-line" data-val="true"
+            data-val-regex="用户名只能是汉字或字母，且长度不能超过10个字符"
             data-val-regex-pattern="^[\u2E80-\u9FFFa-zA-Z]{1,10}$" data-val-required="姓名 字段是必需的。" type="text" />
         <span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
     </div>
@@ -417,8 +420,12 @@
 }
 
 <div id="progressDialog">
-    <div id="uploadProgressbar"><div id="uploadProgressLabel" class="progress-label">加载中......</div></div>
-    <div id="processProgressbar"><div id="processProgressLabel" class="progress-label">上传中......</div></div>
+    <div id="uploadProgressbar">
+        <div id="uploadProgressLabel" class="progress-label">加载中......</div>
+    </div>
+    <div id="processProgressbar">
+        <div id="processProgressLabel" class="progress-label">上传中......</div>
+    </div>
 </div>
 
 @Html.Partial("_PageNavigation", Model)

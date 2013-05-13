@@ -34,33 +34,38 @@
 
 @using (Html.BeginForm())
 {
-<fieldset>
-    <legend>楼主</legend>
+<h2>@Model.Title</h2>
 
-    @foreach (var reply in Model.Replies)
+    foreach (var reply in Model.Replies)
     {
-        <h3> @reply.Number 楼</h3>
+        <fieldset class="ThreadReply">
+            <legend>@reply.Number 楼</legend>
 
-         <div>
-            标题:@Html.DisplayFor(model => model.Title)
-        </div>
-        <div>
-            作者:@reply.Author.Name
-        </div>
-        <div>
-            内容：@reply.Content
-        </div>
+            <div class="display-field">
+                <b>标题:</b>
+                <span>@Html.DisplayFor(model => model.Title)</span>
+            </div>
+
+            <div class="display-field">
+                <b>作者:</b>
+                <span>@reply.Author.Name</span>
+            </div>
+
+            <div>
+                <b>内容:</b>
+            </div>
+            <div class="display-field">
+                <span>@reply.Content</span>
+            </div>
+        </fieldset>
     }
     
     <input type="hidden" name="id" value="@Model.Id" />
 
-    
-
-</fieldset>
 
     
     <div>
-        <input type="text" id="replyText" name="replyText" />  
+        <textarea id="replyText" name="replyText" style="height: 175px"></textarea>
         <p id="replyErrorMsg"></p>
     </div>
 

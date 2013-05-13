@@ -20,7 +20,7 @@
         @if (Model.Count == 0)
         {
             @:$('input[type="submit"]').attr("disabled", "true");
-        }
+                }
     })
 </script>
 
@@ -34,56 +34,58 @@
     <input name="search_option" type="hidden" value="@ViewBag.SearchOption" />
     <input name="order" type="hidden" value="@ViewBag.CurrentOrder" />
     
-    <table>
-        <tr>
-            <th>
-                @Html.ActionLink("活动名", "Scoring", new
+    <table class="ui-widget">
+        <thead class="ui-widget-header">
+            <tr>
+                <th>
+                    @Html.ActionLink("活动名", "Scoring", new
            {
                order = ViewBag.TitleOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-            </th>
-            <th>
-                @Html.ActionLink("开始日期", "Scoring", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("开始日期", "Scoring", new
            {
                order = ViewBag.StartDateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-            </th>
-            <th>
-                @Html.ActionLink("结束日期", "Scoring", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("结束日期", "Scoring", new
            {
                order = ViewBag.EndDateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-            </th>
-            <th>
-                @Html.ActionLink("举办社团", "Scoring", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("举办社团", "Scoring", new
            {
                order = ViewBag.ClubNameOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-            </th>
-            <th>
-                @Html.ActionLink("负责人", "Scoring", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("负责人", "Scoring", new
            {
                order = ViewBag.OrganizerOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-            </th>
-            <th>评分
-            </th>
-        </tr>
+           }, new { @class = "NotButton" })
+                </th>
+                <th>评分
+                </th>
+            </tr>
+        </thead>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
+        <tbody class="ui-widget-content">
+            @foreach (var item in Model)
+            {
+                <tr>
                     <td>
                         @Html.ActionLink(item.Title, "Details", new
                         {
@@ -94,28 +96,28 @@
                             search_option = ViewBag.SearchOption,
                             pass_filter = ViewBag.PassFilter,
                             club_id = ViewBag.ClubId
-                        })
+                        }, new { @class = "NotButton" })
+                        <input type="hidden" name="ids" value="@item.Id" />
                     </td>
-                    <input type="hidden" name="ids" value="@item.Id" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ChiefEventOrganizer.Name)
-                </td>
-                <td>
-                    <input type="text" id='scores[@item.Id]' name="scores" data-val="true" data-val-regex="请输入0~100之间的数字" data-val-regex-pattern="^([1-9][0-9]|100|[0-9])$" />
-                    <span data-valmsg-for='scores' data-valmsg-replace='true'></span>
-                </td>
-            </tr>
-        }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChiefEventOrganizer.Name)
+                    </td>
+                    <td>
+                        <input type="text" id='scores[@item.Id]' name="scores" data-val="true" data-val-regex="请输入0~100之间的数字" data-val-regex-pattern="^([1-9][0-9]|100|[0-9])$" />
+                        <span data-valmsg-for='scores' data-valmsg-replace='true'></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
 
     </table>
     

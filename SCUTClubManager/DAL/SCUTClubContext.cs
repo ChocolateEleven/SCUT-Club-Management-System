@@ -12,7 +12,6 @@ namespace SCUTClubManager.DAL
 {
     public class SCUTClubContext : DbContext
     {
-        public DbSet<ClubSubInfo> ClubSubInfos { get; set; }
         public DbSet<ClubMajorInfo> ClubMajorInfos { get; set; }
         public DbSet<BranchModification> BranchModifications { get; set; }
         public DbSet<ClubBranch> ClubBranches { get; set; }
@@ -61,44 +60,44 @@ namespace SCUTClubManager.DAL
             // TPC
             // Application
             model_builder.Entity<ClubUnregisterApplication>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("ClubUnregisterApplication");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("ClubUnregisterApplication");
+                    });
             model_builder.Entity<AssetApplication>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("AssetApplication");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("AssetApplication");
+                    });
             model_builder.Entity<LocationApplication>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("LocationApplication");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("LocationApplication");
+                    });
             model_builder.Entity<FundApplication>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("FundApplication");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("FundApplication");
+                    });
             model_builder.Entity<ClubApplication>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("ClubApplication");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("ClubApplication");
+                    });
             model_builder.Entity<ClubInfoModificationApplication>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("ClubInfoModificationApplication");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("ClubInfoModificationApplication");
+                    });
             model_builder.Entity<ClubRegisterApplication>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("ClubRegisterApplication");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("ClubRegisterApplication");
+                    });
 
             model_builder.Entity<Application>()
-                .Property(p => p.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                    .Property(p => p.Id)
+                    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             // AssetBase
             model_builder.Entity<Asset>().Map(m =>
@@ -118,24 +117,24 @@ namespace SCUTClubManager.DAL
             });
 
             model_builder.Entity<AssetBase>()
-                .Property(p => p.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            
+                    .Property(p => p.Id)
+                    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
             // RoleBase
             model_builder.Entity<UserRole>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("UserRole");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("UserRole");
+                    });
             model_builder.Entity<ClubRole>().Map(m =>
-                {
-                    m.MapInheritedProperties();
-                    m.ToTable("ClubRole");
-                });
+                    {
+                        m.MapInheritedProperties();
+                        m.ToTable("ClubRole");
+                    });
 
             model_builder.Entity<RoleBase>()
-                .Property(p => p.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                    .Property(p => p.Id)
+                    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             model_builder.Entity<User>().Property(t => t.UserName).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
             model_builder.Entity<AssetApplication>().Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
@@ -154,17 +153,17 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<SubEvent>().HasMany(t => t.AssetApplications).WithOptional(t => t.SubEvent).WillCascadeOnDelete(false);
             model_builder.Entity<ClubApplication>().HasRequired(t => t.Details).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<Student>().HasMany(t => t.Events).WithMany(t => t.Organizers).Map(
-                m =>
-                {
-                    m.MapLeftKey("StudentId");
-                    m.MapRightKey("EventId");
-                    m.ToTable("EventOrganizer");
-                }
+                    m =>
+                    {
+                        m.MapLeftKey("StudentId");
+                        m.MapRightKey("EventId");
+                        m.ToTable("EventOrganizer");
+                    }
             );
             model_builder.Entity<ClubRegisterApplication>().HasMany(t => t.Branches).WithRequired().HasForeignKey(t => t.ApplicationId).WillCascadeOnDelete(true);
             model_builder.Entity<ClubRegisterApplication>().HasMany(t => t.Applicants).WithRequired(t => t.Application).WillCascadeOnDelete(true);
             model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithRequired().
-                HasForeignKey(t => t.ApplicationId).WillCascadeOnDelete(true);
+                    HasForeignKey(t => t.ApplicationId).WillCascadeOnDelete(true);
             model_builder.Entity<ClubRegisterApplicant>().HasRequired(t => t.Description).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<Event>().HasRequired(t => t.Description).WithRequiredPrincipal().WillCascadeOnDelete(true);
             model_builder.Entity<Event>().HasMany(t => t.SubEvents).WithRequired(t => t.Event).WillCascadeOnDelete(true);
@@ -184,12 +183,12 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<Club>().HasMany(t => t.Applications).WithOptional(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.AssetAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
             model_builder.Entity<Club>().HasMany(t => t.LocationAssignments).WithRequired(t => t.Club).WillCascadeOnDelete(true);
-            
+
             //model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.MajorInfo).WithRequiredDependent();
             //model_builder.Entity<ClubRegisterApplication>().HasRequired(t => t.SubInfo).WithRequiredDependent();
 
             model_builder.Entity<Poll>().HasMany(t => t.Items).WithRequired(t => t.Poll).WillCascadeOnDelete(true);
-            
+
             model_builder.Entity<ClubInfoModificationApplication>().HasMany(t => t.ModificationBranches).WithOptional().WillCascadeOnDelete(true);
             model_builder.Entity<Thread>().HasMany(t => t.Replies).WithRequired(t => t.Thread).WillCascadeOnDelete(true);
             //model_builder.Entity<Time>().HasMany(t => t.AssetApplications).WithRequired(t => t.Time);
@@ -216,11 +215,11 @@ namespace SCUTClubManager.DAL
             model_builder.Entity<LocationAssignment>().HasMany(t => t.Times).WithMany();
             model_builder.Entity<AssetApplication>().HasMany(t => t.Times).WithMany();
         }
-        
+
         public DbSet<LocationApplication> LocationApplications { get; set; }
 
         public DbSet<Student> Students { get; set; }
 
         public DbSet<FundApplication> FundApplications { get; set; }
     }
-} 
+}

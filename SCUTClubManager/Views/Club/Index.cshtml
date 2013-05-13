@@ -11,6 +11,7 @@
         confirmAjax("#enableRecruit", "确认要" + "@ViewBag.EnableRecruitText" + "吗？", "/Club/EnableRecruit", "is_enabling", function (data) {
             $("#enableRecruit").text(data.text);
             $('#enableRecruit').data('is_enabling', data.value);
+            $('#enableRecruit').button();
         });
     });
 </script>

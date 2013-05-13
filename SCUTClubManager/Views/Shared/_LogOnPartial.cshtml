@@ -1,7 +1,13 @@
-﻿@if(Request.IsAuthenticated) {
-    <text>你好， <strong>@User.Identity.Name</strong>!
-    [ @Html.ActionLink("登出", "LogOut", "Home") ]</text>
+﻿@if(Request.IsAuthenticated)
+{
+    string complete_name = (HttpContext.Current.Request.Cookies["LoginUserFullName"] == null ? "" : HttpContext.Current.Request.Cookies["LoginUserFullName"].Value) + "(" + User.Identity.Name + ")";
+    
+    <text>你好， 
+    <strong>
+            @Html.ActionLink(complete_name, "Details", "User", new { user_name = User.Identity.Name }, new { @class = "NotButton" })
+    </strong>!
+    [ @Html.ActionLink("登出", "LogOut", "Home", null, new { @class = "NotButton" }) ]</text>
 }
 else {
-    @:[ @Html.ActionLink("登录", "LogIn", "Home") ]
+    @:[ @Html.ActionLink("登录", "LogIn", "Home", null, new { @class = "NotButton" }) ]
 }

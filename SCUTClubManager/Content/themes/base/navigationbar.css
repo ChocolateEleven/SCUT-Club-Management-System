@@ -1,0 +1,59 @@
+﻿div.Navigationbar {
+    font-family: "Lucida Grande", arial, sans-serif;
+    position: absolute;
+    z-index: 2;
+    margin-top: 50px;
+}
+
+ul.Navigationbar {
+    margin:0;
+    padding:0;
+}
+
+li.NavigationbarItem {
+    width:100px;
+    height:50px;
+    float:left;
+    color:#191919;
+    text-align:center;
+    overflow:hidden;
+}
+
+a.NavigationbarItem {
+    color:#FFF;
+    text-decoration:none;
+}
+
+p.NavigatonbarItem {
+    padding:0px 5px;
+}
+
+.NavigationbarSubItem {
+    padding-top:15px;
+}
+
+.NavigationMenuBackgroundColor {
+    background-color: #a6a6a6;
+}
+
+/*Menu Color Classes*/
+.green{background:#6AA63B;}
+.yellow{background:#FBC700;}
+.red{background:#D52100;}
+.purple{background:#5122B4;}
+.blue{background:rgb(8, 132, 202);}
+.white{background:#ffffff;}
+.grey {
+    background: #a6a6a6;
+}
+
+div#navigationMenuRemains {
+    float: left;
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    margin-top: 50px;
+    width: 100%;
+    height: 50px;
+    padding-right: 30px;
+}

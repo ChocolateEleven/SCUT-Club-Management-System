@@ -1,5 +1,4 @@
 ﻿@model IPagedList<SCUTClubManager.Models.Poll>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -19,54 +18,56 @@
     });
 </script>
 
-<table>
-    <tr>
-        <th>
-            @Html.ActionLink("标题", "List", new { order = ViewBag.TitleOrderOpt })
-        </th>
-        <th>
-            问题
-        </th>
-        <th>
-            发起人
-        </th>
-        <th>
-            @Html.ActionLink("开始时间", "List", new { order = ViewBag.OpenDateOrderOpt })
-        </th>
-        <th>
-            @Html.ActionLink("结束时间", "List", new { order = ViewBag.CloseDateOrderOpt })
-        </th>
-        <th>
-            状态
-        </th>
-        <th></th>
-    </tr>
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>
+                @Html.ActionLink("标题", "List", new { order = ViewBag.TitleOrderOpt }, new { @class = "NotButton" })
+            </th>
+            <th>问题
+            </th>
+            <th>发起人
+            </th>
+            <th>
+                @Html.ActionLink("开始时间", "List", new { order = ViewBag.OpenDateOrderOpt }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("结束时间", "List", new { order = ViewBag.CloseDateOrderOpt }, new { @class = "NotButton" })
+            </th>
+            <th>状态
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr id="row-@item.Id">
-        <td>
-            @Html.ActionLink(item.Title, "Vote", new { id=item.Id })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Question)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OpenDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CloseDate)
-        </td>
-        <td>
-            @LabelHelpers.GetStatus(item.OpenDate, item.CloseDate)
-        </td>
-        <td>
-            <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
-        </td>
-    </tr>
-}
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>
+                    @Html.ActionLink(item.Title, "Vote", new { id = item.Id }, new { @class = "NotButton" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpenDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CloseDate)
+                </td>
+                <td>
+                    @LabelHelpers.GetStatus(item.OpenDate, item.CloseDate)
+                </td>
+                <td>
+                    <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 

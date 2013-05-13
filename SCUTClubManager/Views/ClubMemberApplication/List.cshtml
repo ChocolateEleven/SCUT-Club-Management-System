@@ -36,7 +36,7 @@
                 debugger;
             }
         });
-        
+
         $("input[name='all_in']").tooltip();
         $("#pass").tooltip();
         $("#reject").tooltip();
@@ -88,14 +88,15 @@
     <input type="hidden" name="club_id" value="@ViewBag.ClubId" />
     <input type="hidden" name="order" value="@ViewBag.CurrentOrder" />
     
-    <table>
-        <tr>
-            <th>
-                <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部申请" />
-                <input type="hidden" name="all_in" value="false" />
-            </th>
-            <th>
-                @Html.ActionLink("申请人用户名", "List", new
+    <table class="ui-widget">
+        <thead class="ui-widget-header">
+            <tr>
+                <th>
+                    <input class="ItemSelector" type="checkbox" name="all_in" value="true" title="勾选此处以选择当前搜索/过滤条件下的全部申请" />
+                    <input type="hidden" name="all_in" value="false" />
+                </th>
+                <th>
+                    @Html.ActionLink("申请人用户名", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.ApplicantUserNameOrderOpt,
@@ -104,10 +105,10 @@
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter,
                pass_filter = ViewBag.PassFilter
-           })
-            </th>
-            <th>
-                @Html.ActionLink("申请人姓名", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("申请人姓名", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.ApplicantNameOrderOpt,
@@ -116,10 +117,10 @@
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter,
                pass_filter = ViewBag.PassFilter
-           })
-            </th>
-            <th>
-                @Html.ActionLink("申请日期", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("申请日期", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.DateOrderOpt,
@@ -128,10 +129,10 @@
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter,
                pass_filter = ViewBag.PassFilter
-           })
-            </th>
-            <th>
-                @Html.ActionLink("申请加入的社团", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("申请加入的社团", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.ClubNameOrderOpt,
@@ -140,13 +141,12 @@
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter,
                pass_filter = ViewBag.PassFilter
-           })
-            </th>
-            <th>
-                申请加入的部门
-            </th>
-            <th>
-                @Html.ActionLink("申请角色", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>申请加入的部门
+                </th>
+                <th>
+                    @Html.ActionLink("申请角色", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.RoleOrderOpt,
@@ -155,10 +155,10 @@
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter,
                pass_filter = ViewBag.PassFilter
-           })
-            </th>
-            <th>
-                @Html.ActionLink("审批状态", "List", new
+           }, new { @class = "NotButton" })
+                </th>
+                <th>
+                    @Html.ActionLink("审批状态", "List", new
            {
                club_id = ViewBag.ClubId,
                order = ViewBag.PassOrderOpt,
@@ -167,84 +167,86 @@
                branch_filter = ViewBag.BranchFilter,
                role_filter = ViewBag.RoleFilter,
                pass_filter = ViewBag.PassFilter
-           })
-            </th>
-            <th>
-                自我简介
-            </th>
-        </tr>
+           }, new { @class = "NotButton" })
+                </th>
+                <th>自我简介
+                </th>
+            </tr>
+        </thead>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <input class="ItemSelector" type="checkbox" />
-                    <input name="application_ids" type="hidden" value="@item.Id" disabled="disabled" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplicantUserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Applicant.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
-                </td>
-                <td>
-                    @if (String.IsNullOrEmpty(ViewBag.BranchName))
-                    {
-                        if (item.Role.Name == "会员")
+        <tbody class="ui-widget-content">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input class="ItemSelector" type="checkbox" />
+                        <input name="application_ids" type="hidden" value="@item.Id" disabled="disabled" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicantUserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Applicant.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+                    </td>
+                    <td>
+                        @if (String.IsNullOrEmpty(ViewBag.BranchName))
                         {
-                        @Html.Raw("会员部")
-                        }
-                        else if (item.Inclinations.Any(t => t.Status == SCUTClubManager.Models.Application.PASSED))
-                        {
-                        @Html.DisplayFor(modelItem => item.Inclinations.First(t => t.Status == SCUTClubManager.Models.Application.PASSED).Branch.BranchName)
-                        }
-                        else if (item.Inclinations.Any(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED))
-                        {
-                        @Html.DisplayFor(modelItem => item.Inclinations.First(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED).Branch.BranchName)
-                        }
-                        else if (item.Status == SCUTClubManager.Models.Application.FAILED)
-                        {
-                        @Html.DisplayFor(modelItem => item.Inclinations.First().Branch.BranchName)
-                        }
-                        else if (item.Status == SCUTClubManager.Models.Application.PASSED)
-                        {
+                            if (item.Role.Name == "会员")
+                            {
+                            @Html.Raw("会员部")
+                            }
+                            else if (item.Inclinations.Any(t => t.Status == SCUTClubManager.Models.Application.PASSED))
+                            {
+                            @Html.DisplayFor(modelItem => item.Inclinations.First(t => t.Status == SCUTClubManager.Models.Application.PASSED).Branch.BranchName)
+                            }
+                            else if (item.Inclinations.Any(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED))
+                            {
+                            @Html.DisplayFor(modelItem => item.Inclinations.First(t => t.Status == SCUTClubManager.Models.Application.NOT_VERIFIED).Branch.BranchName)
+                            }
+                            else if (item.Status == SCUTClubManager.Models.Application.FAILED)
+                            {
+                            @Html.DisplayFor(modelItem => item.Inclinations.First().Branch.BranchName)
+                            }
+                            else if (item.Status == SCUTClubManager.Models.Application.PASSED)
+                            {
                             @Html.Raw("被调剂")
+                            }
+                            else
+                            {
+                            @Html.Raw("待调剂")
+                            }
                         }
                         else
                         {
-                            @Html.Raw("待调剂")
+                            @ViewBag.BranchName
                         }
-                    }
-                    else
-                    {
-                        @ViewBag.BranchName
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role.Name)
-                </td>
-                <td>
-                    @LabelHelpers.GetStatus(item.Status)
-                </td>
-                <td>
-                    @if (item.Details != null && !String.IsNullOrWhiteSpace(item.Details.Reason))
-                    {
-                        <div class="ReasonBox" data-box-id="@item.Id">
-                            <p>
-                                @Html.DisplayFor(modelItem => item.Details.Reason)
-                            </p>
-                        </div>
-                        <button type="button" class="ShowReasonBoxBtn" data-box-id="@item.Id">查看</button>
-                    }
-                </td>
-            </tr>
-        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role.Name)
+                    </td>
+                    <td>
+                        @LabelHelpers.GetStatus(item.Status)
+                    </td>
+                    <td>
+                        @if (item.Details != null && !String.IsNullOrWhiteSpace(item.Details.Reason))
+                        {
+                            <div class="ReasonBox" data-box-id="@item.Id">
+                                <p>
+                                    @Html.DisplayFor(modelItem => item.Details.Reason)
+                                </p>
+                            </div>
+                            <button type="button" class="ShowReasonBoxBtn" data-box-id="@item.Id">查看</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
 
     </table>
     

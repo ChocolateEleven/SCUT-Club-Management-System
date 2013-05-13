@@ -7,63 +7,66 @@
 
 @Html.Partial("_SearchBar")
 
-<table>
-    <tr>
-        <th>
-            @Html.ActionLink("活动名", "Applications", new
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>
+                @Html.ActionLink("活动名", "Applications", new
            {
                order = ViewBag.TitleOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-        </th>
-        <th>
-            @Html.ActionLink("申请日期", "Applications", new
+           }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("申请日期", "Applications", new
            {
                order = ViewBag.DateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-        </th>
-        <th>
-            @Html.ActionLink("开始日期", "Applications", new
+           }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("开始日期", "Applications", new
            {
                order = ViewBag.StartDateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-        </th>
-        <th>
-            @Html.ActionLink("结束日期", "Applications", new
+           }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("结束日期", "Applications", new
            {
                order = ViewBag.EndDateOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-        </th>
-        <th>
-            @Html.ActionLink("举办社团", "Applications", new
+           }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("举办社团", "Applications", new
            {
                order = ViewBag.ClubNameOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-        </th>
-        <th>
-            @Html.ActionLink("负责人", "Applications", new
+           }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("负责人", "Applications", new
            {
                order = ViewBag.OrganizerOrderOpt,
                search = ViewBag.Search,
                search_option = ViewBag.SearchOption
-           })
-        </th>
-    </tr>
+           }, new { @class = "NotButton" })
+            </th>
+        </tr>
+    </thead>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink(item.Title, "Details", new
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Title, "Details", new
            {
                page_number = ViewBag.PageNumber,
                id = item.Id,
@@ -72,25 +75,26 @@
                search_option = ViewBag.SearchOption,
                pass_filter = ViewBag.PassFilter,
                club_id = ViewBag.ClubId
-           })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChiefEventOrganizer.Name)
-            </td>
-        </tr>
-    }
+           }, new { @class = "NotButton" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChiefEventOrganizer.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 

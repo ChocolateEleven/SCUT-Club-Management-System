@@ -22,51 +22,55 @@
 
 @Html.Partial("_SearchBar")
 
-<table class="ContentTable">
-    <tr>
-        <th>
-            @Html.ActionLink("社团名", "List", new { page_number = 1, order = ViewBag.NameOrderOpt, search = ViewBag.Search })
-        </th>
-        <th>
-            @Html.ActionLink("社团等级", "List", new { page_number = 1, order = ViewBag.LevelOrderOpt, search = ViewBag.Search })
-        </th>
-        <th>
-            @Html.ActionLink("总人数", "List", new { page_number = 1, order = ViewBag.MemberCountOrderOpt, search = ViewBag.Search })
-        </th>
-        <th>
-            @Html.ActionLink("成立日期", "List", new { page_number = 1, order = ViewBag.FoundDateOrderOpt, search = ViewBag.Search })
-        </th>
-        @if (Roles.IsUserInRole("社联"))
-        {
-            <th></th>
-        }
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr id="row-@item.Id">
-            <td>
-                @Html.ActionLink(item.MajorInfo.Name, "Introduction", 
-                new { id = item.Id, page_number = Model.PageNumber, order = ViewBag.CurrentOrder, search = ViewBag.Search })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Level)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MemberCount)
-                <span class="AdditionalInfo">(+@item.NewMemberCount)</span>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FoundDate)
-            </td>
+<table class="ContentTable ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>
+                @Html.ActionLink("社团名", "List", new { page_number = 1, order = ViewBag.NameOrderOpt, search = ViewBag.Search }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("社团等级", "List", new { page_number = 1, order = ViewBag.LevelOrderOpt, search = ViewBag.Search }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("总人数", "List", new { page_number = 1, order = ViewBag.MemberCountOrderOpt, search = ViewBag.Search }, new { @class = "NotButton" })
+            </th>
+            <th>
+                @Html.ActionLink("成立日期", "List", new { page_number = 1, order = ViewBag.FoundDateOrderOpt, search = ViewBag.Search }, new { @class = "NotButton" })
+            </th>
             @if (Roles.IsUserInRole("社联"))
             {
-                <td>
-                    <a href="#" class="DeleteButton" data-id="@item.Id">取缔</a>
-                </td>
+                <th></th>
             }
         </tr>
-    }
+    </thead>
+
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>
+                    @Html.ActionLink(item.MajorInfo.Name, "Introduction",
+                new { id = item.Id, page_number = Model.PageNumber, order = ViewBag.CurrentOrder, search = ViewBag.Search }, new { @class = "NotButton" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Level)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MemberCount)
+                    <span class="AdditionalInfo">(+@item.NewMemberCount)</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FoundDate)
+                </td>
+                @if (Roles.IsUserInRole("社联"))
+                {
+                    <td>
+                        <a href="#" class="DeleteButton" data-id="@item.Id">取缔</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
 
 </table>
 

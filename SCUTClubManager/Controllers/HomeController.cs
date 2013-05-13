@@ -5,11 +5,14 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using SCUTClubManager.Models;
+using SCUTClubManager.DAL;
 
 namespace SCUTClubManager.Controllers
 {
     public class HomeController : Controller
     {
+        private UnitOfWork db = new UnitOfWork();
+
         //
         // GET: /Home/
         
@@ -31,6 +34,8 @@ namespace SCUTClubManager.Controllers
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    Response.Cookies.Add(new HttpCookie("LoginUserFullName", db.Users.Find(model.UserName).Name));
+
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
