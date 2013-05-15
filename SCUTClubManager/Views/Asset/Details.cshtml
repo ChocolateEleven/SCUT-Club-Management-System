@@ -1,20 +1,16 @@
 ﻿@model SCUTClubManager.Models.Asset
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.Name + "详情";
 }
 
-<h2>Details</h2>
-
-<fieldset>
-    <legend>AssetBase</legend>
+<h2>@ViewBag.Title</h2>
 
     <div class="display-label">Count</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Count)
     </div>
-</fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("编辑", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("返回", "Index")
 </p>

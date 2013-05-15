@@ -1,68 +1,61 @@
 ﻿@model SCUTClubManager.Models.Poll
-
 @{
     ViewBag.Title = "Details";
 }
 
-@using (Html.BeginForm())
-{
-
 <h2>投票：@Html.Display(Model.Title)</h2>
 
 
-    <fieldset>
-        <legend></legend>
+<fieldset>
+    <legend></legend>
 
 
-        <div class="display-label">问题</div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Question)
-        </div>
+    <div class="display-label">问题</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Question)
+    </div>
 
-        <div class="display-label">发起人</div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Author.Name)
-        </div>
+    <div class="display-label">发起人</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Author.Name)
+    </div>
 
-        <div class="display-label">开始时间</div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.OpenDate)
-        </div>
+    <div class="display-label">开始时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OpenDate)
+    </div>
 
-        <div class="display-label">结束时间</div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.CloseDate)
-        </div>
+    <div class="display-label">结束时间</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CloseDate)
+    </div>
 
-        <div class="display-label">
-            @{
-    if (Model.IsMultiSelectable)
-    {
-                <div>多选：</div>
-    }
-    else
-    {
-                <div>单选：</div>
-    }
+    <div class="display-label">
+        @{
+            if (Model.IsMultiSelectable)
+            {
+            <div>多选：</div>
             }
-        </div>
-
-
-        <ol class="display-field" id="items" type="A">
-            @{
-                foreach (var t in Model.Items)
-                {
-                    <li>@t.Caption 票数：@t.Count</li>
-                }
+            else
+            {
+            <div>单选：</div>
             }
-        </ol>
+        }
+    </div>
 
-        <input type="hidden" name="id" value="@Model.Id" />
 
-    </fieldset>
-    
-    <input id="submitBtn" type="submit" value="提交" />
-}
+    <ol class="display-field" id="items" type="A">
+        @{
+            foreach (var t in Model.Items)
+            {
+            <li>@t.Caption 票数：@t.Count</li>
+            }
+        }
+    </ol>
+
+    <input type="hidden" name="id" value="@Model.Id" />
+
+</fieldset>
 
 <p>
     @Html.ActionLink("返回", "Index")

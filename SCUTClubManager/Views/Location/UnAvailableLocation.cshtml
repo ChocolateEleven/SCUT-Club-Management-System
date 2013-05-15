@@ -1,36 +1,40 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.Location>
-
 @{
     ViewBag.Title = "AvailableLocation";
 }
 
-<p>@ViewBag.Date</p>
-@foreach( var time in ViewBag.Times)
-{
-    <p>@time.TimeName</p>
-}
-<p>的不可借场地</p>
+@Html.Partial("_DateTimeHeader", "不可借用场地")
 
-
-@Html.ActionLink("查看可借场地", "AvailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0] })
-@Html.ActionLink("查看被占用场地", "AssignedLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
-
-<table>
-    <tr>
-        <th>
-            名称
-        </th>
-    </tr>
-
+@{
+    string parameters = "?date=" + ViewBag.date;
+    foreach (var time_id in ViewBag.time_ids)
+    {
+        parameters += "&time_ids=" + time_id;
+    }
     
-@foreach (var item in Model) {
-    <tr>
-        <td class="ItemName">
-            @Html.DisplayFor(modelItem => item.Name)
-            <input class="ItemId" type="hidden" value ="@item.Id"/>
-        </td>
-    </tr>
+    <a href='@Html.Raw("AvailableLocation" + parameters)'>查看可借场地</a>
+    <a href='@Html.Raw("AssignedLocation" + parameters)'>查看被占用场地</a>
 }
-    
+
+
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>名称
+            </th>
+        </tr>
+    </thead>
+
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="ItemName">
+                    @Html.DisplayFor(modelItem => item.Name)
+                    <input class="ItemId" type="hidden" value ="@item.Id"/>
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>

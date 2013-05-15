@@ -1,9 +1,11 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.Message>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "消息";
 }
 
-<p>
+<h2>消息</h2>
+
+<p class="OperationBtn2">
     @Html.ActionLink("写消息", "Create")
 </p>
 
@@ -40,7 +42,11 @@
         {  
             <tr id="row-@item.Id">
                 <td>
-                    @Html.ActionLink(item.Title, "Details", new { id = item.Id }, new { @class = "NotButton" })
+                    @if (!item.ReadMark)
+                    {
+                        <span class="NewContentInfo">New!</span>
+                    }
+                    <span>@Html.ActionLink(item.Title, "Details", new { id = item.Id }, new { @class = "NotButton" })</span>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Sender.Name)
@@ -59,10 +65,6 @@
     </tbody>
 
 </table>
-
-<hr />
-
-<h2>@ViewBag.userName 的消息 </h2>
 
 
 @Html.Partial("_PageNavigation", Model)

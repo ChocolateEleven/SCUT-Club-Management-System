@@ -14,38 +14,38 @@
 
 <div class="ManagementBtnContainer">
     <div class="ManagementBtn">
-        @Html.ActionLink("成员管理", "List", "ClubMember", new { club_id = Model.ClubId, branch_filter = Model.BranchId }, null)
+        @Html.ActionLink("成员管理", "List", "ClubMember", new { club_id = Model.ClubId, branch_filter = Model.BranchId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("招新工作", "List", "ClubMemberApplication", new { club_id = Model.ClubId, branch_id = Model.BranchId }, null)
+        @Html.ActionLink("招新工作", "List", "ClubMemberApplication", new { club_id = Model.ClubId, branch_id = Model.BranchId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("财务管理", "List", "Fund", new { club_id = Model.ClubId }, null)
+        @Html.ActionLink("财务管理", "List", "Fund", new { club_id = Model.ClubId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("注销社团", "ApplyUnregisterClub", "ClubApplication", new { id = Model.ClubId }, null)
+        @Html.ActionLink("注销社团", "ApplyUnregisterClub", "ClubApplication", new { id = Model.ClubId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("社团活动", "List", "Event", new { club_id = Model.ClubId }, null)
+        @Html.ActionLink("社团活动", "List", "Event", new { club_id = Model.ClubId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("社团信息", "Details", new { id = Model.ClubId }, null)
+        @Html.ActionLink("社团信息", "Details", new { id = Model.ClubId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("退出社团", "Quit", "ClubMember", new { club_id = Model.ClubId }, null)
+        @Html.ActionLink("退出社团", "Quit", "ClubMember", new { club_id = Model.ClubId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("我的活动", "MyEvent", new { club_id = Model.ClubId }, null)
+        @Html.ActionLink("我的活动", "MyEvent", new { club_id = Model.ClubId }, new { @class = "Fill" })
     </div>
 
     <div class="ManagementBtn">
-        @Html.ActionLink("离开", "Introduction", new { id = Model.ClubId, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })
+        @Html.ActionLink("离开", "Introduction", new { id = Model.ClubId, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search }, new { @class = "Fill" })
     </div>
 </div>

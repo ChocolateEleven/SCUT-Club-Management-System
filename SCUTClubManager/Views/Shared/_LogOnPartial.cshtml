@@ -1,6 +1,7 @@
 ﻿@if(Request.IsAuthenticated)
 {
-    string complete_name = (HttpContext.Current.Request.Cookies["LoginUserFullName"] == null ? "" : HttpContext.Current.Request.Cookies["LoginUserFullName"].Value) + "(" + User.Identity.Name + ")";
+    var http_context = HttpContext.Current;
+    string complete_name = (http_context.Request.Cookies["LoginUserFullName"] == null ? "" : http_context.Server.UrlDecode(http_context.Request.Cookies["LoginUserFullName"].Values["Name"])) + "(" + User.Identity.Name + ")";
     
     <text>你好， 
     <strong>

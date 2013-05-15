@@ -1,0 +1,14 @@
+﻿@model string
+
+@{
+    string time_names = "";
+
+    foreach (var time in ViewBag.Times as List<SCUTClubManager.Models.Time>)
+    {
+        time_names += time.TimeName + "，";
+    }
+    time_names = time_names.Substring(0, time_names.Length - 1);
+    
+    <h2 style="margin: 0px; padding: 0px;">@Html.Raw(ViewBag.Date + "的" + Model)</h2>
+    <div class="SubTitle">@time_names</div>
+}

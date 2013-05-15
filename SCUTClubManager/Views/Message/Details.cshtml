@@ -4,39 +4,27 @@
     ViewBag.Title = "Details"; 
 }
 
-<h2>Details</h2>
+<h2>@Html.Raw("来自" + Model.Sender.CompleteName + "的消息")</h2>
+
+<div>
+    <span class="OperationBtn">@Html.DisplayFor(model => model.Date)</span>
+</div>
+
+<div>&nbsp;</div>
 
 <fieldset>
-    <legend>Message</legend>
+    <legend>@Model.Title</legend>
 
-    <div class="display-label">发件人</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Sender.UserName)
-         @Html.DisplayFor(model => model.Sender.Name)
-    </div>
-
-    <div class="display-label">收件人</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Receiver.UserName)
-        @Html.DisplayFor(model => model.Receiver.Name)
-    </div>
-
-    <div class="display-label">标题</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Title)
-    </div>
-
-    <div class="display-label">日期</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Date)
-    </div>
-
-    <div class="display-label">内容</div>
     <div class="display-field">
         @Html.DisplayTextFor(model => model.Content.Content)
     </div>
 
 </fieldset>
-<p>
+
+<div class="OperationBtn2">
+    @Html.ActionLink("回复", "Create", new { receiver_id = Model.SenderId })
+</div>
+
+<div class="OperationBtn">
     @Html.ActionLink("返回", "Index")
-</p>
+</div>

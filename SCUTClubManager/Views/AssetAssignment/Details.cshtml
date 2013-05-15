@@ -58,13 +58,6 @@
     </div>
 </fieldset>
 
-
-@if (Model.Status == "n")
-{
-    Html.RenderPartial("_VerifyBar", Model.Id);
-}
-
-
 <p>
     @Html.ActionLink("返回", "Index")
 </p>

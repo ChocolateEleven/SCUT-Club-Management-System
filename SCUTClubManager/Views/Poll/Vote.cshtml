@@ -26,7 +26,7 @@
                 success: function (data) {
                     if (data.success) {
                         messageBox(data.msg, function () {
-                            document.location = "/Poll/Details/@Model.Id";
+                            document.location = "/Poll/Details?id=@Model.Id";
                         });
                     }else {
                         messageBox(data.msg);

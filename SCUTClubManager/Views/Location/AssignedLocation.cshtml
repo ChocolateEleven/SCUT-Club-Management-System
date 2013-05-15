@@ -1,52 +1,50 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.View_Models.AssignedLocationViewModel>
-
 @{
     ViewBag.Title = "AssignedLocation";
 }
 
+@Html.Partial("_DateTimeHeader", "被占用场地")
 
-<p>@ViewBag.Date</p>
-@foreach (var time in ViewBag.Times)
-{
-    <p>@time.TimeName</p>
+@{
+    string parameters = "?date=" + ViewBag.date;
+    foreach (var time_id in ViewBag.time_ids)
+    {
+        parameters += "&time_ids=" + time_id;
+    }
+    
+    <a href='@Html.Raw("AvailableLocation" + parameters)'>查看可借用场地</a>
+    <a href='@Html.Raw("UnavailableLocation" + parameters)'>查看不可借用场地</a>
 }
-<p>的被占用场地</p>
 
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>名称
+            </th>
+            <th>借用社团
+            </th>
+            <th>联系人
+            </th>
+        </tr>
+    </thead>
 
-@Html.ActionLink("查看可借场地", "AvailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0] })
-@Html.ActionLink("查看不可借用场地", "UnavailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="ItemName">
+                    @Html.DisplayFor(modelItem => item.Location.Name)
+                    <input class="ItemId" type="hidden" value ="@item.Location.Id"/>
+                </td>
+                <td class="BorrowClub">
+                    @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Applicant.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
 
-<table>
-    <tr>
-        <th>
-            名称
-        </th>
-        <th>
-            借用社团
-        </th>
-        <th>
-            联系人
-        </th>
-    </tr>
-
-    
-@foreach (var item in Model)
-{
-    
-    
-    <tr>
-        <td class="ItemName">
-            @Html.DisplayFor(modelItem => item.Location.Name)
-            <input class="ItemId" type="hidden" value ="@item.Location.Id"/>
-        </td>
-        <td class="BorrowClub">
-            @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Applicant.Name)
-        </td>
-    </tr>
-}
-    
 
 </table>

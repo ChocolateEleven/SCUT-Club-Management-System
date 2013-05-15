@@ -165,13 +165,13 @@
 
     </table>
     
-    <div>
-        <span>将选中的成员改变为如下角色（若角色选择为“会员”或“会长”则会同时将该成员的所属部门变为会员部）：</span>
-        @Html.DropDownList("role_id", ViewBag.RoleList as SelectList)
+    <div class="OperationBtn">
+        <button id="update" type="button" title="改变选中成员的角色">转职</button>
     </div>
     
-    <div>
-        <button id="update" type="button" title="改变选中成员的角色">转职</button>
+    <div class="OperationBtn" style="margin-right: 10px;">
+        <span>将选中的成员改变为如下角色（若角色选择为“会员”或“会长”则会同时将该成员的所属部门变为会员部）：</span>
+        @Html.DropDownList("role_id", ViewBag.RoleList as SelectList)
     </div>
     
     <div>

@@ -1,7 +1,7 @@
 ﻿@model SCUTClubManager.Models.Location
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "编辑场地";
 }
 
 <script>
@@ -15,8 +15,8 @@
         }
 
         var item_contents = new Array(
-            dropDownListFor("weekday[0]", null, null, weekdays),
-            dropDownListFor("time_id[0]", null, null, times));
+            dropDownListFor("weekday", null, null, weekdays),
+            dropDownListFor("time_id", null, null, times));
         
         var unavailable_time_list = new DynamicList(item_contents, "#unavailableTimes", null, null);
 
@@ -35,13 +35,10 @@
     }
 </script>
 
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Location</legend>
+        <legend>编辑场地</legend>
 
         @Html.HiddenFor(model => model.Id)
 
@@ -52,16 +49,20 @@
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UnAvailableTimes)
+        </div>
         <div class="editor-field" id="unavailableTimes">
 
         </div>
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="保存" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("返回", "Index")
 </div>

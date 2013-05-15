@@ -49,6 +49,7 @@
 
             $("#olPollItems").append("<li id='deletePollItem" + count + "'><input type='text' name='item' id='item" + count + "'></input><button id='" + count + "' onclick='deletePollItem(" + count + ")'>删除</a></li>");
            
+            $('button').button();
         });
 
 
@@ -139,7 +140,7 @@
         </div>
 
 
-        <input type="button" id="btAddPollItem" value="增加选项"/ >
+        <button type="button" id="btAddPollItem">增加选项</button>
         
     </fieldset>
 

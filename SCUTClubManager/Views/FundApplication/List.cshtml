@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.FundApplication>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -7,7 +6,7 @@
 <h2>资金申请</h2>
 
 <p>
-    @if(User.IsInRole("学生"))
+    @if (User.IsInRole("学生"))
     {
         Html.ActionLink("新建申请", "Create");
     }
@@ -23,49 +22,50 @@
     });
 </script>
 
-<table>
-    <tr>
-        <th>
-            金额
-        </th>
-        <th>
-            申请社团
-        </th>
-        <th>
-            状态
-        </th>
-        <th>
-            申请人
-        </th>
-        <th>
-            @Html.ActionLink("申请日期", "List", new { order = ViewBag.DateOrderOpt })
-        </th>
-        <th></th>
-    </tr>
+<table class="ui-widget">
+    <thead class="ui-widget-header">
+        <tr>
+            <th>金额
+            </th>
+            <th>申请社团
+            </th>
+            <th>状态
+            </th>
+            <th>申请人
+            </th>
+            <th>
+                @Html.ActionLink("申请日期", "List", new { order = ViewBag.DateOrderOpt }, new { @class = "NotButton" })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr id="row-@item.Id">
-        <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
-        </td>
-        <td>
-            @SCUTClubManager.Helpers.LabelHelpers.GetStatus(item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Applicant.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.ActionLink("详情", "Details", new { id=item.Id }) | 
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Club.MajorInfo.Name)
+                </td>
+                <td>
+                    @SCUTClubManager.Helpers.LabelHelpers.GetStatus(item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Applicant.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.ActionLink("详情", "Details", new { id = item.Id }) | 
             <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
-        </td>
-    </tr>
-}
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 

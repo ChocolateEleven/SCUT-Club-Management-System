@@ -133,6 +133,7 @@
     <Compile Include="BusinessLogic\ScmRoleProvider.cs" />
     <Compile Include="BusinessLogic\ScmMembershipProvider.cs" />
     <Compile Include="BusinessLogic\QueryProcessor.cs" />
+    <Compile Include="BusinessLogic\TimeHelpers.cs" />
     <Compile Include="Controllers\AssetApplicationController.cs" />
     <Compile Include="Controllers\AssetAssignmentController.cs" />
     <Compile Include="Controllers\AssetController.cs" />
@@ -595,6 +596,8 @@
     <Content Include="Views\LocationAssignment\Create.cshtml" />
     <Content Include="Views\LocationAssignment\Edit.cshtml" />
     <Content Include="Views\LocationAssignment\Delete.cshtml" />
+    <Content Include="Views\Shared\ThreadNotFoundError.cshtml" />
+    <Content Include="Views\Shared\_DateTimeHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

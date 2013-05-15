@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using SCUTClubManager.Models;
 using SCUTClubManager.DAL;
 using SCUTClubManager.BusinessLogic;
+using PagedList;
 
 namespace SCUTClubManager.Controllers
 { 
@@ -59,10 +60,20 @@ namespace SCUTClubManager.Controllers
         //
         // GET: /Forum/Details/5
 
-        public ViewResult Details(int id)
+        public ViewResult Details(int id, int page_number = 1)
         {
             Thread thread = unitOfWork.Threads.Find(id);
-            return View(thread);
+
+            if (thread != null)
+            {
+                var replies = thread.Replies.ToPagedList(page_number, 10);
+                ViewBag.Id = id;
+                ViewBag.Title = thread.Title;
+
+                return View(replies);
+            }
+
+            return View("ThreadNotFoundError");
         }
 
         [HttpPost]

@@ -233,7 +233,7 @@ function dynamicList_AddItem(values) {
             for (var j = 0; j < content.length; ++j) {
                 if (content[j].tagName == "SPAN" && $(content[j]).data("valmsg-replace")) {
                     indexIn("data-valmsg-for", $(content[j]), this.itemCount, this.modelName);
-                } else if (content[j].tagName == "INPUT" || content[j].tagName == "TEXTAREA") {
+                } else if (content[j].tagName == "INPUT" || content[j].tagName == "TEXTAREA" || content[j].tagName == "SELECT") {
                     indexIn("name", $(content[j]), this.itemCount, this.modelName);
                 }
             }
@@ -241,7 +241,7 @@ function dynamicList_AddItem(values) {
             content.addClass("DynamicListItemContent").appendTo(item);
 
             if (values != null && i < values.length && content.data("dynamic_list-item-value-preserved") != "true") {
-                if (content.is("input") || content.is("textarea"))
+                if (content.is("input") || content.is("textarea") || content.is("select"))
                     content.val(values[i]);
                 else
                     content.text(values[i]);
@@ -271,6 +271,8 @@ function dynamicList_AddItem(values) {
         });
 
         refreshFormValidations();
+
+        $('button').button();
     }
 }
 
@@ -360,6 +362,8 @@ function DynamicList(item_contents, container, insert_contents, on_insert, on_re
     for (var i = 0; i < this.minElementNum; ++i) {
         this.add();
     }
+
+    $('button').button();
 }
 
 function dropDownListFor(name, id, class_name, items, default_item_index, options, callback) {

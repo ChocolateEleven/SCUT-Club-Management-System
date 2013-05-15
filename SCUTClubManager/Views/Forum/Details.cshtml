@@ -1,4 +1,4 @@
-﻿@model SCUTClubManager.Models.Thread
+﻿@model IPagedList<SCUTClubManager.Models.Reply>
 
 @{
     ViewBag.Title = "Details";
@@ -12,13 +12,13 @@
 
             $.ajax({
                 type: "POST",
-                url: "Forum",
+                url: "/Forum/Details",
                 contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ id: "@Model.Id", reply: replyText }),
+                data: JSON.stringify({ id: "@ViewBag.Id", reply: replyText }),
                 dataType: "json",
                 success: function (data) {
                     if (data.success ) {
-                        document.location = "/Forum/Details/@Model.Id";
+                        document.location = "/Forum/Details?id=@ViewBag.Id";
                     }
                     else {
                         $("#replyErrorMsg").text(data.msg);
@@ -34,17 +34,12 @@
 
 @using (Html.BeginForm())
 {
-<h2>@Model.Title</h2>
+<h3>@ViewBag.Title</h3>
 
-    foreach (var reply in Model.Replies)
+    foreach (var reply in Model)
     {
         <fieldset class="ThreadReply">
             <legend>@reply.Number 楼</legend>
-
-            <div class="display-field">
-                <b>标题:</b>
-                <span>@Html.DisplayFor(model => model.Title)</span>
-            </div>
 
             <div class="display-field">
                 <b>作者:</b>
@@ -60,11 +55,17 @@
         </fieldset>
     }
     
-    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="hidden" name="id" value="@ViewBag.Id" />
 
-
+    <div>
+        @Html.Partial("_PageNavigation")
+    </div>
     
     <div>
+        <span>&nbsp;</span>
+    </div>
+    
+    <div style="margin-top: 20px">
         <textarea id="replyText" name="replyText" style="height: 175px"></textarea>
         <p id="replyErrorMsg"></p>
     </div>

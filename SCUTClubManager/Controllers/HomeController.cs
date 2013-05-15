@@ -34,7 +34,11 @@ namespace SCUTClubManager.Controllers
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    Response.Cookies.Add(new HttpCookie("LoginUserFullName", db.Users.Find(model.UserName).Name));
+
+                    HttpCookie cookie = new HttpCookie("LoginUserFullName");
+                    cookie.Expires = DateTime.Now.AddHours(24);
+                    cookie.Values.Add("Name", Server.UrlEncode(db.Users.Find(model.UserName).Name));
+                    Response.Cookies.Add(cookie);
 
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))

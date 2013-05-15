@@ -1,87 +1,83 @@
 ﻿@model IEnumerable<SCUTClubManager.Models.Location>
-
 @{
     ViewBag.Title = "AvailableLocation";
 }
 
-<p>@ViewBag.Date</p>
-@foreach( var time in ViewBag.Times)
-{
-    <p>@time.TimeName</p>
+@Html.Partial("_DateTimeHeader", "可借用场地")
+
+@{
+    string parameters = "?date=" + ViewBag.date;
+    foreach (var time_id in ViewBag.time_ids)
+    {
+        parameters += "&time_ids=" + time_id;
+    }
+    
+    <a href='@Html.Raw("AssignedLocation" + parameters)'>查看被占用场地</a>
+    <a href='@Html.Raw("UnavailableLocation" + parameters)'>查看不可借用场地</a>
 }
-<p>的可借场地</p>
-
-
-@Html.ActionLink("查看被占用场地", "AssignedLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
-@Html.ActionLink("查看不可借用场地", "UnavailableLocation", new { date = @ViewBag.date, time_ids = @ViewBag.time_ids[0]})
 
 <script>
-    function funBorrow(item,id)
-    {
-        item.children().attr("disabled", "true");
+    function funBorrow(item, id) {
         //$("!#").removeAttr("disabled");
-        $("#BorrowApplication").append("<tr id='tr_" + id + "'><td><input type='text' readonly name='item_name' value='" + item.siblings(".ItemName").children().text() + "'/><input type='hidden' name='locationId' value='" + id + "'/></td><td><button id='btDelete_'"+id+" onclick='funDelete($(this).parent().parent(),"+id+")'>删除</button></td></tr>");
+        $("#BorrowApplication").append("<div id='tr_" + id + "'><input type='text' readonly name='item_name' value='" +
+            item.siblings(".ItemName").children().text() + "'/><input type='hidden' name='locationId' value='" + id +
+            "'/></td><td><button id='btDelete_'" + id + " onclick='funDelete($(this).parent()," + id + ")'>删除</button></div>");
+
+        $('button').button();
+        item.children().button('disable');
     }
 
-    function funDelete(item, id)
-    {
+    function funDelete(item, id) {
         var d = $("#btBorrow-" + id);
-        d.removeAttr("disabled");
+        d.button('enable');
         var c = $(item);
         c.remove();
     }
 </script>
 
-<h2>可用场地</h2>
-
-<table>
-    <tr>
-        <th>
-            名称
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td class="ItemName">
-            <span>@Html.DisplayFor(modelItem => item.Name)</span>
-        </td>
-        <td>
-            <button id='btBorrow-@item.Id' class ="Borrow" onclick="funBorrow($(this).parent(),@item.Id)">借用</button>
-        </td>
-        <td>
-            <span class="ErrorMessage"></span>
-        </td>
-    </tr>
-}
-</table>
-
-
-<h2>借用申请</h2>
-@using (Html.BeginForm("Create","LocationApplication")) {
-    
-    <div>
-        借用社团：
-        @Html.DropDownList("ClubId",String.Empty)
-    </div>
-    <div>
-        借用活动：
-        @Html.DropDownList("SubEventId",String.Empty)
-    </div>
-    
-    <table id="BorrowApplication">
+<table class="ui-widget">
+    <thead class="ui-widget-header">
         <tr>
-            <th>
-                名称
+            <th>名称
             </th>
             <th></th>
         </tr>
-        
-    </table>
+    </thead>
+
+    <tbody class="ui-widget-content">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="ItemName">
+                    <span>@Html.DisplayFor(modelItem => item.Name)</span>
+                </td>
+                <td>
+                    <button id='btBorrow-@item.Id' class ="Borrow" onclick="funBorrow($(this).parent(),@item.Id)">借用</button>
+                </td>
+                <td>
+                    <span class="ErrorMessage"></span>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+<h3>借用申请</h3>
+@using (Html.BeginForm("Create", "LocationApplication"))
+{
+    
+    <div>
+        借用社团：
+        @Html.DropDownList("ClubId", String.Empty)
+    </div>
+    
+    <div id="BorrowApplication">
+    </div>
         
     <input type="hidden" name="date" value="@ViewBag.Date" />
     <input type="hidden" name="time_ids" value="@ViewBag.time_ids[0]" />
-    <input type="submit" value="提交"/>
+    <input type="submit" value="提交" />
 }
 

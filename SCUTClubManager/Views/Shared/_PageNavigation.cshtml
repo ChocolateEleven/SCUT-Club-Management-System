@@ -38,6 +38,9 @@
                 if ('@ViewBag.RoleFilter' != '') {
                     docLocation += "&role_filter=@ViewBag.RoleFilter";
                 }
+                if ('@ViewBag.Id' != '') {
+                    docLocation += "&id=@ViewBag.Id";
+                }
                 
                 document.location = docLocation
         }
@@ -48,15 +51,17 @@
 <div class="PageNavigationBar">
     @if (Model.HasPreviousPage)
     {
+        string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+        
         <div class="PageNavigationBtn">
-            @Html.ActionLink("首页", "List", new { page_number = 1, order = ViewBag.CurrentOrder, 
+            @Html.ActionLink("首页", action, new { page_number = 1, order = ViewBag.CurrentOrder, 
            search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter,
-       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
+       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter, id = ViewBag.Id })
         </div>
         <div class="PageNavigationBtn">
-            @Html.ActionLink("上一页", "List", new { page_number = Model.PageNumber - 1, order = ViewBag.CurrentOrder, 
+            @Html.ActionLink("上一页", action, new { page_number = Model.PageNumber - 1, order = ViewBag.CurrentOrder, 
            search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter,
-       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
+       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter, id = ViewBag.Id })
         </div>
     }
 
@@ -70,15 +75,17 @@
 
     @if (Model.HasNextPage)
     {
+        string action = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString();
+        
         <div class="PageNavigationBtn">
-            @Html.ActionLink("下一页", "List", new { page_number = Model.PageNumber + 1, order = ViewBag.CurrentOrder,
+            @Html.ActionLink("下一页", action, new { page_number = Model.PageNumber + 1, order = ViewBag.CurrentOrder,
            search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter,
-       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
+       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter, id = ViewBag.Id })
         </div>
         <div class="PageNavigationBtn">
-            @Html.ActionLink("尾页", "List", new { page_number = Model.PageCount, order = ViewBag.CurrentOrder,
+            @Html.ActionLink("尾页", action, new { page_number = Model.PageCount, order = ViewBag.CurrentOrder,
            search = ViewBag.Search, pass_filter = ViewBag.PassFilter, search_option = ViewBag.SearchOption, type_filter = ViewBag.TypeFilter,
-       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter })
+       club_id = ViewBag.ClubId, branch_filter = ViewBag.BranchFilter, role_filter = ViewBag.RoleFilter, id = ViewBag.Id })
         </div>
     }
 

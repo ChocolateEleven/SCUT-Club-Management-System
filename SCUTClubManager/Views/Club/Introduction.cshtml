@@ -9,32 +9,30 @@
     <img src='@Url.Content(ConfigurationManager.ClubSplashPanelFolder + Model.SubInfo.PosterUrl)' />
 </div>
 
-<table class="PanelButtonContainer">
-    <tr>
-        <td class="PanelButton">
+<div class="PanelButtonContainer">
+        <div class="PanelButton OperationBtn2">
             @Html.ActionLink("社团详情", "Details", new { id = Model.Id })
-        </td>
+        </div>
         @{
             if (ViewBag.IsMember)
             {
-            <td class="PanelButton">@Html.ActionLink("进入", "Manage",
-            new { id = Model.Id, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })</td>
+            <div class="PanelButton OperationBtn2">@Html.ActionLink("进入", "Manage",
+            new { id = Model.Id, page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })</div>
             }
             else if (!ViewBag.HasApplied)
             {
                 if (User.IsInRole("学生") && ConfigurationManager.IsRecruitEnabled)
                 {
-            <td class="PanelButton">@Html.ActionLink("申请加入", "Apply", "ClubMemberApplication", new { club_id = Model.Id }, null)</td>
+            <div class="PanelButton OperationBtn2">@Html.ActionLink("申请加入", "Apply", "ClubMemberApplication", new { club_id = Model.Id }, null)</div>
                 }
             }
             else
             {
-            <td>已提交加入申请，请耐心等待审批。
-            </td>
+            <div class="OperationBtn2">已提交加入申请，请耐心等待审批。
+            </div>
             }
         }
-        <td class="PanelButton">
+        <div class="PanelButton OperationBtn2">
             @Html.ActionLink("返回", "List", new { page_number = ViewBag.PageNumber, order = ViewBag.Order, search = ViewBag.Search })
-        </td>
-    </tr>
-</table>
+        </div>
+</div>

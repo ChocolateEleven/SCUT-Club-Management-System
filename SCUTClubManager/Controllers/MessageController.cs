@@ -28,18 +28,18 @@ namespace SCUTClubManager.Controllers
 
             List<KeyValuePair<string, string>> select_list = new List<KeyValuePair<string, string>>();
             select_list.Add(new KeyValuePair<string, string>("标题", "Title"));
-            select_list.Add(new KeyValuePair<string, string>("标题", "SenderUserName"));
+            select_list.Add(new KeyValuePair<string, string>("发送者", "SenderName"));
             ViewBag.SearchOptions = new SelectList(select_list, "Value", "Key", "Title");
             ViewBag.Search = search;
             ViewBag.DateOrderOpt = order == "Date" ? "DateDesc" : "Date";
 
-            var messages_list = unitOfWork.Messages.ToList();
+            var messages_list = unitOfWork.Messages.ToList().Where(t => t.ReceiverId == User.Identity.Name);
 
             if (!String.IsNullOrWhiteSpace(search))
             {
                 switch (search_option)
                 {
-                    case "SenderUserName":
+                    case "SenderName":
                         messages_list = messages_list.Where(s => s.Sender.Name.Contains(search));
                         break;
                     case "Title":
@@ -51,7 +51,6 @@ namespace SCUTClubManager.Controllers
 
             }
             var list = QueryProcessor.Query(messages_list, order_by: order, page_number: page_number, items_per_page: 10);
-           
 
             return View(list);
         }
@@ -72,13 +71,16 @@ namespace SCUTClubManager.Controllers
             message.ReadMark = true;
             ViewBag.sender = message.Sender;
             ViewBag.receiver = message.Receiver;
+
+            unitOfWork.SaveChanges();
+
             return View(message);
         }
 
         //
         // GET: /Message/Create
 
-        public ActionResult Create()
+        public ActionResult Create(string receiver_id = null)
         {
             //ViewBag.SenderId = new SelectList(db.Users, "UserName", "Password");
             //ViewBag.ReceiverId = new SelectList(db.Users, "UserName", "Password");
@@ -89,7 +91,7 @@ namespace SCUTClubManager.Controllers
             ViewBag.SenderId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
 
             //var receiver = QueryProcessor.Query<User>(collection: unitOfWork.Users.ToList());
-            ViewBag.ReceiverId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName");
+            ViewBag.ReceiverId = new SelectList(unitOfWork.Users.ToList(), "UserName", "UserName", receiver_id);
             return View();
         } 
 

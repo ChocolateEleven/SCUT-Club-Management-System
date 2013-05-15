@@ -43,8 +43,15 @@ namespace SCUTClubManager.Controllers
             ViewBag.CurrentOrder = order;
             ViewBag.NameOrderOpt = order == "Name" ? "NameDesc" : "Name";
 
-
             var polls = unitOfWork.Locations.ToList();
+
+            switch (search_option)
+            {
+                case "Name":
+                    polls = polls.Where(t => t.Name.Contains(search));
+                    break;
+            }
+
             var list = QueryProcessor.Query(polls, order_by: order, page_number: page_number, items_per_page: 10);
 
             return View(list);
@@ -152,7 +159,8 @@ namespace SCUTClubManager.Controllers
                             var temp_time = new LocationUnavailableTime
                                 {
                                     WeekDayId = weekday[i],
-                                    Time = unitOfWork.Times.Find(time_id[i])
+                                    TimeId = time_id[i],
+                                    LocationId = location.Id
                                 };
 
                             location.UnAvailableTimes.Add(temp_time);
@@ -302,16 +310,26 @@ namespace SCUTClubManager.Controllers
                 //}
             }
 
+            User user = unitOfWork.Users.Find(User.Identity.Name);
+            Dictionary<int, string> club_list = new Dictionary<int, string>();
+
+            if (user != null && user is Student)
+            {
+                Student student = user as Student;
+                var president_memberships = student.MemberShips.Where(t => t.ClubRole.Name == "会长");
+
+                foreach (var president_membership in president_memberships)
+                {
+                    club_list.Add(president_membership.ClubId, president_membership.Club.MajorInfo.Name);
+                }
+            }
+
             IEnumerable<Location> available_locations = locations.OrderBy(s => s.Name);
 
-            ViewBag.ClubId = new SelectList(unitOfWork.Clubs.ToList(), "Id", "MajorInfo.Name");
+            ViewBag.ClubId = new SelectList(club_list, "Key", "Value");
             ViewBag.SubEventId = new SelectList(unitOfWork.SubEvents.ToList(), "Id", "Title");
             ViewBag.Date = date.ToString("yyyy年MM月dd日");
-            List<Time> times = new List<Time>();
-            foreach (var time_id in time_ids)
-            {
-                times.Add(unitOfWork.Times.Find(time_id));
-            }
+            List<Time> times = unitOfWork.Times.ToList().Where(t => time_ids.Contains(t.Id)).ToList();
             ViewBag.Times = times;
             ViewBag.time_ids = time_ids;
 
