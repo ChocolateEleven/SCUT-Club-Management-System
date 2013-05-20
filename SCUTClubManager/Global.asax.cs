@@ -46,7 +46,7 @@ namespace SCUTClubManager
             RegisterRoutes(RouteTable.Routes);
 
             // 最终发布前注释掉改行，改行会在每次程序启动时自动重新创建数据库。
-            Database.SetInitializer<SCUTClubContext>(new SCUTClubContextInitializer());
+            //Database.SetInitializer<SCUTClubContext>(new SCUTClubContextInitializer());
         }
     }
 }

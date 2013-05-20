@@ -3,6 +3,7 @@
     position: absolute;
     z-index: 2;
     margin-top: 50px;
+    top: 100px;
 }
 
 ul.Navigationbar {
@@ -50,10 +51,11 @@ p.NavigatonbarItem {
 div#navigationMenuRemains {
     float: left;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
     position: absolute;
     margin-top: 50px;
     width: 100%;
     height: 50px;
     padding-right: 60px;
+    top: 100px;
 }

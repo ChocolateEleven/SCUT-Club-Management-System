@@ -570,3 +570,40 @@ function getObjects(obj, key, val) {
     }
     return objects;
 }
+
+function fileUploader(element, btn_text, place_holder_text) {
+    var e = $(element);
+
+    var container = $("<div class='FileUploaderContainer'><button type='button' class='FileUploaderBtn'>" +
+        btn_text + "</button><span class='FileUploaderPlaceHolder'>" + place_holder_text +
+        "</span></div>").insertBefore(e);
+    var button = container.children('button').first().css("margin-right", "10px");
+    var place_holder = container.children('span').first();
+
+    var wrapper = $('<div/>').css({ height: 0, width: 0, 'overflow': 'hidden' });
+    $(element).wrap(wrapper);
+
+    button.click(function () {
+        element.click();
+    }).show();
+
+    e.change(function () {
+        var value = $(this).val();
+
+        if (value != null && value != "") {
+            var i = value.lastIndexOf("\\");
+
+            if (i < 0) {
+                i = value.lastIndexOf("/");
+            }
+
+            if (i > 0) {
+                value = value.substr(i + 1);
+            }
+        } else {
+            value = place_holder_text;
+        }
+
+        place_holder.text(value);
+    })
+}

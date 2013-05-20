@@ -21,20 +21,31 @@
 
     <script type="text/javascript">
         $(function () {
+            $('input[type="file"]').each(function (index, element) {
+                fileUploader(element, "选择文件", "未选择文件");
+            });
+
             $('a:not(.NotButton)').button();
             $('button').button();
             $('input[type="submit"]').button();
+
+            $('.display-label').addClass("ui-widget-header");
+            $('.editor-label').addClass("ui-widget-header");
         })
     </script>
 </head>
 <body>
-    <div class="page" style="position:relative">
+    <div id="upperBackgroundbar"></div>
+    <div id="titlebar"></div>
+    <div id="lowerBackgroundbar"></div>
+    <div id="ribbon"></div>
+    <div class="page" style="position: relative">
         <div id="header">
             <div id="title">
                 <h1>高校社团信息管理系统</h1>
             </div>
-            <div id="logindisplay">
-                @Html.Partial("_LogOnPartial")
+            <div id="navigationMenuRemains" class="NavigationMenuBackgroundColor">
+                <span>&nbsp;</span>
             </div>
             <div class="Navigationbar">
                 <ul class="Navigationbar">
@@ -94,15 +105,15 @@
                     </li>
                 </ul>
             </div>
-            <div id="navigationMenuRemains" class="NavigationMenuBackgroundColor">
-                <span>&nbsp;</span>
-            </div>
         </div>
-        <div id="main" style="position:absolute; width:100%;">
+        <div id="main" style="position: absolute; width: 100%;">
             @RenderBody()
         </div>
         <div id="footer">
         </div>
+    </div>
+    <div id="logindisplay">
+        @Html.Partial("_LogOnPartial")
     </div>
 </body>
 </html>

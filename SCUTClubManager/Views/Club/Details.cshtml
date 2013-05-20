@@ -5,91 +5,95 @@
 
 <h2>@Model.MajorInfo.Name</h2>
 
-<fieldset>
-    <legend>基本信息</legend>
-
-    <div class="display-label">社团等级</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Level)
-    </div>
-
-    <div class="display-label">成立日期</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FoundDate)
-    </div>
-
-    <div class="display-label">成员人数</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.MemberCount)
-        <span class="AdditionalInfo">(+@Model.NewMemberCount)</span>
-    </div>
-
-    <div class="display-label">指导教师</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.MajorInfo.Instructor)
-    </div>
-</fieldset>
-
-<fieldset>
-    <legend>次要信息</legend>
-
-    <div class="display-label">宗旨</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SubInfo.Principle)
-    </div>
-
-    <div class="display-label">目的</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SubInfo.Purpose)
-    </div>
-
-    <div class="display-label">活动范围</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SubInfo.Range)
-    </div>
-
-    <div class="display-label">地址</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SubInfo.Address)
-    </div>
-
-    <div class="display-label">规章制度</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.SubInfo.Regulation)
-    </div>
-</fieldset>
-
-<fieldset>
-    <legend>社团架构</legend>
-    <table class="ui-widget">
-        <thead class="ui-widget-header">
-            <tr>
-                <th>部门
-                </th>
-                <th>成员人数
-                </th>
-            </tr>
-        </thead>
-
-        <tbody class="ui-widget-content">
-            @if (Model.Branches != null)
-            {
-                foreach (var branch in Model.Branches)
-                {
+<div class="ClubDetailsPanel ClubArchitecture">
+    <fieldset>
+        <legend>社团架构</legend>
+        <table class="ui-widget BranchTable">
+            <thead class="ui-widget-header">
                 <tr>
-                    <td>
-                        @Html.ActionLink(branch.BranchName, "List", "ClubMember", new { club_id = Model.Id, branch_filter = branch.Id }, null)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => branch.MemberCount)
-                        <span class="AdditionalInfo">(+@branch.NewMemberCount)</span>
-                    </td>
+                    <th>部门
+                    </th>
+                    <th>成员人数
+                    </th>
                 </tr>
+            </thead>
+
+            <tbody class="ui-widget-content">
+                @if (Model.Branches != null)
+                {
+                    foreach (var branch in Model.Branches)
+                    {
+                    <tr style="padding-bottom: 10px;">
+                        <td>
+                            @Html.ActionLink(branch.BranchName, "List", "ClubMember", new { club_id = Model.Id, branch_filter = branch.Id }, new { @class = "NotButton" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => branch.MemberCount)
+                            <span class="AdditionalInfo">(+@branch.NewMemberCount)</span>
+                        </td>
+                    </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
-</fieldset>
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+<div class="ClubDetailsPanel ClubInfo">
+    <fieldset>
+        <legend>基本信息</legend>
+
+        <div class="display-label">社团等级</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Level)
+        </div>
+
+        <div class="display-label">成立日期</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.FoundDate)
+        </div>
+
+        <div class="display-label">成员人数</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.MemberCount)
+            <span class="AdditionalInfo">(+@Model.NewMemberCount)</span>
+        </div>
+
+        <div class="display-label">指导教师</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.MajorInfo.Instructor)
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>次要信息</legend>
+
+        <div class="display-label">宗旨</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.SubInfo.Principle)
+        </div>
+
+        <div class="display-label">目的</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.SubInfo.Purpose)
+        </div>
+
+        <div class="display-label">活动范围</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.SubInfo.Range)
+        </div>
+
+        <div class="display-label">地址</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.SubInfo.Address)
+        </div>
+
+        <div class="display-label">规章制度</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.SubInfo.Regulation)
+        </div>
+    </fieldset>
+</div>
 
 <p>
     @{
