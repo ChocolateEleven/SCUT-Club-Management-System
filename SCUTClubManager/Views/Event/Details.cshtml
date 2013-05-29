@@ -24,7 +24,7 @@
     <div class="display-field">@Model.RejectReason.Reason</div>
 }
 
-<div id="tabs">
+<div id="tabs" class="EventInfo">
     <ul>
         <li><a href="#tabs-1">基本信息</a></li>
         <li><a href="/Event/EventDescription?id=@Model.Id&public_key=@ViewBag.PublicKey">详细介绍</a></li>
@@ -50,10 +50,10 @@
         }
 
         <div class="display-label">举办社团</div>
-        <div class="display-field">@Html.ActionLink(Model.Club.MajorInfo.Name, "Details", "Club", new { id = Model.ClubId }, null)</div>
+        <div class="display-field">@Html.ActionLink(Model.Club.MajorInfo.Name, "Details", "Club", new { id = Model.ClubId }, new { @class = "NotButton" })</div>
 
         <div class="display-label">负责人</div>
-        <div class="display-field">@Html.ActionLink(Model.ChiefEventOrganizer.CompleteName, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, null)</div>
+        <div class="display-field">@Html.ActionLink(Model.ChiefEventOrganizer.CompleteName, "Details", "User", new { user_name = Model.ChiefEventOrganizerId }, new { @class = "NotButton" })</div>
 
         <div class="display-label">开始日期</div>
         <div class="display-field">@Html.DisplayFor(model => model.StartDate)</div>

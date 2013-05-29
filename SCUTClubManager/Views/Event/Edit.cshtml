@@ -86,7 +86,7 @@
     @Html.ValidationSummary(true)
     <input type="hidden" name="Id" value="@Model.Id" />
         
-    <div id="tabs">
+    <div id="tabs" class="EventInfo">
         <ul>
             <li><a href="#tabs-1">基本信息</a></li>
             <li><a href="/Event/EventDescription?id=@Model.Id&public_key=@ViewBag.PublicKey&is_edit=true">详细介绍</a></li>
@@ -158,14 +158,14 @@
         </div>
     </div>
     
-    <div>
+    <div class="OperationBtn2">
         <button id="save" type="button">保存</button>
         <button id="submit" type="button" data-id="@Model.Id">提交</button>
     </div>
     
     if (ViewBag.IsOrganizer)
     {
-        <div>
+        <div class="OperationBtn2">
             <button id="quit" type="button" data-id="@Model.Id">辞退</button>
         </div>
     }

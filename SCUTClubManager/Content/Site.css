@@ -449,8 +449,76 @@ input[type='text'].PageNavigationInput {
     width: 80px;
     position: absolute;
     height: 150px;
-    right: 15%;
+    left: 70px;
     z-index: -1;
     background-color: rgb(58, 89, 136);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 5);
+}
+
+#ribbonEnd {
+    position: absolute;
+    z-index: -1;
+    left: 60px;
+    top: 150px;
+}
+
+.Reply {
+    margin-bottom: 30px;
+}
+
+.ReplyHeader {
+    padding: 10px;
+}
+
+.ReplyContent {
+    padding: 20px;
+}
+
+.ReplyTop {
+    box-shadow: 0px 4px 8px;
+    margin-bottom: 30px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.ReplyTopHeader {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(175, 175, 175);
+    background-color: rgb(243, 243, 243);
+    font-weight: bold;
+}
+
+.ReplyTopHeaderTitle {
+    font-size: 2em;
+    padding: 10px 10px 10px 20px;
+}
+
+.ReplyTopHeaderAuthor {
+    padding-left: 30px;
+    padding-bottom: 10px;
+}
+
+.ReplyTopContent {
+    padding: 40px;
+}
+
+.Message {
+    margin-bottom: 20px;
+}
+
+.MessageHeader {
+    padding: 10px;
+}
+
+.MessageDate {
+    float: right;
+}
+
+.MessageContent {
+    padding: 20px;
+}
+
+.EventInfo {
+    margin-bottom: 10px;
 }

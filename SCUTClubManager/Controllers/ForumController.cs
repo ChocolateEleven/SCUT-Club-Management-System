@@ -68,7 +68,7 @@ namespace SCUTClubManager.Controllers
             {
                 var replies = thread.Replies.ToPagedList(page_number, 10);
                 ViewBag.Id = id;
-                ViewBag.Title = thread.Title;
+                ViewBag.ThreadTitle = thread.Title;
 
                 return View(replies);
             }

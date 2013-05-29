@@ -251,20 +251,23 @@
     </table>
     
     <div>
-        对选中的申请进行审批
-    </div>
-    
-    <div>
         <input type="hidden" name="is_passed" />
-    </div>
-    
-    <div>
-        <button id="pass" type="button" title="通过选中的申请">同意</button>
-    </div>
-    
-    <div>
-        <button id="reject" type="button" title="拒绝选中的申请">拒绝</button>
     </div>
 }
 
 @Html.Partial("_PageNavigation", Model)
+
+<p>&nbsp;</p>
+
+<div>
+    <div>
+        对选中的申请进行审批
+    </div>
+    <div class="OperationBtn2">
+        <button id="pass" type="button" title="通过选中的申请">同意</button>
+    </div>
+
+    <div class="OperationBtn2">
+        <button id="reject" type="button" title="拒绝选中的申请">拒绝</button>
+    </div>
+</div>

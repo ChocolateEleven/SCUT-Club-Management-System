@@ -8,6 +8,11 @@
 @Html.Partial("_Confirmation")
 
 @Html.Partial("_EventStatusFilterBar")
+
+<p>
+    &nbsp;
+</p>
+
 @Html.Partial("_SearchBar")
 
 <script type="text/javascript">
@@ -45,7 +50,7 @@
 @if (ViewBag.ClubId != SCUTClubManager.Models.Application.ALL && 
     SCUTClubManager.BusinessLogic.ScmRoleProvider.HasMembershipIn(ViewBag.ClubId, null, new string[] { "会长" }))
 {
-    <div>
+    <div class="OperationBtn2">
         @Html.ActionLink("创建新活动", "Create", new { club_id = ViewBag.ClubId })
     </div>
 }

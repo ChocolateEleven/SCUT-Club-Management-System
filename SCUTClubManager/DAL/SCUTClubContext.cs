@@ -48,7 +48,7 @@ namespace SCUTClubManager.DAL
         public DbSet<IdentityForTPC> Identities { get; set; }
         public DbSet<EventRejectReason> EventRejectReasons { get; set; }
 
-        public SCUTClubContext() { }
+        public SCUTClubContext() : base("DefaultConnection") { }
 
         protected override void OnModelCreating(DbModelBuilder model_builder)
         {

@@ -12,6 +12,7 @@ namespace SCUTClubManager.Models
         [RegularExpression(@"^[a-z0-9A-Z]{1,20}$",
       ErrorMessage = "用户名只能是数字和字母的组合，长度不能超过20个字符")]
         [MaxLength(20)]
+        [Display(Name = "用户名")]
         public string UserName { get; set; }
 
         [RegularExpression(@"^[\u2E80-\u9FFFa-zA-Z]{1,10}$", ErrorMessage = "请输入正确的字符")]

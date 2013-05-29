@@ -4,27 +4,22 @@
     ViewBag.Title = "Details"; 
 }
 
-<h2>@Html.Raw("来自" + Model.Sender.CompleteName + "的消息")</h2>
-
-<div>
-    <span class="OperationBtn">@Html.DisplayFor(model => model.Date)</span>
-</div>
-
-<div>&nbsp;</div>
-
-<fieldset>
-    <legend>@Model.Title</legend>
-
-    <div class="display-field">
+<div class="ui-widget Message">
+    <div class="ui-widget-header MessageHeader">
+        <span class="MessageTitle">
+            @Model.Title - @Model.Sender.CompleteName
+        </span>
+        <span class="MessageDate">
+            @Html.DisplayFor(model => model.Date)
+        </span>
+    </div>
+    <div class="ui-widget-content MessageContent">
         @Html.DisplayTextFor(model => model.Content.Content)
     </div>
+</div>
 
-</fieldset>
-
-<div class="OperationBtn2">
+<p class="OperationBtn2">
     @Html.ActionLink("回复", "Create", new { receiver_id = Model.SenderId })
-</div>
-
-<div class="OperationBtn">
+    <span>|</span>
     @Html.ActionLink("返回", "Index")
-</div>
+</p>

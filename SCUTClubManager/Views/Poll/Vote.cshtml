@@ -36,17 +36,10 @@
         });
 </script>
 
-@Html.ActionLink("goto Details", "Details")
-
 @using (Html.BeginForm())
 {
-
-<h2>投票：@Html.Display(Model.Title)</h2>
-
-
     <fieldset>
-        <legend></legend>
-
+        <legend>@Model.Title</legend>
 
         <div class="display-label">问题</div>
         <div class="display-field">
@@ -105,17 +98,17 @@
 
     </fieldset>
     
-    if (Model.OpenDate.CompareTo(DateTime.Now) <= 0)
-    {
-    <input id="submitBtn" type="submit" value="提交" />
-    }
-    else
-    {
-        <div>投票还未开始</div>
-    }
+    <p>
+        @if (Model.OpenDate.CompareTo(DateTime.Now) <= 0)
+        {
+            <input id="submitBtn" type="submit" value="提交" />
+            <span>|</span>
+        }
+        else
+        {
+            <div>投票还未开始</div>
+        }
+
+        @Html.ActionLink("返回", "Index")
+    </p>
 }
-
-
-<p>
-    @Html.ActionLink("返回", "Index")
-</p>

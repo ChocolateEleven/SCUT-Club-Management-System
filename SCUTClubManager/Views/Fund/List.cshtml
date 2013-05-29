@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>财务明细</h2>
 
 <p>
     @Html.Partial("_SearchBar")
@@ -50,7 +50,6 @@
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-
                     @Html.ActionLink("详情", "Details", new { id = item.Id })
                     <a href="#" class="deleteLink" data-id="@item.Id">删除</a>
                 </td>
@@ -60,4 +59,4 @@
 
 </table>
 
-@Html.Partial("_PageNavigation", Model)s
+@Html.Partial("_PageNavigation", Model)

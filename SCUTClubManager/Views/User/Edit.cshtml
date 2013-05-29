@@ -21,7 +21,7 @@
         else if (Model.Gender == Student.FEMALE)
         {
             @:$("#female").attr("checked", "checked");
-                }
+                        }
 
         @if (Model.Degree == Student.BACHELOR)
         {
@@ -34,7 +34,7 @@
         else if (Model.Degree == Student.PHD)
         {
             @:$("#phd").attr("checked", "checked");
-                }
+                        }
 
         @if (Model.ContactInfo.Visibility == ContactInfo.VISIBLE_TO_ALL)
         {
@@ -64,7 +64,7 @@
     <input type="hidden" name="order" value="@ViewBag.Order" />
     <input type="hidden" name="page_number" value="@ViewBag.PageNumber" />
     <input type="hidden" name="Password" value="@Model.Password" />
-    <input type="hidden" name="RoleId" value="@Model.RoleId"
+    <input type="hidden" name="RoleId" value="@Model.RoleId" />
     
     @Html.ValidationSummary(true)
     <fieldset>
@@ -216,9 +216,15 @@
 
     <p>
         <input type="submit" value="提交" />
+        <span>|</span>
+        @Html.ActionLink("返回", "Details", new
+{
+    user_name = Model.UserName,
+    page_number = ViewBag.PageNumber,
+    order = ViewBag.Order,
+    search = ViewBag.Search,
+    search_option = ViewBag.SearchOption,
+    role_filter = ViewBag.RoleFilter
+})
     </p>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

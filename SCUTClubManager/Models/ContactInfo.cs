@@ -32,6 +32,7 @@ namespace SCUTClubManager.Models
         public string EMailAddress { get; set; }
 
         [MaxLength(1)]
+        [Display(Name = "可见性")]
         //"c"表示社团内可见 "a"表示所有人可见
         public string Visibility { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿@model IPagedList<SCUTClubManager.Models.Reply>
-
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = ViewBag.ThreadTitle;
 }
 
 <script>
@@ -17,7 +16,7 @@
                 data: JSON.stringify({ id: "@ViewBag.Id", reply: replyText }),
                 dataType: "json",
                 success: function (data) {
-                    if (data.success ) {
+                    if (data.success) {
                         document.location = "/Forum/Details?id=@ViewBag.Id";
                     }
                     else {
@@ -25,7 +24,7 @@
                     }
                 }
             })
-        })
+        });
     })
 </script>
 
@@ -34,25 +33,36 @@
 
 @using (Html.BeginForm())
 {
-<h3>@ViewBag.Title</h3>
-
     foreach (var reply in Model)
     {
-        <fieldset class="ThreadReply">
-            <legend>@reply.Number 楼</legend>
-
-            <div class="display-field">
-                <b>作者:</b>
-                <span>@reply.Author.Name</span>
+        if (reply.Number > 1)
+        {
+            reply.Number -= 1;
+    <div class="ui-widget Reply">
+        <div class="ui-widget-header ReplyHeader">
+            @reply.Number 楼 - @reply.Author.CompleteName
+        </div>
+        <div class="ui-widget-content ReplyContent">
+            @reply.Content
+        </div>
+    </div>
+        }
+        else
+        {
+    <div class="ReplyTop">
+        <div class="ReplyTopHeader">
+            <div class="ReplyTopHeaderTitle">
+                @ViewBag.ThreadTitle
             </div>
-
-            <div>
-                <b>内容:</b>
+            <div class="ReplyTopHeaderAuthor">
+                楼主 - @reply.Author.CompleteName
             </div>
-            <div class="display-field">
-                <span>@reply.Content</span>
-            </div>
-        </fieldset>
+        </div>
+        <div class="ReplyTopContent">
+            @reply.Content
+        </div>
+    </div>
+        }
     }
     
     <input type="hidden" name="id" value="@ViewBag.Id" />
@@ -71,6 +81,6 @@
     </div>
 
     
-        <button id="btPostReply"  type="button">回复</button>
-        @Html.ActionLink("返回", "Index")
+    <button id="btPostReply" type="button">回复</button>
+    @Html.ActionLink("返回", "Index")
 }

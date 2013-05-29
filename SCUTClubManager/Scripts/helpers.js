@@ -414,7 +414,13 @@ function imageUploader_valueChanged(uploader) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            $(uploader).parent().parent().find("img").attr('src', e.target.result);
+            var container = $(uploader).parent().parent();
+
+            while (container.has('img').length == 0 && container != container.parent()) {
+                container = container.parent();
+            }
+
+            container.find("img").attr('src', e.target.result);
         }
 
         reader.readAsDataURL(uploader.files[0]);
